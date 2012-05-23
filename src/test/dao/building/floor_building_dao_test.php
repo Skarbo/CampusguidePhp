@@ -1,0 +1,97 @@
+<?php
+
+class FloorBuildingDaoTest extends StandardDaoTest
+{
+
+    // VARIABLES
+
+
+    // /VARIABLES
+
+
+    // CONSTRUCTOR
+
+
+    public function __construct()
+    {
+        parent::__construct( "FloorBuildingDao Test" );
+    }
+
+    // /CONSTRUCTOR
+
+
+    // FUNCTIONS
+
+
+    /**
+     * @see StandardDaoTest::getStandardDao()
+     */
+    protected function getStandardDao()
+    {
+        return $this->floorBuildingDao;
+    }
+
+    /**
+     * @see StandardDaoTest::getEditedModel()
+     */
+    protected function getEditedModel( StandardModel $model )
+    {
+        $modelEdited = FloorBuildingModel::get_($model);
+
+        $modelEdited->setName("Updated Floor");
+        $modelEdited->setOrder($modelEdited->getOrder() + 1);
+
+        return $modelEdited;
+    }
+
+    /**
+     * @see StandardDaoTest::createModelTest()
+     */
+    protected function createModelTest()
+    {
+        // Add Facility
+        $facility = $this->addFacility();
+
+        // Add Building
+        $building = $this->addBuilding($facility->getId());
+
+        // Create Floor Building
+        return self::createFloorBuildingTest($building->getId());
+    }
+
+    /**
+     * @see StandardDaoTest::assertModelEquals()
+     */
+    protected function assertModelEquals( Model $modelOne, Model $modelTwo, SimpleTestCase $testCase )
+    {
+
+        $modelOne = FloorBuildingModel::get_($modelOne);
+        $modelTwo = FloorBuildingModel::get_($modelTwo);
+
+        self::assertEqualsFunction($modelOne->getBuildingId(), $modelTwo->getBuildingId(), "Floor Building building id", $this);
+        self::assertEqualsFunction($modelOne->getName(), $modelTwo->getName(), "Floor Building name", $this);
+        self::assertEqualsFunction($modelOne->getOrder(), $modelTwo->getOrder(), "Floor Building foreign id", $this);
+
+    }
+
+    /**
+     * @see StandardDaoTest::assertModelNotNull()
+     */
+    protected function assertModelNotNull( Model $model, SimpleTestCase $testCase )
+    {
+
+        $model = FloorBuildingModel::get_($model);
+
+        self::assertNotNullFunction($model->getId(), "Floor Building id", $this);
+        self::assertNotNullFunction($model->getBuildingId(), "Floor Building building id", $this);
+        self::assertNotNullFunction($model->getName(), "Floor Building name", $this);
+        self::assertNotNullFunction($model->getOrder(), "Floor Building order", $this);
+
+    }
+
+    // /FUNCTIONS
+
+
+}
+
+?>

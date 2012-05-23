@@ -1,0 +1,163 @@
+#facility_page_wrapper {
+	
+}
+
+#facility_page_wrapper #facility_name {
+	width: 20em;
+}
+
+#facility_page_wrapper h3 {
+	color: gray;
+}
+
+/*
+ * View Facility 
+ */
+#facility_page_wrapper {
+	
+}
+
+#facility_page_wrapper #view_facility_page_wrapper #buildings_map_wrapper
+	{
+	
+}
+
+#facility_page_wrapper #view_facility_page_wrapper #buildings_map_wrapper>*
+	{
+	vertical-align: top;
+}
+
+#facility_page_wrapper #view_facility_page_wrapper #buildings_map_wrapper #map_wrapper
+	{
+	width: 1px;
+}
+
+#facility_page_wrapper #view_facility_page_wrapper #buildings_map_wrapper #map_wrapper #map_canvas
+	{
+	width: 400px;
+	height: 300px;
+	border: 1px solid #AAA;
+	padding-left: 0.5em;
+}
+
+/* ... Building wrapper */
+#facility_page_wrapper #view_facility_page_wrapper #buildings_map_wrapper #buildings_wrapper
+	{
+	padding-right: 0.5em;
+}
+
+/* ... ... Table */
+#facility_page_wrapper #view_facility_page_wrapper #buildings_map_wrapper #buildings_wrapper .buildings_table
+	{
+	width: 100%;
+}
+
+/* ... ... ... Header */
+#facility_page_wrapper #view_facility_page_wrapper #buildings_map_wrapper #buildings_wrapper .buildings_table .buildings_table_header
+	{
+	
+}
+
+#facility_page_wrapper #view_facility_page_wrapper #buildings_map_wrapper #buildings_wrapper .buildings_table .buildings_table_header .overview
+	{
+	width: 150px;
+	text-align: center;
+}
+
+#facility_page_wrapper #view_facility_page_wrapper #buildings_map_wrapper #buildings_wrapper .buildings_table .buildings_table_header .building
+	{
+	
+}
+
+#facility_page_wrapper #view_facility_page_wrapper #buildings_map_wrapper #buildings_wrapper .buildings_table .buildings_table_header td
+	{
+	font-size: 0.9em;
+	padding: 0.2em 0.5em;
+	border: 1px solid #999999;
+	border-width: 0px 1px 0px 1px;
+	background-color: #666666;
+	font-weight: bold;
+	color: white;
+	padding: 0.2em 0.5em;
+	vertical-align: middle;
+}
+
+#facility_page_wrapper #view_facility_page_wrapper #buildings_map_wrapper #buildings_wrapper .buildings_table .buildings_table_header td+td
+	{
+	border-width: 0px 1px 0px 0px;
+}
+
+/* ... ... ... Body */
+#facility_page_wrapper #view_facility_page_wrapper #buildings_map_wrapper #buildings_wrapper .buildings_table .buildings_table_body
+	{
+	
+}
+
+#facility_page_wrapper #view_facility_page_wrapper #buildings_map_wrapper #buildings_wrapper .buildings_table .buildings_table_body .buildings_row_building
+	{
+	
+}
+
+#facility_page_wrapper #view_facility_page_wrapper #buildings_map_wrapper #buildings_wrapper .buildings_table .buildings_table_body .buildings_row_building.highlight
+	{
+	background-color: #EDEDED;
+}
+
+#facility_page_wrapper #view_facility_page_wrapper #buildings_map_wrapper #buildings_wrapper .buildings_table .buildings_table_body td
+	{
+	border-top: 1px solid #999999;
+	padding: 0.5em;
+}
+
+#facility_page_wrapper #view_facility_page_wrapper #buildings_map_wrapper #buildings_wrapper .buildings_table .buildings_table_body tr:FIRST-CHILD td
+	{
+	border: 0;
+}
+
+/* ... ... ... ... Overview */
+#facility_page_wrapper #view_facility_page_wrapper #buildings_map_wrapper #buildings_wrapper .buildings_table .buildings_table_body .overview
+	{
+	text-align: center;
+	vertical-align: top;
+	height: 75px;
+	width: 100px;		
+}
+
+#facility_page_wrapper #view_facility_page_wrapper #buildings_map_wrapper #buildings_wrapper .buildings_table .buildings_table_body .overview img
+	{
+	border: 1px solid #666;
+	background-color: #EDEDED;
+}
+
+/* ... ... ... ... Building */
+#facility_page_wrapper #view_facility_page_wrapper #buildings_map_wrapper #buildings_wrapper .buildings_table .buildings_table_body .building
+	{
+	vertical-align: top;
+}
+
+#facility_page_wrapper #view_facility_page_wrapper #buildings_map_wrapper #buildings_wrapper .buildings_table .buildings_table_body .building .title
+	{
+	font-weight: bold;
+	font-size: 1.1em;
+}
+
+#facility_page_wrapper #view_facility_page_wrapper #buildings_map_wrapper #buildings_wrapper .buildings_table .buildings_table_body .building .address,#facility_page_wrapper #view_facility_page_wrapper #buildings_map_wrapper #buildings_wrapper .buildings_table .buildings_table_body .building .floors
+	{
+	font-size: 0.9em;
+	color: #666;
+}
+
+/* ... ... ... Footer */
+#facility_page_wrapper #view_facility_page_wrapper #buildings_map_wrapper #buildings_wrapper .buildings_table .buildings_table_footer
+	{
+	
+}
+
+#facility_page_wrapper #view_facility_page_wrapper #buildings_map_wrapper #buildings_wrapper .buildings_table .buildings_table_footer td
+	{
+	color: gray;
+	font-size: 1.1em;
+	font-weight: bold;
+	padding: 0.5em;
+	text-align: center;
+}

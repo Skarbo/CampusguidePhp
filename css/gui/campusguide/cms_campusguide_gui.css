@@ -1,0 +1,74 @@
+#cms_wrapper .gui {
+	border: 0;
+	border-radius: 0 !important;
+}
+
+/* Component */
+#cms_wrapper .gui .guiComp {
+	color: #134F5C;
+	font-weight: bold;
+	padding: 0.5em 1.5em;
+	border: 0;
+	background: white;
+	border-radius: 0 !important;
+}
+
+#cms_wrapper .gui .guiComp:FOCUS,#cms_wrapper .gui .guiComp:HOVER {
+	background-color: rgb(239, 239, 239);
+}
+
+/* Input */
+#cms_wrapper .gui .guiComp[data-type=input] {
+	border: 1px solid rgb(102, 102, 102);
+	color: inherit;
+}
+
+/* Reset */
+#cms_wrapper .gui .guiComp[data-type=reset] {
+	background-color: rgb(102, 102, 102);
+}
+
+#cms_wrapper .gui .guiComp[data-type=reset]:FOCUS,#cms_wrapper .gui .guiComp[data-type=reset]:HOVER {
+	background-color: rgb(102, 102, 102) !important;
+}
+
+/* ... Icon */
+#cms_wrapper .gui .guiComp[data-type=reset] .icon {
+	color: white;
+}
+
+/* 
+ * Theme 2 
+ */
+#cms_wrapper .gui.theme2 {
+	border: 1px solid rgb(204, 204, 204);
+}
+
+#cms_wrapper .gui.theme2 .guiComp+.guiComp
+{
+	border-left: 1px solid rgb(204, 204, 204);
+}
+
+/* 
+ * Theme 3 
+ */
+#cms_wrapper .gui.theme3 {
+	border-width: 0;
+}
+
+#cms_wrapper .gui.theme3 .guiComp:NOT(.input)
+{
+	background-color: rgb(102, 102, 102);
+	border-width: 0;
+	color: white;
+}
+
+#cms_wrapper .gui.theme3 .guiComp:NOT(.input):FOCUS, #cms_wrapper .gui.theme3 .guiComp:NOT(.input):HOVER
+{
+	background-color: rgb(102, 102, 102); 
+}
+
+#cms_wrapper .gui.theme3 .guiComp+.guiComp
+{
+	margin-left: 0.5em;
+}

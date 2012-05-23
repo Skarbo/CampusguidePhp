@@ -1,0 +1,139 @@
+#floorplanner_page_wrapper {
+	
+}
+
+/* Florplanner menu */
+#floorplanner_page_wrapper #floorplanner_menu_wrapper {
+	border-bottom: 1px solid #999999;
+	margin-top: 1em;
+	font-size: 0.9em;
+}
+
+/* ... Left */
+#floorplanner_page_wrapper #floorplanner_menu_left_wrapper {
+	
+}
+
+#floorplanner_page_wrapper #floorplanner_menu_left_wrapper .gui>* {
+	border-right: 1px solid #999999;
+}
+
+#floorplanner_page_wrapper #floorplanner_menu_left_wrapper .gui .guiComp.highlight,#floorplanner_page_wrapper #floorplanner_menu_left_wrapper .gui .guiComp.highlight:FOCUS,#floorplanner_page_wrapper #floorplanner_menu_left_wrapper .gui .guiComp.highlight:HOVER
+	{
+	color: white;
+	background-color: rgb(102, 102, 102);
+}
+
+/* ... Right */
+#floorplanner_page_wrapper #floorplanner_menu_left_wrapper {
+	
+}
+
+/* Floorplanner planner */
+#floorplanner_page_wrapper #floorplanner_planner_wrapper {
+	
+}
+
+#floorplanner_page_wrapper #floorplanner_planner_wrapper .table>* {
+	vertical-align: top;
+}
+
+#floorplanner_page_wrapper #floorplanner_planner_wrapper .table>*+* {
+	width: 1px;
+}
+
+/* ... Sidebar */
+#floorplanner_page_wrapper #floorplanner_planner_wrapper #floorplanner_planner_sidebar_wrapper
+	{
+	margin-top: 0.5em;
+	border-bottom: 1px solid gray;
+}
+
+#floorplanner_page_wrapper #floorplanner_planner_wrapper #floorplanner_planner_sidebar_wrapper .sidebar
+	{
+	
+}
+
+#floorplanner_page_wrapper #floorplanner_planner_wrapper #floorplanner_planner_sidebar_wrapper .sidebar:FIRST-CHILD
+	{
+	border-top: 1px solid gray;
+}
+
+/* ... ... Header */
+#floorplanner_page_wrapper #floorplanner_planner_wrapper #floorplanner_planner_sidebar_wrapper .sidebar .sidebar_header_wrapper
+	{
+		background-color: #eee;
+		cursor: pointer;
+}
+
+#floorplanner_page_wrapper #floorplanner_planner_wrapper #floorplanner_planner_sidebar_wrapper .sidebar .sidebar_header_wrapper:HOVER,
+#floorplanner_page_wrapper #floorplanner_planner_wrapper #floorplanner_planner_sidebar_wrapper .sidebar .sidebar_header_wrapper:FOCUS
+	{
+		background-color: inherit;
+}
+
+#floorplanner_page_wrapper #floorplanner_planner_wrapper #floorplanner_planner_sidebar_wrapper .sidebar .sidebar_header_wrapper h1
+	{
+	margin: 0;
+	padding: 0;
+	font-size: 1em;
+}
+
+#floorplanner_page_wrapper #floorplanner_planner_wrapper #floorplanner_planner_sidebar_wrapper .sidebar .sidebar_header_wrapper span
+	{
+	font-size: 0.8em;
+		vertical-align: middle;
+		color: #777;	
+		padding-right: 0.2em;
+}
+
+#floorplanner_page_wrapper #floorplanner_planner_wrapper #floorplanner_planner_sidebar_wrapper .sidebar .sidebar_header_wrapper span:BEFORE
+	{
+	content: "(";
+}
+
+#floorplanner_page_wrapper #floorplanner_planner_wrapper #floorplanner_planner_sidebar_wrapper .sidebar .sidebar_header_wrapper span:AFTER
+	{
+	content: ")";		
+}
+
+/* ... ... Content */
+#floorplanner_page_wrapper #floorplanner_planner_wrapper #floorplanner_planner_sidebar_wrapper .sidebar .content
+	{
+		border-top: 1px solid #aaa;	
+}
+
+
+/* ... Content */
+#floorplanner_page_wrapper #floorplanner_planner_wrapper #floorplanner_planner_content_wrapper
+	{
+	border-left: 1px solid #999;
+	padding-left: 0.5em;
+}
+
+/* ... ... Toolbar */
+#floorplanner_page_wrapper #floorplanner_planner_wrapper #floorplanner_planner_content_wrapper #floorplanner_planner_content_toolbar_wrapper
+	{
+	padding: 0.5em 0;
+	font-size: 0.8em;
+}
+
+#floorplanner_page_wrapper #floorplanner_planner_wrapper #floorplanner_planner_content_wrapper #floorplanner_planner_content_toolbar_wrapper .gui .guiComp
+	{
+	padding: 0.3em 1em;
+	color: #666;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+/* ... ... Canvas */
+#floorplanner_page_wrapper #floorplanner_planner_wrapper #floorplanner_planner_content_wrapper #floorplanner_planner_content_canvas_wrapper
+	{
+	border: 2px solid #666;
+	width: 800px;
+	height: 500px;
+}

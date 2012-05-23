@@ -1,0 +1,200 @@
+#building_page_wrapper {
+	
+}
+
+#building_page_wrapper #building_name {
+	width: 20em;
+}
+
+/*
+ * Admin Building
+ */
+#building_page_wrapper #building_facility>* {
+	padding: 0 0.5em 0 0;
+	vertical-align: top;
+}
+
+#building_page_wrapper #building_facility #facilities_slider_wrapper {
+	
+}
+
+#building_page_wrapper #building_facility #facilities_slider_wrapper .facilities_content > * {
+	
+}
+
+#building_page_wrapper #building_facility .facility_wrapper {
+	white-space: nowrap;
+	padding: 0.5em;
+	display: inline-block;
+}
+
+#building_page_wrapper #building_facility #facilities_slider_wrapper .facility_wrapper
+	{
+	cursor: pointer;
+}
+
+#building_page_wrapper #building_facility #facilities_slider_wrapper .facility_wrapper .image
+	{
+	opacity: 0.5;
+}
+
+#building_page_wrapper #building_facility #facilities_slider_wrapper .facility_wrapper:HOVER .image
+	{
+	opacity: 1;
+}
+
+#building_page_wrapper #building_facility #facilities_slider_wrapper .selected
+	{
+	background-color: #DDDDDD;
+	border-radius: 0.4em;
+}
+
+#building_page_wrapper #building_facility .facility_wrapper .image {
+	background-repeat: no-repeat;
+	width: 200px;
+	height: 100px;
+}
+
+#building_page_wrapper #building_facility .facility_wrapper .name {
+	vertical-align: bottom;
+}
+
+#building_page_wrapper #building_facility .facility_wrapper .name>* {
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.7);
+	border-radius: 0.2em 0.2em 0.2em 0.2em;
+	color: white;
+	display: block;
+	font-size: 0.8em;
+	font-weight: bold;
+	padding: 0.2em;
+	white-space: pre-wrap;
+}
+
+#building_page_wrapper #building_facility .facility_wrapper .name a {
+	color: inherit;
+}
+
+#building_page_wrapper #building_facility .facility_wrapper .name a:HOVER,#building_page_wrapper #building_facility .facility_wrapper .name a:FOCUS
+	{
+	text-decoration: underline;
+}
+
+#building_page_wrapper #building_facility #facility_selected {
+	width: 1px;
+	display: none;
+}
+
+#building_page_wrapper #building_facility #facility_selected .facility_wrapper
+	{
+	background-color: #EEEEEE;
+	border: 1px solid #AAAAAA;
+	border-radius: 0.4em 0.4em 0.4em 0.4em;
+	display: inline-block;
+}
+
+#building_page_wrapper #building_facility #facility_none {
+	width: 1px;
+}
+
+#building_page_wrapper #building_facility #facility_none .facility_wrapper
+	{
+	background-color: #EEEEEE;
+	border: 1px solid #AAAAAA;
+	border-radius: 0.4em 0.4em 0.4em 0.4em;
+	display: inline-block;
+}
+
+#building_page_wrapper #building_facility #facility_none .facility_wrapper .image
+	{
+	background-color: #DDDDDD;
+}
+
+#building_page_wrapper #building_facility #facility_none .facility_wrapper .image .row>*
+	{
+	color: #999999;
+	display: table-cell;
+	font-size: 4em;
+	height: 100%;
+	vertical-align: middle;
+	text-align: center;
+}
+
+#building_page_wrapper #building_facility #facility_none .facility_wrapper .name
+	{
+	font-style: italic;
+}
+
+#building_page_wrapper #building_facility .facilities_wrapper .slider_scroller_wrapper
+	{
+	margin-top: 0.5em;
+}
+
+#building_page_wrapper #building_facility .facilities_wrapper .slider_scroller_wrapper .slider_scroller_handle[data-handle-slide-max="0"]
+	{
+	display: none;
+}
+
+#building_page_wrapper .address input {
+	margin-right: 0.5em;
+}
+
+#building_page_wrapper .address #address_street {
+	width: 15em;
+}
+
+#building_page_wrapper .address #address_city {
+	
+}
+
+#building_page_wrapper .address #address_postal {
+	width: 5em;
+}
+
+#building_page_wrapper .address #address_country {
+	
+}
+
+#building_page_wrapper #admin_building_page_wrapper .gui.theme3 {
+	font-size: 0.8em;
+}
+
+#building_page_wrapper #overlay_map #map_canvas {
+	width: 700px;
+	height: 500px;
+	margin-top: 0.5em;
+	border: 1px solid #AAA;
+}
+
+#building_page_wrapper #overlay_map #map_search_wrapper {
+	margin: 0.5em 0;
+}
+
+#building_page_wrapper #overlay_map #map_search_wrapper>* {
+	vertical-align: middle;
+}
+
+#building_page_wrapper #overlay_map #map_search_wrapper #map_search {
+	width: 25em;
+	margin-right: 1em;
+}
+
+#building_page_wrapper #overlay_map .gui {
+	font-size: 0.8em;
+}
+
+#building_page_wrapper #overlay_map #map_search_location,#building_page_wrapper #overlay_map #map_search_address
+	{
+	font-size: 0.9em;
+}
+
+#building_page_wrapper #admin_building_page_wrapper #building_location {
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+}
+
+/*
+ * View Building
+ */
+#building_page_wrapper {
+	
+}

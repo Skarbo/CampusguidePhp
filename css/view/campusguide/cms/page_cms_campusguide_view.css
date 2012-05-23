@@ -1,0 +1,17 @@
+#page_wrapper {
+	
+}
+
+#page_wrapper .header_wrapper {
+	
+}
+
+#page_wrapper .header_wrapper .header_table {
+	display: table;
+	width: 100%;
+}
+
+#page_wrapper .header_wrapper .header_table .header_table_cell {
+	display: table-cell;
+	vertical-align: middle;
+}

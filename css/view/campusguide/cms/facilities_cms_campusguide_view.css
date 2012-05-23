@@ -1,0 +1,181 @@
+#facilities_wrapper {
+	
+}
+
+/* Template */
+#facilities_wrapper #facilities_template_table {
+	display: none;
+}
+
+/* Facilities */
+#facilities_wrapper .facilities {
+	border-bottom: 1px solid #999999;
+}
+
+/* ... Facility */
+#facilities_wrapper .facilities .facility {
+	
+}
+
+#facilities_wrapper .facilities .facility>td {
+	padding: 0.5em;
+	vertical-align: middle;
+	border-top: 1px solid #999999;
+}
+
+#facilities_wrapper .facilities .facilities_table_body:FIRST-CHILD .facility>td
+	{
+	border: 0;
+}
+
+#facilities_wrapper .facilities .facilities_table_body.highlight {
+	background-color: #DDD;
+}
+
+/* ... ... Name */
+#facilities_wrapper .facilities .name {
+	text-align: left;
+}
+
+#facilities_wrapper .facilities .facility .name {
+	font-weight: bold;
+	font-size: 1.1em;
+}
+
+/* ... ... Check */
+#facilities_wrapper .facilities .check {
+	width: 1px;
+}
+
+/* ... ... Map */
+#facilities_wrapper .facilities .map {
+	width: 210px;
+	text-align: center;
+}
+
+#facilities_wrapper .facilities .facility .map img {
+	width: 200px;
+	height: 100px;
+}
+
+#facilities_wrapper .facilities .facility .map img.inactive {
+	opacity: 0.50;
+}
+
+/* ... ... Buildings */
+#facilities_wrapper .facilities .buildings {
+	text-align: center;
+	width: 5%;
+}
+
+/* ... ... Activity */
+#facilities_wrapper .facilities .activity {
+	text-align: right;
+	width: 10%;
+	color: gray;
+	font-size: 0.9em;
+}
+
+/* ... Facility Buildings */
+#facilities_wrapper .facilities .facility_buildings {
+	display: none;
+}
+
+#facilities_wrapper .facilities .facilities_table_body.highlight .facility_buildings
+	{
+	display: table-row;
+}
+
+#facilities_wrapper .facilities .facility_buildings>td {
+	padding: 0.5em;
+}
+
+#facilities_wrapper .facilities .facility_buildings .facility_buildings_wrapper
+	{
+	background-color: white;
+}
+
+#facilities_wrapper .facilities .facility_buildings .facility_buildings_wrapper .slider_scroller_wrapper .slider_scroller_handle[data-handle-slide-max="0"]
+	{
+	display: none;
+}
+
+#facilities_wrapper .facilities .facility_buildings .facility_buildings_table
+	{
+	
+}
+
+#facilities_wrapper .facilities .facility_buildings .facility_buildings_table .facility_buildings_building_wrapper
+	{
+	padding: 0.5em;
+}
+
+#facilities_wrapper .facilities .facility_buildings .facility_buildings_table .facility_buildings_building_wrapper .facility_buildings_building_table
+	{
+	height: 75px;
+	width: 150px;
+	background-color: #EDEDED;
+}
+
+#facilities_wrapper .facilities .facility_buildings .facility_buildings_table .facility_buildings_building_wrapper .facility_buildings_building_table>*
+	{
+	vertical-align: bottom;
+}
+
+#facilities_wrapper .facilities .facility_buildings .facility_buildings_table .facility_buildings_building_wrapper .facility_buildings_building_table .facility_buildings_building_content
+	{
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.7);
+	color: white;
+	font-size: 0.7em;
+	border-radius: 0.2em;
+	width: 150px;
+	overflow: hidden;
+	white-space: nowrap;
+	font-weight: bold;
+	padding: 0.2em 0;
+}
+
+#facilities_wrapper .facilities .facility_buildings .facility_buildings_table .facility_buildings_building_wrapper .facility_buildings_building_table .facility_buildings_building_content a
+	{
+	padding: 0.2em;
+	color: inherit;
+}
+
+#facilities_wrapper .facilities .facility_buildings .facility_buildings_table .facility_buildings_building_wrapper .facility_buildings_building_table .facility_buildings_building_content a:FOCUS,#facilities_wrapper .facilities .facility_buildings .facility_buildings_table .facility_buildings_building_wrapper .facility_buildings_building_table .facility_buildings_building_content a:HOVER
+	{
+	text-decoration: underline;
+}
+
+/* ... Body */
+#facilities_wrapper #facilities_table_body {
+	
+}
+
+/* ... Header */
+#facilities_wrapper #facilities_table_header {
+	
+}
+
+#facilities_wrapper #facilities_table_header td {
+	font-size: 0.9em;
+	padding: 0.2em 0.5em;
+	border: 1px solid #999999;
+	border-width: 0px 1px 0px 1px;
+	background-color: #666666;
+	font-weight: bold;
+	color: white;
+	padding: 0.2em 0.5em;
+	vertical-align: middle;
+}
+
+#facilities_wrapper #facilities_table_header td+td {
+	border-width: 0px 1px 0px 0px;
+}
+
+#facilities_wrapper #facilities_table #facilities_none_table td {
+	color: gray;
+	font-size: 1.3em;
+	font-weight: bold;
+	padding: 0.5em;
+	text-align: center;
+}

@@ -1,0 +1,85 @@
+#cms_wrapper #main_cms_wrapper #page_menu_wrapper {
+	border-bottom: 2px solid rgb(153, 153, 153);
+	padding: 0 1em;
+	margin-bottom: 1em;
+}
+
+/* Menu */
+#cms_wrapper #main_cms_wrapper #page_menu_wrapper .menu {
+	width: 100%;
+	display: table;
+}
+
+/* ... Align */
+#cms_wrapper #main_cms_wrapper #page_menu_wrapper .menu>* {
+	display: table-cell;
+}
+
+#cms_wrapper #main_cms_wrapper #page_menu_wrapper .menu>.left {
+	text-align: left;
+}
+
+#cms_wrapper #main_cms_wrapper #page_menu_wrapper .menu>.midle {
+	text-align: center;
+}
+
+#cms_wrapper #main_cms_wrapper #page_menu_wrapper .menu>.right {
+	text-align: right;
+}
+
+#cms_wrapper #main_cms_wrapper #page_menu_wrapper .menu>*>.align {
+	display: inline-table;
+}
+
+/* Item */
+#cms_wrapper #main_cms_wrapper #page_menu_wrapper .menu .item {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+/* Link */
+#cms_wrapper #main_cms_wrapper #page_menu_wrapper .menu .item a {
+	white-space: nowrap;
+	padding: 0.5em 1.5em;
+	color: rgb(19, 79, 92);
+	text-decoration: none;
+	display: block;
+	font-weight: bold;
+}
+
+#cms_wrapper #main_cms_wrapper #page_menu_wrapper .menu .item.highligthed a {
+	color: white;
+	background-color: rgb(102, 102, 102);
+}
+
+#cms_wrapper #main_cms_wrapper #page_menu_wrapper .menu .item:NOT(.highligthed) a:FOCUS,#cms_wrapper #main_cms_wrapper #page_menu_wrapper .menu .item:NOT(.highligthed) a:HOVER
+	{
+	background-color: rgb(239, 239, 239);
+}
+
+/* 
+ * Controller menu
+ */
+#cms_wrapper #controller_header_wrapper #controller_menu_wrapper .menu {
+	display: table;
+}
+
+#cms_wrapper #controller_header_wrapper #controller_menu_wrapper .menu .item {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+#cms_wrapper #controller_header_wrapper #controller_menu_wrapper .menu .item a {
+	white-space: nowrap;
+	padding: 0 1.5em;
+	color: rgb(67, 67, 67);
+	text-decoration: none;
+	display: block;
+	font-weight: bold;
+	font-size: 1.2em;
+	font-variant: small-caps;
+}
+
+#cms_wrapper #controller_header_wrapper #controller_menu_wrapper .menu .item.highligthed a {
+	color: rgb(127, 96, 0);
+}

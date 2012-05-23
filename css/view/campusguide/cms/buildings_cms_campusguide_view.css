@@ -1,0 +1,138 @@
+#buildings_wrapper {
+	
+}
+
+/* Buildings */
+#buildings_wrapper .buildings {
+	border-bottom: 1px solid #999999;
+	width: 100%;
+}
+
+/* ... Building */
+#buildings_wrapper .buildings .building {
+	
+}
+
+#buildings_wrapper .buildings .building>td {
+	padding: 0.5em;
+	vertical-align: middle;
+	border-top: 1px solid #999999;
+}
+
+/* ... ... Check */
+#buildings_wrapper .buildings .check {
+	width: 1px;
+}
+
+/* ... ... Facility */
+#buildings_wrapper .buildings .facility {
+	text-align: center;
+}
+
+#buildings_wrapper .buildings .building .facility {
+	width: 150px;
+	height: 75px;
+}
+
+#buildings_wrapper .buildings .building .facility .table {
+	width: 150px;
+	height: 75px;
+}
+
+
+#buildings_wrapper .buildings .building .facility .table>* {
+	vertical-align: bottom;
+}
+
+#buildings_wrapper .buildings .building .facility .table>*>* {
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.7);
+	border-radius: 0.2em 0.2em 0.2em 0.2em;
+	color: white;
+	display: block;
+	font-size: 0.7em;
+	font-weight: bold;
+	padding: 0.2em;
+	white-space: pre-wrap;
+	text-align: left;
+	max-height: 40px;
+	overflow-y: hidden;
+}
+
+#buildings_wrapper .buildings .building .facility .table>*>* a {
+	color: inherit;
+}
+
+#buildings_wrapper .buildings .building .facility .table>*>* a:HOVER {
+	text-decoration: underline;
+}
+
+/* ... ... Overview */
+#buildings_wrapper .buildings .overview {
+	text-align: center;
+}
+
+#buildings_wrapper .buildings .building .overview {
+	width: 150px;
+	height: 75px;
+}
+
+#buildings_wrapper .buildings .building .overview img {
+	border: 1px solid #666666;
+	background-color: #EDEDED;
+	width: 150px;
+	height: 75px;
+}
+
+/* ... ... Building */
+#buildings_wrapper .buildings .building_building {
+	
+}
+
+#buildings_wrapper .buildings .building .building_building {
+	vertical-align: top;
+}
+
+#buildings_wrapper .buildings .building .building_building .name {
+	font-size: 1.1em;
+	font-weight: bold;
+}
+
+#buildings_wrapper .buildings .building .building_building .address {
+	font-size: 0.9em;
+	color: #666;
+}
+
+/* ... ... Floors */
+#buildings_wrapper .buildings .floors {
+	text-align: center;
+	width: 5%;
+}
+
+/* ... ... Activity */
+#buildings_wrapper .buildings .activity {
+	text-align: right;
+	width: 10%;
+	color: gray;
+	font-size: 0.9em;
+}
+
+/* ... Header */
+#buildings_wrapper #buildings_table_header {
+	
+}
+
+#buildings_wrapper #buildings_table_header td {
+	font-size: 0.9em;
+	padding: 0.2em 0.5em;
+	border: 1px solid #999999;
+	border-width: 0px 1px 0px 1px;
+	background-color: #666666;
+	font-weight: bold;
+	color: white;
+	padding: 0.2em 0.5em;
+	vertical-align: middle;
+}
+
+#buildings_wrapper #buildings_table_header td+td {
+	border-width: 0px 1px 0px 0px;
+}

@@ -1,0 +1,195 @@
+body {
+	background-color: #F4F4F4;
+	margin: 1em;
+}
+
+.default_text_active {
+	color: #888;
+}
+
+.space {
+	padding-left: 0.5em;
+}
+
+#cms_wrapper a {
+	color: #134F5C;
+	text-decoration: none;
+}
+
+#cms_wrapper {
+	width: 1024px;
+	margin: 0 auto;
+}
+
+/* Error */
+#cms_wrapper .error {
+	
+}
+
+/* ... BadrequestException */
+#cms_wrapper .error .BadrequestException {
+	text-align: center;
+}
+
+#cms_wrapper .error .BadrequestException h1 {
+	font-size: 2em;
+	font-weight: bold;
+	color: darkRed;
+}
+
+#cms_wrapper .error .BadrequestException div {
+	font-size: 1.5em;
+}
+
+/* ... ValidatorException */
+#cms_wrapper .error .ValidatorException {
+	background-color: #FFE5E5;
+	border: 1px solid darkred;
+	margin-bottom: 1em;
+	padding: 0.5em;
+}
+
+#cms_wrapper .error .ValidatorException h1 {
+	font-weight: bold;
+	font-size: 1em;
+}
+
+#cms_wrapper .error .ValidatorException div {
+	
+}
+
+/* Success */
+#cms_wrapper .success {
+	background-color: #E5FFE5;
+	border: 1px solid darkgreen;
+	margin-bottom: 1em;
+	padding: 0.5em;
+}
+
+/* Fields */
+#cms_wrapper .fields {
+	display: table;
+	width: 100%;
+}
+
+#cms_wrapper .fields>* {
+	display: table-row;
+}
+
+#cms_wrapper .fields>*>* {
+	display: table-cell;
+	padding: 0.5em 1em;
+}
+
+#cms_wrapper .fields>*>*:FIRST-CHILD {
+	color: gray;
+	text-align: right;
+	font-weight: bold;
+	vertical-align: top;
+	width: 15%;
+}
+
+#cms_wrapper .fields>*>*+* {
+	vertical-align: middle;
+}
+
+#cms_wrapper .fields>*>*.required:AFTER {
+	color: darkRed;
+	content: "*";
+	font-size: 0.9em;
+	vertical-align: top;
+	opacity: 0.7;
+}
+
+/* Input */
+#cms_wrapper input {
+	border: 1px solid gray;
+	padding: 0.3em 0.5em;
+}
+
+/* Header wrapper */
+#cms_wrapper #header_wrapper {
+	margin-bottom: 0.5em;
+}
+
+#cms_wrapper .header_wrapper {
+	margin-bottom: 1em;
+}
+
+/* Main wrapper */
+#cms_wrapper #main_cms_wrapper {
+	background-color: white;
+	border: 1px solid darkgray;
+	padding: 1em;
+}
+
+/* Overlay */
+#cms_wrapper .overlay_wrapper {
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.5);
+	display: table;
+	height: 100%;
+	left: 0;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 1000;
+	text-align: center;
+}
+
+#cms_wrapper .overlay_wrapper>* {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+#cms_wrapper .overlay_wrapper .overlay {
+	display: inline-block;
+	min-width: 500px;
+	background-color: white;
+	text-align: left;
+	border: 1px solid #333;
+}
+
+#cms_wrapper .overlay_wrapper .overlay>.title {
+	border-bottom: 1px solid #999999;
+	padding: 0 0.5em;
+}
+
+#cms_wrapper .overlay_wrapper .overlay>.body {
+	padding: 0.5em 1em;
+}
+
+#cms_wrapper .overlay_wrapper .overlay>.buttons {
+	padding: 0.5em 1em;
+}
+
+/* Hide */
+#cms_wrapper .hide {
+	display: none;
+}
+
+/* Controller header */
+#cms_wrapper #controller_header_wrapper {
+	margin-bottom: 0.5em;
+}
+
+/* ... Header */
+#cms_wrapper #controller_header_wrapper #header_wrapper {
+	width: 1px;
+}
+
+#cms_wrapper #controller_header_wrapper #header_wrapper>div {
+	color: darkgray;
+	font-weight: bold;
+	margin-top: -0.6em;
+	text-align: center;
+}
+
+/* ... Menu */
+#cms_wrapper #controller_header_wrapper #controller_menu_wrapper {
+	margin-left: 1em;
+}
+
+/* Queue */
+#queue_wrapper {
+	display: none;
+}

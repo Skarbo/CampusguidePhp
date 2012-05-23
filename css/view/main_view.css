@@ -1,0 +1,34 @@
+@font-face {
+	font-family: 'CampusGuide';
+	src: url('../font/campusguide.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+*[data-icon] {
+	font-family: CampusGuide;
+}
+
+*[data-icon=search]:AFTER {
+	content: "S";
+}
+
+*[data-icon=location]:AFTER {
+	content: "L";
+}
+
+*[data-icon=layers]:AFTER {
+	content: "l";
+}
+
+*[data-icon=more]:AFTER {
+	content: "M";
+}
+
+*[data-icon=direction]:AFTER {
+	content: "D";
+}
+
+*[data-icon=home]:AFTER {
+	content: "H";
+}

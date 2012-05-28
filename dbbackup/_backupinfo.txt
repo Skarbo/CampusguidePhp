@@ -197,3 +197,7 @@ Tue, 22 May 2012 12:57:38 GMT - localhost - campusguide_dev, campusguide_test
 Tue, 22 May 2012 14:19:20 GMT - localhost - campusguide_dev, campusguide_test
 Tue, 22 May 2012 21:31:56 GMT - localhost - campusguide_dev, campusguide_test
 Wed, 23 May 2012 19:46:17 GMT - localhost - campusguide_dev, campusguide_test
+Wed, 23 May 2012 21:13:08 GMT - localhost - campusguide_dev, campusguide_test
+Thu, 24 May 2012 09:43:26 GMT - localhost - campusguide_dev, campusguide_test
+Fri, 25 May 2012 12:38:17 GMT - localhost - campusguide_dev, campusguide_test
+Mon, 28 May 2012 07:17:21 GMT - localhost - campusguide_dev, campusguide_test

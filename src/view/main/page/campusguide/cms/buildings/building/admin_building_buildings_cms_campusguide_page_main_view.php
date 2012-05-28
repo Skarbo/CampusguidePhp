@@ -184,7 +184,7 @@ class AdminBuildingBuildingsCmsCampusguidePageMainView extends AdminCmsCampusgui
         $field->addContent( Xhtml::div( "Facility" )->class_( Resource::css()->campusguide()->cms()->getRequired() ) );
 
         $fieldFacilities = Xhtml::div();
-        $this->drawFieldsAcademies( $fieldFacilities );
+        $this->drawFieldsFacilities( $fieldFacilities );
         $field->addContent( $fieldFacilities );
 
         $table->addContent( $field );
@@ -198,28 +198,27 @@ class AdminBuildingBuildingsCmsCampusguidePageMainView extends AdminCmsCampusgui
 
         // ... Street name
         $fieldAddress->addContent(
-                Xhtml::input( Core::arrayAt( $this->getBuildingAdmin()->getAddress(), 0 ), sprintf( "%s[]", Resource::db()->building()->getFieldAddress() ) )->id(
-                        "address_street" )->title( "Streetname" )->class_( Resource::css()->getDefaultText() ) );
+                Xhtml::input( Core::arrayAt( $this->getBuildingAdmin()->getAddress(), 0 ),
+                        sprintf( "%s[]", Resource::db()->building()->getFieldAddress() ) )->id( "address_street" )->title(
+                        "Streetname" )->class_( Resource::css()->getDefaultText() ) );
 
         // ... City
         $fieldAddress->addContent(
-                Xhtml::input( Core::arrayAt( $this->getBuildingAdmin()->getAddress(), 1 ), sprintf( "%s[]", Resource::db()->building()->getFieldAddress() ) )->id(
-                        "address_city" )->title( "City" )->class_( Resource::css()->getDefaultText() ) );
+                Xhtml::input( Core::arrayAt( $this->getBuildingAdmin()->getAddress(), 1 ),
+                        sprintf( "%s[]", Resource::db()->building()->getFieldAddress() ) )->id( "address_city" )->title(
+                        "City" )->class_( Resource::css()->getDefaultText() ) );
 
         // ... Postal
         $fieldAddress->addContent(
-                Xhtml::input( Core::arrayAt( $this->getBuildingAdmin()->getAddress(), 2 ), sprintf( "%s[]", Resource::db()->building()->getFieldAddress() ) )->id(
-                        "address_postal" )->title( "Postal" )->class_( Resource::css()->getDefaultText() ) );
+                Xhtml::input( Core::arrayAt( $this->getBuildingAdmin()->getAddress(), 2 ),
+                        sprintf( "%s[]", Resource::db()->building()->getFieldAddress() ) )->id( "address_postal" )->title(
+                        "Postal" )->class_( Resource::css()->getDefaultText() ) );
 
         // ... Country
         $fieldAddress->addContent(
-                Xhtml::input( Core::arrayAt( $this->getBuildingAdmin()->getAddress(), 3 ), sprintf( "%s[]", Resource::db()->building()->getFieldAddress() ) )->id(
-                        "address_country" )->title( "Country" )->class_( Resource::css()->getDefaultText() ) );
-
-        // ... Map button
-        $fieldAddress->addContent(
-                Xhtml::div( Xhtml::div( "Map" )->id( "address_map" )->class_( Resource::css()->gui()->getComponent() ) )->class_(
-                        Resource::css()->gui()->getGui(), "theme3" ) );
+                Xhtml::input( Core::arrayAt( $this->getBuildingAdmin()->getAddress(), 3 ),
+                        sprintf( "%s[]", Resource::db()->building()->getFieldAddress() ) )->id( "address_country" )->title(
+                        "Country" )->class_( Resource::css()->getDefaultText() ) );
 
         $field->addContent( $fieldAddress );
 
@@ -228,21 +227,35 @@ class AdminBuildingBuildingsCmsCampusguidePageMainView extends AdminCmsCampusgui
         // Create Building location field
         $field = Xhtml::div();
 
-        $field->addContent( Xhtml::div( "Location" ) );
+        $field->addContent( Xhtml::div( "Position" ) );
 
-        $fieldLocation = Xhtml::div()->class_( Resource::css()->getNopadding() );
-        $fieldLocation->addContent(
+        $positionInputName = sprintf( "%s[]", Resource::db()->building()->getFieldPosition() );
+        $fieldPosition = Xhtml::div()->class_( Resource::css()->getNopadding() );
+        $fieldPosition->addContent(
                 Xhtml::div(
-                        Xhtml::input( $this->getBuildingAdmin()->getLocation(), Resource::db()->building()->getFieldLocation() )->readonly( true )->class_(
-                                Resource::css()->gui()->getComponent() )->attr( "data-type", "input" )->id(
-                                Resource::db()->building()->getFieldLocation() ) )->addContent(
-                        Xhtml::div()->class_( Resource::css()->gui()->getComponent() )->attr( "data-type", "reset" )->attr(
-                                "data-reset-id", Resource::db()->building()->getFieldLocation() )->attr( "data-icon",
-                                "cross" ) )->addContent(
-                        Xhtml::div( Xhtml::$NBSP )->class_("space") )->addContent(
-                        Xhtml::div( "Map" )->id( "location_map" )->class_( Resource::css()->gui()->getComponent() ) )->class_( Resource::css()->gui()->getGui(), "theme3" ) );
+                        Xhtml::input( Core::arrayAt( $this->getBuildingAdmin()->getPosition(), 0 ), $positionInputName )->readonly(
+                                true )->class_( Resource::css()->gui()->getComponent() )->attr( "data-type", "input" )->id(
+                                "position_center" ) )->addContent(
 
-        $field->addContent( $fieldLocation );
+                                Xhtml::input( Core::arrayAt( $this->getBuildingAdmin()->getPosition(), 1 ),
+                                        $positionInputName )->readonly( true )->class_(
+                                        Resource::css()->gui()->getComponent() )->attr( "data-type", "input" )->id(
+                                        "position_topleft" ) )->addContent(
+                                Xhtml::input( Core::arrayAt( $this->getBuildingAdmin()->getPosition(), 2 ),
+                                        $positionInputName )->readonly( true )->class_(
+                                        Resource::css()->gui()->getComponent() )->attr( "data-type", "input" )->id(
+                                        "position_topright" ) )->addContent(
+                                Xhtml::input( Core::arrayAt( $this->getBuildingAdmin()->getPosition(), 3 ),
+                                        $positionInputName )->readonly( true )->class_(
+                                        Resource::css()->gui()->getComponent() )->attr( "data-type", "input" )->id(
+                                        "position_bottomright" ) )->addContent(
+                        Xhtml::div()->class_( Resource::css()->gui()->getComponent() )->attr( "data-type", "reset" )->attr(
+                                "data-reset-id", Resource::db()->building()->getFieldPosition() )->attr( "data-icon",
+                                "cross" ) )->addContent( Xhtml::div( Xhtml::$NBSP )->class_( "space" ) )->addContent(
+                        Xhtml::div( "Map" )->id( "location_map" )->class_( Resource::css()->gui()->getComponent() ) )->class_(
+                        Resource::css()->gui()->getGui(), "theme3" ) );
+
+        $field->addContent( $fieldPosition );
 
         $table->addContent( $field );
 
@@ -267,8 +280,8 @@ class AdminBuildingBuildingsCmsCampusguidePageMainView extends AdminCmsCampusgui
         $table->addContent( $field );
 
         // Create form
-        $form = Xhtml::form()->action( $this->getFormAction() )->method( FormXhtml::$METHOD_POST )->attr("accept-charset", "utf-8")->id(
-                self::$ID_BUILDING_FORM );
+        $form = Xhtml::form()->action( $this->getFormAction() )->method( FormXhtml::$METHOD_POST )->attr(
+                "accept-charset", "utf-8" )->id( self::$ID_BUILDING_FORM );
 
         // Add table to form
         $form->addContent( $table );
@@ -279,9 +292,9 @@ class AdminBuildingBuildingsCmsCampusguidePageMainView extends AdminCmsCampusgui
     }
 
     /**
-     * @param AbstractXhtml table
+     * @param AbstractXhtml root
      */
-    private function drawFieldsAcademies( AbstractXhtml $root )
+    private function drawFieldsFacilities( AbstractXhtml $root )
     {
 
         // Create table
@@ -318,8 +331,8 @@ class AdminBuildingBuildingsCmsCampusguidePageMainView extends AdminCmsCampusgui
 
             $div = Xhtml::div()->style(
                     sprintf( "background-image: url('%s');",
-                            Resource::url()->campusguide()->cms()->facility()->getFacilityImage( $facility->getId(), null, null,
-                                    $this->getView()->getController()->getMode() ) ) )->class_( "image",
+                            Resource::url()->campusguide()->cms()->facility()->getFacilityImage( $facility->getId(),
+                                    null, null, $this->getView()->getController()->getMode() ) ) )->class_( "image",
                     Resource::css()->getTable() )->title( $facility->getName() );
 
             $link = Xhtml::a( $facility->getName() )->href(
@@ -329,8 +342,8 @@ class AdminBuildingBuildingsCmsCampusguidePageMainView extends AdminCmsCampusgui
 
             // Create image
             $image = Xhtml::img(
-                    Resource::url()->campusguide()->cms()->facility()->getFacilityImage( $facility->getId(), null, null,
-                            $this->getView()->getController()->getMode() ), $facility->getName() )->class_( "image" );
+                    Resource::url()->campusguide()->cms()->facility()->getFacilityImage( $facility->getId(), null,
+                            null, $this->getView()->getController()->getMode() ), $facility->getName() )->class_( "image" );
 
             // Create name
             $name = Xhtml::div( $facility->getName() )->class_( "name" );
@@ -342,7 +355,7 @@ class AdminBuildingBuildingsCmsCampusguidePageMainView extends AdminCmsCampusgui
             $facilitiesTable->addContent( Xhtml::div( $wrapper ) );
         }
 
-        $facilitiesTable->addContent(Xhtml::div()->class_(Resource::css()->getTableCellFill()));
+        $facilitiesTable->addContent( Xhtml::div()->class_( Resource::css()->getTableCellFill() ) );
 
         $facilitiesAll->addContent( Xhtml::div( $facilitiesTable )->class_( "facilities_wrapper" ) );
 
@@ -354,8 +367,9 @@ class AdminBuildingBuildingsCmsCampusguidePageMainView extends AdminCmsCampusgui
         $table->addContent( $facilitiesAll );
 
         // Input field
-        $input = Xhtml::input( $this->getBuildingAdmin()->getFacilityId(), Resource::db()->building()->getFieldFacilityId() )->type(
-                InputXhtml::$TYPE_HIDDEN )->id( Resource::db()->building()->getFieldFacilityId() );
+        $input = Xhtml::input( $this->getBuildingAdmin()->getFacilityId(),
+                Resource::db()->building()->getFieldFacilityId() )->type( InputXhtml::$TYPE_HIDDEN )->id(
+                Resource::db()->building()->getFieldFacilityId() );
 
         // Add table to root
         $root->addContent( $table );

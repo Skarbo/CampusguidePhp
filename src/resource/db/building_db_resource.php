@@ -12,7 +12,7 @@ class BuildingDbResource
     private $fieldFacilityId = "facility_id";
     private $fieldName = "building_name";
     private $fieldCoordinates = "building_coordinates";
-    private $fieldLocation = "building_location";
+    private $fieldPosition = "building_position";
     private $fieldAddress = "building_address";
     private $fieldUpdated = "building_updated";
     private $fieldRegistered = "building_registered";
@@ -69,9 +69,9 @@ class BuildingDbResource
     // /FUNCTIONS
 
 
-    public function getFieldLocation()
+    public function getFieldPosition()
     {
-        return $this->fieldLocation;
+        return $this->fieldPosition;
     }
 
     public function getFieldAddress()

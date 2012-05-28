@@ -197,9 +197,9 @@ class FacilityCmsCampusguideImageController extends CmsCampusguideImageControlle
         {
             $building = $this->getBuildings()->current();
 
-            if ( $building->getAddress() || $building->getLocation() )
+            if ( $building->getAddress() || $building->getPosition() )
             {
-                $markers[] = $building->getLocation() ? $building->getLocation() : implode( ", ",
+                $markers[] = $building->getPosition() ? $building->getPosition() : implode( ", ",
                         Core::empty_( $building->getAddress(), array () ) );
             }
         }

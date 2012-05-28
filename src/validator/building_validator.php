@@ -89,7 +89,7 @@ class BuildingValidator extends Validator
      */
     protected function doLocation()
     {
-        if ( $this->getModel()->getLocation() && !preg_match( self::$REGEX_LOCATION, $this->getModel()->getLocation() ) )
+        if ( $this->getModel()->getPosition() && !preg_match( self::$REGEX_LOCATION, $this->getModel()->getPosition() ) )
         {
             throw new Exception( "Location is not legally formatted" );
         }

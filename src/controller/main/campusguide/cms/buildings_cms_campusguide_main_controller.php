@@ -334,8 +334,8 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
                         Core::arrayAt( self::getPost(), Resource::db()->building()->getFieldName() ),
                         Core::arrayAt( self::getPost(), Resource::db()->building()->getFieldFacilityId() ),
                         "0,164|127,143|168,308|202,391|400,239|370,13|468,0|502,296|251,496|305,589|211,642|169,574|139,556|51,370",
-                        Core::arrayAt( self::getPost(), Resource::db()->building()->getFieldLocation() ),
-                        Core::arrayAt( self::getPost(), Resource::db()->building()->getFieldAddress() ) ) );
+                        Core::arrayAt( self::getPost(), Resource::db()->building()->getFieldAddress() ),
+                        Core::arrayAt( self::getPost(), Resource::db()->building()->getFieldPosition() ) ) );
 
         // Validate Building Facility
         $facility = $this->getFacilityDao()->get( $this->getBuildingAdmin()->getFacilityId() );

@@ -22,11 +22,11 @@ class BuildingFactoryModel extends ClassCore
      * @param string $name
      * @param int $facilityId
      * @param mixed $coordinates Array( Array( x, y ) )|String(x,y|x,y)
-     * @param string $location
      * @param mixed $address Array( "streetname", "city", "postal", "country" )|String("streetname|city|postal|country")
+     * @param mixed $position Array( Array( lat, lon ), ... )|String( "lat,lon|..." )
      * @return BuildingModel
      */
-    public static function createBuilding( $name, $facilityId, $coordinates, $location = "", array $address = array() )
+    public static function createBuilding( $name, $facilityId, $coordinates, $address = array(), $position = array() )
     {
 
         // Initiate model
@@ -35,9 +35,8 @@ class BuildingFactoryModel extends ClassCore
         $building->setName( Core::utf8Encode( $name ) );
         $building->setFacilityId( intval( $facilityId ) );
         $building->setCoordinates( Resource::generateCoordinatesToArray( $coordinates ) );
-        $building->setLocation( $location );
-        $building->setAddress(
-                Core::utf8Encode( is_array( $address ) ? $address : explode( "|", $address ) ) );
+        $building->setAddress( Core::utf8Encode( is_array( $address ) ? $address : explode( "|", $address ) ) );
+        $building->setPosition( BuildingUtil::generatePositionToArray( $position ) );
 
         // Return model
         return $building;

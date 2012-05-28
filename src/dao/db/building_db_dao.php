@@ -33,8 +33,8 @@ class BuildingDbDao extends BuildingDao
                 Core::arrayAt( $modelArray, Resource::db()->building()->getFieldName() ),
                 Core::arrayAt( $modelArray, Resource::db()->building()->getFieldFacilityId() ),
                 Core::arrayAt( $modelArray, Resource::db()->building()->getFieldCoordinates() ),
-                Core::arrayAt( $modelArray, Resource::db()->building()->getFieldLocation() ),
-                Core::arrayAt( $modelArray, Resource::db()->building()->getFieldAddress() ) );
+                Core::arrayAt( $modelArray, Resource::db()->building()->getFieldAddress() ),
+                Core::arrayAt( $modelArray, Resource::db()->building()->getFieldPosition() ) );
 
         $building->setId( intval( Core::arrayAt( $modelArray, Resource::db()->building()->getFieldId() ) ) );
         $building->setUpdated(
@@ -97,8 +97,8 @@ class BuildingDbDao extends BuildingDao
         $binds[ "facilityId" ] = $foreignId;
         $fields[ Resource::db()->building()->getFieldCoordinates() ] = ":coordinates";
         $binds[ "coordinates" ] = Resource::generateCoordinatesToString( $model->getCoordinates() );
-        $fields[ Resource::db()->building()->getFieldLocation() ] = ":location";
-        $binds[ "location" ] = $model->getLocation();
+        $fields[ Resource::db()->building()->getFieldPosition() ] = ":location";
+        $binds[ "location" ] = $model->getPosition();
         $fields[ Resource::db()->building()->getFieldAddress() ] = ":address";
         $binds[ "address" ] = Core::utf8Decode(
                 is_array( $model->getAddress() ) ? implode( "|", $model->getAddress() ) : $model->getAddress() );

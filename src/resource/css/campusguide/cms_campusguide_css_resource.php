@@ -25,6 +25,8 @@ class CmsCampusguideCssResource extends ClassCore
     private $overlayButtonsCancel = "cancel";
     private $overlayButtonsOk = "ok";
 
+    private $button = "cms_button";
+
     // /VARIABLES
 
 
@@ -149,6 +151,11 @@ class CmsCampusguideCssResource extends ClassCore
     public function getOverlayButtons()
     {
         return $this->overlayButtons;
+    }
+
+    public function getButton()
+    {
+        return $this->button;
     }
 
 }

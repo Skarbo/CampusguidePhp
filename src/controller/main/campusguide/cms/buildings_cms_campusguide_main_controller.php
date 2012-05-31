@@ -335,7 +335,8 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
                         Core::arrayAt( self::getPost(), Resource::db()->building()->getFieldFacilityId() ),
                         "0,164|127,143|168,308|202,391|400,239|370,13|468,0|502,296|251,496|305,589|211,642|169,574|139,556|51,370",
                         Core::arrayAt( self::getPost(), Resource::db()->building()->getFieldAddress() ),
-                        Core::arrayAt( self::getPost(), Resource::db()->building()->getFieldPosition() ) ) );
+                        Core::arrayAt( self::getPost(), Resource::db()->building()->getFieldPosition() ),
+                        Core::arrayAt( self::getPost(), Resource::db()->building()->getFieldLocation() ) ) );
 
         // Validate Building Facility
         $facility = $this->getFacilityDao()->get( $this->getBuildingAdmin()->getFacilityId() );
@@ -371,7 +372,7 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
 
             // Do Building admin action
             $this->doBuildingAdminAction();
-
+return null;
             // Add Building
             $buildingId = $this->getBuildingDao()->add( $this->getBuildingAdmin(),
                     $this->getBuildingAdmin()->getFacilityId() );
@@ -450,7 +451,7 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
 
             // Do Building admin action
             $this->doBuildingAdminAction();
-
+            return null;
             // Edit Building
             $this->getBuildingDao()->edit( $this->getBuilding()->getId(), $this->getBuildingAdmin(),
                     $this->getBuildingAdmin()->getForeignId() );
@@ -499,6 +500,7 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
         if ( $this->isPageBuilding() && ( $this->isActionNew() || $this->isActionEdit() ) )
         {
             $this->addJavascriptMap();
+            $this->addJavascriptFile( Resource::javascript()->getJqueryHistoryApiFile() );
         }
 
         // Add Kinectic api

@@ -2,15 +2,11 @@
 ?>
 <html>
 <head>
-<script type="text/javascript"
-    src="../KrisSkarboApi/javascript/api/jquery-1.7.1.min.js"></script>
-<script type="text/javascript"
-    src="javascript/api/jquery.event.drag-2.0.min.js"></script>
+<!--<script type="text/javascript" src="../KrisSkarboApi/javascript/api/jquery-1.7.1.min.js"></script> -->
+<!-- <script type="text/javascript" src="javascript/api/jquery.event.drag-2.0.min.js"></script> -->
 <!-- <script type="text/javascript" src="javascript/campusguide.js.php"></script>  -->
-<script
-    src="../KrisSkarboApi/javascript/api/jquery.event.drag-2.0.min.js"
-    type="text/javascript"></script>
-<link href="css/campusguide.css.php" type="text/css" rel="stylesheet" />
+<!-- <script src="../KrisSkarboApi/javascript/api/jquery.event.drag-2.0.min.js" type="text/javascript"></script>  -->
+<!--<link href="css/campusguide.css.php" type="text/css" rel="stylesheet" /> -->
 <style type="text/css">
 .dropdownselect {
 	display: inline-block;
@@ -54,9 +50,17 @@
 .dropdownselect .items .item:FIRST-CHILD {
 	border: 0;
 }
-</style>
-<script type="text/javascript">
 
+#testButton {
+	border: 1px solid black;
+	display: inline;
+	cursor: pointer;
+}
+
+</style>
+<!--
+<script type="text/javascript">
+/*
 $(function() {
 
 
@@ -165,12 +169,29 @@ Gui.DROPDOWNSELECT_ITEMS_CLASS = "items";
 		};
 
 
-})(jQuery);
+})(jQuery);*/
+
+</script>
+-->
+<script type="text/javascript">
+
+(function($) {
+
+
+	var button = $("#testButton");
+
+    console.log("Ready", button);
+	button.click(function(){ console.log("Click") });
+	//button.bind("click.test", function() { console.log("Click test"); });
+	//button.bind("click.test", function() { console.log("Click test 2"); });
+
+
+});
 
 </script>
 </head>
 <body>
-
+<!--
     <div id="test">
 
         <div style="display: inline;">Before</div>
@@ -210,6 +231,9 @@ Gui.DROPDOWNSELECT_ITEMS_CLASS = "items";
         </div>
 
     </div>
+ -->
+
+<div id="testButton">Test</div>
 
 </body>
 </html>

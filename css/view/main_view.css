@@ -5,7 +5,7 @@
 	font-style: normal;
 }
 
-*[data-icon] {
+*[data-icon]:AFTER {
 	font-family: CampusGuide;
 }
 

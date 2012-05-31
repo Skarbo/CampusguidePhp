@@ -193,3 +193,18 @@ body {
 #queue_wrapper {
 	display: none;
 }
+
+/* Button */
+#cms_wrapper .cms_button
+{
+	background-color: #666666;
+    border-width: 0;
+    color: white;
+	font-weight: bold;
+	cursor: pointer;
+    text-align: center;
+	white-space: nowrap;
+	font-size: 1em;
+	padding: 0.3em 1.2em;
+	display: inline-block;
+}

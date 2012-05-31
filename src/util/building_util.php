@@ -8,6 +8,7 @@ class BuildingUtil extends ClassCore
 
     public static $SPLITTER_POSITIONS = "|";
     public static $SPLITTER_POSITION = ",";
+    public static $SPLITTER_LOCATION = ",";
 
     // /VARIABLES
 
@@ -41,7 +42,15 @@ class BuildingUtil extends ClassCore
                             {
                                 return floatval( $var );
                             }, explode( BuildingUtil::$SPLITTER_POSITION, $var, 2 ) );
-                }, explode( self::$SPLITTER_POSITIONS, $position ) ) : $position;
+                }, explode( self::$SPLITTER_POSITIONS, $position ) ) : array_map(
+                function ( $var )
+                {
+                    return array_filter( array_map(
+                            function ( $var )
+                            {
+                                return floatval( $var );
+                            }, is_array( $var ) ? $var : explode( BuildingUtil::$SPLITTER_POSITION, $var, 2 ) ) );
+                }, $position );
     }
 
     // /FUNCTIONS

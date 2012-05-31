@@ -52,6 +52,15 @@ CmsCampusguideMainView.prototype.doBindEventHandler = function() {
 		context.handleOverlay(event);
 	});
 
+	this.getController().getEventHandler().registerListener(OverlayCloseEvent.TYPE,
+	/**
+	 * @param {OverlayCloseEvent}
+	 *            event
+	 */
+	function(event) {
+		context.handleOverlayClose(event.getOverlayId());
+	});
+
 	this.getController().getEventHandler().registerListener(QueueEvent.TYPE,
 	/**
 	 * @param {QueueEvent}
@@ -110,10 +119,15 @@ CmsCampusguideMainView.prototype.handleOverlay = function(event) {
 	var closeHandle = function() {
 		overlayElement.addClass("hide");
 
+		// Close
+		if (event.getOptions().close) {
+			event.getOptions().close();
+		}
+
 		// Unbind
 		overlayOkElement.unbind();
 		overlayCancelElement.unbind();
-		$(document).unbind('keydown', keydownHandle);
+		$(document).unbind('keydown.overlay');
 	};
 
 	// Bind ok
@@ -129,6 +143,9 @@ CmsCampusguideMainView.prototype.handleOverlay = function(event) {
 
 	// Bind cancel
 	overlayCancelElement.click(function() {
+		if (event.getOptions().cancel) {
+			event.getOptions().cancel();
+		}
 		closeHandle();
 	});
 	overlayElement.click(function(event) {
@@ -136,25 +153,53 @@ CmsCampusguideMainView.prototype.handleOverlay = function(event) {
 			closeHandle();
 		}
 	});
-	$(document).bind('keydown', keydownHandle);
+	$(document).bind('keydown.overlay', keydownHandle);
 
 };
 
 /**
- * @param {string} queueType
- * @param {Object} queue
+ * @param {OverlayEvent}
+ *            event
+ */
+CmsCampusguideMainView.prototype.handleOverlayClose = function(overlayId) {
+
+	// Overlay element
+	var overlayElement = $("#cms_wrapper #" + overlayId);
+
+	if (overlayElement.length == 0) {
+		return;
+	}
+
+	var overlayCancelElement = overlayElement.find(".cancel");
+	var overlayOkElement = overlayElement.find(".ok");
+
+	// Hide overlay
+	overlayElement.addClass("hide");
+
+	// Unbind
+	overlayOkElement.unbind();
+	overlayCancelElement.unbind();
+	$(document).unbind('keydown.overlay');
+
+};
+
+/**
+ * @param {string}
+ *            queueType
+ * @param {Object}
+ *            queue
  */
 CmsCampusguideMainView.prototype.handleQueue = function(queueType, queue) {
-		
+
 	// Create Queue view
 	var queueView = new QueueCmsCampusguidePageMainView(this, queue);
-	
+
 	// Get Queue element
 	var queueElement = this.getWrapperElement().find("#queue_wrapper #queue");
-	
+
 	// Draw queue
 	queueView.draw(queueElement);
-	
+
 };
 
 // ... /HANDLE
@@ -183,7 +228,12 @@ CmsCampusguideMainView.prototype.draw = function(controller) {
 	$(".default_text").focus().blur();
 
 	// /DEFAULT TEXT
-	
+
+	// INPUT HINT
+
+	$("input[data-hint]").inputHint();
+
+	// /INPUT HINT
 
 };
 

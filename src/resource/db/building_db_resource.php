@@ -14,6 +14,7 @@ class BuildingDbResource
     private $fieldCoordinates = "building_coordinates";
     private $fieldPosition = "building_position";
     private $fieldAddress = "building_address";
+    private $fieldLocation = "building_location";
     private $fieldUpdated = "building_updated";
     private $fieldRegistered = "building_registered";
 
@@ -82,6 +83,11 @@ class BuildingDbResource
     public function getFieldAliasFloors()
     {
         return $this->fieldAliasFloors;
+    }
+
+    public function getFieldLocation()
+    {
+        return $this->fieldLocation;
     }
 
 }

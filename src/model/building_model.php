@@ -10,8 +10,9 @@ class BuildingModel extends Model implements StandardModel
     public $facilityId;
     public $name;
     public $coordinates;
-    public $address;
-    public $position;
+    public $address = array();
+    public $location = array();
+    public $position = array();
     public $updated;
     public $registered;
 
@@ -148,6 +149,16 @@ class BuildingModel extends Model implements StandardModel
     public function setFloors( $floors )
     {
         $this->floors = $floors;
+    }
+
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    public function setLocation( $location )
+    {
+        $this->location = $location;
     }
 
 }

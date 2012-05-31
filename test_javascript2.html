@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+input.hint, input.hint2
+{
+	color: gray;
+}
+</style>
+<script type="text/javascript" src="../KrisSkarboApi/javascript/api/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="../KrisSkarboApi/javascript/core/jquery_core.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function() {
+  
+	$(".testHint").inputHint({ "class" : "hint2" });
+	
+	$(".testHint2").inputHint();
+	
+	$(".testHint3").inputHint();
+	$(".testHint3").inputHint("value", "Test new value3");
+	
+	$("#input4").inputHint("value", "Test new value4");
+	
+});
+
+</script>
+</head>
+<body>
+
+<form id="testForm" method="get" action="#">
+
+    <input name="input1" type="text" class="testHint" title="Test hint" autocomplete="off" />
+    
+    <input name="input2" type="text" class="testHint2" autocomplete="off" />
+    
+    <input name="input3" type="text" class="testHint3" title="Test hint3" value="Test value3" autocomplete="off" />
+    
+    <input name="input4" id="input4" type="text" class="testHint2" autocomplete="off" />
+
+    <input type="submit" />
+</form>
+
+</body>
+</html>

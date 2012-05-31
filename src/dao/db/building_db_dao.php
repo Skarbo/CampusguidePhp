@@ -34,7 +34,8 @@ class BuildingDbDao extends BuildingDao
                 Core::arrayAt( $modelArray, Resource::db()->building()->getFieldFacilityId() ),
                 Core::arrayAt( $modelArray, Resource::db()->building()->getFieldCoordinates() ),
                 Core::arrayAt( $modelArray, Resource::db()->building()->getFieldAddress() ),
-                Core::arrayAt( $modelArray, Resource::db()->building()->getFieldPosition() ) );
+                Core::arrayAt( $modelArray, Resource::db()->building()->getFieldPosition() ),
+                Core::arrayAt( $modelArray, Resource::db()->building()->getFieldLocation() ) );
 
         $building->setId( intval( Core::arrayAt( $modelArray, Resource::db()->building()->getFieldId() ) ) );
         $building->setUpdated(

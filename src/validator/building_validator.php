@@ -6,7 +6,7 @@ class BuildingValidator extends Validator
     // VARIABLES
 
 
-    private static $REGEX_LOCATION = '/[0-9]{1,2}\.[0-9]{1,9}\,[0-9]{1,2}\.[0-9]{1,9}/i';
+    private static $REGEX_GPS = '/[0-9]{1,2}\.[0-9]{1,9}/i';
 
     // /VARIABLES
 
@@ -73,7 +73,7 @@ class BuildingValidator extends Validator
         if ( $this->getModel()->getAddress() )
         {
             $addressFiltered = array_filter( $this->getModel()->getAddress() );
-            foreach ( $this->getModel()->getAddress() as $addressField )
+            foreach ( $addressFiltered as $addressField )
             {
                 $this->validateCharacters( "Address", $addressField );
             }
@@ -89,9 +89,43 @@ class BuildingValidator extends Validator
      */
     protected function doLocation()
     {
-        if ( $this->getModel()->getPosition() && !preg_match( self::$REGEX_LOCATION, $this->getModel()->getPosition() ) )
+        if ( $this->getModel()->getLocation() )
         {
-            throw new Exception( "Location is not legally formatted" );
+            foreach ( $this->getModel()->getLocation() as $location )
+            {
+                if ( !preg_match( self::$REGEX_GPS, $location ) )
+                {
+                    throw new Exception( "Location is not legally formatted" );
+                }
+            }
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function doPosition()
+    {
+        if ( $this->getModel()->getPosition() )
+        {
+            $positionFiltered = array_filter( $this->getModel()->getPosition(), function( $var ) {
+                return is_array( $var ) ? array_sum( $var ) : $var;
+            } );
+            foreach ( $positionFiltered as $positionField )
+            {
+                foreach ( $positionField as $position )
+                {
+                        if ( !preg_match( self::$REGEX_GPS, "" . $position ) )
+                    {
+                        throw new Exception( "Position is not legally formatted" );
+                    }
+                }
+            }
+            if ( count( $positionFiltered ) != 0 && count( $positionFiltered ) != count(
+                    $this->getModel()->getPosition() ) )
+            {
+                throw new Exception( "Either all positions must be given or none at all" );
+            }
         }
     }
 

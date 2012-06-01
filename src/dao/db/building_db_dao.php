@@ -157,6 +157,32 @@ class BuildingDbDao extends BuildingDao
 
     }
 
+    /**
+     * @see StandardDao::getSearchSelectQuery()
+     */
+    protected function getSearchSelectQuery( $search )
+    {
+
+        // Select query
+        $selectQuery = parent::getSearchSelectQuery( $search );
+
+        // Select build
+        $selectBuild = $selectQuery->getQuery();
+
+        // Search expression
+        $searchExpression = SB::par(
+                SB::or_( SB::like( Resource::db()->building()->getFieldName(), ":search" ),
+                        SB::like( Resource::db()->building()->getFieldAddress(), ":search" ) ) );
+
+        $selectBuild->addWhere( $searchExpression );
+
+        // ... Binds
+        $selectQuery->addBind( array ( "search" => $search ) );
+
+        return $selectQuery;
+
+    }
+
     // ... /GET
 
 

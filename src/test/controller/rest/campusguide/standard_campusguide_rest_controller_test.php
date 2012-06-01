@@ -12,6 +12,7 @@ abstract class StandardCampusguideRestControllerTest extends CampusguideControll
     protected static $QUERY_POST_SINGLE_ADD = "%s/add/%s";
     protected static $QUERY_POST_SINGLE_EDIT = "%s/edit/%s";
     protected static $QUERY_POST_SINGLE_REMOVE = "%s/remove/%s";
+    protected static $QUERY_POST_SINGLE_SEARCH = "%s/search/%s";
 
     // /VARIABLES
 
@@ -78,6 +79,11 @@ abstract class StandardCampusguideRestControllerTest extends CampusguideControll
         return sprintf( self::$QUERY_POST_SINGLE_REMOVE, $this->getControllerName(), urlencode( $id ) );
     }
 
+    protected function getQuerySearch( $search )
+    {
+        return sprintf( self::$QUERY_POST_SINGLE_SEARCH, $this->getControllerName(), urlencode( $search ) );
+    }
+
     // ... ... /QUERY
 
 
@@ -123,6 +129,12 @@ abstract class StandardCampusguideRestControllerTest extends CampusguideControll
      * @return string Controller name
      */
     protected abstract function getControllerName();
+
+    /**
+     * @param StandardModel $model
+     * @return string Search string
+     */
+    protected abstract function getSearchString( StandardModel $model );
 
     // ... /GET
 
@@ -176,9 +188,10 @@ abstract class StandardCampusguideRestControllerTest extends CampusguideControll
         $data = $this->get( $url );
         $dataArray = json_decode( $data, true );
 
-//         $this->showHeaders();
-//         $this->showRequest();
-//         $this->showSource();
+        //         $this->showHeaders();
+        //         $this->showRequest();
+        //         $this->showSource();
+
 
         // Assert response
         if ( $this->assertResponse( Controller::STATUS_OK, "Should be correct response" ) )
@@ -257,9 +270,9 @@ abstract class StandardCampusguideRestControllerTest extends CampusguideControll
         $data = $this->post( $url, $this->createPostModel( $model ) );
         $dataArray = json_decode( $data, true );
 
-//                 $this->showHeaders();
-//                 $this->showRequest();
-//                 $this->showSource();
+        //                 $this->showHeaders();
+        //                 $this->showRequest();
+        //                 $this->showSource();
 
 
         // Assert response
@@ -454,6 +467,46 @@ abstract class StandardCampusguideRestControllerTest extends CampusguideControll
             // Assert Model
             $this->assertEqual( 2, $modelListRest->size(),
                     sprintf( "Model List REST size should be 2 but is \"%d\"", $modelListRest->size() ) );
+
+        }
+
+    }
+
+    public function testShouldSearchList()
+    {
+
+        // Create test Model
+        $model = $this->createModelTest();
+
+        // Add Models
+        $this->getStandardDao()->add( $model, $model->getForeignId() );
+        $this->getStandardDao()->add( $model, $model->getForeignId() );
+        $this->getStandardDao()->add( $model, $model->getForeignId() );
+
+        // Get Website
+        $search = $this->getSearchString($model);
+        $url = self::getRestWebsite( $this->getQuerySearch( $search ) );
+
+        // Do GET
+        $data = $this->get( $url );
+        $dataArray = json_decode( $data, true );
+
+                $this->showHeaders();
+                $this->showRequest();
+                $this->showSource();
+
+
+        // Assert response
+        if ( $this->assertResponse( Controller::STATUS_OK, "Should be correct response" ) )
+        {
+
+            // Get REST List
+            $modelListRest = $this->getRestModelList(
+                    Core::arrayAt( $dataArray, StandardCampusguideRestView::$FIELD_LIST, array () ) );
+
+            // Assert Model
+            $this->assertEqual( 3, $modelListRest->size(),
+                    sprintf( "Model List REST size should be 3 but is \"%d\"", $modelListRest->size() ) );
 
         }
 

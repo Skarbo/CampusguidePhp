@@ -55,6 +55,14 @@ class FacilityDaoTest extends StandardDaoTest
         return self::createFacilityTest();
     }
 
+    /**
+     * @see StandardDaoTest::getSearchString()
+     */
+    protected function getSearchString( StandardModel $model )
+    {
+        return FacilityModel::get_( $model );
+    }
+
     // ... /GET
 
 

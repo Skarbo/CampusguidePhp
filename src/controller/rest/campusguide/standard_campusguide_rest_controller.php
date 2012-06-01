@@ -8,12 +8,14 @@ abstract class StandardCampusguideRestController extends CampusguideRestControll
 
     const URI_COMMAND = 1;
     const URI_ID = 2;
+    const URI_SEARCH = 2;
 
     const COMMAND_ADD = "add";
     const COMMAND_EDIT = "edit";
     const COMMAND_GET = "get";
     const COMMAND_GET_FOREIGN = "foreign";
     const COMMAND_REMOVE = "remove";
+    const COMMAND_SEARCH = "search";
 
     public static $ID_SPLITTER = "_";
 
@@ -145,6 +147,14 @@ abstract class StandardCampusguideRestController extends CampusguideRestControll
         return Core::arrayAt( self::getIds(), 0, null );
     }
 
+    /**
+     * @return string Search string
+     */
+    protected static function getSearchString()
+    {
+        return self::getURI( self::URI_SEARCH );
+    }
+
     // ... ... STATIC
 
 
@@ -183,7 +193,7 @@ abstract class StandardCampusguideRestController extends CampusguideRestControll
      */
     protected static function getPostObject()
     {
-        return Core::arrayAt( self::getPost(), self::$POST_OBJECT, array() );
+        return Core::arrayAt( self::getPost(), self::$POST_OBJECT, array () );
     }
 
     // ... /GET
@@ -248,6 +258,14 @@ abstract class StandardCampusguideRestController extends CampusguideRestControll
         return self::isGet() && self::getURI( self::URI_COMMAND ) == self::COMMAND_REMOVE && self::getId();
     }
 
+    /**
+     * @return boolean True if command is search
+     */
+    protected static function isSearchCommand()
+    {
+        return self::isGet() && self::getURI( self::URI_COMMAND ) == self::COMMAND_SEARCH && self::getSearchString();
+    }
+
     // ... /IS
 
 
@@ -309,7 +327,7 @@ abstract class StandardCampusguideRestController extends CampusguideRestControll
     {
 
         // Set Model
-        $this->setModel( $this->getStandardDao()->getForeign( array( self::getId() ) ) );
+        $this->setModel( $this->getStandardDao()->getForeign( array ( self::getId() ) ) );
 
         // Set Model list
         $this->setModelList( $this->getStandardDao()->getForeign( self::getIds() ) );
@@ -375,9 +393,27 @@ abstract class StandardCampusguideRestController extends CampusguideRestControll
         $this->getStandardDao()->remove( $this->getModel()->getId() );
 
         // Set Model list
-        $this->setModelList( $this->getStandardDao()->getForeign( array( $this->getModel()->getForeignId() ) ) );
+        $this->setModelList(
+                $this->getStandardDao()->getForeign( array ( $this->getModel()->getForeignId() ) ) );
 
         // Set status scode
+        $this->setStatusCode( self::STATUS_OK );
+
+    }
+
+    /**
+     * Do search command
+     */
+    protected function doSearchCommand()
+    {
+
+        // Get search string
+        $searchString = self::getSearchString();
+
+        // Set search result as Model list
+        $this->setModelList( $this->getStandardDao()->search( $searchString ) );
+
+        // Set status code
         $this->setStatusCode( self::STATUS_OK );
 
     }
@@ -470,6 +506,10 @@ abstract class StandardCampusguideRestController extends CampusguideRestControll
         else if ( self::isRemoveCommand() )
         {
             $this->doRemoveCommand();
+        }
+        else if ( self::isSearchCommand() )
+        {
+            $this->doSearchCommand();
         }
         else
         {

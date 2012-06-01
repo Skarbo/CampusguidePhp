@@ -32,6 +32,11 @@ abstract class StandardDaoTest extends CampusguideDaoTest
      */
     protected abstract function getEditedModel( StandardModel $model );
 
+    /**
+     * @return string Search string
+     */
+    protected abstract function getSearchString( StandardModel $model );
+
     // ... /GET
 
 
@@ -65,6 +70,9 @@ abstract class StandardDaoTest extends CampusguideDaoTest
     protected abstract function assertModelNotNull( Model $model, SimpleTestCase $testCase );
 
     // ... /ASSERT
+
+
+    // ... TEST
 
 
     public function testShouldAddModel()
@@ -119,7 +127,8 @@ abstract class StandardDaoTest extends CampusguideDaoTest
 
         // Assert get list
         if ( $this->assertEqual( 1, $modelListRetrieved->size(),
-                sprintf( "Retrieved %s List should be size 1 but is %d", get_class( $model ), $modelListRetrieved->size() ) ) )
+                sprintf( "Retrieved %s List should be size 1 but is %d", get_class( $model ),
+                        $modelListRetrieved->size() ) ) )
         {
             $this->assertModelEquals( $modelRetrieved, $modelListRetrieved->get( 0 ), $this );
         }
@@ -142,7 +151,8 @@ abstract class StandardDaoTest extends CampusguideDaoTest
 
         // Assert foreign list
         $this->assertEqual( 3, $modelRetrievedForeignList->size(),
-                sprintf( "Retrieved Foreign %s should be size %d but is %d", get_class( $model ), 3, $modelRetrievedForeignList->size() ) );
+                sprintf( "Retrieved Foreign %s should be size %d but is %d", get_class( $model ), 3,
+                        $modelRetrievedForeignList->size() ) );
 
     }
 
@@ -170,6 +180,31 @@ abstract class StandardDaoTest extends CampusguideDaoTest
         }
 
     }
+
+    public function testShouldSearch()
+    {
+
+        // Create test model
+        $model = $this->createModelTest();
+
+        // Add Models
+        $this->getStandardDao()->add( $model, $model->getForeignId() );
+        $this->getStandardDao()->add( $model, $model->getForeignId() );
+        $this->getStandardDao()->add( $model, $model->getForeignId() );
+
+        // Search Models
+        $searchString = $this->getSearchString( $model );
+        $modelListResult = $this->getStandardDao()->search( $searchString );
+
+        // Assert foreign list
+        $this->assertEqual( 3, $modelListResult->size(),
+                sprintf( "Search result \"%s\" should be size %d but is %d", $searchString, 3,
+                        $modelListResult->size() ) );
+
+    }
+
+    // ... /TEST
+
 
     // /FUNCTIONS
 

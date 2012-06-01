@@ -68,6 +68,14 @@ class BuildingsCampusguideRestControllerTest extends StandardCampusguideRestCont
     }
 
     /**
+     * @see StandardCampusguideRestControllerTest::getSearchString()
+     */
+    protected function getSearchString( StandardModel $model )
+    {
+        return BuildingModel::get_( $model )->getName();
+    }
+
+    /**
      * @see StandardCampusguideRestControllerTest::assertModelEquals()
      */
     protected function assertModelEquals( Model $modelOne, Model $modelTwo, SimpleTestCase $testCase )

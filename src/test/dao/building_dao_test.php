@@ -59,6 +59,14 @@ class BuildingDaoTest extends StandardDaoTest
         return self::createBuildingTest( $facility->getId() );
     }
 
+    /**
+     * @see StandardDaoTest::getSearchString()
+     */
+    protected function getSearchString( StandardModel $model )
+    {
+        return BuildingModel::get_( $model )->getName();
+    }
+
     // ... /GET
 
 

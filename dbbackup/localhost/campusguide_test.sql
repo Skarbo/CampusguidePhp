@@ -1,4 +1,4 @@
--- Fri, 01 Jun 2012 08:51:20 GMT
+-- Fri, 01 Jun 2012 13:54:48 GMT
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40014 SET FOREIGN_KEY_CHECKS=0 */;
 -- Dumping database structure for campusguide_test
@@ -22,14 +22,13 @@ CREATE TABLE `building` (
   PRIMARY KEY (`building_id`),
   KEY `facility_id` (`facility_id`),
   CONSTRAINT `FK_BUILDING_FACILITY` FOREIGN KEY (`facility_id`) REFERENCES `facility` (`facility_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8;
 
 
--- Dumping data for table campusguide_test.building: ~2 rows (approximately)
+-- Dumping data for table campusguide_test.building: ~1 rows (approximately)
 /*!40000 ALTER TABLE `building` DISABLE KEYS */;
 INSERT INTO `building` (`building_id`, `facility_id`, `building_name`, `building_coordinates`, `building_address`, `building_location`, `building_position`, `building_updated`, `building_registered`) VALUES 
-	(12, 311, 'Test Building', '0,164|127,143|168,308|202,391|400,239|370,13|468,0|502,296|251,496|305,589|211,642|169,574|139,556|51,370', 'Parkveien 1|Bergen|5007|Norway', '60.38665,5.32295', '60.38668,5.32317|60.38707,5.32281|60.38658,5.32382|60.38645,5.3236', '2012-05-31 09:50:34', '2012-04-17 13:37:50'),
-	(15, 311, 'Building w/address and øæå', '0,164|127,143|168,308|202,391|400,239|370,13|468,0|502,296|251,496|305,589|211,642|169,574|139,556|51,370', 'Nygårdsgaten 112|Bergen|5008|Norway', '60.38427,5.33313', '60.38454,5.33375|60.38482,5.33283|60.38504,5.33409|60.38464,5.33419', '2012-05-31 14:17:30', '2012-04-18 20:53:05')
+	(106, 367, 'Test Building', '100,200|300,400', '', '', '', NULL, '2012-06-01 15:54:48')
 ;
 /*!40000 ALTER TABLE `building` ENABLE KEYS */;
 
@@ -58,21 +57,7 @@ CREATE TABLE `building_element` (
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 
--- Dumping data for table campusguide_test.building_element: ~10 rows (approximately)
-/*!40000 ALTER TABLE `building_element` DISABLE KEYS */;
-INSERT INTO `building_element` (`element_id`, `building_id`, `section_id`, `element_type_id`, `floor_id`, `element_name`, `element_coordinates`, `element_updated`, `element_registered`) VALUES 
-	(1, 12, NULL, NULL, 1, 'Element', '1,165|50,157|64,211|16,225', NULL, '2012-04-20 16:22:58'),
-	(2, 12, NULL, NULL, 1, 'Element', '16,225|64,211|79,266|29,279', NULL, '2012-04-20 16:22:58'),
-	(3, 12, NULL, NULL, 1, 'Element', '29,279|79,266|98,328|105,343|52,370', NULL, '2012-04-20 16:22:58'),
-	(4, 12, NULL, NULL, 1, 'Element', '52,370|105,343|161,462|111,494', NULL, '2012-04-20 16:22:58'),
-	(5, 12, NULL, NULL, 1, 'Element', '50,157|76,153|84,182|58,187', NULL, '2012-04-20 16:22:58'),
-	(6, 12, NULL, NULL, 1, 'Element', '76,153|126,144|138,192|90,203', NULL, '2012-04-20 16:22:58'),
-	(7, 12, NULL, NULL, 1, 'Element', '90,203|138,192|152,248|108,260', NULL, '2012-04-20 16:22:58'),
-	(8, 12, NULL, NULL, 1, 'Element', '108,260|152,248|167,308|127,326', NULL, '2012-04-20 16:22:58'),
-	(9, 12, NULL, NULL, 1, 'Element', '127,326|167,308|182,346|145,363', NULL, '2012-04-20 16:22:58'),
-	(10, 12, NULL, NULL, 1, 'Element', '145,363|182,346|201,391|165,406', NULL, '2012-04-20 16:22:58')
-;
-/*!40000 ALTER TABLE `building_element` ENABLE KEYS */;
+-- Dumping data for table campusguide_test.building_element: ~0 rows (approximately)
 
 
 -- Dumping structure for table campusguide_test.building_element_type
@@ -124,13 +109,7 @@ CREATE TABLE `building_floor` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 
--- Dumping data for table campusguide_test.building_floor: ~2 rows (approximately)
-/*!40000 ALTER TABLE `building_floor` DISABLE KEYS */;
-INSERT INTO `building_floor` (`floor_id`, `building_id`, `floor_name`, `floor_coordinates`, `floor_order`, `floor_main`, `floor_updated`, `floor_registered`) VALUES 
-	(1, 12, 1, '0,164|127,143|168,308|202,391|400,239|370,13|468,0|502,296|251,496|305,589|211,642|169,574|139,556|51,370', 0, 1, '2012-04-24 12:43:35', '2012-04-23 00:05:55'),
-	(2, 12, 2, '0,164|127,143|168,308|202,391|400,239|370,13|468,0|502,296|251,496|305,589|211,642|169,574|139,556|51,370', 1, 0, '2012-04-24 12:57:10', '2012-04-23 00:05:55')
-;
-/*!40000 ALTER TABLE `building_floor` ENABLE KEYS */;
+-- Dumping data for table campusguide_test.building_floor: ~0 rows (approximately)
 
 
 -- Dumping structure for table campusguide_test.building_section
@@ -267,14 +246,13 @@ CREATE TABLE `facility` (
   `facility_updated` datetime DEFAULT NULL,
   `facility_registered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`facility_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=313 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=368 DEFAULT CHARSET=utf8;
 
 
--- Dumping data for table campusguide_test.facility: ~2 rows (approximately)
+-- Dumping data for table campusguide_test.facility: ~1 rows (approximately)
 /*!40000 ALTER TABLE `facility` DISABLE KEYS */;
 INSERT INTO `facility` (`facility_id`, `facility_name`, `facility_updated`, `facility_registered`) VALUES 
-	(311, 'Test Facility', NULL, '2012-04-17 13:37:50'),
-	(312, 'Test Ã¸Ã¦Ã¥', NULL, '2012-04-18 20:58:57')
+	(367, 'Test Facility', NULL, '2012-06-01 15:54:48')
 ;
 /*!40000 ALTER TABLE `facility` ENABLE KEYS */;
 

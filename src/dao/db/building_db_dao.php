@@ -98,11 +98,13 @@ class BuildingDbDao extends BuildingDao
         $binds[ "facilityId" ] = $foreignId;
         $fields[ Resource::db()->building()->getFieldCoordinates() ] = ":coordinates";
         $binds[ "coordinates" ] = Resource::generateCoordinatesToString( $model->getCoordinates() );
-        $fields[ Resource::db()->building()->getFieldPosition() ] = ":location";
-        $binds[ "location" ] = $model->getPosition();
+        $fields[ Resource::db()->building()->getFieldLocation() ] = ":location";
+        $binds[ "location" ] = BuildingUtil::generateLocationToString( $model->getLocation() );
         $fields[ Resource::db()->building()->getFieldAddress() ] = ":address";
         $binds[ "address" ] = Core::utf8Decode(
                 is_array( $model->getAddress() ) ? implode( "|", $model->getAddress() ) : $model->getAddress() );
+        $fields[ Resource::db()->building()->getFieldPosition() ] = ":position";
+        $binds[ "position" ] = BuildingUtil::generatePositionToString( $model->getPosition() );
 
         if ( !$isInsert )
         {

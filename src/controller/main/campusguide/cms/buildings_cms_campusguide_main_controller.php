@@ -372,7 +372,7 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
 
             // Do Building admin action
             $this->doBuildingAdminAction();
-return null;
+
             // Add Building
             $buildingId = $this->getBuildingDao()->add( $this->getBuildingAdmin(),
                     $this->getBuildingAdmin()->getFacilityId() );
@@ -451,7 +451,7 @@ return null;
 
             // Do Building admin action
             $this->doBuildingAdminAction();
-            return null;
+
             // Edit Building
             $this->getBuildingDao()->edit( $this->getBuilding()->getId(), $this->getBuildingAdmin(),
                     $this->getBuildingAdmin()->getForeignId() );

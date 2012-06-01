@@ -99,21 +99,60 @@ class MapAppCampusguideMainView extends AppCampusguideMainView
         $table = Xhtml::div()->class_( Resource::css()->getTable() );
 
         $table->addContent(
-                Xhtml::div( Xhtml::a( "" )->href( "#" )->attr( "data-icon", "search" )->title( "Search" ) ) );
+                Xhtml::div( Xhtml::div( "" )->attr( "data-icon", "search" )->title( "Search" )->class_(Resource::css()->campusguide()->app()->getHover()) ) );
         $table->addContent(
                 Xhtml::div(
-                        Xhtml::a( "" )->href( "#" )->id( "menu_button_location" )->attr( "data-icon", "location" )->title(
-                                "Location" ) ) );
+                        Xhtml::div( "" )->id( "menu_button_location" )->attr( "data-icon", "location" )->title(
+                                "Location" )->class_(Resource::css()->campusguide()->app()->getHover()) ) );
         $table->addContent(
-                Xhtml::div( Xhtml::a( "" )->href( "#" )->attr( "data-icon", "layers" )->title( "Layers" ) ) );
-        $table->addContent( Xhtml::div( Xhtml::a( "" )->href( "#" )->attr( "data-icon", "more" )->title( "More" ) ) );
+                Xhtml::div( Xhtml::div( "" )->attr( "data-icon", "layers" )->title( "Layers" )->class_(Resource::css()->campusguide()->app()->getHover()) ) );
+        $table->addContent( Xhtml::div( Xhtml::div( "" )->attr( "data-icon", "more" )->title( "More" )->class_(Resource::css()->campusguide()->app()->getHover()) ) );
 
         // Add table to root
         $root->addContent( $table );
 
         // Sub menu
-        $sub = Xhtml::div( Xhtml::div( "Sub menu" ) )->class_( "sub" );
-        $root->addContent( $sub );
+        $menuSub = Xhtml::div()->attr( "data-fitparent-width", "true" )->class_( "sub_wrapper", Resource::css()->getHide() );
+        $this->drawMenuSub( $menuSub );
+        $root->addContent( $menuSub );
+
+    }
+
+    protected function drawMenuSub( AbstractXhtml $root )
+    {
+
+        // Arrow
+        $arrow = Xhtml::div()->class_("arrow-up");
+
+        $menu = Xhtml::div()->class_("sub");
+
+        // POSITION
+
+        $position = Xhtml::div()->id("menu_sub_position")->class_(Resource::css()->getHide());
+
+        $row = Xhtml::div()->id("menu_sub_position_setposition")->class_(Resource::css()->campusguide()->app()->getHover());
+        $row->addContent(Xhtml::div(Xhtml::div()->attr("data-icon", "location_pin")));
+        $row->addContent(Xhtml::div("Set position"));
+
+        $position->addContent($row);
+        $menu->addContent(Xhtml::div( $position ));
+
+        // /POSITION
+
+        $root->addContent($arrow);
+        $root->addContent($menu);
+
+        /*
+        <div data-fitparent-width="true" class="sub" style="width: 320px;">
+            <div>
+                <div style="width: 0pt; height: 0pt; border-left: 5px solid transparent; border-right: 5px solid transparent; vertical-align: top; display: block; margin-left: 116px; border-bottom: 5px solid rgb(102, 102, 102);"></div>
+            <div style="padding: 0.3em; border-radius: 0.2em 0.2em 0.2em 0.2em; margin: 0pt 1.5em; background-color: rgb(102, 102, 102); color: white;">
+                <div>
+                    <span data-icon="location" style="font-size: 1.5em;"></span> <span style="font-weight: bold; padding-left: 0.4em;">Set position</span>
+                </div>
+            </div>
+        </div>
+        */
 
     }
 
@@ -238,7 +277,7 @@ class MapAppCampusguideMainView extends AppCampusguideMainView
     protected function drawBuildingSlider( AbstractXhtml $root )
     {
 
-        $wrapper = Xhtml::div()->id( "building_slider_wrapper" )->class_(Resource::css()->getHide());
+        $wrapper = Xhtml::div()->id( "building_slider_wrapper" )->class_( Resource::css()->getHide() );
 
         $div = Xhtml::div( Xhtml::span( "" )->attr( "data-icon", "home" ) )->class_( "building" );
 

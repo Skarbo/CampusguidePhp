@@ -17,6 +17,10 @@
 	content: "L";
 }
 
+*[data-icon=location_pin]:AFTER {
+	content: "P";
+}
+
 *[data-icon=layers]:AFTER {
 	content: "l";
 }

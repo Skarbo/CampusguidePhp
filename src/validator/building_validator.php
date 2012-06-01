@@ -82,6 +82,10 @@ class BuildingValidator extends Validator
                 throw new Exception( "Either a full address must be given or none at all" );
             }
         }
+        if ( $this->getModel()->getLocation() && !$this->getModel()->getAddress() )
+        {
+            throw new Exception( "Address must be given if location is given" );
+        }
     }
 
     /**
@@ -98,6 +102,10 @@ class BuildingValidator extends Validator
                     throw new Exception( "Location is not legally formatted" );
                 }
             }
+        }
+        if ( $this->getModel()->getAddress() && !$this->getModel()->getLocation() )
+        {
+            throw new Exception( "Location must be given if address is given" );
         }
     }
 

@@ -29,7 +29,7 @@ AppCampusguideMainView.prototype.getController = function() {
 AppCampusguideMainView.prototype.doBindEventHandler = function() {
 	CampusguideMainView.prototype.doBindEventHandler.call(this);
 	var context = this;
-	
+
 	// ORIENTATION
 
 	var supportsOrientationChange = "onorientationchange" in window;
@@ -38,19 +38,6 @@ AppCampusguideMainView.prototype.doBindEventHandler = function() {
 	// window.addEventListener(orientationEvent, this.handleOrientation, false);
 
 	// /ORIENTATION
-
-	// FIT TO PARENT
-
-	var parent = null, target = null, parentSelector = null;
-	$("[data-fitparent]").each(function(i, element) {
-		target = $(element);
-		parentSelector = target.attr("data-fitparent");
-		parent = parentSelector == "true" ? null : target.parentsUntil(parentSelector).parent();
-		parent = parent && parent.length > 0 ? parent : target.parent();
-		target.width(parent.width()).height(parent.height());
-	});
-
-	// /FIT TO PARENT
 
 	// OVERLAY
 
@@ -118,9 +105,8 @@ AppCampusguideMainView.prototype.handleOverlay = function(event) {
 	if (event.getOptions().body) {
 		bodyElement.html(event.getOptions().body);
 	}
-	
-	if ("bodyHandle" in event.getOptions())
-	{
+
+	if ("bodyHandle" in event.getOptions()) {
 		event.getOptions().bodyHandle(bodyElement);
 	}
 
@@ -187,6 +173,37 @@ AppCampusguideMainView.prototype.draw = function(controller) {
 	// this.handleOrientation();
 
 	// $("body").addClass("landscape");
+
+	// FIT TO PARENT
+
+	var parent = null, target = null, parentSelector = null, fitparentType = null;
+	$("[data-fitparent],[data-fitparent-width]").each(function(i, element) {
+		target = $(element);
+		fitparentType = target.attr("data-fitparent-width") ? "width" : "all";
+		parentSelector = target.attr(fitparentType == "width" ? "data-fitparent-width" : "data-fitparent");
+		parent = parentSelector == "true" ? null : target.parentsUntil(parentSelector).parent();
+		parent = parent && parent.length > 0 ? parent : target.parent();
+		if (fitparentType == "width") {
+			target.width(parent.width());
+		} else {
+			target.width(parent.width()).height(parent.height());
+		}
+	});
+
+	// /FIT TO PARENT
+
+	// HOVER
+
+	this.getWrapperElement().find(".hover").bind("touchstart.hover touchend.hovering touchend.hovering touchcancel.hovering",
+			function(event) {
+				if (event.type == "touchstart") {
+					$(this).addClass("hovering");
+				} else {
+					$(this).removeClass("hovering");
+				}
+			});
+
+	// /HOVER
 
 };
 

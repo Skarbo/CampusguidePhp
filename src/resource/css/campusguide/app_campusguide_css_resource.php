@@ -19,6 +19,8 @@ class AppCampusguideCssResource extends ClassCore
 
     private $overlayMenu = "menu";
 
+    private $hover = "hover";
+
     // /VARIABLES
 
 
@@ -81,6 +83,11 @@ class AppCampusguideCssResource extends ClassCore
     public function getOverlayMenu()
     {
         return $this->overlayMenu;
+    }
+
+    public function getHover()
+    {
+        return $this->hover;
     }
 
 }

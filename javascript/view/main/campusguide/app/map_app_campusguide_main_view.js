@@ -180,6 +180,19 @@ MapAppCampusguideMainView.prototype.doBindEventHandler = function() {
 	// Location
 	this.getWrapperElement().find("#menu_button_location").click(500, function(event) {
 		event.preventDefault();
+		console.log("longclick");
+		context.getWrapperElement().find("#menu_wrapper .sub_wrapper").removeClass("hide");
+		context.getWrapperElement().find("#menu_wrapper .sub_wrapper #menu_sub_position").removeClass("hide");
+		context.getWrapperElement().find("#menu_wrapper .sub_wrapper .arrow-up").css("margin-left", "37%");
+		$(document).bind("click.submenu", function(event){
+			var close = $(event.target).parentsUntil(".sub_wrapper").parent().filter(".sub_wrapper").length == 0;
+			if (close)
+			{
+				context.getWrapperElement().find("#menu_wrapper .sub_wrapper").addClass("hide");
+				context.getWrapperElement().find("#menu_wrapper .sub_wrapper #menu_sub_position").addClass("hide");
+				$(document).unbind(".submenu");
+			}
+		});
 	});
 
 	this.getWrapperElement().find("#menu_button_location").click(function(event) {
@@ -265,7 +278,7 @@ MapAppCampusguideMainView.prototype.doGeolocationInit = function() {
 };
 
 MapAppCampusguideMainView.prototype.doBuildingSlider = function(buildingId) {
-console.log("Building slider", buildingId);
+	console.log("Building slider", buildingId);
 	var buildingSlider = this.getWrapperElement().find("#building_slider_wrapper");
 
 	if (buildingId) {
@@ -340,7 +353,7 @@ MapAppCampusguideMainView.prototype.handleMapLoaded = function() {
 
 MapAppCampusguideMainView.prototype.handleMapBuildings = function(buildings) {
 	var context = this;
-	console.log("Handle map buildings");
+
 	if (this.mapLoaded) {
 
 		// Map buildings loaded function
@@ -376,7 +389,7 @@ MapAppCampusguideMainView.prototype.handleMapBuildings = function(buildings) {
 		};
 
 		// Foreach Buildings
-		var building, address, locationArray;
+		var building, address;
 		for (buildingId in buildings) {
 			building = buildings[buildingId];
 			address = jQuery.isArray(building.address) ? building.address.join(", ") : "";
@@ -389,10 +402,14 @@ MapAppCampusguideMainView.prototype.handleMapBuildings = function(buildings) {
 				clickable : true
 			});
 
+			// Building position
+			if (jQuery.isArray(building.position) && building.position.length == 4) {
+				setMarkerAtLocation(new google.maps.LatLng(building.position[0][0], building.position[0][1]),
+						this.markerBuildings[buildingId]);
+			}
 			// Building location
-			if (building.location) {
-				locationArray = building.location.split(",");
-				setMarkerAtLocation(new google.maps.LatLng(locationArray[0], locationArray[1]),
+			else if (jQuery.isArray(building.location) && building.location.length == 2) {
+				setMarkerAtLocation(new google.maps.LatLng(building.location[0], building.location[1]),
 						this.markerBuildings[buildingId]);
 			}
 			// Building address
@@ -406,7 +423,42 @@ MapAppCampusguideMainView.prototype.handleMapBuildings = function(buildings) {
 					"building" : this.buildingId
 				});
 			});
-
+			/*
+			 * // Building coordinates var positions =
+			 * buildings[buildingId].position; var coordinates =
+			 * buildings[buildingId].coordinates; console.log("Outer bounds",
+			 * CanvasUtil.getOuterBounds(coordinates));
+			 * 
+			 * if (positions && positions.length == 4) { var outerBounds =
+			 * CanvasUtil.getOuterBounds(coordinates); var corLeft =
+			 * outerBounds[0], corTop = outerBounds[1], corRight =
+			 * outerBounds[2], corBottom = outerBounds[3]; var corOrigo = [0,
+			 * 0]; var corCenter = [Math.round((corLeft[0] + corTop[0] +
+			 * corRight[0]) / 3), Math.round((corLeft[1] + corTop[1] +
+			 * corRight[1]) / 3)]; var gpsLeft = positions[1], gpsTop =
+			 * positions[2], gpsRight = positions[3]; var gpsOrigo =
+			 * [gpsLeft[0], gpsTop[1]]; var gpsCenter = [parseFloat(((gpsLeft[0] +
+			 * gpsTop[0] + gpsRight[0]) / 3).toFixed(5)),
+			 * parseFloat(((gpsLeft[1] + gpsTop[1] + gpsRight[1]) /
+			 * 3).toFixed(5))]; var gpsMesaruement = [gpsCenter[0] -
+			 * gpsOrigo[0], gpsCenter[1] - gpsOrigo[1]]; var measurementX =
+			 * Math.abs(gpsTop[0] - gpsLeft[0]) / Math.abs(corTop[0] -
+			 * corLeft[0]), measurementY = Math.abs(gpsTop[1] - gpsLeft[1]) /
+			 * Math.abs(corTop[1] - corLeft[1]); console.log(corOrigo,
+			 * corCenter, gpsOrigo, gpsCenter, gpsMesaruement);
+			 * 
+			 * var latLngs = [], lat, lng, coordinate; for (i in coordinates) {
+			 * coordinate = [coordinates[i][0], coordinates[i][1]]; lat =
+			 * ((gpsMesaruement[0] * coordinate[0]) + gpsOrigo[0]).toFixed(5);
+			 * lng = ((gpsMesaruement[1] * coordinate[1]) +
+			 * gpsOrigo[1]).toFixed(5); console.log(coordinate, lat, lng);
+			 * latLngs.push(new google.maps.LatLng(lat, lng)); }
+			 * 
+			 * new google.maps.Polygon({ paths: latLngs, strokeColor: "#FF0000",
+			 * strokeOpacity: 0.8, strokeWeight: 2, fillColor: "#FF0000",
+			 * fillOpacity: 0.35, map : this.map }); return;
+			 * //console.log("Test", test); }
+			 */
 		}
 
 	}
@@ -536,7 +588,7 @@ MapAppCampusguideMainView.prototype.handlePosition = function(latlng) {
 		position = this.markerBuildings[buildingId].getPosition();
 		if (position) {
 			distance = MapUtil.distance(latlng.lat(), latlng.lng(), position.lat(), position.lng());
-			console.log("Distance", buildingId, distance);	
+			console.log("Distance", buildingId, distance);
 			if (distance <= MapAppCampusguideMainView.POSITION_LENGTH_MIN
 					&& ((closestDistance != null && distance < closestDistance) || closestDistance == null)) {
 				closest = this.markerBuildings[buildingId];
@@ -545,7 +597,7 @@ MapAppCampusguideMainView.prototype.handlePosition = function(latlng) {
 		}
 
 	}
-console.log("Closest", closest, closestDistance);
+	console.log("Closest", closest, closestDistance);
 	if (closest != null) {
 		this.doBuildingSlider(closest.buildingId);
 	} else {

@@ -326,7 +326,7 @@ class AdminBuildingBuildingsCmsCampusguidePageMainView extends AdminCmsCampusgui
      */
     private function drawFieldsPosition( AbstractXhtml $root )
     {
-var_dump($this->getBuildingAdmin()->getPosition());
+
         $positionName = sprintf( "%s[]", Resource::db()->building()->getFieldPosition() );
         $root->addContent(
                 Xhtml::input( implode( BuildingUtil::$SPLITTER_POSITION, Core::arrayAt( $this->getBuildingAdmin()->getPosition(), 0 ) ), $positionName )->readonly(

@@ -26,15 +26,15 @@ CanvasUtil.roundRect = function(ctx, x, y, width, height, radius) {
  */
 CanvasUtil.getMaxBounds = function(coordinates) {
 
-	var boundLeft = boundTop = boundRight = boundBottom = 0;
+	var boundLeft = boundTopRight = boundRight = boundBottom = 0;
 
 	if (!coordinates || coordinates.length == 0) {
-		return [ boundLeft, boundTop, boundRight, boundBottom ];
+		return [ boundLeft, boundTopRight, boundRight, boundBottom ];
 	}
 
 	var coordinate = coordinates[0];
 	boundLeft = boundRight = coordinate[0];
-	boundTop = boundBottom = coordinate[1];
+	boundTopRight = boundBottom = coordinate[1];
 
 	for (i in coordinates) {
 		coordinate = coordinates[i];
@@ -44,8 +44,8 @@ CanvasUtil.getMaxBounds = function(coordinates) {
 			boundLeft = coordinate[0];
 		}
 		// Top
-		if (coordinate[1] < boundTop) {
-			boundTop = coordinate[1];
+		if (coordinate[1] < boundTopRight) {
+			boundTopRight = coordinate[1];
 		}
 		// Right
 		if (coordinate[0] > boundRight) {
@@ -58,6 +58,48 @@ CanvasUtil.getMaxBounds = function(coordinates) {
 
 	}
 
-	return [ boundLeft, boundTop, boundRight, boundBottom ];
+	return [ boundLeft, boundTopRight, boundRight, boundBottom ];
 
+};
+
+/**
+ * @param {array}
+ *            coordinates
+ * @return {array} [ [ Topleft ] , [ Topright ], [ Bottomright ], [ Bottomleft ] ]
+ */
+CanvasUtil.getOuterBounds = function(coordinates) {
+	
+	var boundLeft = boundTop = boundRight = boundBottom = [ 0, 0 ];
+
+	if (!coordinates || coordinates.length == 0) {
+		return [ boundLeft, boundTop, boundRight, boundBottom ];
+	}
+
+	var coordinate = coordinates[0];
+	boundLeft = boundRight = boundTop = boundBottom = coordinate;
+
+	for (i in coordinates) {
+		coordinate = coordinates[i];
+
+		// Left
+		if (coordinate[0] < boundLeft[0]) {
+			boundLeft = coordinate;
+		}
+		// Top
+		if (coordinate[1] < boundTop[1]) {
+			boundTop = coordinate;
+		}
+		// Right
+		if (coordinate[0] > boundRight[0]) {
+			boundRight = coordinate;
+		}
+		// Bottom
+		if (coordinate[1] > boundBottom[1]) {
+			boundBottom = coordinate;
+		}
+
+	}
+
+	return [ boundLeft, boundTop, boundRight, boundBottom ];
+	
 };

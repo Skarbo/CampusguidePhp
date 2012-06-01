@@ -17,7 +17,7 @@ function __autoload( $class_name )
 }
 
 // Generate mode
-$mode = isset( $_GET[ "mode" ] ) && in_array( $_GET[ "mode" ], CampusguideApi::$MODES ) ? $_GET[ "mode" ] : CampusguideApi::MODE_DEV;
+$mode = isset( $_GET[ "mode" ] ) && in_array( $_GET[ "mode" ], CampusguideApi::$MODES ) ? $_GET[ "mode" ] : CampusguideApi::MODE_TEST;
 
 // Initiate CampusguideApi
 $campusguide_api = new CampusguideApi( $mode );

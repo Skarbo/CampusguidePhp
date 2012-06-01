@@ -240,7 +240,7 @@ class QueueDbDao extends QueueDao
 
         // ... Binds
         $select_query->setBinds( $binds );
-DebugHandler::doDebug(DebugHandler::LEVEL_LOW, new DebugException("Get next", $select_query->__toString()));
+
         // Do select
         $result = $this->getDbApi()->query( $select_query );
 

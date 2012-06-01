@@ -39,12 +39,13 @@ class AllTests extends TestSuite
 
 
         //$this->add( new FacilitiesCampusguideRestControllerTest() );
-        $this->add( new BuildingsCampusguideRestControllerTest() );
+//         $this->add( new BuildingsCampusguideRestControllerTest() );
         //$this->add( new FloorsBuildingCampusguideRestControllerTest() );
 //         $this->add( new ElementsBuildingCampusguideRestControllerTest() );
         //$this->add( new TypesElementBuildingCampusguideRestControllerTest() );
         //$this->add( new GroupsTypeElementBuildingCampusguideRestControllerTest() );
 //         $this->add( new SectionsBuildingCampusguideRestControllerTest() );
+        $this->add( new SearchCampusguideRestControllerTest() );
 
 
         //$this->add( new DbbackupHandlerTest() );

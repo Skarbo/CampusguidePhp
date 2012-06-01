@@ -47,7 +47,7 @@ abstract class CampusguideRestController extends RestController
     // CONSTRUCTOR
 
 
-    public function __construct( $db_api, $locale, $view, $mode )
+    public function __construct( DbApi $db_api, DefaultLocale $locale, View $view, $mode )
     {
         parent::__construct( $db_api, $locale, $view, $mode );
 

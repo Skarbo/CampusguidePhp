@@ -44,6 +44,10 @@ $mapping[ GroupsTypeElementBuildingCampusguideRestController::$CONTROLLER_NAME ]
 $mapping[ GroupsTypeElementBuildingCampusguideRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = GroupsTypeElementBuildingCampusguideRestView::class_();
 $mapping[ SectionsBuildingCampusguideRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = SectionsBuildingCampusguideRestController::class_();
 $mapping[ SectionsBuildingCampusguideRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = SectionsBuildingCampusguideRestView::class_();
+
+$mapping[ SearchCampusguideRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = SearchCampusguideRestController::class_();
+$mapping[ SearchCampusguideRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = SearchCampusguideRestView::class_();
+
 $mapping[ "" ] = $mapping[ FacilitiesCampusguideRestController::$CONTROLLER_NAME ];
 
 // Create KillHandler

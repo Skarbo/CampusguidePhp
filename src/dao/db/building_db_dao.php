@@ -175,10 +175,10 @@ class BuildingDbDao extends BuildingDao
                         SB::like( Resource::db()->building()->getFieldAddress(), ":search" ) ) );
 
         $selectBuild->addWhere( $searchExpression );
-
         // ... Binds
         $selectQuery->addBind( array ( "search" => $search ) );
 
+DebugHandler::doDebug(DebugHandler::LEVEL_LOW, new DebugException("BuildingDbDao SearchSelectQuery", $selectQuery->__toString()));
         return $selectQuery;
 
     }

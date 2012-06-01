@@ -36,3 +36,7 @@
 *[data-icon=home]:AFTER {
 	content: "H";
 }
+
+*[data-icon=cross]:AFTER {
+	content: "X";
+}

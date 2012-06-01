@@ -364,3 +364,7 @@ line-height: 1px;
 	width: 320px; /*640px;*/
 }
 
+/* Input */
+input {
+	-webkit-tap-highlight-color: RGBA(0, 0, 0, 0);
+}

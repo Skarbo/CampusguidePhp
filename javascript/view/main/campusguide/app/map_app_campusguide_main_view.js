@@ -177,10 +177,20 @@ MapAppCampusguideMainView.prototype.doBindEventHandler = function() {
 
 	// MENU
 
+	// Search
+	this.getWrapperElement().find("#menu_button_search").click(function(event){
+		event.preventDefault();
+		
+		// Send overlay event
+		context.getController().getEventHandler().handle(			
+				new OverlayEvent({}, "map_search_overlay"));
+	});
+	
+	
 	// Location
 	this.getWrapperElement().find("#menu_button_location").click(500, function(event) {
 		event.preventDefault();
-		console.log("longclick");
+
 		context.getWrapperElement().find("#menu_wrapper .sub_wrapper").removeClass("hide");
 		context.getWrapperElement().find("#menu_wrapper .sub_wrapper #menu_sub_position").removeClass("hide");
 		context.getWrapperElement().find("#menu_wrapper .sub_wrapper .arrow-up").css("margin-left", "37%");

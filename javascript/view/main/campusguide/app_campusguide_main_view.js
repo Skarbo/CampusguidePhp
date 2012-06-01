@@ -204,6 +204,12 @@ AppCampusguideMainView.prototype.draw = function(controller) {
 			});
 
 	// /HOVER
+	
+	// INPUT HINT
+
+	$("input[data-hint]").inputHint();
+
+	// /INPUT HINT
 
 };
 

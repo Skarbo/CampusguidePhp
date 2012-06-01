@@ -85,6 +85,15 @@ class SearchCampusguideRestController extends CampusguideRestController
         return self::getURI( self::URI_SEARCH );
     }
 
+
+    /**
+     * @see CampusguideRestController::getLastModified()
+     */
+    public function getLastModified()
+    {
+        return max( filemtime( __FILE__ ), parent::getLastModified(), $this->getFacilities()->getLastModified(), $this->getBuildings()->getLastModified() );
+    }
+
     // ... /GET
 
 
@@ -133,6 +142,7 @@ class SearchCampusguideRestController extends CampusguideRestController
     }
 
     // /FUNCTIONS
+
 
 
 }

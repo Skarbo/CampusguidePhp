@@ -31,6 +31,13 @@ MapAppCampusguideMainView.prototype.getController = function() {
 	return AppCampusguideMainView.prototype.getController.call(this);
 };
 
+/**
+ * @return {Object}
+ */
+MapAppCampusguideMainView.prototype.getSearchOverlayElement = function() {
+	return this.getWrapperElement().find("#map_search_overlay");
+};
+
 // ... /GET
 
 // ... DO
@@ -47,7 +54,7 @@ MapAppCampusguideMainView.prototype.doBindEventHandler = function() {
 	 *            event
 	 */
 	function(event) {
-		context.handleMapInit();
+		//context.handleMapInit();
 	});
 
 	this.getController().getEventHandler().registerListener(MaploadedEvent.TYPE,
@@ -178,15 +185,13 @@ MapAppCampusguideMainView.prototype.doBindEventHandler = function() {
 	// MENU
 
 	// Search
-	this.getWrapperElement().find("#menu_button_search").click(function(event){
+	this.getWrapperElement().find("#menu_button_search").click(function(event) {
 		event.preventDefault();
-		
+
 		// Send overlay event
-		context.getController().getEventHandler().handle(			
-				new OverlayEvent({}, "map_search_overlay"));
+		context.getController().getEventHandler().handle(new OverlayEvent({}, "map_search_overlay"));
 	});
-	
-	
+
 	// Location
 	this.getWrapperElement().find("#menu_button_location").click(500, function(event) {
 		event.preventDefault();
@@ -194,10 +199,9 @@ MapAppCampusguideMainView.prototype.doBindEventHandler = function() {
 		context.getWrapperElement().find("#menu_wrapper .sub_wrapper").removeClass("hide");
 		context.getWrapperElement().find("#menu_wrapper .sub_wrapper #menu_sub_position").removeClass("hide");
 		context.getWrapperElement().find("#menu_wrapper .sub_wrapper .arrow-up").css("margin-left", "37%");
-		$(document).bind("click.submenu", function(event){
+		$(document).bind("click.submenu", function(event) {
 			var close = $(event.target).parentsUntil(".sub_wrapper").parent().filter(".sub_wrapper").length == 0;
-			if (close)
-			{
+			if (close) {
 				context.getWrapperElement().find("#menu_wrapper .sub_wrapper").addClass("hide");
 				context.getWrapperElement().find("#menu_wrapper .sub_wrapper #menu_sub_position").addClass("hide");
 				$(document).unbind(".submenu");
@@ -211,6 +215,52 @@ MapAppCampusguideMainView.prototype.doBindEventHandler = function() {
 	});
 
 	// /MENU
+
+	// SEARCH
+
+	// Register "Search" listener
+	this.getController().getEventHandler().registerListener(SearchEvent.TYPE,
+	/**
+	 * @param {SearchEvent}
+	 *            event
+	 */
+	function(event) {
+		context.handleSearch(event.getSearch(), event.getOptions());
+	});
+
+	// Register "ResultSearch" listener
+	this.getController().getEventHandler().registerListener(ResultSearchEvent.TYPE,
+	/**
+	 * @param {ResultSearchEvent}
+	 *            event
+	 */
+	function(event) {
+		context.handleSearchResult(event.getResults());
+	});
+	
+	// Search input
+	var searchInput = this.getSearchOverlayElement().find("#search_input");
+
+	searchInput.keypress(function(e) {
+		var code = (e.keyCode ? e.keyCode : e.which);
+		// Enter
+		if (code == 13) {
+
+			// Send Search event
+			if ($(this).val() != "") {
+				context.getController().getEventHandler().handle(new SearchEvent($(this).val()));
+			}
+
+		}
+	});
+
+	// Search reset
+	this.getSearchOverlayElement().find("#search_reset").click(function(event) {
+		event.preventDefault();
+		searchInput.val("").focus();
+	});
+
+	// /SEARCH
 
 	// HASH
 
@@ -573,8 +623,6 @@ MapAppCampusguideMainView.prototype.handleBuildingView = function(buildingId) {
 
 MapAppCampusguideMainView.prototype.handleBuildingSlide = function() {
 
-	console.log("Handle building slide");
-
 	var buildingSlider = this.getWrapperElement().find("#building_slider_wrapper");
 	var buildingId = buildingSlider.attr("data-buildingid");
 
@@ -591,14 +639,12 @@ MapAppCampusguideMainView.prototype.handleBuildingSlide = function() {
  */
 MapAppCampusguideMainView.prototype.handlePosition = function(latlng) {
 
-	console.log("Handle position", latlng);
-
 	var position = null, distance = null, closest = null, closestDistance = null;
 	for (buildingId in this.markerBuildings) {
 		position = this.markerBuildings[buildingId].getPosition();
 		if (position) {
 			distance = MapUtil.distance(latlng.lat(), latlng.lng(), position.lat(), position.lng());
-			console.log("Distance", buildingId, distance);
+
 			if (distance <= MapAppCampusguideMainView.POSITION_LENGTH_MIN
 					&& ((closestDistance != null && distance < closestDistance) || closestDistance == null)) {
 				closest = this.markerBuildings[buildingId];
@@ -607,12 +653,41 @@ MapAppCampusguideMainView.prototype.handlePosition = function(latlng) {
 		}
 
 	}
-	console.log("Closest", closest, closestDistance);
+
 	if (closest != null) {
 		this.doBuildingSlider(closest.buildingId);
 	} else {
 		this.doBuildingSlider();
 	}
+
+};
+
+/**
+ * @param {String}
+ *            search
+ * @param {Object}
+ *            options
+ */
+MapAppCampusguideMainView.prototype.handleSearch = function(search, options) {
+	
+	// Show search spinner
+	this.getSearchOverlayElement().find("#search_spinner").removeClass("hide");
+	
+	// Search
+	this.getController().getSearchHandler().search(search);
+
+};
+
+/**
+ * @param {Object}
+ *            options
+ */
+MapAppCampusguideMainView.prototype.handleSearchResult = function(results) {
+	
+	// Hide search spinner
+	this.getSearchOverlayElement().find("#search_spinner").addClass("hide");
+
+	console.log("Search result", results);
 
 };
 

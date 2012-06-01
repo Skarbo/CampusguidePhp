@@ -9,6 +9,7 @@ $JAVASCRIPT_FILES = array_merge( $JAVASCRIPT_FILES, Core::getDirectory( "core" )
 $JAVASCRIPT_FILES = array_merge( $JAVASCRIPT_FILES, Core::getDirectory( "controller", $ignoreFolders ) );
 $JAVASCRIPT_FILES = array_merge( $JAVASCRIPT_FILES, Core::getDirectory( "view", $ignoreFolders ) );
 $JAVASCRIPT_FILES = array_merge( $JAVASCRIPT_FILES, Core::getDirectory( "dao" ) );
+$JAVASCRIPT_FILES = array_merge( $JAVASCRIPT_FILES, Core::getDirectory( "handler" ) );
 
 // Javascript generate
 FileUtil::generateFiles( $JAVASCRIPT_FILES, __FILE__, FileUtil::TYPE_JAVASCRIPT );

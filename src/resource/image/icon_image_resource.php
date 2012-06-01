@@ -7,6 +7,7 @@ class IconImageResource extends ClassCore
 
 
     private $spinnerBar = "image/icon/spinner_bar.gif";
+    private $spinnerCircle = "image/icon/spinner_circle.gif";
 
     // /VARIABLES
 
@@ -26,6 +27,11 @@ class IconImageResource extends ClassCore
     public function getSpinnerBar()
     {
         return $this->spinnerBar;
+    }
+
+    public function getSpinnerCircle()
+    {
+        return $this->spinnerCircle;
     }
 
 }

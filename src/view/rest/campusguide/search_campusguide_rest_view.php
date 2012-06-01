@@ -57,10 +57,10 @@ class SearchCampusguideRestView extends RestView
         $data = array ();
 
         // Facilities
-        $data[ self::$FIELD_FACILITIES ] = $this->getController()->getFacilities();
+        $data[ self::$FIELD_FACILITIES ] = $this->getController()->getFacilities()->getJson();
 
         // Buildings
-        $data[ self::$FIELD_BUILDINGS ] = $this->getController()->getBuildings();
+        $data[ self::$FIELD_BUILDINGS ] = $this->getController()->getBuildings()->getJson();
 
         // Info
         $data[ self::$FIELD_INFO ][ self::$FIELD_INFO_LASTMODIFIED ] = gmdate( 'D, d M Y H:i:s \G\M\T',

@@ -1,14 +1,8 @@
 SearchEvent.prototype = new Event();
 
-/**
- * @param {String}
- *            search
- * @param {Object}
- *            Options as JSON
- */
-function SearchEvent(search, options) {
+function SearchEvent(search, options) {	
+	Event.call(this, options);
 	this.search = search;
-	this.options = options || {};
 }
 
 // VARIABLES
@@ -24,13 +18,6 @@ SearchEvent.TYPE = "SearchEvent";
  */
 SearchEvent.prototype.getSearch = function() {
 	return this.search;
-};
-
-/**
- * @returns {Object}
- */
-SearchEvent.prototype.getOptions = function() {
-	return this.options;
 };
 
 SearchEvent.prototype.getType = function() {

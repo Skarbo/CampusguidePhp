@@ -232,3 +232,11 @@ Fri, 01 Jun 2012 11:20:00 GMT - localhost - campusguide_dev, campusguide_test
 Fri, 01 Jun 2012 13:54:48 GMT - localhost - campusguide_dev, campusguide_test
 Fri, 01 Jun 2012 15:24:12 GMT - localhost - campusguide_dev, campusguide_test
 Fri, 01 Jun 2012 16:25:37 GMT - localhost - campusguide_dev, campusguide_test
+Fri, 01 Jun 2012 20:23:11 GMT - localhost - campusguide_dev, campusguide_test
+Fri, 01 Jun 2012 21:32:49 GMT - localhost - campusguide_dev, campusguide_test
+Fri, 01 Jun 2012 22:42:21 GMT - localhost - campusguide_dev, campusguide_test
+Sat, 02 Jun 2012 07:02:29 GMT - localhost - campusguide_dev, campusguide_test
+Sat, 02 Jun 2012 08:37:30 GMT - localhost - campusguide_dev, campusguide_test
+Sat, 02 Jun 2012 09:42:52 GMT - localhost - campusguide_dev, campusguide_test
+Sat, 02 Jun 2012 10:43:03 GMT - localhost - campusguide_dev, campusguide_test
+Sat, 02 Jun 2012 11:59:33 GMT - localhost - campusguide_dev, campusguide_test

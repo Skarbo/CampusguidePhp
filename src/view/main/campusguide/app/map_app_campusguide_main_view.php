@@ -293,53 +293,78 @@ class MapAppCampusguideMainView extends AppCampusguideMainView
 
 
         $searchInputWrapper = Xhtml::div()->id( "search_input_wrapper" );
-        $searchIcon = Xhtml::div( Xhtml::div()->attr( "data-icon", "search" )->id( "search_icon" ) );
+        $searchButton = Xhtml::div( Xhtml::div()->title("Search")->attr( "data-icon", "search" )->id( "search_button" )->class_(Resource::css()->campusguide()->app()->getHover()) );
         $searchInput = Xhtml::div(
-                Xhtml::div( Xhtml::input()->title( "Search..." )->id( "search_input" )->attr( "data-hint", "true" ) ) );
+                Xhtml::div( Xhtml::input()->autocomplete(InputXhtml::$AUTOCOMPLETE_OFF)->title( "Search..." )->id( "search_input" )->attr( "data-hint", "true" ) ) );
         $searchReset = Xhtml::div(
-                Xhtml::img( Resource::image()->icon()->getSpinnerCircle(), "Searching..." )->id( "search_spinner" )->class_(Resource::css()->getHide()) )->addContent(
-                Xhtml::div()->attr( "data-icon", "cross" )->id( "search_reset" )->class_(Resource::css()->campusguide()->app()->getHover()) );
-        $searchInputWrapper->addContent( $searchIcon );
+                Xhtml::img( Resource::image()->icon()->getSpinnerCircle(), "Searching..." )->id( "search_spinner" )->class_(
+                        Resource::css()->getHide() ) )->addContent(
+                Xhtml::div()->title("Search")->attr( "data-icon", "cross" )->id( "search_reset" )->class_(
+                        Resource::css()->campusguide()->app()->getHover() ) );
         $searchInputWrapper->addContent( $searchInput );
         $searchInputWrapper->addContent( $searchReset );
+        $searchInputWrapper->addContent( $searchButton );
 
         // ... /SEARCH INPUT
 
+
         // ... SEARCH RESULT
 
-        $searchResultWrapper = Xhtml::div( )->id( "search_result_wrapper" );
 
-        $searchResult = Xhtml::div()->id("search_result");
+        $searchResultWrapper = Xhtml::div()->id( "search_result_wrapper" );
 
-        $searchResultTable = Xhtml::table();
+        $searchResult = Xhtml::div()->id( "search_result" );
+
+        $searchResultTable = Xhtml::table()->id("search_result_table");
 
         // ... ... TEMPLATE
 
-        // Building template
-        $searchResultTableTemplateBuilding = Xhtml::tfoot()->class_("search_result_template")->id("search_result_template_building");
 
-        $searchResultTableRow = Xhtml::tr()->class_(Resource::css()->campusguide()->app()->getHover());
+        // Building template
+        $searchResultTableTemplateBuilding = Xhtml::tbody()->class_( "search_result_body", Resource::css()->getHide() )->id( "search_result_template_building" );
+
+        $searchResultTableRowFirst = Xhtml::tr()->class_("search_result_row_first");
+        $searchResultTableRowSecond = Xhtml::tr()->class_("search_result_row_second");
 
         // ... Icon
-        $searchResultTableCellIcon = Xhtml::td()->class_(Resource::css()->getTableCell(), "search_result_icon");
-        $searchResultTableCellIcon->addContent(Xhtml::div()->attr("data-icon", "home"));
+        $searchResultTableCellIcon = Xhtml::td()->class_( "search_result_icon" );
+        $searchResultTableCellIcon->addContent( Xhtml::div()->attr( "data-icon", "home" ) );
 
         // ... Title
-        $searchResultTableCellTitle = Xhtml::td("Building")->class_(Resource::css()->getTableCell(), "search_result_title");
+        $searchResultTableCellTitle = Xhtml::td( "Building" )->class_( "search_result_title" );
+
+        // ... Description
+        $searchResultTableCellDescription = Xhtml::td( "Description" )->colspan( 3 )->class_(
+                "search_result_description" );
 
         // ... Direction
-        $searchResultTableCellDirection = Xhtml::td("000m")->class_(Resource::css()->getTableCell(), "search_result_direction");
+        $searchResultTableCellDirection = Xhtml::td( "000m" )->class_( "search_result_direction" );
 
-        $searchResultTableRow->addContent($searchResultTableCellIcon)->addContent($searchResultTableCellTitle)->addContent($searchResultTableCellDirection);
-        $searchResultTableTemplateBuilding->addContent($searchResultTableRow);
-        $searchResultTable->addContent($searchResultTableTemplateBuilding);
+        $searchResultTableRowFirst->addContent( $searchResultTableCellIcon )->addContent( $searchResultTableCellTitle )->addContent(
+                $searchResultTableCellDirection );
+        $searchResultTableRowSecond->addContent( $searchResultTableCellDescription );
+        $searchResultTableTemplateBuilding->addContent( $searchResultTableRowFirst );
+        $searchResultTableTemplateBuilding->addContent( $searchResultTableRowSecond );
+        $searchResultTable->addContent( $searchResultTableTemplateBuilding );
 
         // ... ... /TEMPLATE
 
-        $searchResult->addContent($searchResultTable);
-        $searchResultWrapper->addContent($searchResult);
+        // ... ... NO RESULT
+
+        $searchResultTableNoresult = Xhtml::tfoot()->id("search_result_noresult");
+        $searchResultTableRow = Xhtml::tr( Xhtml::td( "No result" ) );
+
+        $searchResultTableNoresult->addContent($searchResultTableRow);
+        $searchResultTable->addContent( $searchResultTableNoresult );
+
+        // ... ... /NO RESULT
+
+
+        $searchResult->addContent( $searchResultTable );
+        $searchResultWrapper->addContent( $searchResult );
 
         // ... /SEARCH RESULT
+
 
         $body->addContent( $searchInputWrapper );
         $body->addContent( $searchResultWrapper );

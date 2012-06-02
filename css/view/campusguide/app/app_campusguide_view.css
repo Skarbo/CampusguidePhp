@@ -13,7 +13,7 @@ html, body
 }
 
 /* Hover */
-#app_wrapper .hover
+#app_wrapper .hover, #app_wrapper .hover *
 {
 	-webkit-user-select: none;
 	-webkit-touch-callout: none;

@@ -42,6 +42,20 @@ MapAppCampusguideMainController.prototype.doBindEventHandler = function() {
 	});
 
 	// /MAP
+	
+	// SEARCH
+	
+	// Register "Search" listener
+	this.getEventHandler().registerListener(SearchEvent.TYPE,
+	/**
+	 * @param {SearchEvent}
+	 *            event
+	 */
+	function(event) {
+		context.handleSearch(event.getSearch(), event.getOptions());
+	});
+	
+	// /SEARCH
 
 };
 
@@ -62,6 +76,14 @@ MapAppCampusguideMainController.prototype.handleMapLoaded = function() {
 			context.getEventHandler().handle(new BuildingsRetrievedEvent(buildings));
 		});
 	});
+};
+
+
+MapAppCampusguideMainController.prototype.handleSearch = function(search) {
+
+	// Search
+	this.getSearchHandler().search(search);
+
 };
 
 // ... /HANDLE

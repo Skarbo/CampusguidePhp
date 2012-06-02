@@ -54,7 +54,7 @@ MapAppCampusguideMainView.prototype.doBindEventHandler = function() {
 	 *            event
 	 */
 	function(event) {
-		//context.handleMapInit();
+		// context.handleMapInit();
 	});
 
 	this.getController().getEventHandler().registerListener(MaploadedEvent.TYPE,
@@ -237,20 +237,24 @@ MapAppCampusguideMainView.prototype.doBindEventHandler = function() {
 	function(event) {
 		context.handleSearchResult(event.getResults());
 	});
+
+	// Register "ResetSearch" listener
+	this.getController().getEventHandler().registerListener(ResetSearchEvent.TYPE,
+	/**
+	 * @param {ResetSearchEvent}
+	 *            event
+	 */
+	function(event) {
+		context.handleSearchReset();
+	});
 	
 	// Search input
 	var searchInput = this.getSearchOverlayElement().find("#search_input");
 
 	searchInput.keypress(function(e) {
 		var code = (e.keyCode ? e.keyCode : e.which);
-		// Enter
-		if (code == 13) {
-
-			// Send Search event
-			if ($(this).val() != "") {
-				context.getController().getEventHandler().handle(new SearchEvent($(this).val()));
-			}
-
+		if (code == 13 && searchInput.inputHint("value") != "") {
+			context.doMapSearch(searchInput.inputHint("value"));
 		}
 	});
 
@@ -258,8 +262,19 @@ MapAppCampusguideMainView.prototype.doBindEventHandler = function() {
 	this.getSearchOverlayElement().find("#search_reset").click(function(event) {
 		event.preventDefault();
 		searchInput.val("").focus();
+		context.getController().getEventHandler().handle(new ResetSearchEvent());
 	});
 
+	// Search button
+	this.getSearchOverlayElement().find("#search_button").click(function(event) {
+		event.preventDefault();
+		if (searchInput.inputHint("value") != "") {
+			context.doMapSearch(searchInput.inputHint("value"));
+		}
+	});
+
+
+	
 	// /SEARCH
 
 	// HASH
@@ -348,6 +363,12 @@ MapAppCampusguideMainView.prototype.doBuildingSlider = function(buildingId) {
 		buildingSlider.addClass("hide");
 	}
 
+};
+
+MapAppCampusguideMainView.prototype.doMapSearch = function(search) {
+	if (search) {
+		this.getController().getEventHandler().handle(new SearchEvent(search));
+	}
 };
 
 // ... /DO
@@ -669,26 +690,103 @@ MapAppCampusguideMainView.prototype.handlePosition = function(latlng) {
  *            options
  */
 MapAppCampusguideMainView.prototype.handleSearch = function(search, options) {
-	
+
 	// Show search spinner
 	this.getSearchOverlayElement().find("#search_spinner").removeClass("hide");
-	
-	// Search
-	this.getController().getSearchHandler().search(search);
 
 };
 
 /**
  * @param {Object}
- *            options
+ *            results
  */
 MapAppCampusguideMainView.prototype.handleSearchResult = function(results) {
+	var context = this;
 	
 	// Hide search spinner
 	this.getSearchOverlayElement().find("#search_spinner").addClass("hide");
 
-	console.log("Search result", results);
+	// Search result table
+	var searchResultTable = this.getSearchOverlayElement().find("#search_result_table");
 
+	// Search result template
+	var searchResultTemplate = searchResultTable.find(".search_result_body#search_result_template_building");
+
+	// Clear result table
+	searchResultTable.find(".search_result_body:NOT(#search_result_template_building)").remove();
+
+	// BUILDINGS
+
+	var buildings = results.buildings;
+
+	var searchResultBody, building, address;
+	for (i in buildings) {
+		searchResultBody = searchResultTemplate.clone();
+		building = buildings[i];
+
+		// Set body id
+		searchResultBody.attr("id", "");
+		
+		// Set building id
+		searchResultBody.attr("data-buildingid", building.id);
+
+		// Remove hide
+		searchResultBody.removeClass("hide");
+
+		// Building name
+		searchResultBody.find(".search_result_title").text(building.name);
+
+		// Building address
+		address = jQuery.isArray(building.address) ? building.address.join(", ") : "";
+		searchResultBody.find(".search_result_description").text(address);
+
+		if (searchResultBody.find(".search_result_description").text() == "") {
+			searchResultBody.find(".search_result_description").html("&nbsp;");
+		}
+
+		// Bind body
+		searchResultBody.click(function(event){
+			context.handleSearchSelect("building", $(this).attr("data-buildingid"));
+		});
+		
+		// Touchable
+		searchResultBody.touchActive();
+		
+		// Add row to table
+		searchResultTable.append(searchResultBody);
+	}
+
+	if (!buildings || Core.countObject(buildings) == 0) {
+		searchResultTable.find("#search_result_noresult").removeClass("hide");
+	} else {
+		searchResultTable.find("#search_result_noresult").addClass("hide");
+	}
+
+	// /BUILDINGS
+
+};
+
+MapAppCampusguideMainView.prototype.handleSearchReset = function() {
+
+	// Search result table
+	var searchResultTable = this.getSearchOverlayElement().find("#search_result_table");
+	
+	// Clear result table
+	searchResultTable.find(".search_result_body:NOT(#search_result_template_building)").remove();
+	
+	// Show no result body
+	searchResultTable.find("#search_result_noresult").removeClass("hide");
+	
+};
+
+MapAppCampusguideMainView.prototype.handleSearchSelect = function(type, id) {
+
+	switch (type) {
+	case "building":
+		console.log("Handle search select", type, id);
+		break;
+	}
+	
 };
 
 // ... /HANDLE

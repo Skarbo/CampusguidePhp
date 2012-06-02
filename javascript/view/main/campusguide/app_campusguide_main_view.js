@@ -194,8 +194,8 @@ AppCampusguideMainView.prototype.draw = function(controller) {
 
 	// HOVER
 
-	this.getWrapperElement().find(".hover").bind("touchstart.hover touchend.hovering touchend.hovering touchcancel.hovering",
-			function(event) {
+	this.getWrapperElement().find(".hover").bind("touchstart.hovering touchend.hovering touchend.hovering touchcancel.hovering",
+			function(event) { 
 				if (event.type == "touchstart") {
 					$(this).addClass("hovering");
 				} else {

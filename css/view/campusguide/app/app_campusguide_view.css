@@ -368,3 +368,36 @@ line-height: 1px;
 input {
 	-webkit-tap-highlight-color: RGBA(0, 0, 0, 0);
 }
+
+/* Button */
+.button
+{
+	display: inline-block;
+	background-color: #666666;
+	color: white;
+	padding: 0.4em;
+	cursor: pointer;
+	text-decoration: none;	
+}
+
+.button:ACTIVE
+{
+	background-color: white;
+}
+
+/* Error */
+.error
+{
+	padding: 1em;
+}
+
+.error h1
+{
+	color: darkred;
+}
+
+.error div
+{
+	padding-top: 0.5em;
+	text-align: right;
+}

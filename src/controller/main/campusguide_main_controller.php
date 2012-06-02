@@ -44,6 +44,10 @@ abstract class CampusguideMainController extends MainController
 
     // ... /DAO
 
+    /**
+     * @var array
+     */
+    private $errors = array ();
 
     // /VARIABLES
 
@@ -210,6 +214,17 @@ abstract class CampusguideMainController extends MainController
 
     // ... /GETTERS/SETTERS
 
+    // ... GET
+
+    /**
+     * @return array:
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    // ... /GET
 
     // ... ADD
 
@@ -235,6 +250,15 @@ EOD;
                 sprintf( $code, Resource::javascript()->getGoogleMapsApiUrl( Resource::getGoogleApiKey(), "initMap" ) ) );
 
     }
+
+    /**
+     * @param AbstractException $exception
+     */
+    public function addError( AbstractException $exception )
+    {
+        $this->errors[] = $exception;
+    }
+
 
     // ... /ADD
 

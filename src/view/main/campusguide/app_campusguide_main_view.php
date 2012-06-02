@@ -16,6 +16,11 @@ abstract class AppCampusguideMainView extends MainView
     public static $ID_MOBILE_TOP_WRAPPER = "mobile_top_wrapper";
     public static $ID_MOBILE_BOTTOM_WRAPPER = "mobile_bottom_wrapper";
 
+    /**
+     * @var ErrorAppCampusguidePresenterView
+     */
+    private $errorPresenter;
+
     // /VARIABLES
 
 
@@ -27,6 +32,25 @@ abstract class AppCampusguideMainView extends MainView
 
     // FUNCTIONS
 
+    // ... GETTERS/SETTERS
+
+    /**
+     * @return ErrorAppCampusguidePresenterView
+     */
+    public function getErrorPresenter()
+    {
+        return $this->errorPresenter;
+    }
+
+    /**
+     * @param ErrorAppCampusguidePresenterView $errorPresenter
+     */
+    public function setErrorPresenter( ErrorAppCampusguidePresenterView $errorPresenter )
+    {
+        $this->errorPresenter = $errorPresenter;
+    }
+
+    // ... /GETTERS/SETTERS
 
     // ... GET
 
@@ -52,6 +76,14 @@ abstract class AppCampusguideMainView extends MainView
     }
 
     // ... /IS
+
+    /**
+     * @see View::before()
+     */
+    public function before()
+    {
+       $this->setErrorPresenter(new ErrorAppCampusguidePresenterView($this));
+    }
 
 
     // ... DRAW
@@ -97,13 +129,20 @@ abstract class AppCampusguideMainView extends MainView
             $pageWrapper = Xhtml::div();
 
             // Draw page
-            $this->drawPage( $pageWrapper );
+            if ( $this->getController()->getErrors() )
+            {
+                $this->drawPageError( $pageWrapper );
+            }
+            else
+            {
+                $this->drawPage( $pageWrapper );
+            }
 
             // Add page wrapper to display wrapper
             $displayWrapper->addContent( Xhtml::div( $pageWrapper )->id( self::$ID_PAGE_WRAPPER ) );
 
             // Add display wrapper to wrapper
-            $wrapper->addContent($displayWrapper);
+            $wrapper->addContent( $displayWrapper );
         }
         else
         {
@@ -141,8 +180,15 @@ abstract class AppCampusguideMainView extends MainView
         // Create page wrapper
         $pageWrapper = Xhtml::div();
 
-        // Draw page to page wrapper
-        $this->drawPage( $pageWrapper );
+        // Draw page
+        if ( $this->getController()->getErrors() )
+        {
+            $this->drawPageError( $pageWrapper );
+        }
+        else
+        {
+            $this->drawPage( $pageWrapper );
+        }
 
         // Add page wrapper to mobile screen wrapper
         $displayWrapper->addContent( Xhtml::div( $pageWrapper )->id( self::$ID_PAGE_WRAPPER ) );
@@ -168,6 +214,21 @@ abstract class AppCampusguideMainView extends MainView
 
         // Add wrapper to root
         $root->addContent( $wrapper );
+
+    }
+
+    /**
+     * @param AbstractXhtml $root
+     */
+    protected function drawPageError( AbstractXhtml $root )
+    {
+
+        // Foreach errors
+        foreach ( $this->getController()->getErrors() as $error )
+        {
+            $this->getErrorPresenter()->setError( $error );
+            $this->getErrorPresenter()->draw( $root );
+        }
 
     }
 

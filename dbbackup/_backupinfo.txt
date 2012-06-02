@@ -240,3 +240,4 @@ Sat, 02 Jun 2012 08:37:30 GMT - localhost - campusguide_dev, campusguide_test
 Sat, 02 Jun 2012 09:42:52 GMT - localhost - campusguide_dev, campusguide_test
 Sat, 02 Jun 2012 10:43:03 GMT - localhost - campusguide_dev, campusguide_test
 Sat, 02 Jun 2012 11:59:33 GMT - localhost - campusguide_dev, campusguide_test
+Sat, 02 Jun 2012 13:53:39 GMT - localhost - campusguide_dev, campusguide_test

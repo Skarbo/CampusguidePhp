@@ -19,7 +19,11 @@ class AppCampusguideCssResource extends ClassCore
 
     private $overlayMenu = "menu";
 
-    private $hover = "hover";
+    private $touch = "hover";
+
+    private $button = "button";
+
+    private $error = "error";
 
     // /VARIABLES
 
@@ -85,9 +89,19 @@ class AppCampusguideCssResource extends ClassCore
         return $this->overlayMenu;
     }
 
-    public function getHover()
+    public function getTouch()
     {
-        return $this->hover;
+        return $this->touch;
+    }
+
+    public function getButton()
+    {
+        return $this->button;
+    }
+
+    public function getError()
+    {
+        return $this->error;
     }
 
 }

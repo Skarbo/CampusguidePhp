@@ -20,10 +20,6 @@ abstract class CmsCampusguideMainController extends CampusguideMainController
     private static $QUEUE_TYPES = array ( QueueModel::TYPE_IMAGE_BUILDING );
 
     /**
-     * @var array
-     */
-    private $errors = array ();
-    /**
      * @var QueueModel
      */
     private $queue;
@@ -133,14 +129,6 @@ abstract class CmsCampusguideMainController extends CampusguideMainController
     }
 
     /**
-     * @return array:
-     */
-    public function getErrors()
-    {
-        return $this->errors;
-    }
-
-    /**
      * @see Controller::getLocale()
      * @return DefaultLocale
      */
@@ -206,19 +194,6 @@ abstract class CmsCampusguideMainController extends CampusguideMainController
 
     // ... /IS
 
-
-    // ... ADD
-
-
-    /**
-     * @param AbstractException $exception
-     */
-    public function addError( AbstractException $exception )
-    {
-        $this->errors[] = $exception;
-    }
-
-    // ... /ADD
 
 
     /**

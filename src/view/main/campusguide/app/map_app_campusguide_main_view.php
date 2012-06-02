@@ -130,25 +130,25 @@ class MapAppCampusguideMainView extends AppCampusguideMainView
         $table->addContent(
                 Xhtml::div(
                         Xhtml::div( "" )->id( "menu_button_search" )->attr( "data-icon", "search" )->title( "Search" )->class_(
-                                Resource::css()->campusguide()->app()->getHover() ) ) );
+                                Resource::css()->campusguide()->app()->getTouch() ) ) );
 
         // Location
         $table->addContent(
                 Xhtml::div(
                         Xhtml::div( "" )->id( "menu_button_location" )->attr( "data-icon", "location" )->title(
-                                "Location" )->class_( Resource::css()->campusguide()->app()->getHover() ) ) );
+                                "Location" )->class_( Resource::css()->campusguide()->app()->getTouch() ) ) );
 
         // Layers
         $table->addContent(
                 Xhtml::div(
                         Xhtml::div( "" )->attr( "data-icon", "layers" )->title( "Layers" )->class_(
-                                Resource::css()->campusguide()->app()->getHover() ) ) );
+                                Resource::css()->campusguide()->app()->getTouch() ) ) );
 
         // More
         $table->addContent(
                 Xhtml::div(
                         Xhtml::div( "" )->attr( "data-icon", "more" )->title( "More" )->class_(
-                                Resource::css()->campusguide()->app()->getHover() ) ) );
+                                Resource::css()->campusguide()->app()->getTouch() ) ) );
 
         // /MENU
 
@@ -178,7 +178,7 @@ class MapAppCampusguideMainView extends AppCampusguideMainView
         $position = Xhtml::div()->id( "menu_sub_position" )->class_( Resource::css()->getHide() );
 
         $row = Xhtml::div()->id( "menu_sub_position_setposition" )->class_(
-                Resource::css()->campusguide()->app()->getHover() );
+                Resource::css()->campusguide()->app()->getTouch() );
         $row->addContent( Xhtml::div( Xhtml::div()->attr( "data-icon", "location_pin" ) ) );
         $row->addContent( Xhtml::div( "Set position" ) );
 
@@ -293,14 +293,14 @@ class MapAppCampusguideMainView extends AppCampusguideMainView
 
 
         $searchInputWrapper = Xhtml::div()->id( "search_input_wrapper" );
-        $searchButton = Xhtml::div( Xhtml::div()->title("Search")->attr( "data-icon", "search" )->id( "search_button" )->class_(Resource::css()->campusguide()->app()->getHover()) );
+        $searchButton = Xhtml::div( Xhtml::div()->title("Search")->attr( "data-icon", "search" )->id( "search_button" )->class_(Resource::css()->campusguide()->app()->getTouch()) );
         $searchInput = Xhtml::div(
                 Xhtml::div( Xhtml::input()->autocomplete(InputXhtml::$AUTOCOMPLETE_OFF)->title( "Search..." )->id( "search_input" )->attr( "data-hint", "true" ) ) );
         $searchReset = Xhtml::div(
                 Xhtml::img( Resource::image()->icon()->getSpinnerCircle(), "Searching..." )->id( "search_spinner" )->class_(
                         Resource::css()->getHide() ) )->addContent(
                 Xhtml::div()->title("Search")->attr( "data-icon", "cross" )->id( "search_reset" )->class_(
-                        Resource::css()->campusguide()->app()->getHover() ) );
+                        Resource::css()->campusguide()->app()->getTouch() ) );
         $searchInputWrapper->addContent( $searchInput );
         $searchInputWrapper->addContent( $searchReset );
         $searchInputWrapper->addContent( $searchButton );

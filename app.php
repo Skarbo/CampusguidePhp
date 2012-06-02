@@ -32,6 +32,8 @@ $campusguide_api->setDebug(
 $mapping = array ();
 $mapping[ MapAppCampusguideMainController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = MapAppCampusguideMainController::class_();
 $mapping[ MapAppCampusguideMainController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = MapAppCampusguideMainView::class_();
+$mapping[ BuildingAppCampusguideMainController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = BuildingAppCampusguideMainController::class_();
+$mapping[ BuildingAppCampusguideMainController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = BuildingAppCampusguideMainView::class_();
 $mapping[ "" ] = $mapping[ MapAppCampusguideMainController::$CONTROLLER_NAME ];
 
 // Create KillHandler

@@ -1,6 +1,6 @@
 <?php
 
-class FloorBuildingDbDao extends FloorBuildingDao
+class FloorBuildingDbDao extends StandardDbDao implements FloorBuildingDao
 {
 
     // VARIABLES

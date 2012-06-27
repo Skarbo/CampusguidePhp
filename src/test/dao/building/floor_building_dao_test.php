@@ -88,6 +88,15 @@ class FloorBuildingDaoTest extends StandardDaoTest
         self::assertNotNullFunction($model->getOrder(), "Floor Building order", $this);
 
     }
+/**
+     * @see StandardDaoTest::getSearchString()
+     */
+    protected function getSearchString( StandardModel $model )
+    {
+        // TODO Auto-generated method stub
+
+    }
+
 
     // /FUNCTIONS
 

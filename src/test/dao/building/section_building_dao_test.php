@@ -88,10 +88,20 @@ class SectionBuildingDaoTest extends StandardDaoTest
 
         $model = SectionBuildingModel::get_( $model );
 
-        self::assertNotNullFunction($model->getId(), "Section Building id", $this);
-        self::assertNotNullFunction($model->getBuildingId(), "Section Building building id", $this);
-        self::assertNotNullFunction($model->getName(), "Section Building name", $this);
-        self::assertNotNullFunction($model->getCoordinates(), "Section Building coordinates", $this);
+        self::assertNotNullFunction( $model->getId(), "Section Building id", $this );
+        self::assertNotNullFunction( $model->getBuildingId(), "Section Building building id", $this );
+        self::assertNotNullFunction( $model->getName(), "Section Building name", $this );
+        self::assertNotNullFunction( $model->getCoordinates(), "Section Building coordinates", $this );
+
+    }
+
+    /**
+     * @see StandardDaoTest::getSearchString()
+     */
+    protected function getSearchString( StandardModel $model )
+    {
+        // TODO Auto-generated method stub
+
 
     }
 

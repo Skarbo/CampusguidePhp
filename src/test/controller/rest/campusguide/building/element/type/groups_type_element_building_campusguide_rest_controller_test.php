@@ -114,6 +114,16 @@ class GroupsTypeElementBuildingCampusguideRestControllerTest extends StandardCam
         // Overwritten
     }
 
+    /**
+     * @see StandardCampusguideRestControllerTest::getSearchString()
+     */
+    protected function getSearchString( StandardModel $model )
+    {
+        // TODO Auto-generated method stub
+
+
+    }
+
     // /FUNCTIONS
 
 

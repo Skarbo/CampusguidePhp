@@ -1,6 +1,6 @@
 <?php
 
-class TypeElementBuildingDbDao extends TypeElementBuildingDao
+class TypeElementBuildingDbDao extends StandardDbDao implements TypeElementBuildingDao
 {
 
     // VARIABLES

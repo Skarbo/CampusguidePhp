@@ -82,6 +82,15 @@ class TypeElementBuildingDaoTest extends StandardDaoTest
         self::assertNotNullFunction( $model->getGroupId(), "Type Element Building group id", $testCase );
         self::assertNotNullFunction( $model->getIcon(), "Type Element Building icon", $testCase );
     }
+/**
+     * @see StandardDaoTest::getSearchString()
+     */
+    protected function getSearchString( StandardModel $model )
+    {
+        // TODO Auto-generated method stub
+
+    }
+
 
     // /FUNCTIONS
 

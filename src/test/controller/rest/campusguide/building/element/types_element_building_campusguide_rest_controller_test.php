@@ -98,7 +98,8 @@ class TypesElementBuildingCampusguideRestControllerTest extends StandardCampusgu
 
         TypeElementBuildingDaoTest::assertNotNullFunction( $model->getId(), "Type Element Building id", $testCase );
         TypeElementBuildingDaoTest::assertNotNullFunction( $model->getName(), "Type Element Building name", $testCase );
-        TypeElementBuildingDaoTest::assertNotNullFunction( $model->getGroupId(), "Type Element Building group id", $testCase );
+        TypeElementBuildingDaoTest::assertNotNullFunction( $model->getGroupId(), "Type Element Building group id",
+                $testCase );
         TypeElementBuildingDaoTest::assertNotNullFunction( $model->getIcon(), "Type Element Building icon", $testCase );
 
     }
@@ -114,6 +115,16 @@ class TypesElementBuildingCampusguideRestControllerTest extends StandardCampusgu
 
         // Create Element
         return TypeElementBuildingDaoTest::createTypeElementBuildingTest( $elementTypeGroup->getId() );
+
+    }
+
+    /**
+     * @see StandardCampusguideRestControllerTest::getSearchString()
+     */
+    protected function getSearchString( StandardModel $model )
+    {
+        // TODO Auto-generated method stub
+
 
     }
 

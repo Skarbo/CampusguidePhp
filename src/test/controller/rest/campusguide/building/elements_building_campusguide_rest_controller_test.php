@@ -143,6 +143,16 @@ class ElementsBuildingCampusguideRestControllerTest extends StandardCampusguideR
 
     }
 
+    /**
+     * @see StandardCampusguideRestControllerTest::getSearchString()
+     */
+    protected function getSearchString( StandardModel $model )
+    {
+        // TODO Auto-generated method stub
+
+
+    }
+
     // /FUNCTIONS
 
 

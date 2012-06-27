@@ -1,6 +1,6 @@
 <?php
 
-class ElementBuildingDbDao extends ElementBuildingDao
+class ElementBuildingDbDao extends StandardDbDao implements ElementBuildingDao
 {
 
     // VARIABLES

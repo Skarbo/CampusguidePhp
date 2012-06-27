@@ -1,6 +1,6 @@
 <?php
 
-class BuildingDbDao extends BuildingDao
+class BuildingDbDao extends StandardDbDao implements BuildingDao
 {
 
     // VARIABLES
@@ -178,7 +178,6 @@ class BuildingDbDao extends BuildingDao
         // ... Binds
         $selectQuery->addBind( array ( "search" => $search ) );
 
-DebugHandler::doDebug(DebugHandler::LEVEL_LOW, new DebugException("BuildingDbDao SearchSelectQuery", $selectQuery->__toString()));
         return $selectQuery;
 
     }

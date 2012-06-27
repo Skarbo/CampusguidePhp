@@ -1,6 +1,6 @@
 <?php
 
-class SectionBuildingDbDao extends SectionBuildingDao
+class SectionBuildingDbDao extends StandardDbDao implements SectionBuildingDao
 {
 
     // VARIABLES

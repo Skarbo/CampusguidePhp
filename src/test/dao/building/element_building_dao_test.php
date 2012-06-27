@@ -112,6 +112,15 @@ class ElementBuildingDaoTest extends StandardDaoTest
         self::assertNotNullFunction( $model->getCoordinates(), "Element Building coordinates", $this );
 
     }
+/**
+     * @see StandardDaoTest::getSearchString()
+     */
+    protected function getSearchString( StandardModel $model )
+    {
+        // TODO Auto-generated method stub
+
+    }
+
 
     // /FUNCTIONS
 

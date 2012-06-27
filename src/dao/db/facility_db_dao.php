@@ -1,6 +1,6 @@
 <?php
 
-class FacilityDbDao extends FacilityDao
+class FacilityDbDao extends StandardDbDao implements FacilityDao
 {
 
     // VARIABLES

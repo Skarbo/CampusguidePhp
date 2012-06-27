@@ -121,6 +121,15 @@ class SectionsBuildingCampusguideRestControllerTest extends StandardCampusguideR
         return SectionBuildingDaoTest::createSectionBuildingTest( $building->getId() );
 
     }
+/**
+     * @see StandardCampusguideRestControllerTest::getSearchString()
+     */
+    protected function getSearchString( StandardModel $model )
+    {
+        // TODO Auto-generated method stub
+
+    }
+
 
     // /FUNCTIONS
 

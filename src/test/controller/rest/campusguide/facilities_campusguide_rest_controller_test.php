@@ -105,6 +105,16 @@ class FacilitiesCampusguideRestControllerTest extends StandardCampusguideRestCon
         // Overwritten
     }
 
+    /**
+     * @see StandardCampusguideRestControllerTest::getSearchString()
+     */
+    protected function getSearchString( StandardModel $model )
+    {
+        // TODO Auto-generated method stub
+
+
+    }
+
     // /FUNCTIONS
 
 

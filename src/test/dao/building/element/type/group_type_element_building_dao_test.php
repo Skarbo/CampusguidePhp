@@ -84,6 +84,15 @@ class GroupTypeElementBuildingDaoTest extends StandardDaoTest
     {
         // Unsupported method
     }
+/**
+     * @see StandardDaoTest::getSearchString()
+     */
+    protected function getSearchString( StandardModel $model )
+    {
+        // TODO Auto-generated method stub
+
+    }
+
 
     // /FUNCTIONS
 

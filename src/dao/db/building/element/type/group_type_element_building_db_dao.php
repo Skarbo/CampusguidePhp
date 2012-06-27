@@ -1,6 +1,6 @@
 <?php
 
-class GroupTypeElementBuildingDbDao extends GroupTypeElementBuildingDao
+class GroupTypeElementBuildingDbDao extends StandardDbDao implements GroupTypeElementBuildingDao
 {
 
     // VARIABLES

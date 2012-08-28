@@ -1,239 +1,118 @@
 <?php
 ?>
+<!DOCTYPE HTML>
 <html>
 <head>
+<meta charset="UTF-8">
+<meta http_equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+    content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,width=device-width">
 <!--<script type="text/javascript" src="../KrisSkarboApi/javascript/api/jquery-1.7.1.min.js"></script> -->
 <!-- <script type="text/javascript" src="javascript/api/jquery.event.drag-2.0.min.js"></script> -->
 <!-- <script type="text/javascript" src="javascript/campusguide.js.php"></script>  -->
 <!-- <script src="../KrisSkarboApi/javascript/api/jquery.event.drag-2.0.min.js" type="text/javascript"></script>  -->
 <!--<link href="css/campusguide.css.php" type="text/css" rel="stylesheet" /> -->
+<script type="text/javascript" src="../KrisSkarboApi/javascript/api/jquery-1.7.1.min.js"></script>
+<!-- <script type="text/javascript" src="../KrisSkarboApi/javascript/api/QuoJS.js"></script> -->
+<script type="text/javascript" src="../KrisSkarboApi/javascript/api/hammer.js"></script>
+<script type="text/javascript" src="../KrisSkarboApi/javascript/api/jquery.hammer.js"></script>
+<!-- <script type="text/javascript" src="../KrisSkarboApi/javascript/api/jquery.touchy.min.js"></script> -->
 <style type="text/css">
-.dropdownselect {
-	display: inline-block;
+#test
+{
+	width: 100%;
+	height: 1024px;
 }
-
-.dropdownselect .selected {
-
-}
-
-.dropdownselect .items {
-	display: none;
-	position: absolute;
-}
-
-.dropdownselect .items {
-	display: block;
-}
-
-.dropdownselect .items .wrapper {
-	border: 1px solid black;
-	/*height: 200px;
-	overflow-y: hidden;*/
-}
-
-.dropdownselect  .scroller {
-	background-color: gray;
-}
-
-.dropdownselect .scroller .handle {
-	background-color: black;
-	height: 20px;
-	width: 10px;
-}
-
-.dropdownselect .items .item {
-	background-color: white;
-	border-top: 1px solid black;
-	padding: 0.5em;
-}
-
-.dropdownselect .items .item:FIRST-CHILD {
-	border: 0;
-}
-
-#testButton {
-	border: 1px solid black;
-	display: inline;
-	cursor: pointer;
-}
-
 </style>
-<!--
 <script type="text/javascript">
-/*
+
+var logElement = null;
+var content = null;
+
 $(function() {
+	console.log("Test log");
+	logElement = $("#log");
+	content = $("#test");
+	/*
+	//Touch start
+	content.bind("touchstart", function(event) {
+		console.log("Touch start", event);
+	});
 
+	// Touch move
+	content.bind("touchmove", function(event) {
+		console.log("Touch move", event);
+	});
 
-
-});
-
-Gui.DROPDOWNSELECT_CLASS = "class";
-Gui.DROPDOWNSELECT_ITEMS_CLASS = "items";
-
-(function($) {
-
-	var dropDownSelectMethods = {
-			init : function(options) {
-
-				return this.each(function() {
-
-					var $this = $(this), data = $this.data(TableSearch.DATA);
-
-					if (!data) {
-
-						$(this).data(TableSearch.DATA, {
-							target : $this,
-							options : options
-						});
-
-					}
-
-				});
-			}
-	};
-
-	$.fn.dropDownSelect = function() {
-		return this.each(function() {
-
-			var $this = $(this);
-
-		    // Add class
-		    $this.addClass(Gui.DROPDOWNSELECT_CLASS);
-
-		    // Find items
-		    var itemsElement = $this.find("." +Gui.DROPDOWNSELECT_ITEMS_CLASS);
-
+	// Touch end
+	content.bind("touchend", function(event) {
+		console.log("Touch end", event);
+	});
+*/
+	/*$$("#test").touch(function(event){
+		logElement.prepend("Touch", "<br />");
+		console.log("Touch", event);
 		});
+	$$("#test").doubleTap(function(event){
+		logElement.prepend("Double tap", "<br />");
+		console.log("Double tap", event);
+		});
+	$$("#test").swipe(function(){
+		logElement.prepend("Swipe", "<br />");
+		console.log("Swipe", event);
+		});
+
+	$$("#test").drag(function(event){
+		logElement.prepend("Drag", event, "<br />");
+		console.log("Drag", event);
+	    });*/
+
+	/*var handleTouchyPinch = function (e, $target, data) {
+	    logElement.prepend("Drag", data.scale, "<br />");
+		console.log("Drag", data);
 	};
+	$('#test').bind('touchy-drag', handleTouchyPinch);
+	$('#test').bind('touchy-swipe', handleTouchyPinch);*/
 
-	//////// SLIDER /////////
+	var hammer = $("#test").hammer({
+		prevent_default: true,
+		scale_treshold: 0,
+		drag_min_distance: 0
+	});
 
-	function Slider() {
-	}
+	/*
+	hammer.bind('transformstart', function(event) {
+		logElement.prepend("Transform start", "<br />");
+	});
 
-	Slider.DATA = "data";
-	Slider.SLIDER_WRAPPER_CLASS = "slider_wrapper";
-	Slider.SLIDER_SWIPE_CLASS = "swipe";
-	Slider.SLIDER_CONTENT_CLASS = "slider_content";
-	Slider.SLIDER_SCROLLER_WRAPPER_CLASS = "slider_scroller_wrapper";
-	Slider.SLIDER_SCROLLER_HANDLE_CLASS = "slider_scroller_handle";
-	Slider.SLIDER_SCROLLER_HANDLE_DRAG_CLASS = "drag";
+	hammer.bind('transform', function(event) {
+		logElement.prepend("Transform", event.scale, "<br />");
+	});
 
-	var sliderMethods = {
-			init : function(options) {
+	hammer.bind('transformend', function(event) {
+		logElement.prepend("Transform end", "<br />");
+	});
+	*/
 
-				return this.each(function() {
-
-					var $this = $(this), data = $this.data(Slider.DATA);
-
-					// Options
-					options = $.extend({
-						'id' : content.attr("data-id"),
-						'class' : content.attr("data-class"),
-						'width' : content.attr("data-width"),
-						'width-parent' : content.attr("data-width-parent")
-					}, options);
-
-					// Initiate data
-					if (!data) {
-						$(this).data(TableSearch.DATA, {
-							target : $this,
-							options : options
-						});
-					}
-
-				});
-			},
-			destroy : function() {
-
-				return this.each(function() {
-
-					var $this = $(this), data = $this.data(Slider.DATA);
-					$this.removeData(Slider.DATA);
-
-				});
-
-			}
-		};
-
-		$.fn.slider = function(method) {
-
-			if (sliderMethods[method]) {
-				return sliderMethods[method].apply(this, Array.prototype.slice.call(arguments, 1));
-			} else if (typeof method === 'object' || !method) {
-				return sliderMethods.init.apply(this, arguments);
-			} else {
-				$.error('Method ' + method + ' does not exist on jQuery.sliderMethods');
-			}
-
-		};
-
-
-})(jQuery);*/
-
-</script>
--->
-<script type="text/javascript">
-
-(function($) {
-
-
-	var button = $("#testButton");
-
-    console.log("Ready", button);
-	button.click(function(){ console.log("Click") });
-	//button.bind("click.test", function() { console.log("Click test"); });
-	//button.bind("click.test", function() { console.log("Click test 2"); });
-
+	hammer.bind('drag', function(event) {
+		logElement.prepend("Drag", "<br />");
+	});
 
 });
+
+function log(event)
+{
+	logElement.prepend(event.type, "Scale: " + parseFloat(event.scale), "<br />");
+	console.log(event.type, event);
+}
 
 </script>
 </head>
 <body>
-<!--
+
     <div id="test">
-
-        <div style="display: inline;">Before</div>
-
-        <div class="dropdownselect">
-            <div class="selected">Selected</div>
-            <div class="items">
-                <div class="wrapper table">
-                    <div>
-
-                        <div class="item" data-type="noneselected">None
-                            selected</div>
-                        <div class="item">Menu sub</div>
-                        <div class="item">Menu sub</div>
-                        <div class="item">Menu sub</div>
-                        <div class="item">Menu sub</div>
-                        <div class="item">Menu sub</div>
-                        <div class="item">Menu sub</div>
-                        <div class="item">Menu sub</div>
-                        <div class="item">Menu sub</div>
-                        <div class="item">Menu sub</div>
-
-                    </div>
-                    <div>
-
-                        <div class="scroller">
-                            <div class="handle">&nbsp;</div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="test2">
-            <div>Under</div>
-        </div>
-
+        <div id="log">Log</div>
     </div>
- -->
-
-<div id="testButton">Test</div>
 
 </body>
 </html>

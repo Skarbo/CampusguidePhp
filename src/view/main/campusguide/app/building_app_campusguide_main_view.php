@@ -5,6 +5,9 @@ class BuildingAppCampusguideMainView extends AppCampusguideMainView
 
     // VARIABLES
 
+    private static $ID_BUILDING_PAGE_WRAPPER = "building_page_wrapper";
+    private static $ID_BUILDING_CANVAS_WRAPPER = "building_canvas_wrapper";
+    private static $ID_BUILDING_CANVAS = "building_canvas";
 
     /**
      * @var OverlayAppCampusguidePresenterView
@@ -36,8 +39,11 @@ class BuildingAppCampusguideMainView extends AppCampusguideMainView
     {
 
         // Create wrapper
-        $wrapper = Xhtml::div()->id( self::$ID_MAP_PAGE_WRAPPER )->attr( "data-fitparent",
-                sprintf( "#%s", AppCampusguideMainView::$ID_PAGE_WRAPPER ) );
+        $wrapper = Xhtml::div()->id( self::$ID_BUILDING_PAGE_WRAPPER )->attr( "data-fitparent",
+                sprintf( "#%s", self::$ID_PAGE_WRAPPER ) );
+
+        // Add canvas div
+        $wrapper->addContent(Xhtml::div(Xhtml::div()->id( self::$ID_BUILDING_CANVAS ))->id( self::$ID_BUILDING_CANVAS_WRAPPER ));
 
         // Add wrapper to root
         $root->addContent( $wrapper );

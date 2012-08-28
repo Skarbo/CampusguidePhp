@@ -142,9 +142,8 @@ QueueCmsCampusguidePageMainView.prototype.draw = function(root) {
 };
 
 QueueCmsCampusguidePageMainView.prototype.drawBuilding = function(building) {
-
 	var context = this;
-
+	
 	var maxBounds = CanvasUtil.getMaxBounds(building.coordinates);
 
 	var buildingWidth = maxBounds[2] - maxBounds[0];
@@ -205,12 +204,12 @@ QueueCmsCampusguidePageMainView.prototype.drawBuilding = function(building) {
 
 	// Get image data
 	this.getStage().toDataURL(
-			function(dataUrl) {
-
-				// Send Building command event
-				context.getView().getController().getEventHandler().handle(
-						new BuildingCommandEvent(building.id, context.getQueue().id, dataUrl));
-
+			{
+				callback : function(dataUrl) {
+					// Send Building command event
+					context.getView().getController().getEventHandler().handle(
+							new BuildingCommandEvent(building.id, context.getQueue().id, dataUrl));
+				}
 			});
 
 };

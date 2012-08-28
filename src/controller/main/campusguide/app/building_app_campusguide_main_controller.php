@@ -8,6 +8,8 @@ class BuildingAppCampusguideMainController extends AppCampusguideMainController
 
     public static $CONTROLLER_NAME = "building";
 
+    const PAGE_OVERVIEW = "overview";
+
     /**
      * @var BuildingModel
      */
@@ -82,6 +84,11 @@ class BuildingAppCampusguideMainController extends AppCampusguideMainController
         return self::$CONTROLLER_NAME;
     }
 
+    protected function getTitle()
+    {
+        return sprintf( "%s - %s - %s", $this->getBuilding()->getName(), "Building", parent::getTitle() );
+    }
+
     // ... /GET
 
 
@@ -122,7 +129,25 @@ class BuildingAppCampusguideMainController extends AppCampusguideMainController
 
     }
 
+    /**
+     * @see CmsCampusguideMainController::after()
+     */
+    public function after()
+    {
+        parent::after();
+
+        // Add Kinectic api
+        $this->addJavascriptFile( Resource::javascript()->getKineticApiFile() );
+
+        // Add hammer api
+        $this->addJavascriptFile( Resource::javascript()->getHammerApiFile() );
+        $this->addJavascriptFile( Resource::javascript()->getHammerJqueryApiFile() );
+
+    }
+
     // /FUNCTIONS
+
+
 
 
 }

@@ -47,9 +47,9 @@ abstract class CampusguideRestController extends RestController
     // CONSTRUCTOR
 
 
-    public function __construct( DbApi $db_api, DefaultLocale $locale, View $view, $mode )
+    public function __construct( Api $api, View $view )
     {
-        parent::__construct( $db_api, $locale, $view, $mode );
+        parent::__construct( $api, $view );
 
         $this->setFacilityDao( new FacilityDbDao( $this->getDbApi() ) );
         $this->setBuildingDao( new BuildingDbDao( $this->getDbApi() ) );

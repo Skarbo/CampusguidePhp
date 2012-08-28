@@ -92,7 +92,7 @@ CmsCampusguideMainController.prototype.handleQueue = function(queueType, queue) 
 
 CmsCampusguideMainController.prototype.handleBuildingCommand = function(buildingId, queueId, imageData) {
 
-	var url = Core.sprintf("command.php?/building/saveoverview/%s/%s", buildingId, queueId);
+	var url = Core.sprintf("command.php?/building/saveoverview/%s/%s&mode=%s", buildingId, queueId, this.getMode());
 
 	$.ajax({
 		url : url,

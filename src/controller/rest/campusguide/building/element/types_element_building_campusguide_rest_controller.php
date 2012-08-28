@@ -19,9 +19,9 @@ class TypesElementBuildingCampusguideRestController extends StandardCampusguideR
     // CONSTRUCTOR
 
 
-    public function __construct( $db_api, $locale, $view, $mode )
+    public function __construct( $api, $view )
     {
-        parent::__construct( $db_api, $locale, $view, $mode );
+        parent::__construct( $api, $view );
 
         $this->setTypeElementBuildingHandler(
                 new TypeElementBuildingHandler( $this->getTypeElementBuildingDao(),

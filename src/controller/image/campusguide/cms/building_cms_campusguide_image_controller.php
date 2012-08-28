@@ -27,9 +27,9 @@ class BuildingCmsCampusguideImageController extends CmsCampusguideImageControlle
     // CONSTRUCTOR
 
 
-    public function __construct( DbApi $db_api, AbstractDefaultLocale $locale, View $view, $mode )
+    public function __construct( Api $api, View $view )
     {
-        parent::__construct( $db_api, $locale, $view, $mode );
+        parent::__construct( $api, $view );
         $this->setQueueDao( new QueueDbDao( $this->getDbApi() ) );
         $this->setQueueHandler( new QueueHandler( $this->getQueueDao(), new QueueValidator( $this->getLocale() ) ) );
     }

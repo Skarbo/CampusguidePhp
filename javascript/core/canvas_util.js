@@ -103,3 +103,63 @@ CanvasUtil.getOuterBounds = function(coordinates) {
 	return [ boundLeft, boundTop, boundRight, boundBottom ];
 	
 };
+
+/**
+ * Center layer on stage
+ * 
+ * @param {Kinetic.Layer} layer
+ */
+CanvasUtil.centerLayer = function(layer) {
+	var stageX = layer.getStage().getWidth(), stageY = layer.getStage().getHeight();
+	var layerBoundsNewX = layer.width * layer.getScale().x, layerBoundsNewY = layer.height * layer.getScale().y;
+	var layerNewX = (stageX - layerBoundsNewX) / 2, layerNewY = (stageY - layerBoundsNewY) / 2;
+
+	layer.setX(layerNewX);
+	layer.setY(layerNewY);
+};
+
+CanvasUtil.areaCoordinates = function(coordinates) {
+	var area = 0;
+	var pts = coordinates;
+	var nPts = pts.length;
+	var j = nPts - 1;
+	var p1;
+	var p2;
+
+	for ( var i = 0; i < nPts; j = i++) {
+		p1 = pts[i];
+		p2 = pts[j];
+		area += p1[0] * p2[1];
+		area -= p1[1] * p2[0];
+	}
+	area /= 2;
+
+	return area;
+};
+
+/**
+ * @param {Array} coordinates [ [ x, y ] ]
+ * @returns {Array} [ x, y ]
+ */
+CanvasUtil.centerCoordinates = function(coordinates) {
+	var pts = coordinates;
+	var nPts = pts.length;
+	var x = 0;
+	var y = 0;
+	var f;
+	var j = nPts - 1;
+	var p1;
+	var p2;
+
+	for ( var i = 0; i < nPts; j = i++) {
+		p1 = pts[i];
+		p2 = pts[j];
+		f = p1[0] * p2[1] - p2[0] * p1[1];
+		x += (p1[0] + p2[0]) * f;
+		y += (p1[1] + p2[1]) * f;
+	}
+
+	f = CanvasUtil.areaCoordinates(coordinates) * 6;
+
+	return [ x / f, y / f ];
+};

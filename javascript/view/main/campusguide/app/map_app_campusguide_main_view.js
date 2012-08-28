@@ -54,7 +54,7 @@ MapAppCampusguideMainView.prototype.doBindEventHandler = function() {
 	 *            event
 	 */
 	function(event) {
-		// context.handleMapInit();
+		context.handleMapInit();
 	});
 
 	this.getController().getEventHandler().registerListener(MaploadedEvent.TYPE,
@@ -184,6 +184,13 @@ MapAppCampusguideMainView.prototype.doBindEventHandler = function() {
 
 	// MENU
 
+	// Menu close function
+	var menuCloseFunction = function() {
+		context.getWrapperElement().find("#menu_wrapper .sub_wrapper").addClass("hide");
+		context.getWrapperElement().find("#menu_wrapper .sub_wrapper #menu_sub_position").addClass("hide");
+		$(document).unbind(".submenu");
+	};
+
 	// Search
 	this.getWrapperElement().find("#menu_button_search").click(function(event) {
 		event.preventDefault();
@@ -202,9 +209,7 @@ MapAppCampusguideMainView.prototype.doBindEventHandler = function() {
 		$(document).bind("click.submenu", function(event) {
 			var close = $(event.target).parentsUntil(".sub_wrapper").parent().filter(".sub_wrapper").length == 0;
 			if (close) {
-				context.getWrapperElement().find("#menu_wrapper .sub_wrapper").addClass("hide");
-				context.getWrapperElement().find("#menu_wrapper .sub_wrapper #menu_sub_position").addClass("hide");
-				$(document).unbind(".submenu");
+				menuCloseFunction();
 			}
 		});
 	});
@@ -212,6 +217,17 @@ MapAppCampusguideMainView.prototype.doBindEventHandler = function() {
 	this.getWrapperElement().find("#menu_button_location").click(function(event) {
 		event.preventDefault();
 		context.doGeolocationInit();
+	});
+
+	// Set location
+	this.getWrapperElement().find("#menu_sub_position_setposition").click(function(event) {
+		event.preventDefault();
+
+		// Do set position
+		context.doPositionSet();
+
+		// Close menu
+		menuCloseFunction();
 	});
 
 	// /MENU
@@ -247,7 +263,7 @@ MapAppCampusguideMainView.prototype.doBindEventHandler = function() {
 	function(event) {
 		context.handleSearchReset();
 	});
-	
+
 	// Search input
 	var searchInput = this.getSearchOverlayElement().find("#search_input");
 
@@ -273,8 +289,6 @@ MapAppCampusguideMainView.prototype.doBindEventHandler = function() {
 		}
 	});
 
-
-	
 	// /SEARCH
 
 	// HASH
@@ -309,12 +323,13 @@ MapAppCampusguideMainView.prototype.doBindEventHandler = function() {
 										});
 
 										var view = body.find("a.view");
-										view.unbind("click");
-										view.click(function(event) {
-											event.preventDefault();
-											context.getController().getEventHandler().handle(
-													new ViewBuildingEvent(building.id));
-										});
+										view.attr("href", Core.sprintf(view.attr("data-url"), building.id));
+//										view.unbind("click");
+//										view.click(function(event) {
+//											event.preventDefault();
+//											context.getController().getEventHandler().handle(
+//													new ViewBuildingEvent(building.id));
+//										});
 									}
 								};
 
@@ -352,6 +367,13 @@ MapAppCampusguideMainView.prototype.doGeolocationInit = function() {
 	}
 };
 
+MapAppCampusguideMainView.prototype.doGeolocationStop = function() {
+	if (this.geolocationWatchProcess != null) {
+		navigator.geolocation.clearWatch(this.geolocationWatchProcess);
+		this.geolocationWatchProcess == null;
+	}
+};
+
 MapAppCampusguideMainView.prototype.doBuildingSlider = function(buildingId) {
 	console.log("Building slider", buildingId);
 	var buildingSlider = this.getWrapperElement().find("#building_slider_wrapper");
@@ -369,6 +391,25 @@ MapAppCampusguideMainView.prototype.doMapSearch = function(search) {
 	if (search) {
 		this.getController().getEventHandler().handle(new SearchEvent(search));
 	}
+};
+
+MapAppCampusguideMainView.prototype.doPositionSet = function() {
+	var context = this;
+	
+	if (this.mapLoaded) {
+
+		// Map click
+		google.maps.event.addListenerOnce(this.map, 'click', function(event) {
+			console.log("Click map", event);
+			// Set marker position
+			context.markerLocation.setPosition(event.latLng);
+			
+			// Handle position set
+			context.handlePositionSet(event.latLng);
+		});
+
+	}
+
 };
 
 // ... /DO
@@ -409,6 +450,26 @@ MapAppCampusguideMainView.prototype.handleMapInit = function() {
 		// Set map
 		this.map = new google.maps.Map(document.getElementById("map_canvas"), options);
 
+		// POSITION MARKER
+
+		// Set marker
+		var image = "image/icon/location_blue_black_15x15.png";
+		this.markerLocation = new google.maps.Marker({
+			map : this.map,
+			position : latlng,
+			icon : image,
+			draggable : true,
+			visible : false
+		});
+
+		// Marker drag
+		google.maps.event.addListener(this.markerLocation, 'dragend', function(event) {
+			// Handle position set
+			context.handlePositionSet(event.latLng);
+		});
+
+		// /POSITION MARKER
+
 		// Listen to map idle
 		context.getController().getEventHandler().handle(new MaploadedEvent());
 		// google.maps.event.addListenerOnce(this.map, 'idle', function() {
@@ -434,7 +495,7 @@ MapAppCampusguideMainView.prototype.handleMapLoaded = function() {
 
 MapAppCampusguideMainView.prototype.handleMapBuildings = function(buildings) {
 	var context = this;
-
+console.log("Handle map buildings");
 	if (this.mapLoaded) {
 
 		// Map buildings loaded function
@@ -567,42 +628,35 @@ MapAppCampusguideMainView.prototype.handleGeolocationError = function(error) {
 };
 
 MapAppCampusguideMainView.prototype.handleGeolocationQuery = function(position) {
-
-	var context = this;
-
+console.log("Handle geo query", position);	
 	if (this.mapLoaded) {
 
 		// Set lat/lng
 		var latlng = new google.maps.LatLng(position.coords.latitude.toFixed(5), position.coords.longitude.toFixed(5));
 
-		// Set marker
-		if (!this.markerLocation) {
-			var image = "image/icon/location_blue_15x15.png";
-			this.markerLocation = new google.maps.Marker({
-				map : this.map,
-				position : latlng,
-				icon : image,
-				draggable : true
-			});
-
-			// Marker drag
-			google.maps.event.addListener(this.markerLocation, 'dragend', function(event) {
-
-				// Handle position
-				context.getController().getEventHandler().handle(new PositionEvent(event.latLng),
-						BuildingMapLoadedEvent.TYPE);
-
-				// setMarkerAtLocation(event.latLng);
-			});
-			// Set map center
-			this.map.setCenter(latlng);
+		// Is set as automatic
+		if (!this.markerLocation.automatic) {
 
 			// Set geolocation to local storage
 			this.getController().setLocalStorageVariable("geolocation", "true");
-		} else {
-			// Set marker position
-			this.markerLocation.setPosition(latlng);
+
+			// Set marker icon
+			var image = "image/icon/location_blue_15x15.png";
+			this.markerLocation.setIcon(image);
+
+			// Set marker as visible
+			this.markerLocation.setVisible(true);
+			
+			// Set map center
+			this.map.setCenter(latlng);
+
+			// Set automatic
+			this.markerLocation.automatic = true;
+
 		}
+
+		// Set marker position
+		this.markerLocation.setPosition(latlng);
 
 		// Handle position
 		this.getController().getEventHandler().handle(new PositionEvent(latlng), BuildingMapLoadedEvent.TYPE);
@@ -659,7 +713,7 @@ MapAppCampusguideMainView.prototype.handleBuildingSlide = function() {
  *            latlng
  */
 MapAppCampusguideMainView.prototype.handlePosition = function(latlng) {
-
+console.log("Handle position", latlng);
 	var position = null, distance = null, closest = null, closestDistance = null;
 	for (buildingId in this.markerBuildings) {
 		position = this.markerBuildings[buildingId].getPosition();
@@ -679,6 +733,41 @@ MapAppCampusguideMainView.prototype.handlePosition = function(latlng) {
 		this.doBuildingSlider(closest.buildingId);
 	} else {
 		this.doBuildingSlider();
+	}
+};
+
+MapAppCampusguideMainView.prototype.handlePositionSet = function(latlng) {
+console.log("Handle position set", latlng);
+	// Stop geolocation watch
+	this.doGeolocationStop();
+
+	// Update marker
+	if (this.mapLoaded) {
+
+		// Is set as automatic
+		if (this.markerLocation.automatic == null || this.markerLocation.automatic == true) {
+
+			// Remove geolocation to local storage
+			this.getController().removeLocalStorageVariable("geolocation");
+
+			// Set marker icon
+			var image = "image/icon/location_blue_black_15x15.png";
+			this.markerLocation.setIcon(image);
+
+			// Set marker as visible
+			this.markerLocation.setVisible(true);
+
+			// Set map center
+			this.map.setCenter(latlng);			
+
+			// Set automatic
+			this.markerLocation.automatic = false;
+
+		}
+
+		// Handle position
+		this.getController().getEventHandler().handle(new PositionEvent(latlng), BuildingMapLoadedEvent.TYPE);
+
 	}
 
 };
@@ -702,7 +791,7 @@ MapAppCampusguideMainView.prototype.handleSearch = function(search, options) {
  */
 MapAppCampusguideMainView.prototype.handleSearchResult = function(results) {
 	var context = this;
-	
+
 	// Hide search spinner
 	this.getSearchOverlayElement().find("#search_spinner").addClass("hide");
 
@@ -726,7 +815,7 @@ MapAppCampusguideMainView.prototype.handleSearchResult = function(results) {
 
 		// Set body id
 		searchResultBody.attr("id", "");
-		
+
 		// Set building id
 		searchResultBody.attr("data-buildingid", building.id);
 
@@ -745,13 +834,13 @@ MapAppCampusguideMainView.prototype.handleSearchResult = function(results) {
 		}
 
 		// Bind body
-		searchResultBody.click(function(event){
+		searchResultBody.click(function(event) {
 			context.handleSearchSelect("building", $(this).attr("data-buildingid"));
 		});
-		
+
 		// Touchable
 		searchResultBody.touchActive();
-		
+
 		// Add row to table
 		searchResultTable.append(searchResultBody);
 	}
@@ -770,13 +859,13 @@ MapAppCampusguideMainView.prototype.handleSearchReset = function() {
 
 	// Search result table
 	var searchResultTable = this.getSearchOverlayElement().find("#search_result_table");
-	
+
 	// Clear result table
 	searchResultTable.find(".search_result_body:NOT(#search_result_template_building)").remove();
-	
+
 	// Show no result body
 	searchResultTable.find("#search_result_noresult").removeClass("hide");
-	
+
 };
 
 MapAppCampusguideMainView.prototype.handleSearchSelect = function(type, id) {
@@ -786,7 +875,7 @@ MapAppCampusguideMainView.prototype.handleSearchSelect = function(type, id) {
 		console.log("Handle search select", type, id);
 		break;
 	}
-	
+
 };
 
 // ... /HANDLE

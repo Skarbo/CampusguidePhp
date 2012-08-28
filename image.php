@@ -137,7 +137,7 @@ $campusguide_api->setKillHandler( new ImageKillHandler() );
 $campusguide_api->setOutputHandler( new ImageOutputHandler() );
 
 // Do request
-$campusguide_api->doRequest( new DoublearrayCore( $mapping ) );
+$campusguide_api->doRequest( $mapping );
 
 $campusguide_api->destruct();
 

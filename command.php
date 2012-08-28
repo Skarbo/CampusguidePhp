@@ -103,7 +103,7 @@ $campusguide_api->setKillHandler( new CommandKillHandler() );
 $campusguide_api->setOutputHandler( new CommandOutputHandler() );
 
 // Do request
-$campusguide_api->doRequest( new DoublearrayCore( $mapping ) );
+$campusguide_api->doRequest( $mapping );
 
 // Destruct
 $campusguide_api->destruct();

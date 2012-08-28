@@ -6,7 +6,7 @@ class CampusguideUrlResource extends ClassCore
     // VARIABLES
 
 
-    private static $CMS;
+    private static $APP, $CMS;
     private $googleDirections = "http://maps.google.com/maps?saddr=%s&daddr=%s";
 
     // /VARIABLES
@@ -20,6 +20,14 @@ class CampusguideUrlResource extends ClassCore
 
     // FUNCTIONS
 
+    /**
+     * @return AppCampusguideUrlResource
+     */
+    public function app()
+    {
+        self::$APP = self::$APP ? self::$APP : new AppCampusguideUrlResource();
+        return self::$APP;
+    }
 
     /**
      * @return CmsCampusguideUrlResource

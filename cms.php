@@ -16,11 +16,8 @@ function __autoload( $class_name )
     }
 }
 
-// Generate mode
-$mode = isset( $_GET[ "mode" ] ) && in_array( $_GET[ "mode" ], CampusguideApi::$MODES ) ? $_GET[ "mode" ] : CampusguideApi::MODE_TEST;
-
 // Initiate CampusguideApi
-$campusguide_api = new CampusguideApi( $mode );
+$campusguide_api = new CampusguideApi( CampusguideApi::MODE_TEST );
 
 // Set Debug handler
 $campusguide_api->setDebug(
@@ -68,7 +65,7 @@ class ApirestKillHandler extends ClassCore implements KillHandler
     /**
      * @see KillHandler::isAutoErrorLog()
      */
-    public function isAutoErrorLog(Exception $exception)
+    public function isAutoErrorLog( Exception $exception )
     {
         return true;
     }
@@ -103,7 +100,7 @@ $campusguide_api->setKillHandler( new ApirestKillHandler() );
 $campusguide_api->setOutputHandler( new MainOutputHandler() );
 
 // Do request
-$campusguide_api->doRequest( new DoublearrayCore( $mapping ) );
+$campusguide_api->doRequest( $mapping );
 
 $campusguide_api->destruct();
 

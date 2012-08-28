@@ -246,7 +246,8 @@ class MapAppCampusguideMainView extends AppCampusguideMainView
         $row = Xhtml::div();
         $row->addContent(
                 Xhtml::div(
-                        Xhtml::a( Xhtml::span( "" )->attr( "data-icon", "direction" ) )->href( "#" )->class_(
+                        Xhtml::a( Xhtml::span( "" )->attr( "data-icon", "direction" ) )->href( "#" )->target(
+                                AnchorXhtml::$TARGET_BLANK )->class_(
                                 Resource::css()->campusguide()->app()->map()->getMenuTakemethere() )->attr( "data-url",
                                 Resource::url()->campusguide()->getGoogleDirections() ) ) );
         $row->addContent(
@@ -256,15 +257,19 @@ class MapAppCampusguideMainView extends AppCampusguideMainView
                                 Resource::url()->campusguide()->getGoogleDirections() ) ) );
         $menu->addContent( $row );
 
+        // View building
         $row = Xhtml::div();
         $row->addContent(
                 Xhtml::div(
                         Xhtml::a( Xhtml::span( "" )->attr( "data-icon", "home" ) )->href( "#" )->class_(
-                                Resource::css()->campusguide()->app()->map()->getMenuView() ) ) );
+                                Resource::css()->campusguide()->app()->map()->getMenuView() )->attr( "data-url",
+                                Resource::url()->campusguide()->app()->building()->getBuilding( "%s", $this->getMode() ) ) ) );
         $row->addContent(
                 Xhtml::div(
                         Xhtml::a( "See building" )->href( "#" )->class_(
-                                Resource::css()->campusguide()->app()->map()->getMenuView() ) ) );
+                                Resource::css()->campusguide()->app()->map()->getMenuView() )->attr( "data-url",
+                                Resource::url()->campusguide()->getGoogleDirections() )->attr( "data-url",
+                                Resource::url()->campusguide()->app()->building()->getBuilding( "%s", $this->getMode() ) ) ) );
         $menu->addContent( $row );
 
         // /MENU
@@ -293,13 +298,17 @@ class MapAppCampusguideMainView extends AppCampusguideMainView
 
 
         $searchInputWrapper = Xhtml::div()->id( "search_input_wrapper" );
-        $searchButton = Xhtml::div( Xhtml::div()->title("Search")->attr( "data-icon", "search" )->id( "search_button" )->class_(Resource::css()->campusguide()->app()->getTouch()) );
+        $searchButton = Xhtml::div(
+                Xhtml::div()->title( "Search" )->attr( "data-icon", "search" )->id( "search_button" )->class_(
+                        Resource::css()->campusguide()->app()->getTouch() ) );
         $searchInput = Xhtml::div(
-                Xhtml::div( Xhtml::input()->autocomplete(InputXhtml::$AUTOCOMPLETE_OFF)->title( "Search..." )->id( "search_input" )->attr( "data-hint", "true" ) ) );
+                Xhtml::div(
+                        Xhtml::input()->autocomplete( InputXhtml::$AUTOCOMPLETE_OFF )->title( "Search..." )->id(
+                                "search_input" )->attr( "data-hint", "true" ) ) );
         $searchReset = Xhtml::div(
                 Xhtml::img( Resource::image()->icon()->getSpinnerCircle(), "Searching..." )->id( "search_spinner" )->class_(
                         Resource::css()->getHide() ) )->addContent(
-                Xhtml::div()->title("Search")->attr( "data-icon", "cross" )->id( "search_reset" )->class_(
+                Xhtml::div()->title( "Search" )->attr( "data-icon", "cross" )->id( "search_reset" )->class_(
                         Resource::css()->campusguide()->app()->getTouch() ) );
         $searchInputWrapper->addContent( $searchInput );
         $searchInputWrapper->addContent( $searchReset );
@@ -315,16 +324,17 @@ class MapAppCampusguideMainView extends AppCampusguideMainView
 
         $searchResult = Xhtml::div()->id( "search_result" );
 
-        $searchResultTable = Xhtml::table()->id("search_result_table");
+        $searchResultTable = Xhtml::table()->id( "search_result_table" );
 
         // ... ... TEMPLATE
 
 
         // Building template
-        $searchResultTableTemplateBuilding = Xhtml::tbody()->class_( "search_result_body", Resource::css()->getHide() )->id( "search_result_template_building" );
+        $searchResultTableTemplateBuilding = Xhtml::tbody()->class_( "search_result_body",
+                Resource::css()->getHide() )->id( "search_result_template_building" );
 
-        $searchResultTableRowFirst = Xhtml::tr()->class_("search_result_row_first");
-        $searchResultTableRowSecond = Xhtml::tr()->class_("search_result_row_second");
+        $searchResultTableRowFirst = Xhtml::tr()->class_( "search_result_row_first" );
+        $searchResultTableRowSecond = Xhtml::tr()->class_( "search_result_row_second" );
 
         // ... Icon
         $searchResultTableCellIcon = Xhtml::td()->class_( "search_result_icon" );
@@ -349,12 +359,14 @@ class MapAppCampusguideMainView extends AppCampusguideMainView
 
         // ... ... /TEMPLATE
 
+
         // ... ... NO RESULT
 
-        $searchResultTableNoresult = Xhtml::tfoot()->id("search_result_noresult");
+
+        $searchResultTableNoresult = Xhtml::tfoot()->id( "search_result_noresult" );
         $searchResultTableRow = Xhtml::tr( Xhtml::td( "No result" ) );
 
-        $searchResultTableNoresult->addContent($searchResultTableRow);
+        $searchResultTableNoresult->addContent( $searchResultTableRow );
         $searchResultTable->addContent( $searchResultTableNoresult );
 
         // ... ... /NO RESULT

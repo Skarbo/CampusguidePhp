@@ -78,7 +78,7 @@ z-index: 1000;
 
 #app_wrapper #menu_wrapper .sub_wrapper .sub > * {
 	display: table;
-width: 100%;
+	width: 100%;
 }
 
 #app_wrapper #menu_wrapper .sub_wrapper .sub > * > * {
@@ -92,11 +92,12 @@ width: 100%;
 #app_wrapper #menu_wrapper .sub_wrapper .sub > * > * > * > * {
 	display: table-cell;
 	padding: 0.3em;
+	cursor: pointer;
 }
 
 #app_wrapper #menu_wrapper .sub_wrapper .sub > * > * > * > *:FIRST-CHILD {	
 	font-size: 1.5em;
-width: 1%;
+	width: 1%;
 }
 
 #app_wrapper #menu_wrapper .sub_wrapper .sub > * > * > * > * + * {

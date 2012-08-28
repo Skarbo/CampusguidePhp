@@ -221,12 +221,11 @@ class QueueDbDao extends QueueDao
         $select_build->setExpression( "*" );
         $select_build->setFrom( Resource::db()->queue()->getTable() );
         $select_build->setOrderBy(
-                new DoublearrayCore(
                         array (
                                 array ( Resource::db()->queue()->getFieldError(), SB::$ASC ),
                                 array ( Resource::db()->queue()->getFieldPriority(), SB::$DESC ),
                                 array ( Resource::db()->queue()->getFieldRegistered(), SB::$ASC ),
-                                array ( Resource::db()->queue()->getFieldId(), SB::$ASC ) ) ) );
+                                array ( Resource::db()->queue()->getFieldId(), SB::$ASC ) ) );
 
         // ... ... Types
         if ( !empty( $queueTypes ) )

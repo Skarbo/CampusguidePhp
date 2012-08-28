@@ -13,9 +13,14 @@ function FloorplannerBuildingCmsCampusguidePageMainView(view) {
 
 // VARIABLES
 
+FloorplannerBuildingCmsCampusguidePageMainView.SCALE_SIZE = 0.05;
+
 FloorplannerBuildingCmsCampusguidePageMainView.FLOOR_SELECTOR_COLOR_HIGHLIGHT = "#FFE599";
 FloorplannerBuildingCmsCampusguidePageMainView.FLOOR_SELECTOR_COLOR_DEFAULT = "#CFE2F3";
 FloorplannerBuildingCmsCampusguidePageMainView.FLOOR_SELECTOR_COLOR_SELECTED = "#EA9999";
+
+FloorplannerBuildingCmsCampusguidePageMainView.ELEMENT_COLOR_DEFAULT = "rgba(255,255,222,1)";
+FloorplannerBuildingCmsCampusguidePageMainView.ELEMENT_COLOR_HIGHLIGHT = "#CCCCFF";
 
 // /VARIABLES
 
@@ -150,11 +155,13 @@ FloorplannerBuildingCmsCampusguidePageMainView.prototype.doBindEventHandler = fu
 	// Adding the event listerner for Mozilla
 	if (window.addEventListener)
 		wrapperDom.addEventListener('DOMMouseScroll', function(event) {
+			event.preventDefault();
 			context.handleWrapperScroll(event);
 		}, false);
 
 	// for IE/OPERA etc
 	wrapperDom.onmousewheel = function(event) {
+		event.preventDefault();
 		context.handleWrapperScroll(event);
 	};
 
@@ -207,7 +214,7 @@ FloorplannerBuildingCmsCampusguidePageMainView.prototype.doBindEventHandler = fu
 		context.getView().getController().updateHash({
 			"floor" : event.getFloorId()
 		});
-		
+
 		// Select Floor
 		context.doFloorSelect(event.getFloorId());
 	});
@@ -223,16 +230,26 @@ FloorplannerBuildingCmsCampusguidePageMainView.prototype.doBindEventHandler = fu
  *            scaleUp True if scale up, false if scale down
  */
 FloorplannerBuildingCmsCampusguidePageMainView.prototype.doScale = function(scaleUp) {
+var cursorPosition = this.getStage().getUserPosition();
+if (cursorPosition){
 
+}
+else
+{
+	//CanvasUtil.centerLayer(this.getBuildingLayer());
+}
 	// Scale stage
 	// var scaleOld = this.scale;
-	this.scale += CanvasMainView.SCALE_SIZE * (scaleUp ? 1 : -1);
+	this.scale += FloorplannerBuildingCmsCampusguidePageMainView.SCALE_SIZE * (scaleUp ? 1 : -1);
 	this.scale = Math.max(this.scale, 0);
 	// var scaleDiff = this.scale - scaleOld;
 
 	// Set stage scale
-	this.getStage().setScale(this.scale);
+	this.getBuildingLayer().setScale(this.scale);
 
+	// Center building layer
+	CanvasUtil.centerLayer(this.getBuildingLayer());
+	
 	// Re-draw stage
 	this.getBuildingLayer().draw();
 
@@ -247,7 +264,7 @@ FloorplannerBuildingCmsCampusguidePageMainView.prototype.doFloorSelect = functio
 	// Foreach floors
 	var floorSelectedIndex = null, floorSelectIndex = null;
 	for (i in floors) {
-		
+
 		// Move floor up
 		if (floorSelectedIndex == null && floorSelectIndex != null) {
 			var newY = floors[i].attrs.y - 10;
@@ -279,9 +296,9 @@ FloorplannerBuildingCmsCampusguidePageMainView.prototype.doFloorSelect = functio
 			floors[i].isSelected = false;
 			floors[i].setFill(FloorplannerBuildingCmsCampusguidePageMainView.FLOOR_SELECTOR_COLOR_DEFAULT);
 		}
-		
+
 	}
-	
+
 	// Draw Floor selector layer
 	this.getBuildingFloorSelectorLayer().draw();
 
@@ -316,8 +333,7 @@ FloorplannerBuildingCmsCampusguidePageMainView.prototype.handleBuildingFloorsRet
 		if (!floorSelected && floors[floorId].main) {
 			floorSelected = floorId;
 		}
-		if (floorQuery && floorQuery == floorId)
-		{
+		if (floorQuery && floorQuery == floorId) {
 			floorSelected = floorId;
 		}
 		if (floorOrderLowest == null || floors[floorId].order < floorOrderLowest) {
@@ -325,7 +341,7 @@ FloorplannerBuildingCmsCampusguidePageMainView.prototype.handleBuildingFloorsRet
 		}
 	}
 	floorSelected = floorSelected ? floorSelected : floorOrderLowest;
-	
+
 	// Draw Floors selector
 	this.drawFloorSelector(floors);
 
@@ -383,11 +399,11 @@ FloorplannerBuildingCmsCampusguidePageMainView.prototype.handleMenu = function(m
 	switch (menu) {
 	case "elements":
 	case "navigation":
-		submenuButtons.filter("#[data-menu=" + menu + "]").addClass("highlight");
+		submenuButtons.filter("[data-menu=" + menu + "]").addClass("highlight");
 		break;
 
 	default:
-		submenuButtons.filter("#[data-menu=building]").addClass("highlight");
+		submenuButtons.filter("[data-menu=building]").addClass("highlight");
 		break;
 	}
 
@@ -422,16 +438,14 @@ FloorplannerBuildingCmsCampusguidePageMainView.prototype.draw = function(root) {
 
 	// Initiate building layer
 	this.setBuildingLayer(new Kinetic.Layer({
-		name : "building"
+		name : "building",
+		draggable : true
 	}));
 
 	// Initiate building floor selector layer
 	this.setBuildingFloorSelectorLayer(new Kinetic.Layer({
 		name : "buildingFloorSelector"
 	}));
-
-	// Layer draggable
-	this.getBuildingLayer().draggable(true);
 
 	// add cursor styling
 	this.getBuildingLayer().on("mouseover", function() {
@@ -453,16 +467,16 @@ FloorplannerBuildingCmsCampusguidePageMainView.prototype.drawBuilding = function
 
 	// Draw building border
 	var buildingBorder = new Kinetic.Shape({
-		drawFunc : function() {
-			var context = this.getContext();
+		drawFunc : function(context) {
 			context.beginPath();
-			context.lineWidth = 2;
-			context.strokeStyle = "#BD8A63";
-			context.shadowColor = "#B5B2AD";
-			context.fillStyle = "#DEDFDE";
-			context.shadowBlur = 8;
-			context.shadowOffsetX = 4;
-			context.shadowOffsetY = 4;
+
+			// context.lineWidth = 2;
+			// context.strokeStyle = "#BD8A63";
+			// context.fillStyle = "#DEDFDE";
+			// context.shadowColor = "#B5B2AD";
+			// context.shadowBlur = 8;
+			// context.shadowOffsetX = 4;
+			// context.shadowOffsetY = 4;
 
 			// Foreach coordinates
 			for (i in building.coordinates) {
@@ -474,100 +488,153 @@ FloorplannerBuildingCmsCampusguidePageMainView.prototype.drawBuilding = function
 			}
 
 			context.closePath();
-			context.stroke();
-			context.fill();
+			this.fill(context);
+			this.stroke(context);
+		},
+		fill : "#DEDFDE",
+		stroke : "#BD8A63",
+		strokeWidth : 2,
+		shadow : {
+			color : '#B5B2AD',
+			blur : 8,
+			offset : [ 4, 4 ]
 		}
 	});
 
+	// Set building height and width
+	var buildingMaxBounds = CanvasUtil.getMaxBounds(building.coordinates);
+	var buildingBoundsX = buildingMaxBounds[2] - buildingMaxBounds[0], buildingBoundsY = buildingMaxBounds[3] - buildingMaxBounds[1];
+	this.getBuildingLayer().height = buildingBoundsY;
+	this.getBuildingLayer().width = buildingBoundsX;
+	
 	// Add building to building layer
 	this.getBuildingLayer().add(buildingBorder);
 
 	// Set z-order
 	buildingBorder.setZIndex(1);
 
-	// Draw layer
-	this.getBuildingLayer().draw();
+	// Fit building to canvas	
+	var stageX = this.getStage().getWidth(), stageY = this.getStage().getHeight();
+	var buildingScale = parseFloat((Math.floor(parseFloat(Math.min(stageX / buildingBoundsX, stageY / buildingBoundsY).toFixed(2)) * 20) / 20).toFixed(2));
+	var buildingBoundsNewX = buildingBoundsX * buildingScale, buildingBoundsNewY = buildingBoundsY * buildingScale;
+	var buildingNewX = Math.abs(stageX - buildingBoundsNewX) / 2, buildingNewY = Math.abs(stageY - buildingBoundsNewY) / 2;
 
+	// Draw layer
+	//this.getBuildingLayer().setScale(parseFloat(buildingScale));
+	this.setScale(buildingScale);
+	this.getBuildingLayer().setScale(this.getScale());
+//	this.getBuildingLayer().setX(buildingNewX);
+//	this.getBuildingLayer().setY(buildingNewY);
+	CanvasUtil.centerLayer(this.getBuildingLayer());
+	this.getBuildingLayer().draw();
 };
 
 FloorplannerBuildingCmsCampusguidePageMainView.prototype.drawElements = function(elements) {
+	var context = this;
 
-	var contextMain = this;
-
-	// Initiate rooms group
-	var roomsGroup = new Kinetic.Group({
+	// Initiate elements group
+	var elementsGroup = new Kinetic.Group({
 		"name" : "elements"
 	});
+	
+	// Initiate elements legend group
+	var elementsLegendGroup = new Kinetic.Group({
+		"name" : "elementsLegend"
+	});
 
-	// Room color's
-	var roomColorDefault = "rgba(255,255,222,1)";// "rgba(0,0,0,0.1)";
-	var roomColorHighlight = "#CCCCFF";
-
-	// Foreach rooms
+	// Foreach elements
 	for (elementid in elements) {
 
 		(function() {
 
-			// Get room coordinates
-			var roomIndex = i;
-			var roomCoordinates = elements[elementid].coordinates;
+			// Get element coordinates
+			var elementIndex = i;
+			var elementCoordinates = elements[elementid].coordinates;
 
-			// Draw room
-			var roomShape = new Kinetic.Shape({
-				drawFunc : function() {
-					var context = this.getContext();
-
-					context.save();
+			// Draw element
+			var elementShape = new Kinetic.Shape({
+				drawFunc : function(context) {
+					//context.save();
 					context.beginPath();
-					context.lineWidth = 1;
-					context.strokeStyle = "#EFD7B5";
-					context.fillStyle = this.color;
+					//context.lineWidth = 1;
+					//context.strokeStyle = "#EFD7B5";
+					//context.fillStyle = this.color;
 
 					// Foreach coordinations
-					for ( var j = 0; j < roomCoordinates.length; j++) {
+					for ( var j = 0; j < elementCoordinates.length; j++) {
 						if (j == 0) {
-							context.moveTo(roomCoordinates[j][0], roomCoordinates[j][1]);
+							context.moveTo(elementCoordinates[j][0], elementCoordinates[j][1]);
 						} else {
-							context.lineTo(roomCoordinates[j][0], roomCoordinates[j][1]);
+							context.lineTo(elementCoordinates[j][0], elementCoordinates[j][1]);
 						}
 					}
 
 					context.closePath();
-					context.fill();
-					context.stroke();
-					context.restore();
-
+					this.fill(context);
+					this.stroke(context);
+					//context.restore();
 				},
-				"name" : "room_" + roomIndex
+				name : "element_" + elementIndex,
+				stroke: "#EFD7B5",
+				strokeWidth : 1,
+				fill : FloorplannerBuildingCmsCampusguidePageMainView.ELEMENT_COLOR_DEFAULT
 			});
 
-			// Set room color
-			roomShape.color = roomColorDefault;
-
-			// Mouse over room
-			roomShape.on("mouseover", function() {
-				this.color = roomColorHighlight;
-				contextMain.getBuildingLayer().draw();
+			// Mouse over element
+			elementShape.on("mouseover", function() {
+				this.setFill(FloorplannerBuildingCmsCampusguidePageMainView.ELEMENT_COLOR_HIGHLIGHT);
+				context.getBuildingLayer().draw();
 			});
 
-			// Mouse out room
-			roomShape.on("mouseout", function() {
-				this.color = roomColorDefault;
-				contextMain.getBuildingLayer().draw();
+			// Mouse out element
+			elementShape.on("mouseout", function() {
+				this.setFill(FloorplannerBuildingCmsCampusguidePageMainView.ELEMENT_COLOR_DEFAULT);
+				context.getBuildingLayer().draw();
 			});
 
-			// Add room to group
-			roomsGroup.add(roomShape);
+			// Element bounds
+			var elementBounds = CanvasUtil.getOuterBounds(elementCoordinates);
 
+			// Find angle of first vector
+			var angle = Math.atan2(elementCoordinates[1][1]
+					- elementCoordinates[0][1],
+					elementCoordinates[1][0]
+							- elementCoordinates[0][0]);
+			
+			// Get element center
+			var elementCenter = CanvasUtil.centerCoordinates(elementCoordinates);			
+
+			// Create text legend
+			var elementLegendText = new Kinetic.Text({
+				"text" : elements[elementid].name,
+				x : elementCenter[0],
+				y : elementCenter[1],
+				textFill: '#000',
+				fontSize: 8,
+				listening : false,
+				rotation : angle
+			});
+			
+			// Center text
+			elementLegendText.setX(elementLegendText.getX() - (elementLegendText.getTextWidth() / 2));
+
+			// Add element to group
+			elementsGroup.add(elementShape);
+			
+			// Add element legend to group
+			elementsLegendGroup.add(elementLegendText);
+			
 		})();
 
 	}
 
-	// Add rooms group to building layer
-	this.getBuildingLayer().add(roomsGroup);
+	// Add groups to building layer
+	this.getBuildingLayer().add(elementsGroup);
+	this.getBuildingLayer().add(elementsLegendGroup);
 
 	// Set z-order
-	roomsGroup.setZIndex(100);
+	elementsGroup.setZIndex(100);
+	elementsLegendGroup.setZIndex(150);
 
 	// Draw layer
 	this.getBuildingLayer().draw();
@@ -681,10 +748,10 @@ FloorplannerBuildingCmsCampusguidePageMainView.prototype.drawFloorSelector = fun
 	});
 
 	var legendBox = new Kinetic.Shape({
-		drawFunc : function() {
-			var context = this.getContext();
+		drawFunc : function(context) {
 			CanvasUtil.roundRect(context, 0, 0, 20, 20);
-			this.fillStroke();
+			this.fill(context);
+			this.stroke(context);
 		},
 		fill : "white",
 		stroke : "#B7B7B7",
@@ -693,20 +760,45 @@ FloorplannerBuildingCmsCampusguidePageMainView.prototype.drawFloorSelector = fun
 	});
 
 	var legendText = new Kinetic.Text({
-		x : 10,
-		y : 10,
+		x : 0,
+		y : 0,
 		text : " ",
 		fontSize : 10,
 		fontFamily : "Verdana",
 		textFill : "#434343",
 		align : "center",
-		verticalAlign : "middle",
+		verticalAlign : "bottom",
 		fontStyle : "bold",
-		name : "text"
+		name : "text",
+		height : 20,
+		width : 20
 	});
 
-	groupLegend.add(legendBox);
-	groupLegend.add(legendText);
+	var legend = new Kinetic.Text({
+		x : 0,
+		y : 0,
+		text : " ",
+		fontSize : 10,
+		fontFamily : "Verdana",
+		textFill : "#434343",
+		align : "center",
+		verticalAlign : "bottom",
+		fontStyle : "bold",
+		name : "text",
+		// height : 20,
+		// width : 20,
+		padding : 5,
+		cornerRadius : 2,
+		fill : "#FFF",
+		stroke : "#B7B7B7",
+		strokeWidth : 2,
+		name : "text",
+		lineHeight : "1"
+	});
+
+	// groupLegend.add(legendBox);
+	// groupLegend.add(legendText);
+	groupLegend.add(legend);
 	group.add(groupLegend);
 
 	// /LEGEND

@@ -6,8 +6,7 @@ abstract class AppCampusguideMainController extends CampusguideMainController
     // VARIABLES
 
 
-    const URI_PAGE = 1;
-    const URI_ID = 2;
+    const URI_ID = 1;
 
     /**
      * @var MobiledetectApi
@@ -20,9 +19,9 @@ abstract class AppCampusguideMainController extends CampusguideMainController
     // CONSTRUCTOR
 
 
-    public function __construct( DbApi $db_api, AbstractDefaultLocale $locale, View $view, $mode )
+    public function __construct( Api $api, View $view )
     {
-        parent::__construct( $db_api, $locale, $view, $mode );
+        parent::__construct( $api, $view );
 
         $this->setMobiledetectApi( new MobiledetectApi() );
     }
@@ -67,14 +66,6 @@ abstract class AppCampusguideMainController extends CampusguideMainController
     protected static function getId()
     {
         return intval( self::getURI( self::URI_ID, 0 ) );
-    }
-
-    /**
-     * @return string Page given i URI, null if none given
-     */
-    protected static function getPage()
-    {
-        return self::getURI( self::URI_PAGE );
     }
 
     // ... ... /STATIC
@@ -180,7 +171,7 @@ EOD;
 
         $code = sprintf( $code, $this->getJavascriptView(), $this->getViewWrapperId(),
                 $this->getJavascriptController(), $this->getMode(),
-                json_encode( array ( "page" => self::getPage(), "id" => self::getId() ) ) );
+                json_encode( array ( "id" => self::getId() ) ) );
 
         // Add javascript code
         $this->addJavascriptCode( $code );

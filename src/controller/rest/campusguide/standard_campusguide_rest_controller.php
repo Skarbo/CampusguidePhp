@@ -326,11 +326,11 @@ abstract class StandardCampusguideRestController extends CampusguideRestControll
     protected function doGetForeignCommand()
     {
 
-        // Set Model
-        $this->setModel( $this->getStandardDao()->getForeign( array ( self::getId() ) ) );
-
         // Set Model list
         $this->setModelList( $this->getStandardDao()->getForeign( self::getIds() ) );
+
+        // Set Model
+        $this->setModel( $this->getModelList()->get(0) );
 
         // Set status scode
         $this->setStatusCode( self::STATUS_OK );

@@ -16,11 +16,8 @@ function __autoload( $class_name )
     }
 }
 
-// Generate mode
-$mode = isset( $_GET[ "mode" ] ) && in_array( $_GET[ "mode" ], CampusguideApi::$MODES ) ? $_GET[ "mode" ] : CampusguideApi::MODE_TEST;
-
 // Initiate CampusguideApi
-$campusguide_api = new CampusguideApi( $mode );
+$campusguide_api = new CampusguideApi( CampusguideApi::MODE_TEST );
 
 // Set Debug handler
 $campusguide_api->setDebug(
@@ -142,7 +139,7 @@ $campusguide_api->setKillHandler( new ApirestKillHandler() );
 $campusguide_api->setOutputHandler( new ApirestOutputHandler() );
 
 // Do request
-$campusguide_api->doRequest( new DoublearrayCore( $mapping ) );
+$campusguide_api->doRequest(  $mapping );
 
 // Destruct
 $campusguide_api->destruct();

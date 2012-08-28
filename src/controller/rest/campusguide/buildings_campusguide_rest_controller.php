@@ -21,9 +21,9 @@ class BuildingsCampusguideRestController extends StandardCampusguideRestControll
     // ... CONSTRUCT
 
 
-    public function __construct( $db_api, $locale, $view, $mode )
+    public function __construct( $api, $view )
     {
-        parent::__construct( $db_api, $locale, $view, $mode );
+        parent::__construct( $api, $view );
 
         $this->setBuildingValidator( new BuildingValidator( $this->getLocale() ) );
     }

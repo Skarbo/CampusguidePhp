@@ -1,6 +1,6 @@
 <?php
 
-class BuildingsCmsCampusguideMainView extends CmsCampusguideMainView
+class BuildingsCmsCampusguideMainView extends CmsCampusguideMainView implements BuildingsCmsCampusguideInterfaceView, BuildingcreatorBuildingsCmsCampusguideInterfaceView
 {
 
     // VARIABLES
@@ -16,6 +16,10 @@ class BuildingsCmsCampusguideMainView extends CmsCampusguideMainView
      * @var BuildingBuildingsCmsCampusguidePageMainView
      */
     private $buildingPage;
+    /**
+     * @var BuildingcreatorBuildingsCmsCampusguidePageMainView
+     */
+    private $buildingcreatorPage;
     /**
      * @var FloorplannerBuildingsCmsCampusguidePageMainView
      */
@@ -69,6 +73,22 @@ class BuildingsCmsCampusguideMainView extends CmsCampusguideMainView
     }
 
     /**
+     * @return BuildingcreatorBuildingsCmsCampusguidePageMainView
+     */
+    public function getBuildingcreatorPage()
+    {
+        return $this->buildingcreatorPage;
+    }
+
+    /**
+     * @param BuildingcreatorBuildingsCmsCampusguidePageMainView $buildingcreatorPage
+     */
+    public function setBuildingcreatorPage( BuildingcreatorBuildingsCmsCampusguidePageMainView $buildingcreatorPage )
+    {
+        $this->buildingcreatorPage = $buildingcreatorPage;
+    }
+
+    /**
      * @return FloorplannerBuildingsCmsCampusguidePageMainView
      */
     public function getFloorplannerPage()
@@ -107,6 +127,22 @@ class BuildingsCmsCampusguideMainView extends CmsCampusguideMainView
         return self::$ID_CMS_BUILDINGS_WRAPPER;
     }
 
+    /**
+     * @see BuildingsCmsCampusguideInterfaceView::getBuilding()
+     */
+    public function getBuilding()
+    {
+        return $this->getController()->getBuilding();
+    }
+
+    /**
+     * @see BuildingcreatorBuildingsCmsCampusguideInterfaceView::getBuildingFloors()
+     */
+    public function getBuildingFloors()
+    {
+        return $this->getController()->getBuildingFloors();
+    }
+
     // ... /GET
 
 
@@ -121,18 +157,22 @@ class BuildingsCmsCampusguideMainView extends CmsCampusguideMainView
 
         // Overview
         $this->getPageMenuPresenter()->addItem( "Overview",
-                Resource::url()->campusguide()->cms()->building()->getOverviewPage( $this->getController()->getMode() ),
+                Resource::url()->campusguide()->cms()->building()->getOverviewPage( $this->getMode() ),
                 $this->getController()->isPageOverview() );
+
+        // Building Creator
+        $this->getPageMenuPresenter()->addItem( "Building Creator",
+                Resource::url()->campusguide()->cms()->building()->getBuildingcreatorPage( $this->getMode() ),
+                $this->getController()->isPageBuildingcreator() );
 
         // Floor Planner
         $this->getPageMenuPresenter()->addItem( "Floor Planner",
-                Resource::url()->campusguide()->cms()->building()->getFloorplannerPage(
-                        $this->getController()->getMode() ), $this->getController()->isPageFloorplanner() );
+                Resource::url()->campusguide()->cms()->building()->getFloorplannerPage( $this->getMode() ),
+                $this->getController()->isPageFloorplanner() );
 
         // New Building
         $this->getPageMenuPresenter()->addItem( "New",
-                Resource::url()->campusguide()->cms()->building()->getNewBuildingPage(
-                        $this->getController()->getMode() ),
+                Resource::url()->campusguide()->cms()->building()->getNewBuildingPage( $this->getMode() ),
                 $this->getController()->isPageBuilding() && $this->getController()->isActionNew(),
                 ItemPageMenuCmsCampusguidePresenterView::ALIGN_RIGHT );
 
@@ -149,6 +189,7 @@ class BuildingsCmsCampusguideMainView extends CmsCampusguideMainView
         parent::before();
         $this->setOverviewPage( new OverviewBuildingsCmsCampusguidePageMainView( $this ) );
         $this->setBuildingPage( new BuildingBuildingsCmsCampusguidePageMainView( $this ) );
+        $this->setBuildingcreatorPage( new BuildingcreatorBuildingsCmsCampusguidePageMainView( $this ) );
         $this->setFloorplannerPage( new FloorplannerBuildingsCmsCampusguidePageMainView( $this ) );
     }
 
@@ -173,6 +214,11 @@ class BuildingsCmsCampusguideMainView extends CmsCampusguideMainView
         else if ( $this->getController()->isPageBuilding() )
         {
             $this->getBuildingPage()->draw( $wrapper );
+        }
+        // Buildingcreator page
+        else if ( $this->getController()->isPageBuildingcreator() )
+        {
+            $this->getBuildingcreatorPage()->draw( $wrapper );
         }
         // Floorplanner page
         else if ( $this->getController()->isPageFloorplanner() )

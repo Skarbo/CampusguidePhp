@@ -202,17 +202,17 @@ abstract class CmsCampusguideMainView extends MainView
 
         // Menu
         $this->getControllerMenuPresenter()->addItem( "Home",
-                Resource::url()->campusguide()->cms()->getHome( $this->getController()->getMode() ),
+                Resource::url()->campusguide()->cms()->getHome( $this->getMode() ),
                 $this->getController()->getControllerName() == "home" );
 
         // Facilities
         $this->getControllerMenuPresenter()->addItem( "Facilities",
-                Resource::url()->campusguide()->cms()->facility()->getController( $this->getController()->getMode() ),
+                Resource::url()->campusguide()->cms()->facility()->getController( $this->getMode() ),
                 $this->getController()->getControllerName() == FacilitiesCmsCampusguideMainController::$CONTROLLER_NAME );
 
         // Buildings
         $this->getControllerMenuPresenter()->addItem( "Buildings",
-                Resource::url()->campusguide()->cms()->building()->getController( $this->getController()->getMode() ),
+                Resource::url()->campusguide()->cms()->building()->getController( $this->getMode() ),
                 $this->getController()->getControllerName() == BuildingsCmsCampusguideMainController::$CONTROLLER_NAME );
 
     }

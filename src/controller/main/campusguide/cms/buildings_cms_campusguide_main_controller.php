@@ -1,6 +1,6 @@
 <?php
 
-class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
+class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController implements BuildingsCmsCampusguideInterfaceView, BuildingcreatorBuildingsCmsCampusguideInterfaceView
 {
 
     // VARIABLES
@@ -9,6 +9,7 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
     const PAGE_OVERVIEW = "overview";
     const PAGE_MAP = "map";
     const PAGE_BUILDING = "building";
+    const PAGE_BUILDINGCREATOR = "buildingcreator";
     const PAGE_FLOORPLANNER = "floorplanner";
 
     const SUCCESS_BUILDING_ADDED = "building_added";
@@ -21,6 +22,10 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
      * @var BuildingModel
      */
     private $building;
+    /**
+     * @var FloorBuildingListModel
+     */
+    private $buildingFloors;
     /**
      * @var BuildingModel
      */
@@ -53,6 +58,9 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
         parent::__construct( $api, $view );
         $this->setFacilities( new FacilityListModel() );
         $this->setBuildingValidator( new BuildingValidator( $this->getLocale() ) );
+
+        $this->setBuilding( BuildingFactoryModel::createBuilding( "", 0, array () ) );
+        $this->setBuildingFloors( FloorBuildingFactoryModel::createFloorBuilding( 0, "", 0, array () ) );
     }
 
     // /CONSTRUCTOR
@@ -75,9 +83,25 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
     /**
      * @param BuildingModel $building
      */
-    public function setBuilding( BuildingModel $building )
+    private function setBuilding( BuildingModel $building )
     {
         $this->building = $building;
+    }
+
+    /**
+     * @return FloorBuildingListModel
+     */
+    public function getBuildingFloors()
+    {
+        return $this->buildingFloors;
+    }
+
+    /**
+     * @param FloorBuildingListModel $buildingFloors
+     */
+    private function setBuildingFloors( FloorBuildingListModel $buildingFloors )
+    {
+        $this->buildingFloors = $buildingFloors;
     }
 
     /**
@@ -228,6 +252,14 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
     public function isPageBuilding()
     {
         return self::getPage() == self::PAGE_BUILDING;
+    }
+
+    /**
+     * @return boolean True if page is buildingcreator
+     */
+    public function isPageBuildingcreator()
+    {
+        return self::getPage() == self::PAGE_BUILDINGCREATOR;
     }
 
     /**
@@ -481,9 +513,47 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
         // Get Building
         $this->setBuilding( $this->getBuildingDao()->get( self::getId() ) );
 
+        // Building must exist
+        if ( !$this->getBuilding() )
+        {
+            throw new BadrequestException( "Building does not exist" );
+        }
+
     }
 
     // ... ... /FLOORPLANNER
+
+
+    // ... ... BUILDINGCREATOR
+
+
+    /**
+     * Do Buildingcreator page
+     *
+     * @throws BadrequestException
+     */
+    private function doBuildingcreatorPage()
+    {
+
+        // Get Building
+        $this->setBuilding( $this->getCampusguideHandler()->getBuildingDao()->get( self::getId() ) );
+
+        // Building must exist
+        if ( !$this->getBuilding() )
+        {
+            throw new BadrequestException( "Building does not exist" );
+        }
+
+        // Get floors
+        $this->setBuildingFloors(
+                $this->getCampusguideHandler()->getFloorBuildingDao()->getForeign(
+                        array ( $this->getBuilding()->getId() ) ) );
+
+        DebugHandler::doDebug( DebugHandler::LEVEL_LOW, new DebugException( $this->getBuildingFloors() ) );
+
+    }
+
+    // ... ... /BUILDINGCREATOR
 
 
     // ... /DO
@@ -504,7 +574,7 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
         }
 
         // Add Kinectic api
-        if ( $this->isPageFloorplanner() && self::getId() )
+        if ( ( $this->isPageFloorplanner() || $this->isPageBuildingcreator() ) && self::getId() )
         {
             $this->addJavascriptFile( Resource::javascript()->getKineticApiFile() );
         }
@@ -530,6 +600,11 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
             else if ( $this->isPageBuilding() )
             {
                 $this->doBuildingPage();
+            }
+            // Building creator
+            else if ( $this->isPageBuildingcreator() )
+            {
+                $this->doBuildingcreatorPage();
             }
             // Floor planner
             else if ( $this->isPageFloorplanner() )

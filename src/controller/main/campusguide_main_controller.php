@@ -10,6 +10,10 @@ abstract class CampusguideMainController extends MainController
 
 
     /**
+     * @var CampusguideHandler
+     */
+    private $campusguideHandler;
+    /**
      * @var FacilityDao
      */
     private $facilityDao;
@@ -44,6 +48,7 @@ abstract class CampusguideMainController extends MainController
 
     // ... /DAO
 
+
     /**
      * @var array
      */
@@ -58,6 +63,8 @@ abstract class CampusguideMainController extends MainController
     public function __construct( Api $api, View $view )
     {
         parent::__construct( $api, $view );
+
+        $this->setCampusguideHandler( new CampusguideHandler( $this->getDbApi() ) );
 
         $this->setFacilityDao( new FacilityDbDao( $this->getDbApi() ) );
         $this->setBuildingDao( new BuildingDbDao( $this->getDbApi() ) );
@@ -77,6 +84,22 @@ abstract class CampusguideMainController extends MainController
 
     // ... GETTERS/SETTERS
 
+
+    /**
+     * @return CampusguideHandler
+     */
+    protected function getCampusguideHandler()
+    {
+        return $this->campusguideHandler;
+    }
+
+    /**
+     * @param CampusguideHandler $campusguideHandler
+     */
+    private function setCampusguideHandler( CampusguideHandler $campusguideHandler )
+    {
+        $this->campusguideHandler = $campusguideHandler;
+    }
 
     // ... ... DAO
 
@@ -214,7 +237,9 @@ abstract class CampusguideMainController extends MainController
 
     // ... /GETTERS/SETTERS
 
+
     // ... GET
+
 
     /**
      * @return array:
@@ -225,6 +250,7 @@ abstract class CampusguideMainController extends MainController
     }
 
     // ... /GET
+
 
     // ... ADD
 
@@ -258,7 +284,6 @@ EOD;
     {
         $this->errors[] = $exception;
     }
-
 
     // ... /ADD
 

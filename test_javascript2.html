@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link type="text/css" rel="stylesheet" href="css/campusguide.css.php">
 <style type="text/css">
 input.hint, input.hint2
 {
@@ -10,19 +11,12 @@ input.hint, input.hint2
 }
 </style>
 <script type="text/javascript" src="../KrisSkarboApi/javascript/api/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="../KrisSkarboApi/javascript/core/jquery_core.js"></script>
+<script type="text/javascript" src="javascript/campusguide.js.php"></script>
 <script type="text/javascript">
 
 $(document).ready(function() {
   
-	$(".testHint").inputHint({ "class" : "hint2" });
-	
-	$(".testHint2").inputHint();
-	
-	$(".testHint3").inputHint();
-	$(".testHint3").inputHint("value", "Test new value3");
-	
-	$("#input4").inputHint("value", "Test new value4");
+	$(".gui").gui();
 	
 });
 
@@ -30,18 +24,22 @@ $(document).ready(function() {
 </head>
 <body>
 
-<form id="testForm" method="get" action="#">
+<form action="?" enctype="multipart/form-data" method="get">
+<div class="gui theme0">
+    <input class="guiComp" data-type="input" />
+    <div class="guiComp">Button</div>
+    <div class="guiComp checked" data-radio-name="radio" data-type="radio" id="radioTest">Radio1</div>
+    <div class="guiComp" data-radio-name="radio" data-type="radio">Radio2</div>
+</div>   
 
-    <input name="input1" type="text" class="testHint" title="Test hint" autocomplete="off" />
-    
-    <input name="input2" type="text" class="testHint2" autocomplete="off" />
-    
-    <input name="input3" type="text" class="testHint3" title="Test hint3" value="Test value3" autocomplete="off" />
-    
-    <input name="input4" id="input4" type="text" class="testHint2" autocomplete="off" />
+<div class="gui theme0">
+    <div class="guiComp" data-radio-name="radio" data-type="radio" id="radioTest2" data-value="test"><div data-icon="star"></div></div>
+    <div class="guiComp" data-type="file" data-name="file">File upload</div>
+</div>
 
-    <input type="submit" />
+<input type="submit" />
 </form>
+  
 
 </body>
 </html>

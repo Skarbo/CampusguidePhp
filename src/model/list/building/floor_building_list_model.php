@@ -19,6 +19,20 @@ class FloorBuildingListModel extends StandardListModel
 
 
     /**
+     * @return number Next order in list
+     */
+    public function getNextOrder()
+    {
+        $orderLargest = -1;
+        for ( $this->rewind(); $this->valid(); $this->next() )
+        {
+            $floor = $this->current();
+            $orderLargest = $floor->getOrder() > $orderLargest ? $floor->getOrder() : $orderLargest;
+        }
+        return $orderLargest + 1;
+    }
+
+    /**
      * @see IteratorCore::get()
      * @return FloorBuildingModel
      */
@@ -60,7 +74,7 @@ class FloorBuildingListModel extends StandardListModel
     // ... /STATIC
 
 
-// /FUNCTIONS
+    // /FUNCTIONS
 
 
 }

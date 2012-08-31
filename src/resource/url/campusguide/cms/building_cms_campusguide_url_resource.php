@@ -55,6 +55,11 @@ class BuildingCmsCampusguideUrlResource extends ClassCore
         return self::getPage( BuildingsCmsCampusguideMainController::PAGE_MAP, $mode, $url );
     }
 
+    public function getBuildingcreatorPage( $mode = null, $url = "" )
+    {
+        return self::getPage( BuildingsCmsCampusguideMainController::PAGE_BUILDINGCREATOR, $mode, $url );
+    }
+
     public function getFloorplannerPage( $mode = null, $url = "" )
     {
         return self::getPage( BuildingsCmsCampusguideMainController::PAGE_FLOORPLANNER, $mode, $url );

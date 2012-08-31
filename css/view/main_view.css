@@ -40,3 +40,19 @@
 *[data-icon=cross]:AFTER {
 	content: "X";
 }
+
+*[data-icon=up]:AFTER {
+	content: "^";
+}
+
+*[data-icon=down]:AFTER {
+	content: "_";
+}
+
+*[data-icon=star]:AFTER {
+	content: "*";
+}
+
+*[data-icon=map]:AFTER {
+	content: "m";
+}

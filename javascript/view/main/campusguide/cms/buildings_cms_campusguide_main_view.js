@@ -12,6 +12,7 @@ function BuildingsCmsCampusguideMainView(wrapperId) {
 	this.marker = null;
 	this.markerResult = null;
 	this.floorplannerPage = new FloorplannerBuildingCmsCampusguidePageMainView(this);
+	this.buildingcreatorPage = new BuildingcreatorBuildingCmsCampusguidePageMainView(this);
 	this.buildingPage = new BuildingCmsCampusguidePageMainView(this);
 };
 
@@ -37,6 +38,13 @@ BuildingsCmsCampusguideMainView.prototype.getController = function() {
  */
 BuildingsCmsCampusguideMainView.prototype.getFloorplannerPage = function() {
 	return this.floorplannerPage;
+};
+
+/**
+ * @returns {BuildingcreatorBuildingCmsCampusguidePageMainView}
+ */
+BuildingsCmsCampusguideMainView.prototype.getBuildingcreatorPage = function() {
+	return this.buildingcreatorPage;
 };
 
 /**
@@ -74,6 +82,10 @@ BuildingsCmsCampusguideMainView.prototype.draw = function(controller) {
 	// Do Floorplanner
 	if (this.getController().getQuery().page == "floorplanner" && this.getController().getQuery().id) {
 		this.getFloorplannerPage().draw(this.getWrapperElement().find("#floorplanner_page_wrapper"));
+	}
+	// Do Buildingcreator
+	else if (this.getController().getQuery().page == "buildingcreator" && this.getController().getQuery().id) {
+		this.getBuildingcreatorPage().draw(this.getWrapperElement().find("#buildingcreator_page_wrapper"));
 	}
 	// Do building
 	else if (this.getController().getQuery().page == "building") {

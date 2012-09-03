@@ -55,10 +55,30 @@ class BuildingCmsCampusguideUrlResource extends ClassCore
         return self::getPage( BuildingsCmsCampusguideMainController::PAGE_MAP, $mode, $url );
     }
 
-    public function getBuildingcreatorPage( $mode = null, $url = "" )
+    // ... ... BUILDING CREATOR
+
+    public function getBuildingcreatorPage( $action, $mode = null, $url = "" )
     {
-        return self::getPage( BuildingsCmsCampusguideMainController::PAGE_BUILDINGCREATOR, $mode, $url );
+        return self::getPage( BuildingsCmsCampusguideMainController::PAGE_BUILDINGCREATOR, $mode,
+                sprintf( "/%s%s", $action, $url ) );
     }
+
+    public function getBuildingcreatorViewPage( $id, $mode = null, $url = "" )
+    {
+        return $this->getBuildingcreatorPage( CmsCampusguideMainController::ACTION_VIEW, $mode, sprintf( "/%s%s", $id, $url ) );
+    }
+
+    public function getBuildingcreatorEditPage( $id, $type, $mode = null, $url = "" )
+    {
+        return $this->getBuildingcreatorPage( CmsCampusguideMainController::ACTION_EDIT, $mode, sprintf( "/%s/%s%s", $id, $type, $url ) );
+    }
+
+    public function getBuildingcreatorEditFloorsPage( $id, $mode = null, $url = "" )
+    {
+        return $this->getBuildingcreatorEditPage( $id, BuildingsCmsCampusguideMainController::TYPE_FLOORS, $mode, $url );
+    }
+
+    // ... ... /BUILDING CREATOR
 
     public function getFloorplannerPage( $mode = null, $url = "" )
     {

@@ -238,76 +238,40 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
         // ... ... ... Content
         $content = Xhtml::div()->class_( "content" );
 
-        $floorForm = Xhtml::form()->method( FormXhtml::$METHOD_POST )->action( "?" )->autocomplete( false )->id("floors_form");
+        $floorForm = Xhtml::form()->method( FormXhtml::$METHOD_POST )->action(
+                Resource::url()->campusguide()->cms()->building()->getBuildingcreatorEditFloorsPage(
+                        $this->getBuilding()->getId(), $this->getView()->getMode() ) )->autocomplete( false )->id(
+                "floors_form" );
 
-        $floorTable = Xhtml::div()->class_( Resource::css()->getTable(), "floors" );
+        $floorTable = Xhtml::table()->class_( "floors" );
+        $floorsBody = Xhtml::tbody();
+        $floorsEditBody = Xhtml::tbody();
 
         // For each floors
         for ( $this->getBuildingFloors()->rewind(); $this->getBuildingFloors()->valid(); $this->getBuildingFloors()->next() )
         {
             $floor = $this->getBuildingFloors()->current();
 
-            // Create floors row
-            $floorRow = self::createFloorsRow($floor);
-
-            /*
-            $floorRow = Xhtml::div()->class_( Resource::css()->getTableRow(), "floor" )->attr( "data-floor",
-                    $floor->getId() );
-
-            // Floor name
-            $floorRow->addContent( Xhtml::div( $floor->getName() )->class_( "name" ) );
-            $floorRow->addContent(
-                    Xhtml::div(
-                            Xhtml::input( $floor->getName(), sprintf( "floor_name[%s]", $floor->getId() ) )->attr(
-                                    "data-hint", "Name" ) )->class_( "name_edit" ) );
-
-            // Floor map
-            $floorRow->addContent(
-                    Xhtml::div(
-                            Xhtml::div(
-                                    Xhtml::div( Xhtml::div()->attr( "data-icon", "map" ) )->attr( "data-type", "file" )->class_(
-                                            Resource::css()->gui()->getComponent() ) )->class_(
-                                    Resource::css()->gui()->getGui() ) )->title( "Map" )->class_( "map_edit" ) );
-
-            // Floor order
-            $floorRow->addContent(
-                    Xhtml::div( Xhtml::div()->attr( "data-icon", "up" )->class_( "up" )->title( "Order up" ) )->addContent(
-                            Xhtml::div()->attr( "data-icon", "down" )->class_( "down" )->title( "Order down" ) )->addContent(
-                            Xhtml::input( $floor->getOrder(), sprintf( "floor_order[%s]", $floor->getId() ) ) )->class_(
-                            Resource::css()->getRight(), "order_edit" ) );
-
-            // Floor main
-            $floorRow->addContent(
-                    Xhtml::div( $floor->getMain() ? Xhtml::div()->attr( "data-icon", "star" ) : "" )->class_(
-                            Resource::css()->getRight(), "main" ) );
-            $floorRow->addContent(
-                    Xhtml::div(
-                            Xhtml::div(
-                                    Xhtml::div( Xhtml::div()->attr( "data-icon", "star" ) )->attr( "data-type",
-                                            "radio" )->attr( "data-radio-name", "floor_main" )->attr( "data-value",
-                                            $floor->getId() )->class_( Resource::css()->gui()->getComponent(),
-                                            $floor->getMain() ? "checked" : "" ) )->class_(
-                                    Resource::css()->gui()->getGui() ) )->class_( Resource::css()->getRight(), "main_edit" ) );
-*/
-            $floorTable->addContent( $floorRow );
+            // Draw Floors row
+            $this->drawFloorsRow( $floorsBody, $floorsEditBody, $floor );
         }
 
         // No floors
         if ( $this->getBuildingFloors()->isEmpty() )
         {
-            $floorTable->addContent( Xhtml::div( Xhtml::italic( "No floors" ) ) );
+            $floorsBody->addContent( Xhtml::tr( Xhtml::td( Xhtml::italic( "No floors" ) )->colspan( 5 ) ) );
         }
 
         // New floor
+        $floorsNewBody = Xhtml::tbody();
         $floorOrderNext = $this->getBuildingFloors()->getNextOrder();
-        $floorNew = FloorBuildingFactoryModel::createFloorBuilding(0, "", $floorOrderNext, array());
-        $floorNew->setId("new");
-        $floorNewRow = self::createFloorsRow($floorNew);
-        $floorNewRow->addClass("new");
-        $floorTable->addContent( $floorNewRow );
+        $floorNew = FloorBuildingFactoryModel::createFloorBuilding( 0, "", $floorOrderNext, array () );
+        $floorNew->setId( "new" );
+        $this->drawFloorsRow( null, $floorsNewBody, $floorNew );
 
         // Floors error
-        $floorsError = Xhtml::div()->class_(Resource::css()->campusguide()->cms()->getError())->id("floors_error");
+        $floorsError = Xhtml::div()->class_( Resource::css()->campusguide()->cms()->getError() )->id(
+                "floors_error" );
 
         // Floor buttons
         $floorButtons = Xhtml::div()->class_( "floor_buttons", Resource::css()->gui()->getGui(), "theme4" );
@@ -317,6 +281,10 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
         $floorButtons->addContent(
                 Xhtml::div( "Apply" )->id( "floors_apply" )->class_( Resource::css()->gui()->getComponent(),
                         Resource::css()->gui()->getButton() )->attr( "data-disabled", "true" ) );
+
+        $floorTable->addContent( $floorsBody );
+        $floorTable->addContent( $floorsEditBody );
+        $floorTable->addContent( $floorsNewBody );
 
         $floorForm->addContent( $floorTable );
         $floorForm->addContent( $floorsError );
@@ -402,66 +370,87 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
 
     }
 
-    // ... ... /CREATOR
-
-
-    // ... /DRAW
-
-
-    // ... CREATE
-
-
-    /**
-     * @param FloorBuildingModel $floor
-     * @return AbstractXhtml
-     */
-    private static function createFloorsRow( $floor )
+    private function drawFloorsRow( AbstractXhtml $body, AbstractXhtml $bodyAdmin, FloorBuildingModel $floor )
     {
 
+        $isNew = $floor->getId() == "new";
+
         // Create row
-        $row = Xhtml::div()->class_( Resource::css()->getTableRow(), "floor" )->attr( "data-floor",
-                    $floor->getId() );
+        $row = Xhtml::tr()->class_( "floor" )->attr( "data-floor", $floor->getId() );
+        $rowEdit = Xhtml::tr()->class_( "floor", $floor->getId() != "new" ? "edit" : "new" )->attr( "data-floor",
+                $floor->getId() );
+
+        // Floor delete
+        if ( !$isNew )
+        {
+            $rowEdit->addContent(
+                    Xhtml::td(
+                            Xhtml::div(
+                                    Xhtml::div( Xhtml::div()->attr( "data-icon", "cross" ) )->attr( "data-type",
+                                            "toggle" )->attr( "data-name", "floor_delete[]" )->attr( "data-value",
+                                            $floor->getId() )->class_( Resource::css()->gui()->getComponent() ) )->class_(
+                                    Resource::css()->gui()->getGui() ) )->class_( "delete_edit" )->title( "Delete" ) );
+        }
+        else
+        {
+            $rowEdit->addContent( Xhtml::td( Xhtml::$NBSP )->class_( "delete_edit" ) );
+        }
 
         // Floor name
-        $row->addContent( Xhtml::div( $floor->getName() )->class_( "name" ) );
-        $row->addContent(
-                Xhtml::div(
+        $row->addContent( Xhtml::td( $floor->getName() )->class_( "name" ) );
+        $rowEdit->addContent(
+                Xhtml::td(
                         Xhtml::input( $floor->getName(), sprintf( "floor_name[%s]", $floor->getId() ) )->attr(
                                 "data-hint", "Name" ) )->class_( "name_edit" ) );
 
         // Floor map
-        $row->addContent(
-                Xhtml::div(
+        $rowEdit->addContent(
+                Xhtml::td(
                         Xhtml::div(
-                                Xhtml::div( Xhtml::div()->attr( "data-icon", "map" ) )->attr( "data-type", "file" )->attr("data-name", sprintf( "floor_map[%s]", $floor->getId() ))->class_(
+                                Xhtml::div( Xhtml::div()->attr( "data-icon", "map" ) )->attr( "data-type", "file" )->attr(
+                                        "data-name", sprintf( "floor_map[%s]", $floor->getId() ) )->class_(
                                         Resource::css()->gui()->getComponent() ) )->class_(
                                 Resource::css()->gui()->getGui() ) )->title( "Map" )->class_( "map_edit" ) );
 
         // Floor order
-        $row->addContent(
-                Xhtml::div( Xhtml::div()->attr( "data-icon", "up" )->class_( "up" )->title( "Order up" ) )->addContent(
-                        Xhtml::div()->attr( "data-icon", "down" )->class_( "down" )->title( "Order down" ) )->addContent(
-                        Xhtml::input( $floor->getOrder(), sprintf( "floor_order[%s]", $floor->getId() ) ) )->class_(
-                        Resource::css()->getRight(), "order_edit" ) );
+        if ( !$isNew )
+        {
+            $rowEdit->addContent(
+                    Xhtml::td( Xhtml::div()->attr( "data-icon", "up" )->class_( "up" )->title( "Order up" ) )->addContent(
+                            Xhtml::div()->attr( "data-icon", "down" )->class_( "down" )->title( "Order down" ) )->addContent(
+                            Xhtml::input( $floor->getOrder(), sprintf( "floor_order[%s]", $floor->getId() ) ) )->class_(
+                            Resource::css()->getRight(), "order_edit" ) );
+        }
+        else
+        {
+            $rowEdit->addContent( Xhtml::td( Xhtml::$NBSP )->class_( "order_edit" ) );
+        }
 
         // Floor main
         $row->addContent(
-                Xhtml::div( $floor->getMain() ? Xhtml::div()->attr( "data-icon", "star" ) : "" )->class_(
-                        Resource::css()->getRight(), "main" ) );
-        $row->addContent(
-                Xhtml::div(
+                Xhtml::td( $floor->getMain() ? Xhtml::div()->attr( "data-icon", "star" ) : "" )->class_(
+                        Resource::css()->getRight(), "main" )->title( "Main floor" ) );
+        $rowEdit->addContent(
+                Xhtml::td(
                         Xhtml::div(
                                 Xhtml::div( Xhtml::div()->attr( "data-icon", "star" ) )->attr( "data-type", "radio" )->attr(
                                         "data-radio-name", "floor_main" )->attr( "data-value", $floor->getId() )->class_(
                                         Resource::css()->gui()->getComponent(), $floor->getMain() ? "checked" : "" ) )->class_(
-                                Resource::css()->gui()->getGui() ) )->class_( Resource::css()->getRight(), "main_edit" ) );
+                                Resource::css()->gui()->getGui() ) )->class_( Resource::css()->getRight(), "main_edit" )->title(
+                        "Main floor" ) );
 
-        // Return row
-        return $row;
+        if ( !$isNew && $body )
+        {
+            $body->addContent( $row );
+        }
+        $bodyAdmin->addContent( $rowEdit );
 
     }
 
-    // ... /CREATE
+    // ... ... /CREATOR
+
+
+    // ... /DRAW
 
 
     // /FUNCTIONS

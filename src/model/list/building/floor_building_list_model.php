@@ -33,6 +33,16 @@ class FloorBuildingListModel extends StandardListModel
     }
 
     /**
+     * Sort list by Order
+     */
+    public function sortByOrder()
+    {
+        usort($this->getArray(), function( FloorBuildingModel $floorLeft, FloorBuildingModel $floorRight ){
+            return $floorLeft->getOrder() == $floorRight->getOrder() ? 0 : ( $floorLeft->getOrder() < $floorRight->getOrder() ? -1 : 1 );
+        });
+    }
+
+    /**
      * @see IteratorCore::get()
      * @return FloorBuildingModel
      */

@@ -162,7 +162,7 @@ class BuildingsCmsCampusguideMainView extends CmsCampusguideMainView implements 
 
         // Building Creator
         $this->getPageMenuPresenter()->addItem( "Building Creator",
-                Resource::url()->campusguide()->cms()->building()->getBuildingcreatorPage( $this->getMode() ),
+                Resource::url()->campusguide()->cms()->building()->getBuildingcreatorPage( "", $this->getMode() ),
                 $this->getController()->isPageBuildingcreator() );
 
         // Floor Planner

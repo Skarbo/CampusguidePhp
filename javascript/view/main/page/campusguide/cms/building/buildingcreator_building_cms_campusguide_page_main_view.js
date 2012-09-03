@@ -33,7 +33,7 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getFloorsSidebar = f
  * @return {Object}
  */
 BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getFloorsTable = function() {
-	return this.getFloorsSidebar().find(".table.floors");
+	return this.getFloorsSidebar().find("table.floors");
 };
 
 /**
@@ -47,7 +47,7 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getFloorsButtons = f
  * @return {Object}
  */
 BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getFloorsForm = function() {
-	return this.getFloorsSidebar().find("form.floors_form");
+	return this.getFloorsSidebar().find("form#floors_form");
 };
 
 /**
@@ -67,9 +67,9 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doBindEventHandler =
 	// SIDEBAR
 
 	// ... FLOORS
-	
+
 	var floorsTable = this.getFloorsTable();
-	var floorsTableRow = floorsTable.find(".row.floor");
+	var floorsTableRow = floorsTable.find("tr.floor");
 	var floorsButtons = this.getFloorsButtons();
 
 	floorsTableRow.dblclick({
@@ -80,9 +80,6 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doBindEventHandler =
 
 	floorsButtons.find("#floors_cancel").click(function(event) {
 		if (!$(this).isDisabled()) {
-			$(this).closest("form").each(function() {
-				this.reset();
-			});
 			context.doFloorsEdit(false);
 		}
 	});
@@ -96,7 +93,7 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doBindEventHandler =
 	floorsTableRow.find(".order_edit .up, .order_edit .down").click(function(event) {
 		context.doFloorsOrder($(this).closest(".floor"), $(this).hasClass("up"));
 	});
-	
+
 	// ... /FLOORS
 
 	// /SIDEBAR
@@ -106,6 +103,7 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doBindEventHandler =
 BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doFloorsEdit = function(edit) {
 	var floorsTable = this.getFloorsTable();
 	var floorsButtons = this.getFloorsButtons();
+	var floorsError = this.getFloorsError();
 
 	if (edit) {
 		// Set floors table
@@ -119,6 +117,9 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doFloorsEdit = funct
 
 		// Floors buttons
 		floorsButtons.disable();
+
+		// Hide floors error
+		floorsError.hide();
 	}
 
 };
@@ -126,7 +127,7 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doFloorsEdit = funct
 BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doFloorsOrder = function(row, up) {
 	// Get floor order
 	var orderInput = row.find(".order_edit input");
-	var order = orderInput.val(); 
+	var order = orderInput.val();
 
 	// Get move row
 	varMove = up ? row.prev() : row.next();
@@ -149,41 +150,36 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doFloorsSave = funct
 	var floorsTable = this.getFloorsTable();
 	var floorsForm = this.getFloorsForm();
 	var floorsError = this.getFloorsError();
-	
+
 	// Hide floors error
 	floorsError.hide();
-	
+
 	// For each floor
 	var floor, floorName, floorMap, floorOrder, floorMain, error = "";
-	floorsTable.find(".floor").each(function(i, element){
+	floorsTable.find(".floor.edit, .floor.new").each(function(i, element) {
 		floor = $(element);
-		
+
 		floorId = floor.attr("data-floor");
 		floorName = floor.find(".name_edit input").inputHint("value");
 		floorMap = floor.find(".map_edit input").val();
 		floorOrder = floor.find(".order_edit input").val();
 		floorMain = floor.find(".main_edit input").is(":checked");
-		
-		console.log("Floor", floorId, floorName, floorMap, floorOrder, floorMain);
-		
-		if (!floorName)
-		{
-			error = "Floor name must be given"; 
-		}
-		else if (floorId == "new" && !floorMap)
-		{
+
+		if (floorId == "new" ? (floorMap && !floorName) : !floorName) {
+			error = "Floor name must be given";
+		} else if (floorId == "new" && floorName ? !floorMap : floorMap) {
 			error = "Floor map must be given to new floor";
 		}
-		if (error){
+		if (error) {
 			return false;
 		}
 	});
-	
-	if (error)
-	{
-		console.log(error);
-		floorsError.show();
+
+	if (error) {		
 		floorsError.text(error);
+		floorsError.show();
+	} else {
+		floorsForm.submit();
 	}
 };
 

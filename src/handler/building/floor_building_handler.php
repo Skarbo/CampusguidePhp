@@ -90,8 +90,8 @@ class FloorBuildingHandler extends Handler
         $floorLast = 0;
         for ( $floors->rewind(); $floors->valid(); $floors->next() )
         {
-            $floor = $floors->current();
-            $floorLast = $floor->getOrder() > $floorLast ? $floor->getOrder() + 1 : $floorLast;
+            $floorTemp = $floors->current();
+            $floorLast = $floorTemp->getOrder() > $floorLast ? $floorTemp->getOrder() + 1 : $floorLast;
         }
 
         // Set floor
@@ -108,6 +108,12 @@ class FloorBuildingHandler extends Handler
 
         // Get Floor
         $floorAdded = $this->getFloorBuildingDao()->get( $floorId );
+
+        // Set main Floor
+        if ( $floor->getMain() )
+        {
+            $this->getFloorBuildingDao()->setMainFloor( $buildingId, $floorAdded->getId() );
+        }
 
         // Return Floor
         return $floorAdded;
@@ -128,9 +134,13 @@ class FloorBuildingHandler extends Handler
 
         // Foreach floors
         $floorOrder = 0;
+        $floorMain = null;
         for ( $floors->rewind(); $floors->valid(); $floors->next() )
         {
             $floor = $floors->current();
+
+            // Set floor main
+            $floorMain = $floor->getMain() ? $floor->getId() : $floorMain;
 
             // Set Floor order
             $floor->setOrder( $floorOrder );
@@ -148,6 +158,9 @@ class FloorBuildingHandler extends Handler
             // Increase floor order
             $floorOrder++;
         }
+
+        // Set main floor
+        $this->getFloorBuildingDao()->setMainFloor( $buildingId, $floorMain );
 
         // Get updated Floors
         $floorsUpdated = $this->getFloorBuildingDao()->getForeign( array ( $buildingId ) );

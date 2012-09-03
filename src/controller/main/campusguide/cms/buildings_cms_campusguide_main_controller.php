@@ -6,6 +6,10 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
     // VARIABLES
 
 
+    const URI_TYPE = 4;
+
+    const TYPE_FLOORS = "floors";
+
     const PAGE_OVERVIEW = "overview";
     const PAGE_MAP = "map";
     const PAGE_BUILDING = "building";
@@ -46,6 +50,14 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
      * @var BuildingValidator
      */
     private $buildingValidator;
+    /**
+     * @var FloorBuildingValidator
+     */
+    private $floorBuildingValidator;
+    /**
+     * @var FloorBuildingHandler
+     */
+    private $floorBuildingHandler;
 
     // /VARIABLES
 
@@ -58,9 +70,14 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
         parent::__construct( $api, $view );
         $this->setFacilities( new FacilityListModel() );
         $this->setBuildingValidator( new BuildingValidator( $this->getLocale() ) );
+        $this->setFloorBuildingValidator( new FloorBuildingValidator( $this->getLocale() ) );
 
         $this->setBuilding( BuildingFactoryModel::createBuilding( "", 0, array () ) );
         $this->setBuildingFloors( FloorBuildingFactoryModel::createFloorBuilding( 0, "", 0, array () ) );
+
+        $this->setFloorBuildingHandler(
+                new FloorBuildingHandler( $this->getCampusguideHandler()->getFloorBuildingDao(),
+                        $this->getFloorBuildingValidator() ) );
     }
 
     // /CONSTRUCTOR
@@ -184,6 +201,38 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
         $this->buildingValidator = $buildingValidator;
     }
 
+    /**
+     * @return FloorBuildingValidator
+     */
+    public function getFloorBuildingValidator()
+    {
+        return $this->floorBuildingValidator;
+    }
+
+    /**
+     * @param FloorBuildingValidator $floorBuildingValidator
+     */
+    public function setFloorBuildingValidator( FloorBuildingValidator $floorBuildingValidator )
+    {
+        $this->floorBuildingValidator = $floorBuildingValidator;
+    }
+
+    /**
+     * @return FloorBuildingHandler
+     */
+    private function getFloorBuildingHandler()
+    {
+        return $this->floorBuildingHandler;
+    }
+
+    /**
+     * @param FloorBuildingHandler $buildingFloorsHandler
+     */
+    private function setFloorBuildingHandler( FloorBuildingHandler $buildingFloorsHandler )
+    {
+        $this->floorBuildingHandler = $buildingFloorsHandler;
+    }
+
     // ... /GETTERS/SETTERS
 
 
@@ -230,6 +279,14 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
         return BuildingsCmsCampusguideMainView::$ID_CMS_BUILDINGS_WRAPPER;
     }
 
+    /**
+     * @return string Type given i URI, null if none given
+     */
+    protected static function getType()
+    {
+        return self::getURI( self::URI_TYPE );
+    }
+
     // ... /GET
 
 
@@ -270,7 +327,60 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
         return self::getPage() == self::PAGE_FLOORPLANNER;
     }
 
+    /**
+     * @return boolean True if type is floors
+     */
+    public function isTypeFloors()
+    {
+        return self::getType() == self::TYPE_FLOORS;
+    }
+
     // ... /IS
+
+
+    // ... CREATE
+
+
+    /**
+     * Create Floor list from POST
+     *
+     * @return FloorBuildingListModel
+     */
+    private function createFloorsPost()
+    {
+
+        $namePost = Core::arrayAt( self::getPost(), "floor_name", array () );
+        $mapPost = Core::arrayAt( self::getPost(), "floor_map", array () );
+        $orderPost = Core::arrayAt( self::getPost(), "floor_order", array () );
+        $deletePost = Core::arrayAt( self::getPost(), "floor_delete", array () );
+        $mainPost = Core::arrayAt( self::getPost(), "floor_main" );
+
+        $floors = new FloorBuildingListModel();
+
+        foreach ( $namePost as $id => $name )
+        {
+            if ( array_search( $id, $deletePost ) )
+            {
+                continue;
+            }
+
+            $floor = FloorBuildingFactoryModel::createFloorBuilding( $this->getBuilding()->getId(), $name,
+                    $orderPost[ $id ], array (), $mainPost == $id );
+            $floor->setId( $id );
+
+            if ( $floor->getId() == "new" && !$floor->getName() )
+            {
+                continue;
+            }
+
+            $floors->add( $floor );
+        }
+
+        return $floors;
+
+    }
+
+    // ... /CREATE
 
 
     // ... DO
@@ -549,7 +659,48 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
                 $this->getCampusguideHandler()->getFloorBuildingDao()->getForeign(
                         array ( $this->getBuilding()->getId() ) ) );
 
-        DebugHandler::doDebug( DebugHandler::LEVEL_LOW, new DebugException( $this->getBuildingFloors() ) );
+        // POST
+
+
+        // Edit Floors
+        if ( self::isPost() && self::isActionEdit() && self::isTypeFloors() )
+        {
+
+            // Get created Floors from post
+            $floors = $this->createFloorsPost();
+
+            // Get new Floor
+            $floorNew = $floors->removeId( "new" );
+
+            // Sort floors
+            $floors->sortByOrder();
+
+            // Delete floors
+            $floorsDelete = Core::arrayAt( self::getPost(), "floor_delete", array () );
+
+            foreach ( $floorsDelete as $floorId )
+            {
+                //$this->getCampusguideHandler()->getFloorBuildingDao()->remove( $floorId );
+            }
+
+            // Edit floors
+            $this->getFloorBuildingHandler()->handleEditFloors( $this->getBuilding()->getId(), $floors );
+
+            // New floor
+            if ( $floorNew )
+            {
+                $this->getFloorBuildingHandler()->handleAddFloor( $this->getBuilding()->getId(), $floorNew );
+            }
+DebugHandler::doDebug(DebugHandler::LEVEL_LOW, new DebugException($floorNew, $floors, $floorsDelete));
+            // Redirect
+            self::redirect(
+                    Resource::url()->campusguide()->cms()->building()->getBuildingcreatorViewPage(
+                            $this->getBuilding()->getId(), $this->getMode( true ) ) );
+
+        }
+
+        // /POST
+
 
     }
 

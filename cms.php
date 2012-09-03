@@ -23,7 +23,7 @@ $campusguide_api = new CampusguideApi( CampusguideApi::MODE_TEST );
 $campusguide_api->setDebug(
         array ( CampusguideApi::MODE_TEST => DebugHandler::LEVEL_LOW,
                 CampusguideApi::MODE_DEV => DebugHandler::LEVEL_LOW,
-                CampusguideApi::MODE_PROD => DebugHandler::LEVEL_HIGH ) );
+                CampusguideApi::MODE_PROD => DebugHandler::LEVEL_LOW ) );
 
 // Mapping
 $mapping = array ();

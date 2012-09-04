@@ -152,7 +152,7 @@ class FloorBuildingDbDao extends StandardDbDao implements FloorBuildingDao
         else
         {
             $updateBuilder->setSet( array ( Resource::db()->floorBuilding()->getFieldMain() => 1 ) );
-            $updateBuilder->limit( 1 );
+            $updateBuilder->setLimit( 1 );
         }
 
         // ... Binds

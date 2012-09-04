@@ -118,7 +118,7 @@
 	{
 	border: 1px solid gray;
 	border-radius: 0.2em;
-	font-size: 1em;
+	font-size: 0.8em;
 }
 
 #buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors.edit .floor.edit, #buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors:NOT(.edit) .floor
@@ -169,7 +169,6 @@
 	{
 	width: 1%;
 	color: gray;
-	font-size: 0.8em;
 }
 
 #buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors .floor>.delete_edit .gui .guiComp.checked

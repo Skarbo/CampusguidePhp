@@ -47,8 +47,8 @@ function getNormalizedFILES()
 
     <div id="test">
         <form method="post" action="?" enctype="multipart/form-data">
-            File 1: <input name="file_name[]" /><button type="button" data-click="file_test1">File1</button><input id="file_test1" name="file_path[]" type="file" /><br />
-            File 2: <input name="file_name[]" /><button type="button" data-click="file_test2">File2</button><input id="file_test2" name="file_path[]" type="file" /><br />
+            File 1: <input name="file_name[]" /><button type="button" data-click="file_test1">File1</button><input id="file_test1" name="file_path[3]" type="file" /><br />
+            File 2: <input name="file_name[]" /><button type="button" data-click="file_test2">File2</button><input id="file_test2" name="file_path[10]" type="file" /><br />
             <input type="submit" />
         </form>
     </div>

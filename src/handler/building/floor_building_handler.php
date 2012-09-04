@@ -91,7 +91,7 @@ class FloorBuildingHandler extends Handler
         for ( $floors->rewind(); $floors->valid(); $floors->next() )
         {
             $floorTemp = $floors->current();
-            $floorLast = $floorTemp->getOrder() > $floorLast ? $floorTemp->getOrder() + 1 : $floorLast;
+            $floorLast = $floorTemp->getOrder() >= $floorLast ? $floorTemp->getOrder() + 1 : $floorLast;
         }
 
         // Set floor

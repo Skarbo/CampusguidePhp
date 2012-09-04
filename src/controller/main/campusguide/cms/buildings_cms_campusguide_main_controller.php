@@ -359,7 +359,7 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
 
         foreach ( $namePost as $id => $name )
         {
-            if ( array_search( $id, $deletePost ) )
+            if ( array_search( $id, $deletePost ) !== false )
             {
                 continue;
             }
@@ -680,18 +680,41 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
 
             foreach ( $floorsDelete as $floorId )
             {
-                //$this->getCampusguideHandler()->getFloorBuildingDao()->remove( $floorId );
+                $this->getCampusguideHandler()->getFloorBuildingDao()->remove( $floorId );
             }
 
             // Edit floors
-            $this->getFloorBuildingHandler()->handleEditFloors( $this->getBuilding()->getId(), $floors );
+            $floors = $this->getFloorBuildingHandler()->handleEditFloors( $this->getBuilding()->getId(),
+                    $floors );
 
             // New floor
             if ( $floorNew )
             {
-                $this->getFloorBuildingHandler()->handleAddFloor( $this->getBuilding()->getId(), $floorNew );
+                $floorNew = $this->getFloorBuildingHandler()->handleAddFloor( $this->getBuilding()->getId(), $floorNew );
             }
-DebugHandler::doDebug(DebugHandler::LEVEL_LOW, new DebugException($floorNew, $floors, $floorsDelete));
+
+            // MAP
+
+
+            $floorsMaps = Core::arrayAt( self::getFiles(), "floor_map" );
+            DebugHandler::doDebug( DebugHandler::LEVEL_LOW, new DebugException( "Floors maps", $floorsMaps ) );
+            if ( key_exists( "new", $floorsMaps ) )
+            {
+                $this->doMapFloor( $floorNew, $floorsMaps[ "new" ] );
+            }
+
+            for ( $floors->rewind(); $floors->valid(); $floors->next() )
+            {
+                $floor = $floors->current();
+                if ( key_exists( $floor->getId(), $floorsMaps ) )
+                {
+                    $this->doMapFloor( $floor, $floorsMaps[ $floor->getId() ] );
+                }
+            }
+
+            // /MAP
+
+
             // Redirect
             self::redirect(
                     Resource::url()->campusguide()->cms()->building()->getBuildingcreatorViewPage(
@@ -701,6 +724,30 @@ DebugHandler::doDebug(DebugHandler::LEVEL_LOW, new DebugException($floorNew, $fl
 
         // /POST
 
+
+    }
+
+    private function doMapFloor( FloorBuildingModel $floor, array $floorFile )
+    {
+        if ( !$floorFile[ "name" ] )
+        {
+            return false;
+        }
+
+        if ( $floorFile[ "error" ] == UPLOAD_ERR_OK )
+        {
+            $floorMapPath = Resource::image()->campusguide()->building()->getBuildingFloorMap(
+                    $this->getBuilding()->getId(), $floor->getId(), $this->getMode() );
+
+            Core::createFolders( $floorMapPath );
+
+            $moved = move_uploaded_file( $floorFile[ "tmp_name" ], $floorMapPath );
+        }
+        else if ( $floorFile[ "error" ] != UPLOAD_ERR_NO_FILE )
+        {
+            DebugHandler::doDebug( DebugHandler::LEVEL_HIGH,
+                    new DebugException( "Floor error", $floor, $floorFile[ "error" ] ) );
+        }
 
     }
 

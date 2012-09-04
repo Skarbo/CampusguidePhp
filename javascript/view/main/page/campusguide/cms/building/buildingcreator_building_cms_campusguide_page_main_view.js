@@ -164,10 +164,10 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doFloorsSave = funct
 		floorMap = floor.find(".map_edit input").val();
 		floorOrder = floor.find(".order_edit input").val();
 		floorMain = floor.find(".main_edit input").is(":checked");
-
+console.log(floorId, floorName, floorMap, floorOrder, floorMain);
 		if (floorId == "new" ? (floorMap && !floorName) : !floorName) {
 			error = "Floor name must be given";
-		} else if (floorId == "new" && floorName ? !floorMap : floorMap) {
+		} else if (floorId == "new" ? (floorName ? !floorMap : floorMap) : false) {
 			error = "Floor map must be given to new floor";
 		}
 		if (error) {

@@ -240,8 +240,8 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
 
         $floorForm = Xhtml::form()->method( FormXhtml::$METHOD_POST )->action(
                 Resource::url()->campusguide()->cms()->building()->getBuildingcreatorEditFloorsPage(
-                        $this->getBuilding()->getId(), $this->getView()->getMode() ) )->autocomplete( false )->id(
-                "floors_form" );
+                        $this->getBuilding()->getId(), $this->getView()->getMode() ) )->autocomplete( false )->enctype(
+                FormXhtml::$ENCTYPE_MULTIPART_FORM_DATA )->id( "floors_form" );
 
         $floorTable = Xhtml::table()->class_( "floors" );
         $floorsBody = Xhtml::tbody();

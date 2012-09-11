@@ -96,6 +96,10 @@ class FloorsBuildingCampusguideRestControllerTest extends StandardCampusguideRes
                 $testCase );
         FloorBuildingDaoTest::assertEqualsFunction( $modelOne->getOrder(), $modelTwo->getOrder(),
                 "Floor Building foreign id", $testCase );
+        FloorBuildingDaoTest::assertEqualsFunction(
+                Resource::generateCoordinatesToString( $modelOne->getCoordinates() ),
+                Resource::generateCoordinatesToString( $modelTwo->getCoordinates() ), "Floor Building coordinates",
+                $testCase );
 
     }
 
@@ -110,6 +114,8 @@ class FloorsBuildingCampusguideRestControllerTest extends StandardCampusguideRes
         FloorBuildingDaoTest::assertNotNullFunction( $model->getBuildingId(), "Floor Building building id", $testCase );
         FloorBuildingDaoTest::assertNotNullFunction( $model->getName(), "Floor Building name", $testCase );
         FloorBuildingDaoTest::assertNotNullFunction( $model->getOrder(), "Floor Building order", $testCase );
+        FloorBuildingDaoTest::assertNotNullFunction( $model->getMain(), "Floor Building main", $testCase );
+        FloorBuildingDaoTest::assertNotNullFunction( $model->getCoordinates(), "Floor Building main", $testCase );
     }
 
     /**
@@ -130,90 +136,108 @@ class FloorsBuildingCampusguideRestControllerTest extends StandardCampusguideRes
 
     }
 
-    private function createPostModelList( FloorBuildingListModel $floors )
-    {
-        return array (
-                FloorsBuildingCampusguideRestController::$POST_OBJECTS => array_map(
-                        function ( $var )
-                        {
-                            return get_object_vars( $var );
-                        }, $floors->getArray() ) );
-    }
+    //     private function createPostModelList( FloorBuildingListModel $floors )
+    //     {
+    //         return array (
+    //                 FloorsBuildingCampusguideRestController::$POST_OBJECTS => array_map(
+    //                         function ( $var )
+    //                         {
+    //                             return get_object_vars( $var );
+    //                         }, $floors->getArray() ) );
+    //     }
+
 
     // ... TEST
 
 
-    public function testShouldEditMultiple()
-    {
+    //     public function testShouldEditMultiple()
+    //     {
 
-        // Add Facility
-        $facility = $this->addFacility();
 
-        // Add Building
-        $building = $this->addBuilding( $facility->getId() );
+    //         // Add Facility
+    //         $facility = $this->addFacility();
 
-        // Add floors
-        $floors = new FloorBuildingListModel();
-        $floors->add( $this->addFloor( $building->getId() ) );
-        $floors->add( $this->addFloor( $building->getId() ) );
-        $floors->add( $this->addFloor( $building->getId() ) );
 
-        // Edit Floors
-        $floors->get( 0 )->setName( "Updated Floor One" );
-        $floors->get( 1 )->setName( "Updated Floor Two" );
-        $floors->get( 2 )->setName( "Updated Floor Three" );
+    //         // Add Building
+    //         $building = $this->addBuilding( $facility->getId() );
 
-        // Shuffle Floors
-        $floors->shuffle();
 
-        // Get Website
-        $url = self::getRestWebsite( $this->getQueryEditMultiple( $floors->getIds() ) );
+    //         // Add floors
+    //         $floors = new FloorBuildingListModel();
+    //         $floors->add( $this->addFloor( $building->getId() ) );
+    //         $floors->add( $this->addFloor( $building->getId() ) );
+    //         $floors->add( $this->addFloor( $building->getId() ) );
 
-        // Do POST
-        $data = $this->post( $url, $this->createPostModelList( $floors ) );
-        $dataArray = json_decode( $data, true );
 
-        $this->showHeaders();
-        $this->showRequest();
-        $this->showSource();
+    //         // Edit Floors
+    //         $floors->get( 0 )->setName( "Updated Floor One" );
+    //         $floors->get( 1 )->setName( "Updated Floor Two" );
+    //         $floors->get( 2 )->setName( "Updated Floor Three" );
 
-        // Assert response
-        $this->assertResponse( Controller::STATUS_CREATED, "Should be correct response" );
 
-        // Get REST Floor list
-        $floorsRest = $this->getRestModelList( Core::arrayAt( $dataArray, StandardCampusguideRestView::$FIELD_LIST, array() ) );
+    //         // Shuffle Floors
+    //         $floors->shuffle();
 
-        // Assert Model list
-        if ( $this->assertEqual( $floors->size(), $floorsRest->size(),
-                sprintf( "Model list REST size should be \"%d\" but is \"%d\"", $floors->size(), $floorsRest->size() ) ) )
-        {
-            // Assert the order
-            for ( $i = 0; $i < $floors->size(); $i++ )
-            {
-                $floor = $floors->get( $i );
-                $floorRest = $floorsRest->getId( $floor->getId() );
 
-                if ( $this->assertFalse( is_null( $floorRest ),
-                        sprintf( "Floor REST id \"%d\" should not be null", $floor->getId() ) ) )
-                {
-                    $this->assertEqual( $i, $floorRest->getOrder(),
-                            sprintf( "Floor order should be \"%d\" but is \"%d\"", $i, $floorRest->getOrder() ) );
-                }
+    //         // Get Website
+    //         $url = self::getRestWebsite( $this->getQueryEditMultiple( $floors->getIds() ) );
 
-            }
 
-        }
+    //         // Do POST
+    //         $data = $this->post( $url, $this->createPostModelList( $floors ) );
+    //         $dataArray = json_decode( $data, true );
 
-    }
-/**
+
+    //         $this->showHeaders();
+    //         $this->showRequest();
+    //         $this->showSource();
+
+
+    //         // Assert response
+    //         $this->assertResponse( Controller::STATUS_CREATED, "Should be correct response" );
+
+
+    //         // Get REST Floor list
+    //         $floorsRest = $this->getRestModelList( Core::arrayAt( $dataArray, StandardCampusguideRestView::$FIELD_LIST, array() ) );
+
+
+    //         // Assert Model list
+    //         if ( $this->assertEqual( $floors->size(), $floorsRest->size(),
+    //                 sprintf( "Model list REST size should be \"%d\" but is \"%d\"", $floors->size(), $floorsRest->size() ) ) )
+    //         {
+    //             // Assert the order
+    //             for ( $i = 0; $i < $floors->size(); $i++ )
+    //             {
+    //                 $floor = $floors->get( $i );
+    //                 $floorRest = $floorsRest->getId( $floor->getId() );
+
+
+    //                 if ( $this->assertFalse( is_null( $floorRest ),
+    //                         sprintf( "Floor REST id \"%d\" should not be null", $floor->getId() ) ) )
+    //                 {
+    //                     $this->assertEqual( $i, $floorRest->getOrder(),
+    //                             sprintf( "Floor order should be \"%d\" but is \"%d\"", $i, $floorRest->getOrder() ) );
+    //                 }
+
+
+    //             }
+
+
+    //         }
+
+
+    //     }
+
+
+    /**
      * @see StandardCampusguideRestControllerTest::getSearchString()
      */
     protected function getSearchString( StandardModel $model )
     {
-        // TODO Auto-generated method stub
+        $model = FloorBuildingModel::get_( $model );
 
+        return $model->getName();
     }
-
 
     // ... /TEST
 

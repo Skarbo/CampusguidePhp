@@ -42,6 +42,31 @@ PageMainView.prototype.getRoot = function() {
 	return this.root;
 };
 
+// ... GET
+
+/**
+ * @returns {Number} Mode
+ */
+PageMainView.prototype.getMode = function() {
+	return this.getView().getController().getMode();
+};
+
+/**
+ * @returns {MainController} Event handler
+ */
+PageMainView.prototype.getController = function() {
+	return this.getView().getController();
+};
+
+/**
+ * @returns {EventHandler} Event handler
+ */
+PageMainView.prototype.getEventHandler = function() {
+	return this.getController().getEventHandler();
+};
+
+// ... /GET
+
 /**
  * @param {Element}
  *            root

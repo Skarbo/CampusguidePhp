@@ -69,7 +69,7 @@ class FacilitiesCampusguideRestController extends StandardCampusguideRestControl
      */
     protected function getStandardDao()
     {
-        return $this->getFacilityDao();
+        return $this->getCampusguideHandler()->getFacilityDao();
     }
 
     /**
@@ -77,7 +77,7 @@ class FacilitiesCampusguideRestController extends StandardCampusguideRestControl
      */
     protected function getForeignStandardDao()
     {
-        return $this->getBuildingDao();
+        return $this->getCampusguideHandler()->getBuildingDao();
     }
 
     /**

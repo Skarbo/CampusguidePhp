@@ -47,15 +47,62 @@ BuildingsCmsCampusguideMainController.prototype.doBindEventHandler = function() 
 	CmsCampusguideMainController.prototype.doBindEventHandler.call(this);
 	var context = this;
 
+	// EVENT
+
+	// Edit event
+	this.getEventHandler().registerListener(EditEvent.TYPE,
+	/**
+	 * @param {EditEvent}
+	 *            event
+	 */
+	function(event) {
+		switch (event.getEditType()) {
+		case "floor":
+			context.doFloorSave(event.getEdit());
+			break;
+		}
+	});
+
+	// Edit event
+	this.getEventHandler().registerListener(EditedEvent.TYPE,
+	/**
+	 * @param {EditedEvent}
+	 *            event
+	 */
+	function(event) {
+		switch (event.getEditType()) {
+		case "floor":
+			location.reload();
+			break;
+		}
+	});
+
+	// /EVENT
+
 	// Page Floorplanner
-	if (this.getQuery().page == "floorplanner" && this.getQuery().id) {
+	if ((this.getQuery().page == "floorplanner" || this.getQuery().page == "buildingcreator") && this.getQuery().id) {
 
 		// Handle history
 		$(window).hashchange(function() {
 			context.handleHistory();
 		});
 
+		// History has change
+		$(window).hashchange();
+
 	}
+
+};
+
+BuildingsCmsCampusguideMainController.prototype.doFloorSave = function(floor) {
+	var context = this;
+
+	if (!floor)
+		return;
+
+	this.getFloorBuildingDao().edit(floor.id, floor, function(floor, floors) {
+		context.getEventHandler().handle(new EditedEvent("floor", floor));
+	});
 
 };
 
@@ -65,11 +112,19 @@ BuildingsCmsCampusguideMainController.prototype.doBindEventHandler = function() 
 
 BuildingsCmsCampusguideMainController.prototype.handleHistory = function() {
 
-	// Get hash menu
-	var menu = this.getHash().menu;
-	
-	// Send menu event
-	this.getEventHandler().handle(new MenuFloorplannerBuildingEvent(menu));
+	// Get hash floor
+	var floor = this.getHash().floor;
+
+	if (floor) {
+		// Send Floor Building event
+		this.getEventHandler().handle(new FloorBuildingEvent(floor), "FloorsBuildingRetrievedEvent");
+	}
+
+	// // Get hash menu
+	// var menu = this.getHash().menu;
+	//	
+	// // Send menu event
+	// this.getEventHandler().handle(new MenuFloorplannerBuildingEvent(menu));
 
 };
 
@@ -86,7 +141,7 @@ BuildingsCmsCampusguideMainController.prototype.render = function(view) {
 	var context = this;
 
 	// Page Floorplanner
-	if (this.getQuery().page == "floorplanner" && this.getQuery().id) {
+	if ((this.getQuery().page == "floorplanner" || this.getQuery().page == "buildingcreator") && this.getQuery().id) {
 
 		var buildingId = this.getQuery().id;
 

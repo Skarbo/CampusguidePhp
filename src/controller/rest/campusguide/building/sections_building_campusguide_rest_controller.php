@@ -59,7 +59,7 @@ class SectionsBuildingCampusguideRestController extends StandardCampusguideRestC
      */
     protected function getStandardDao()
     {
-        return $this->getSectionBuildingDao();
+        return $this->getCampusguideHandler()->getSectionBuildingDao();
     }
 
     /**
@@ -67,7 +67,7 @@ class SectionsBuildingCampusguideRestController extends StandardCampusguideRestC
      */
     protected function getForeignStandardDao()
     {
-        return $this->getBuildingDao();
+        return $this->getCampusguideHandler()->getBuildingDao();
     }
 
     /**

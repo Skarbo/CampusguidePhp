@@ -32,7 +32,7 @@ class ElementBuildingDbResource
 
     public function getTable()
     {
-        return DB_PREFIX . $this->table;
+        return Core::constant( "DB_PREFIX" ) . $this->table;
     }
 
     public function getFieldId()

@@ -24,8 +24,8 @@ class ElementsBuildingCampusguideRestController extends StandardCampusguideRestC
         parent::__construct( $api, $view );
 
         $this->setElementBuildingHandler(
-                new ElementBuildingHandler( $this->getElementBuildingDao(), $this->getSectionBuildingDao(),
-                        $this->getTypeElementBuildingDao(), $this->getFloorBuildingDao(),
+                new ElementBuildingHandler( $this->getCampusguideHandler()->getElementBuildingDao(), $this->getCampusguideHandler()->getSectionBuildingDao(),
+                        $this->getCampusguideHandler()->getTypeElementBuildingDao(), $this->getCampusguideHandler()->getFloorBuildingDao(),
                         new ElementBuildingValidator( $this->getLocale() ) ) );
     }
 
@@ -73,7 +73,7 @@ class ElementsBuildingCampusguideRestController extends StandardCampusguideRestC
      */
     protected function getStandardDao()
     {
-        return $this->getElementBuildingDao();
+        return $this->getCampusguideHandler()->getElementBuildingDao();
     }
 
     /**
@@ -81,7 +81,7 @@ class ElementsBuildingCampusguideRestController extends StandardCampusguideRestC
      */
     protected function getForeignStandardDao()
     {
-        return $this->getBuildingDao();
+        return $this->getCampusguideHandler()->getBuildingDao();
     }
 
     /**

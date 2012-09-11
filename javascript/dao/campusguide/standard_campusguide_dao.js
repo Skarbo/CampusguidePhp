@@ -52,7 +52,7 @@ StandardCampusguideDao.prototype.getFilteredList = function(filterFunc) {
  */
 StandardCampusguideDao.prototype.getForeignList = function(foreignId) {
 	var foreignField = this.foreignField;
-	return this.getFilteredList(function(single){
+	return this.getFilteredList(function(single) {
 		return single[foreignField] == foreignId;
 	});
 };
@@ -191,6 +191,23 @@ StandardCampusguideDao.prototype.getForeign = function(foreignId, callback, forc
 StandardCampusguideDao.prototype.add = function(foreignId, object, callback) {
 	var context = this;
 	this.ajax.add(foreignId, object, function(single, list) {
+		context.addSingleToList(single);
+		callback(single, list);
+	});
+};
+
+/**
+ * @param {Number}
+ *            id
+ * @param {Object}
+ *            object
+ * @param {function}
+ *            callback
+ * @return {Object}
+ */
+StandardCampusguideDao.prototype.edit = function(id, object, callback) {
+	var context = this;
+	this.ajax.edit(id, object, function(single, list) {
 		context.addSingleToList(single);
 		callback(single, list);
 	});

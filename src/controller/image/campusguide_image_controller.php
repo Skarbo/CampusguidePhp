@@ -10,33 +10,9 @@ abstract class CampusguideImageController extends ImageController implements Cam
 
 
     /**
-     * @var FacilityDao
+     * @var CampusguideHandler
      */
-    private $facilityDao;
-    /**
-     * @var SectionBuildingDao
-     */
-    private $sectionBuildingDao;
-    /**
-     * @var BuildingDao
-     */
-    private $buildingDao;
-    /**
-     * @var ElementBuildingDao
-     */
-    private $elementBuildingDao;
-    /**
-     * @var TypeElementBuildingDao
-     */
-    private $typeElementBuildingDao;
-    /**
-     * @var GroupTypeElementBuildingDao
-     */
-    private $groupTypeElementBuildingDao;
-    /**
-     * @var FloorBuildingDao
-     */
-    private $floorBuildingDao;
+    private $campusguideHandler;
 
     // ... /DAO
 
@@ -51,13 +27,7 @@ abstract class CampusguideImageController extends ImageController implements Cam
     {
         parent::__construct( $api, $view );
 
-        $this->setFacilityDao( new FacilityDbDao( $this->getDbApi() ) );
-        $this->setBuildingDao( new BuildingDbDao( $this->getDbApi() ) );
-        $this->setSectionBuildingDao( new SectionBuildingDbDao( $this->getDbApi() ) );
-        $this->setElementBuildingDao( new ElementBuildingDbDao( $this->getDbApi() ) );
-        $this->setTypeElementBuildingDao( new TypeElementBuildingDbDao( $this->getDbApi() ) );
-        $this->setGroupTypeElementBuildingDao( new TypeElementBuildingDbDao( $this->getDbApi() ) );
-        $this->setFloorBuildingDao( new FloorBuildingDbDao( $this->getDbApi() ) );
+        $this->setCampusguideHandler( new CampusguideHandler( $this->getDbApi() ) );
     }
 
     // /CONSTRUCTOR
@@ -69,123 +39,21 @@ abstract class CampusguideImageController extends ImageController implements Cam
     // ... GETTERS/SETTERS
 
 
-    // ... ... DAO
-
-
     /**
-     * @return FacilityDao
+     * @see CampusguideInterfaceController::getCampusguideHandler()
      */
-    public function getFacilityDao()
+    public function getCampusguideHandler()
     {
-        return $this->facilityDao;
+        return $this->campusguideHandler;
     }
 
     /**
-     * @param FacilityDao $facilityDao
+     * @param CampusguideHandler $campusguideHandler
      */
-    public function setFacilityDao( FacilityDao $facilityDao )
+    private function setCampusguideHandler( CampusguideHandler $campusguideHandler )
     {
-        $this->facilityDao = $facilityDao;
+        $this->campusguideHandler = $campusguideHandler;
     }
-
-    /**
-     * @return BuildingDao
-     */
-    public function getBuildingDao()
-    {
-        return $this->buildingDao;
-    }
-
-    /**
-     * @param BuildingDao $buildingDao
-     */
-    public function setBuildingDao( BuildingDao $buildingDao )
-    {
-        $this->buildingDao = $buildingDao;
-    }
-
-    /**
-     * @return SectionBuildingDao
-     */
-    public function getSectionBuildingDao()
-    {
-        return $this->sectionBuildingDao;
-    }
-
-    /**
-     * @param SectionBuildingDao $sectionBuildingDao
-     */
-    public function setSectionBuildingDao( SectionBuildingDao $sectionBuildingDao )
-    {
-        $this->sectionBuildingDao = $sectionBuildingDao;
-    }
-
-    /**
-     * @return ElementBuildingDao
-     */
-    public function getElementBuildingDao()
-    {
-        return $this->elementBuildingDao;
-    }
-
-    /**
-     * @param ElementBuildingDao $roomBuildingDao
-     */
-    public function setElementBuildingDao( ElementBuildingDao $roomBuildingDao )
-    {
-        $this->elementBuildingDao = $roomBuildingDao;
-    }
-
-    /**
-     * @return TypeElementBuildingDao
-     */
-    public function getTypeElementBuildingDao()
-    {
-        return $this->typeElementBuildingDao;
-    }
-
-    /**
-     * @param TypeElementBuildingDao $elementBuildingDao
-     */
-    public function setTypeElementBuildingDao( TypeElementBuildingDao $elementBuildingDao )
-    {
-        $this->typeElementBuildingDao = $elementBuildingDao;
-    }
-
-    /**
-     * @return GroupTypeElementBuildingDao
-     */
-    public function getGroupTypeElementBuildingDao()
-    {
-        return $this->groupTypeElementBuildingDao;
-    }
-
-    /**
-     * @param GroupTypeElementBuildingDao $groupTypeElementBuildingDao
-     */
-    public function setGroupTypeElementBuildingDao( GroupTypeElementBuildingDao $groupTypeElementBuildingDao )
-    {
-        $this->groupTypeElementBuildingDao = $groupTypeElementBuildingDao;
-    }
-
-    /**
-     * @return FloorBuildingDao
-     */
-    public function getFloorBuildingDao()
-    {
-        return $this->floorBuildingDao;
-    }
-
-    /**
-     * @param FloorBuildingDao $floorBuildingDao
-     */
-    public function setFloorBuildingDao( FloorBuildingDao $floorBuildingDao )
-    {
-        $this->floorBuildingDao = $floorBuildingDao;
-    }
-
-    // /... ... DAO
-
 
     // ... /GETTERS/SETTERS
 
@@ -202,6 +70,7 @@ abstract class CampusguideImageController extends ImageController implements Cam
     }
 
     // ... /GET
+
 
     // /FUNCTIONS
 

@@ -86,7 +86,7 @@ class FloorBuildingDbDao extends StandardDbDao implements FloorBuildingDao
         $fields[ Resource::db()->floorBuilding()->getFieldOrder() ] = ":order";
         $binds[ ":order" ] = $model->getOrder();
 
-        if ( Core::isEmpty($model->getCoordinates()))
+        if ( !Core::isEmpty($model->getCoordinates()))
         {
             $fields[ Resource::db()->floorBuilding()->getFieldCoordinates() ] = ":coordinates";
             $binds[ ":coordinates" ] = Resource::generateCoordinatesToString( $model->getCoordinates() );

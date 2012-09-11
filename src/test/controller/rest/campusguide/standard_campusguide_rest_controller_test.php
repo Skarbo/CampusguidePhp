@@ -188,9 +188,9 @@ abstract class StandardCampusguideRestControllerTest extends CampusguideControll
         $data = $this->get( $url );
         $dataArray = json_decode( $data, true );
 
-        //         $this->showHeaders();
-        //         $this->showRequest();
-        //         $this->showSource();
+//                 $this->showHeaders();
+//                 $this->showRequest();
+//                 $this->showSource();
 
 
         // Assert response
@@ -270,9 +270,9 @@ abstract class StandardCampusguideRestControllerTest extends CampusguideControll
         $data = $this->post( $url, $this->createPostModel( $model ) );
         $dataArray = json_decode( $data, true );
 
-        //                 $this->showHeaders();
-        //                 $this->showRequest();
-        //                 $this->showSource();
+        //                         $this->showHeaders();
+        //                         $this->showRequest();
+        //                         $this->showSource();
 
 
         // Assert response
@@ -312,9 +312,9 @@ abstract class StandardCampusguideRestControllerTest extends CampusguideControll
         $data = $this->post( $url, $this->createPostModel( $modelEdited ) );
         $dataArray = json_decode( $data, true );
 
-        //                         $this->showHeaders();
-        //                         $this->showRequest();
-        //                         $this->showSource();
+        //                                 $this->showHeaders();
+        //                                 $this->showRequest();
+        //                                 $this->showSource();
 
 
         // Assert response
@@ -484,17 +484,16 @@ abstract class StandardCampusguideRestControllerTest extends CampusguideControll
         $this->getStandardDao()->add( $model, $model->getForeignId() );
 
         // Get Website
-        $search = $this->getSearchString($model);
+        $search = $this->getSearchString( $model );
         $url = self::getRestWebsite( $this->getQuerySearch( $search ) );
 
         // Do GET
         $data = $this->get( $url );
         $dataArray = json_decode( $data, true );
 
-                $this->showHeaders();
-                $this->showRequest();
-                $this->showSource();
-
+//         $this->showHeaders();
+//         $this->showRequest();
+//         $this->showSource();
 
         // Assert response
         if ( $this->assertResponse( Controller::STATUS_OK, "Should be correct response" ) )

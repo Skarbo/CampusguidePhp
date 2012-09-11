@@ -8,8 +8,10 @@ class Resource extends AbstractResource
 
     protected static $CSS, $DB, $IMAGE, $JAVASCRIPT, $URL;
 
+    public static $COORDINATES_POLYGONS_SPLITTER = "$";
     public static $COORDINATES_SPLITTER = "|";
     public static $COORDINATE_SPLITTER = ",";
+    public static $COORDINATE_CONTROL_SPLITTER = "%";
 
     private static $GOOGLE_API_KEY = "AIzaSyBy5yabtN3ZFIlRM8-NEghybXTCZ-UQ7Dk";
 
@@ -70,17 +72,52 @@ class Resource extends AbstractResource
         return self::$URL;
     }
 
+    //     /**
+    //      * @param array $coordinates
+    //      * @return string String("x,y|x,y")
+    //      */
+    //     public static function generateCoordinatesToString( array $coordinates )
+    //     {
+    //         return implode( self::$COORDINATES_SPLITTER,
+    //                 array_map(
+    //                         function ( $coordinate )
+    //                         {
+    //                             return is_array( $coordinate ) ? implode( Resource::$COORDINATE_SPLITTER, $coordinate ) : $coordinate;
+    //                         }, $coordinates ) );
+    //     }
+
+
     /**
      * @param array $coordinates
      * @return string String("x,y|x,y")
      */
     public static function generateCoordinatesToString( array $coordinates )
     {
-        return implode( self::$COORDINATES_SPLITTER,
+        if ( empty( $coordinates ) )
+            return "";
+        return implode( self::$COORDINATES_POLYGONS_SPLITTER,
                 array_map(
-                        function ( $coordinate )
+                        function ( $polygon )
                         {
-                            return is_array( $coordinate ) ? implode( Resource::$COORDINATE_SPLITTER, $coordinate ) : $coordinate;
+                            return implode( Resource::$COORDINATES_SPLITTER,
+                                    array_map(
+                                            function ( $coordinate )
+                                            {
+                                                $i = 0;
+                                                return implode( Resource::$COORDINATE_SPLITTER,
+                                                        array_map(
+                                                                function ( $var ) use(&$i )
+                                                                {
+                                                                    $i++;
+                                                                    if ( $i < 3 + 1 )
+                                                                        return $var;
+                                                                    if ( !is_array( $var ) )
+                                                                        return null;
+                                                                    return implode(
+                                                                            Resource::$COORDINATE_CONTROL_SPLITTER,
+                                                                            ( array ) $var );
+                                                                }, ( array ) $coordinate ) );
+                                            }, ( array ) $polygon ) );
                         }, $coordinates ) );
     }
 
@@ -90,15 +127,33 @@ class Resource extends AbstractResource
      */
     public static function generateCoordinatesToArray( $coordinates )
     {
+        if ( empty( $coordinates ) )
+            return array();
         return !is_array( $coordinates ) ? array_map(
-                function ( $coordinate )
+                function ( $polygon )
                 {
                     return array_map(
-                            function ( $var )
+                            function ( $coordinate )
                             {
-                                return intval( $var );
-                            }, explode( Resource::$COORDINATE_SPLITTER, $coordinate ) );
-                }, explode( self::$COORDINATES_SPLITTER, $coordinates ) ) : $coordinates;
+                                $i = 0;
+                                return array_map(
+                                        function ( $var ) use(&$i )
+                                        {
+                                            $i++;
+                                            if ( $i < 2 + 1 )
+                                                return floatval( $var );
+                                            else if ( $i == 2 + 1 )
+                                                return $var;
+                                            if ( Core::isEmpty( $var ) )
+                                                return null;
+                                            return array_map(
+                                                    function ( $var )
+                                                    {
+                                                        return floatval( $var );
+                                                    }, explode( Resource::$COORDINATE_CONTROL_SPLITTER, $var ) );
+                                        }, explode( Resource::$COORDINATE_SPLITTER, $coordinate ) );
+                            }, explode( Resource::$COORDINATES_SPLITTER, $polygon ) );
+                }, explode( self::$COORDINATES_POLYGONS_SPLITTER, $coordinates ) ) : $coordinates;
     }
 
     public static function getGoogleApiKey()

@@ -56,3 +56,27 @@
 *[data-icon=map]:AFTER {
 	content: "m";
 }
+
+*[data-icon=trashbin]:AFTER {
+	content: "T";
+}
+
+*[data-icon=polygon]:AFTER {
+	content: "0";
+}
+
+*[data-icon=polygon_straight]:AFTER {
+	content: "1";
+}
+
+*[data-icon=polygon_quad]:AFTER {
+	content: "2";
+}
+
+*[data-icon=polygon_bezier]:AFTER {
+	content: "3";
+}
+
+*[data-icon=layer_max]:AFTER {
+	content: "4";
+}

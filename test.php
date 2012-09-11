@@ -1,7 +1,7 @@
 <?php
 
 include_once '../KrisSkarboApi/src/util/initialize_util.php';
-include_once '../KrisSkarboApi/src/api/simplehtmldom/simple_html_dom.php';
+include_once '../KrisSkarboApi/src/api/simplehtmldom_api.php';
 include_once '../SimpleTest/simpletest/autorun.php';
 include_once '../SimpleTest/simpletest/web_tester.php';
 
@@ -45,7 +45,7 @@ class AllTests extends TestSuite
         //$this->add( new TypesElementBuildingCampusguideRestControllerTest() );
         //$this->add( new GroupsTypeElementBuildingCampusguideRestControllerTest() );
 //         $this->add( new SectionsBuildingCampusguideRestControllerTest() );
-        $this->add( new SearchCampusguideRestControllerTest() );
+        //$this->add( new SearchCampusguideRestControllerTest() );
 
 
         //$this->add( new DbbackupHandlerTest() );
@@ -53,6 +53,16 @@ class AllTests extends TestSuite
 
         //$this->add(new BuildingCampusguideCommandControllerTest());
 
+        $coordinates = "94.9,53.3,L,|273.9,78.3,L,|219.9,177.3,L,|47.9,134.3,L,";
+        $coordinates = "94.9,53.3,L,|273.9,78.3,L,|219.9,177.3,Q,310.4%137.0|47.9,134.3,L,";
+        $coordinates = "";
+        $coordinates = "94.9,53.3,L,|273.9,78.3,L,|219.9,177.3,Q,310.4%137.0|47.9,134.3,L,$336.9,45.3,L,|471.9,22.3,L,|515.9,133.3,L,|353.9,143.3,L,";
+        var_dump($coordinates);
+        echo "<br />";
+        $coordinatesArray = Resource::generateCoordinatesToArray($coordinates);
+        var_dump( $coordinatesArray );
+        echo "<br />";
+        var_dump(Resource::generateCoordinatesToString($coordinatesArray));
 
     }
 

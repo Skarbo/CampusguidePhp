@@ -24,8 +24,8 @@ class TypesElementBuildingCampusguideRestController extends StandardCampusguideR
         parent::__construct( $api, $view );
 
         $this->setTypeElementBuildingHandler(
-                new TypeElementBuildingHandler( $this->getTypeElementBuildingDao(),
-                        $this->getGroupTypeElementBuildingDao(), new TypeElementBuildingValidator( $this->getLocale() ) ) );
+                new TypeElementBuildingHandler( $this->getCampusguideHandler()->getTypeElementBuildingDao(),
+                        $this->getCampusguideHandler()->getGroupTypeElementBuildingDao(), new TypeElementBuildingValidator( $this->getLocale() ) ) );
     }
 
     // /CONSTRUCTOR
@@ -72,7 +72,7 @@ class TypesElementBuildingCampusguideRestController extends StandardCampusguideR
      */
     protected function getStandardDao()
     {
-        return $this->getTypeElementBuildingDao();
+        return $this->getCampusguideHandler()->getTypeElementBuildingDao();
     }
 
     /**
@@ -80,7 +80,7 @@ class TypesElementBuildingCampusguideRestController extends StandardCampusguideR
      */
     protected function getForeignStandardDao()
     {
-        return $this->getGroupTypeElementBuildingDao();
+        return $this->getCampusguideHandler()->getGroupTypeElementBuildingDao();
     }
 
     /**

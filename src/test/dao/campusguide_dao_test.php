@@ -102,7 +102,7 @@ abstract class CampusguideDaoTest extends DbTest
      */
     public static function createFloorBuildingTest( $buildingId )
     {
-        $floorBuilding = FloorBuildingFactoryModel::createFloorBuilding( $buildingId, "Test Floor", 0,  array ( array ( 100, 200 ), array ( 300, 400 ) ) );
+        $floorBuilding = FloorBuildingFactoryModel::createFloorBuilding( $buildingId, "Test Floor", 0,  array( array ( array ( 100, 200, "L" ), array ( 300, 400, "L" ) ) ) );
 
         return $floorBuilding;
     }

@@ -105,17 +105,17 @@ CanvasUtil.getOuterBounds = function(coordinates) {
 };
 
 /**
- * Center layer on stage
+ * Center container on stage
  * 
- * @param {Kinetic.Layer} layer
+ * @param {Kinetic.Container} container
  */
-CanvasUtil.centerLayer = function(layer) {
-	var stageX = layer.getStage().getWidth(), stageY = layer.getStage().getHeight();
-	var layerBoundsNewX = layer.width * layer.getScale().x, layerBoundsNewY = layer.height * layer.getScale().y;
+CanvasUtil.centerContainer = function(container) {	
+	var stageX = container.getStage().getWidth(), stageY = container.getStage().getHeight();
+	var layerBoundsNewX = container.getWidth() * container.getScale().x, layerBoundsNewY = container.getHeight() * container.getScale().y;
 	var layerNewX = (stageX - layerBoundsNewX) / 2, layerNewY = (stageY - layerBoundsNewY) / 2;
 
-	layer.setX(layerNewX);
-	layer.setY(layerNewY);
+	container.setX(layerNewX);
+	container.setY(layerNewY);
 };
 
 CanvasUtil.areaCoordinates = function(coordinates) {

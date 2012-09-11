@@ -70,7 +70,7 @@ class GroupsTypeElementBuildingCampusguideRestController extends StandardCampusg
      */
     protected function getStandardDao()
     {
-        return $this->getGroupTypeElementBuildingDao();
+        return $this->getCampusguideHandler()->getGroupTypeElementBuildingDao();
     }
 
     /**
@@ -78,7 +78,7 @@ class GroupsTypeElementBuildingCampusguideRestController extends StandardCampusg
      */
     protected function getForeignStandardDao()
     {
-        return null;
+        return $this->getStandardDao();
     }
 
     /**

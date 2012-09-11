@@ -14,7 +14,11 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
     private static $ID_CREATOR_SIDEBAR_WRAPPER = "buildingcreator_planner_sidebar_wrapper";
     private static $ID_CREATOR_CONTENT_WRAPPER = "buildingcreator_planner_content_wrapper";
     private static $ID_CREATOR_CONTENT_TOOLBAR_WRAPPER = "buildingcreator_planner_content_toolbar_wrapper";
+
     private static $ID_CREATOR_CONTENT_CANVAS_WRAPPER = "buildingcreator_planner_content_canvas_wrapper";
+    private static $ID_CREATOR_CONTENT_CANVAS_CONTENT_WRAPPER = "buildingcreator_planner_content_canvas_content_wrapper";
+    private static $ID_CREATOR_CONTENT_CANVAS_LOADER_WRAPPER = "buildingcreator_planner_content_canvas_loader_wrapper";
+    private static $ID_CREATOR_CONTENT_CANVAS_LOADER_STATUS_WRAPPER = "buildingcreator_planner_content_canvas_loader_status_wrapper";
 
     // /VARIABLES
 
@@ -166,7 +170,7 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
         $gui = Xhtml::div()->class_( Resource::css()->gui()->getGui(), "theme2" );
 
         $gui->addContent( Xhtml::a( "Cancel" )->addClass( Resource::css()->gui()->getComponent() ) );
-        $gui->addContent( Xhtml::a( "Save" )->addClass( Resource::css()->gui()->getComponent() ) );
+        $gui->addContent( Xhtml::a( "Save" )->addClass( Resource::css()->gui()->getComponent() )->id("save") );
 
         // Add GUI to wrapper
         $wrapper->addContent( $gui );
@@ -244,8 +248,8 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
                 FormXhtml::$ENCTYPE_MULTIPART_FORM_DATA )->id( "floors_form" );
 
         $floorTable = Xhtml::table()->class_( "floors" );
-        $floorsBody = Xhtml::tbody();
-        $floorsEditBody = Xhtml::tbody();
+        $floorsBody = Xhtml::tbody()->class_( "show" );
+        $floorsEditBody = Xhtml::tbody()->class_( "edit" );
 
         // For each floors
         for ( $this->getBuildingFloors()->rewind(); $this->getBuildingFloors()->valid(); $this->getBuildingFloors()->next() )
@@ -263,7 +267,7 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
         }
 
         // New floor
-        $floorsNewBody = Xhtml::tbody();
+        $floorsNewBody = Xhtml::tbody()->class_( "new" );
         $floorOrderNext = $this->getBuildingFloors()->getNextOrder();
         $floorNew = FloorBuildingFactoryModel::createFloorBuilding( 0, "", $floorOrderNext, array () );
         $floorNew->setId( "new" );
@@ -313,8 +317,25 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
         // Draw planner toolbar
         $this->drawPlannerToolbar( $wrapper );
 
+        // Create canvas wrapper
+        $canvasWrapper = Xhtml::div()->id( self::$ID_CREATOR_CONTENT_CANVAS_WRAPPER );
+
+        // ... Canvas content
+        $canvasWrapper->addContent( Xhtml::div()->id( self::$ID_CREATOR_CONTENT_CANVAS_CONTENT_WRAPPER ) );
+
+        // Add loader to wrapper
+        $canvasWrapper->addContent(
+                Xhtml::div(
+                        Xhtml::div(
+                                Xhtml::div( Xhtml::div( "Loading building" )->class_( "loading_building" ) )->addContent(
+                                        Xhtml::div( "Loading floors" )->class_( "loading_floors" ) )->id(
+                                        self::$ID_CREATOR_CONTENT_CANVAS_LOADER_STATUS_WRAPPER ) )->addContent(
+                                Xhtml::img( Resource::image()->icon()->getSpinnerBar(), "Loading" ) )->class_(
+                                Resource::css()->getMiddle() ) )->id( self::$ID_CREATOR_CONTENT_CANVAS_LOADER_WRAPPER )->class_(
+                        Resource::css()->getTable() ) );
+
         // Add canvas wrapper to wrapper
-        $wrapper->addContent( Xhtml::div()->id( self::$ID_CREATOR_CONTENT_CANVAS_WRAPPER ) );
+        $wrapper->addContent( $canvasWrapper );
 
         // Add wrapper to root
         $root->addContent( $wrapper );
@@ -340,6 +361,33 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
         $gui = Xhtml::div()->addClass( Resource::css()->gui()->getGui(), "theme2" );
         $gui->addContent( Xhtml::a( "-" )->id( "scale_dec" )->addClass( Resource::css()->gui()->getComponent() ) );
         $gui->addContent( Xhtml::a( "+" )->id( "scale_inc" )->addClass( Resource::css()->gui()->getComponent() ) );
+        $gui->addContent( Xhtml::a( Xhtml::div()->attr("data-icon", "layer_max") )->id( "layer_fit" )->addClass( Resource::css()->gui()->getComponent() )->attr("data-disabled", "true")->title("Fit to stage") );
+
+        $left->addContent( $gui );
+
+        // Create gui
+        $gui = Xhtml::div()->addClass( Resource::css()->gui()->getGui(), "theme2" );
+        $gui->addContent( Xhtml::a( Xhtml::div()->attr("data-icon", "map") )->id( "toggle_map" )->attr( "data-type", "toggle" )->attr( "data-disabled", "true" )->addClass( Resource::css()->gui()->getComponent(), "checked" )->title("Toggle map") );
+
+        $left->addContent( $gui );
+
+        // Create gui
+        $gui = Xhtml::div()->addClass( Resource::css()->gui()->getGui(), "theme2" );
+        $gui->addContent(
+                Xhtml::a( Xhtml::div()->attr( "data-icon", "polygon" ) )->addClass(
+                        Resource::css()->gui()->getComponent() )->title( "Polygon" )->id( "polygon" ) );
+        $gui->addContent(
+                Xhtml::a( Xhtml::div()->attr( "data-icon", "polygon_straight" ) )->attr( "data-type", "radio" )->attr(
+                        "data-name", "line_type" )->attr( "data-line", "straight" )->attr( "data-disabled", "true" )->addClass(
+                        "line_type", Resource::css()->gui()->getComponent() )->title( "Straight" ) );
+        $gui->addContent(
+                Xhtml::a( Xhtml::div()->attr( "data-icon", "polygon_quad" ) )->attr( "data-type", "radio" )->attr(
+                        "data-name", "line_type" )->attr( "data-line", "quad" )->attr( "data-disabled", "true" )->addClass(
+                        "line_type", Resource::css()->gui()->getComponent() )->title( "Quadratic" ) );
+        $gui->addContent(
+                Xhtml::a( Xhtml::div()->attr( "data-icon", "polygon_bezier" ) )->attr( "data-type", "radio" )->attr(
+                        "data-name", "line_type" )->attr( "data-line", "bezier" )->attr( "data-disabled", "true" )->addClass(
+                        "line_type", Resource::css()->gui()->getComponent() )->title( "Bezier" ) );
 
         $left->addContent( $gui );
 
@@ -352,6 +400,15 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
 
         // ... Right
         $right = Xhtml::div()->addClass( Resource::css()->getRight() );
+
+        // Create gui
+        $gui = Xhtml::div()->addClass( Resource::css()->gui()->getGui(), "theme2" );
+        $gui->addContent(
+                Xhtml::a( Xhtml::div()->attr( "data-icon", "trashbin" ) )->addClass(
+                        Resource::css()->gui()->getComponent() )->id( "delete" )->title( "Delete" )->attr(
+                        "data-disabled", "true" ) );
+
+        $right->addContent( $gui );
 
         // Create gui
         $gui = Xhtml::div()->addClass( Resource::css()->gui()->getGui(), "theme2" );
@@ -400,8 +457,8 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
         $row->addContent( Xhtml::td( $floor->getName() )->class_( "name" ) );
         $rowEdit->addContent(
                 Xhtml::td(
-                        Xhtml::input( $floor->getName(), sprintf( "floor_name[%s]", $floor->getId() ) )->attr(
-                                "data-hint", "Name" ) )->class_( "name_edit" ) );
+                        Xhtml::input( $floor->getName(), sprintf( "floor_name[%s]", $floor->getId() ) )->placeholder(
+                                "Name" )->title( "Name" ) )->class_( "name_edit" ) );
 
         // Floor map
         $rowEdit->addContent(

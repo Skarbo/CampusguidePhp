@@ -26,7 +26,7 @@ class FloorsBuildingCampusguideRestController extends StandardCampusguideRestCon
         parent::__construct( $api, $view );
 
         $this->setFloorBuildingHandler(
-                new FloorBuildingHandler( $this->getFloorBuildingDao(), new FloorBuildingValidator( $this->getLocale() ) ) );
+                new FloorBuildingHandler( $this->getCampusguideHandler()->getFloorBuildingDao(), new FloorBuildingValidator( $this->getLocale() ) ) );
     }
 
     // /CONSTRUCTOR
@@ -73,7 +73,7 @@ class FloorsBuildingCampusguideRestController extends StandardCampusguideRestCon
      */
     protected function getStandardDao()
     {
-        return $this->getFloorBuildingDao();
+        return $this->getCampusguideHandler()->getFloorBuildingDao();
     }
 
     /**
@@ -81,7 +81,7 @@ class FloorsBuildingCampusguideRestController extends StandardCampusguideRestCon
      */
     protected function getForeignStandardDao()
     {
-        return $this->getBuildingDao();
+        return $this->getCampusguideHandler()->getBuildingDao();
     }
 
     /**
@@ -89,7 +89,11 @@ class FloorsBuildingCampusguideRestController extends StandardCampusguideRestCon
      */
     protected function getModelPost()
     {
-        $floor = new FloorBuildingModel($this->getPostObject() );
+        $objectPost = $this->getPostObject();
+
+        $floor = FloorBuildingFactoryModel::createFloorBuilding( $this->getForeignModel()->getId(),
+                Core::arrayAt( $objectPost, "name" ), Core::arrayAt( $objectPost, "order" ),
+                Core::arrayAt( $objectPost, "coordinates" ), Core::arrayAt( $objectPost, "main" ) );
 
         return $floor;
     }
@@ -145,61 +149,70 @@ class FloorsBuildingCampusguideRestController extends StandardCampusguideRestCon
     // ... DO
 
 
-    /**
-     * @see StandardCampusguideRestController::doAddCommand()
-     */
-    protected function doAddCommand()
-    {
+    //     protected function doAddCommand()
+    //     {
 
-        // Retrieve Floor from post
-        $floor = $this->getModelPost();
 
-        // Handle Floor Add
-        $floorAdded = $this->getFloorBuildingHandler()->handleAddFloor( $this->getForeignModel()->getId(),
-                $floor );
+    //         // Retrieve Floor from post
+    //         $floor = $this->getModelPost();
 
-        // Set added Floor
-        $this->setModel( $floorAdded );
 
-        // Set Floor list
-        $this->setModelList( $this->getStandardDao()->getForeign( $this->getForeignModel()->getId() ) );
+    //         // Handle Floor Add
+    //         $floorAdded = $this->getFloorBuildingHandler()->handleAddFloor( $this->getForeignModel()->getId(),
+    //                 $floor );
 
-        // Set status code
-        $this->setStatusCode( self::STATUS_CREATED );
 
-    }
+    //         // Set added Floor
+    //         $this->setModel( $floorAdded );
 
-    /**
-     * @see StandardCampusguideRestController::doEditCommand()
-     */
-    protected function doEditCommand()
-    {
 
-        // Edit multiple
-        if ( self::isEditMultipleCommand() )
-        {
+    //         // Set Floor list
+    //         $this->setModelList( $this->getStandardDao()->getForeign( $this->getForeignModel()->getId() ) );
 
-            // Retrieve Floors from post
-            $floors = $this->getModelListPost();
 
-            // Handle Floor edit
-            $floorsEdited = $this->getFloorBuildingHandler()->handleEditFloors(
-                    $this->getModel()->getForeignId(), $floors );
+    //         // Set status code
+    //         $this->setStatusCode( self::STATUS_CREATED );
 
-            // Set edited Floor
-            $this->setModelList( $floorsEdited );
 
-            // Set status code
-            $this->setStatusCode( self::STATUS_CREATED );
+    //     }
 
-        }
-        // Edit single
-        else
-        {
-            parent::doEditCommand();
-        }
 
-    }
+    //     protected function doEditCommand()
+    //     {
+
+
+    //         // Edit multiple
+    //         if ( self::isEditMultipleCommand() )
+    //         {
+
+
+    //             // Retrieve Floors from post
+    //             $floors = $this->getModelListPost();
+
+
+    //             // Handle Floor edit
+    //             $floorsEdited = $this->getFloorBuildingHandler()->handleEditFloors(
+    //                     $this->getModel()->getForeignId(), $floors );
+
+
+    //             // Set edited Floor
+    //             $this->setModelList( $floorsEdited );
+
+
+    //             // Set status code
+    //             $this->setStatusCode( self::STATUS_CREATED );
+
+
+    //         }
+    //         // Edit single
+    //         else
+    //         {
+    //             parent::doEditCommand();
+    //         }
+
+
+    //     }
+
 
     // ... /DO
 

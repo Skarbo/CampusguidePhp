@@ -233,9 +233,9 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
 
         // ... ... Floors
         $sidebar = Xhtml::div()->class_( "sidebar" )->attr( "data-sidebar", "floors" )->attr(
-                "data-sidebar-group", "building" );
+                "data-sidebar-group", "building elements navigation" );
 
-        $header = Xhtml::div()->class_( Resource::css()->getTable(), "sidebar_header_wrapper" );
+        $header = Xhtml::div()->class_( Resource::css()->getTable(), "sidebar_header_wrapper", "collapse" );
         $header->addContent( Xhtml::h( 1, "Floors" ) );
         $header->addContent( Xhtml::span( $this->getBuildingFloors()->size() ) );
 
@@ -300,6 +300,22 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
 
         $wrapper->addContent( $sidebar );
 
+        // ... ... Elements
+        $sidebar = Xhtml::div()->class_( "sidebar" )->attr( "data-sidebar", "elements" )->attr(
+                "data-sidebar-group", "elements" );
+
+        $header = Xhtml::div()->class_( Resource::css()->getTable(), "sidebar_header_wrapper", "collapse" );
+        $header->addContent( Xhtml::h( 1, "Elements" ) );
+        $header->addContent( Xhtml::span( 0 ) );
+
+        // ... ... ... Content
+        $content = Xhtml::div("Content")->class_( "content" );
+
+        $sidebar->addContent( $header );
+        $sidebar->addContent( $content );
+
+        $wrapper->addContent( $sidebar );
+
         // Add wrapper to root
         $root->addContent( $wrapper );
 
@@ -328,7 +344,8 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
                 Xhtml::div(
                         Xhtml::div(
                                 Xhtml::div( Xhtml::div( "Loading building" )->class_( "loading_building" ) )->addContent(
-                                        Xhtml::div( "Loading floors" )->class_( "loading_floors" ) )->id(
+                                        Xhtml::div( "Loading floors" )->class_( "loading_floors" ) )->addContent(
+                                        Xhtml::div( "Loading elements" )->class_( "loading_elements" ) )->id(
                                         self::$ID_CREATOR_CONTENT_CANVAS_LOADER_STATUS_WRAPPER ) )->addContent(
                                 Xhtml::img( Resource::image()->icon()->getSpinnerBar(), "Loading" ) )->class_(
                                 Resource::css()->getMiddle() ) )->id( self::$ID_CREATOR_CONTENT_CANVAS_LOADER_WRAPPER )->class_(

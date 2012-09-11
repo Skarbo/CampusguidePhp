@@ -111,20 +111,24 @@ BuildingsCmsCampusguideMainController.prototype.doFloorSave = function(floor) {
 // ... HANDLE
 
 BuildingsCmsCampusguideMainController.prototype.handleHistory = function() {
+	var hash = this.getHash();
 
-	// Get hash floor
-	var floor = this.getHash().floor;
-
-	if (floor) {
-		// Send Floor Building event
-		this.getEventHandler().handle(new FloorBuildingEvent(floor), "FloorsBuildingRetrievedEvent");
+	// Menu
+	if (hash.menu || hash.sidebar) {
+		this.getEventHandler().handle(new MenuEvent(hash.menu, hash.sidebar));
 	}
 
-	// // Get hash menu
-	// var menu = this.getHash().menu;
-	//	
-	// // Send menu event
-	// this.getEventHandler().handle(new MenuFloorplannerBuildingEvent(menu));
+	// Floor
+	if (hash.floor) {
+		this.getEventHandler().handle(new FloorBuildingEvent(hash.floor), "RetrievedEvent",
+		/**
+		 * @param {RetrievedEvent}
+		 *            event
+		 */
+		function(event) {
+			return event.getRetrievedType() == "building_floors";
+		});
+	}
 
 };
 
@@ -146,33 +150,33 @@ BuildingsCmsCampusguideMainController.prototype.render = function(view) {
 		var buildingId = this.getQuery().id;
 
 		// Send Building retrieve event
-		this.getEventHandler().handle(new BuildingRetrieveEvent(buildingId));
+		this.getEventHandler().handle(new RetrieveEvent("building", buildingId));
 
 		// Get Building
 		this.getBuildingDao().get(buildingId, function(building) {
 
-			// Send Building retrieved event
-			context.getEventHandler().handle(new BuildingRetrievedEvent(building));
+			// Building retrieved event
+			context.getEventHandler().handle(new RetrievedEvent("building", building));
 
-			// Send Elements Building retrieve event
-			context.getEventHandler().handle(new ElementsBuildingRetrieveEvent(buildingId));
+			// Elements retrieve event
+			context.getEventHandler().handle(new RetrieveEvent("building_elements", buildingId));
 
-			// Send Floors Building retrieve Event
-			context.getEventHandler().handle(new FloorsBuildingRetrieveEvent(buildingId));
+			// Floors retrieve event
+			context.getEventHandler().handle(new RetrieveEvent("building_floors", buildingId));
 
-			// Get Elements
+			// Retrieve Elements
 			context.getElementBuildingDao().getForeign(building.id, function(elements) {
 
-				// Send Elements Building retrieved event
-				context.getEventHandler().handle(new ElementsBuildingRetrievedEvent(elements));
+				// Elements retrieved event
+				context.getEventHandler().handle(new RetrievedEvent("building_elements", elements));
 
 			}, true);
 
-			// Get Floors
+			// Retrieve Floors
 			context.getFloorBuildingDao().getForeign(building.id, function(floors) {
 
-				// Send Floors Building retrieved event
-				context.getEventHandler().handle(new FloorsBuildingRetrievedEvent(floors));
+				// Floors retrieved event
+				context.getEventHandler().handle(new RetrievedEvent("building_floors", floors));
 
 			}, true);
 

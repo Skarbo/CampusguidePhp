@@ -40,7 +40,7 @@ class ElementBuildingDaoTest extends StandardDaoTest
         $model = ElementBuildingModel::get_( $model );
 
         $model->setName( "Updated Element" );
-        $model->setCoordinates( array ( array ( 300, 400 ), array ( 500, 600 ) ) );
+        $model->setCoordinates( array ( array ( array ( 300, 400, "L" ), array ( 500, 600, "L" ) ) ) );
 
         return $model;
 
@@ -71,8 +71,7 @@ class ElementBuildingDaoTest extends StandardDaoTest
         $section = $this->addSection( $building->getId() );
 
         // Create Element
-        return self::createElementBuildingTest( $building->getId(), $elementType->getId(), $floor->getId(),
-                $section->getId() );
+        return self::createElementBuildingTest( $floor->getId(), $elementType->getId(), $section->getId() );
     }
 
     /**
@@ -84,15 +83,15 @@ class ElementBuildingDaoTest extends StandardDaoTest
         $modelOne = ElementBuildingModel::get_( $modelOne );
         $modelTwo = ElementBuildingModel::get_( $modelTwo );
 
-        self::assertEqualsFunction( $modelOne->getBuildingId(), $modelTwo->getBuildingId(), "Element Building building id", $this );
-        self::assertEqualsFunction( $modelOne->getTypeId(), $modelTwo->getTypeId(), "Element Building type id",
+        self::assertEqualsFunction( $modelOne->getFloorId(), $modelTwo->getFloorId(), "Element Building floor id",
                 $this );
-        self::assertEqualsFunction( $modelOne->getFloorId(), $modelTwo->getFloorId(), "Element Building floor id", $this );
-        self::assertEqualsFunction( $modelOne->getSectionId(), $modelTwo->getSectionId(), "Element Building section id",
-                $this );
+        self::assertEqualsFunction( $modelOne->getTypeId(), $modelTwo->getTypeId(), "Element Building type id", $this );
+        self::assertEqualsFunction( $modelOne->getSectionId(), $modelTwo->getSectionId(),
+                "Element Building section id", $this );
         self::assertEqualsFunction( $modelOne->getName(), $modelTwo->getName(), "Element Building name", $this );
-        self::assertEqualsFunction( $modelOne->getCoordinates(), $modelTwo->getCoordinates(),
-                "Element Building coordinates", $this );
+        self::assertEqualsFunction( Resource::generateCoordinatesToString( $modelOne->getCoordinates() ),
+                Resource::generateCoordinatesToString( $modelTwo->getCoordinates() ), "Element Building coordinates",
+                $this );
 
     }
 
@@ -104,23 +103,22 @@ class ElementBuildingDaoTest extends StandardDaoTest
 
         $model = ElementBuildingModel::get_( $model );
 
-        self::assertNotNullFunction( $model->getBuildingId(), "Element Building building id", $this );
-        self::assertNotNullFunction( $model->getTypeId(), "Element Building type id", $this );
         self::assertNotNullFunction( $model->getFloorId(), "Element Building floor id", $this );
+        self::assertNotNullFunction( $model->getTypeId(), "Element Building type id", $this );
         self::assertNotNullFunction( $model->getSectionId(), "Element Building section id", $this );
         self::assertNotNullFunction( $model->getName(), "Element Building name", $this );
         self::assertNotNullFunction( $model->getCoordinates(), "Element Building coordinates", $this );
 
     }
-/**
+
+    /**
      * @see StandardDaoTest::getSearchString()
      */
     protected function getSearchString( StandardModel $model )
     {
-        // TODO Auto-generated method stub
-
+        $model = ElementBuildingModel::get_( $model );
+        return $model->getName();
     }
-
 
     // /FUNCTIONS
 

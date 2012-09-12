@@ -110,10 +110,10 @@ abstract class CampusguideDaoTest extends DbTest
     /**
      * @return ElementBuildingModel
      */
-    public static function createElementBuildingTest( $buildingId, $elementTypeId, $floorId, $sectionId )
+    public static function createElementBuildingTest( $floorId, $elementTypeId, $sectionId )
     {
-        $elementBuilding = ElementBuildingFactoryModel::createElementBuilding( $buildingId, "Test Room",
-                array ( array ( 100, 200 ), array ( 300, 400 ) ), $elementTypeId, $floorId, $sectionId );
+        $elementBuilding = ElementBuildingFactoryModel::createElementBuilding( $floorId, "Test Room",
+                array( array ( array ( 100, 200, "L" ), array ( 300, 400, "L" ) ) ), $elementTypeId, $sectionId );
 
         return $elementBuilding;
     }
@@ -195,11 +195,11 @@ abstract class CampusguideDaoTest extends DbTest
     /**
      * @return RoomBuildingModel
      */
-    protected function addElement( $buildingId, $elementTypeId, $floorId, $sectionId )
+    protected function addElement( $floorId, $elementTypeId, $sectionId )
     {
-        $element = self::createElementBuildingTest( $buildingId, $elementTypeId, $floorId, $sectionId );
+        $element = self::createElementBuildingTest( $floorId, $elementTypeId, $sectionId );
 
-        $element->setId( $this->elementBuildingDao->add( $element, $buildingId ) );
+        $element->setId( $this->elementBuildingDao->add( $element, $floorId ) );
 
         return $element;
     }

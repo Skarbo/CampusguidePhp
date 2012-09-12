@@ -19,25 +19,23 @@ class ElementBuildingFactoryModel extends ClassCore
 
 
     /**
-     * @param int $buildingId
+     * @param int $floorId
      * @param string $name
      * @param mixed $coordinates Array( Array( x, y ) ) | String( "x,y|x,y" )
      * @param int $typeId
-     * @param int $floorId
      * @param int $sectionId
      * @return ElementBuildingModel
      */
-    public static function createElementBuilding( $buildingId, $name, $coordinates, $typeId, $floorId, $sectionId )
+    public static function createElementBuilding( $floorId, $name, $coordinates, $typeId, $sectionId )
     {
 
         // Initiate model
         $elementBuilding = new ElementBuildingModel();
 
-        $elementBuilding->setBuildingId( intval( $buildingId ) );
+        $elementBuilding->setFloorId( intval( $floorId ) );
         $elementBuilding->setName( Core::utf8Encode( $name ) );
         $elementBuilding->setCoordinates( Resource::generateCoordinatesToArray( $coordinates ) );
         $elementBuilding->setTypeId( intval( $typeId ) );
-        $elementBuilding->setFloorId( intval( $floorId ) );
         $elementBuilding->setSectionId( intval( $sectionId ) );
 
         // Return model

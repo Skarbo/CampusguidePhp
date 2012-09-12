@@ -19,10 +19,6 @@ class ElementBuildingHandler extends Handler
      */
     private $typeTypeElementBuildingDao;
     /**
-     * @var FloorBuildingDao
-     */
-    private $floorBuildingDao;
-    /**
      * @var ElementBuildingValidator
      */
     private $elementBuildingValidator;
@@ -33,12 +29,11 @@ class ElementBuildingHandler extends Handler
     // CONSTRUCTOR
 
 
-    public function __construct( ElementBuildingDao $elementBuildingDao, SectionBuildingDao $sectionBuildingDao, TypeElementBuildingDao $typeElementBuildingDao, FloorBuildingDao $floorBuildingDao, ElementBuildingValidator $elementBuildingValidator )
+    public function __construct( ElementBuildingDao $elementBuildingDao, SectionBuildingDao $sectionBuildingDao, TypeElementBuildingDao $typeElementBuildingDao, ElementBuildingValidator $elementBuildingValidator )
     {
         $this->setElementBuildingDao( $elementBuildingDao );
         $this->setSectionBuildingDao( $sectionBuildingDao );
         $this->setTypeElementBuildingDao( $typeElementBuildingDao );
-        $this->setFloorBuildingDao( $floorBuildingDao );
         $this->setElementBuildingValidator( $elementBuildingValidator );
     }
 
@@ -100,22 +95,6 @@ class ElementBuildingHandler extends Handler
     }
 
     /**
-     * @return FloorBuildingDao
-     */
-    public function getFloorBuildingDao()
-    {
-        return $this->floorBuildingDao;
-    }
-
-    /**
-     * @param FloorBuildingDao $floorBuildingDao
-     */
-    public function setFloorBuildingDao( FloorBuildingDao $floorBuildingDao )
-    {
-        $this->floorBuildingDao = $floorBuildingDao;
-    }
-
-    /**
      * @return ElementBuildingValidator
      */
     public function getElementBuildingValidator()
@@ -143,7 +122,7 @@ class ElementBuildingHandler extends Handler
      * @return ElementBuildingModel
      * @throws ValidatorException
      */
-    private function handleElement( $buildingId, ElementBuildingModel $element )
+    private function handleElement( $floorId, ElementBuildingModel $element )
     {
 
         // Section should exist
@@ -162,14 +141,6 @@ class ElementBuildingHandler extends Handler
             $element->setTypeId( null );
         }
 
-        // Floor should exist
-        $floor = $this->getFloorBuildingDao()->get( $element->getFloorId() );
-
-        if ( !$floor )
-        {
-            $element->setFloorId( null );
-        }
-
         // Validate Element
         $this->getElementBuildingValidator()->doValidate( $element );
 
@@ -181,19 +152,19 @@ class ElementBuildingHandler extends Handler
     /**
      * Handle new Element
      *
-     * @param int $buildingId
+     * @param int $floorId
      * @param ElementBuildingModel $element
      * @return ElementBuildingModel
      * @throws ValidatorException
      */
-    public function handleNewElement( $buildingId, ElementBuildingModel $element )
+    public function handleNewElement( $floorId, ElementBuildingModel $element )
     {
 
         // Handle Element
-        $element = $this->handleElement( $buildingId, $element );
+        $element = $this->handleElement( $floorId, $element );
 
         // Add Element
-        $elementId = $this->getElementBuildingDao()->add( $element, $buildingId );
+        $elementId = $this->getElementBuildingDao()->add( $element, $floorId );
 
         // Get added Element
         $elementAdded = $this->getElementBuildingDao()->get( $elementId );
@@ -206,19 +177,19 @@ class ElementBuildingHandler extends Handler
     /**
      * Handle edit Element
      *
-     * @param int $buildingId
+     * @param int $floorId
      * @param ElementBuildingModel $element
      * @return ElementBuildingModel
      * @throws ValidatorException
      */
-    public function handleEditElement( $buildingId, ElementBuildingModel $element )
+    public function handleEditElement( $floorId, ElementBuildingModel $element )
     {
 
         // Handle Element
-        $element = $this->handleElement( $buildingId, $element );
+        $element = $this->handleElement( $floorId, $element );
 
         // Edit Element
-        $this->getElementBuildingDao()->edit( $element->getId(), $element, $buildingId );
+        $this->getElementBuildingDao()->edit( $element->getId(), $element, $floorId );
 
         // Get edited Element
         $elementEdited = $this->getElementBuildingDao()->get( $element->getId() );

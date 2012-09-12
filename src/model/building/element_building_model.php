@@ -7,7 +7,6 @@ class ElementBuildingModel extends Model implements StandardModel
 
 
     public $id;
-    public $buildingId;
     public $sectionId;
     public $typeId;
     public $floorId;
@@ -33,7 +32,7 @@ class ElementBuildingModel extends Model implements StandardModel
      */
     public function getForeignId()
     {
-        return $this->getBuildingId();
+        return $this->getFloorId();
     }
 
     /**
@@ -52,16 +51,6 @@ class ElementBuildingModel extends Model implements StandardModel
     public function setId( $id )
     {
         $this->id = $id;
-    }
-
-    public function getBuildingId()
-    {
-        return $this->buildingId;
-    }
-
-    public function setBuildingId( $buildingId )
-    {
-        $this->buildingId = $buildingId;
     }
 
     public function getSectionId()

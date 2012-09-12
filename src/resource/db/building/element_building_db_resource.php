@@ -9,7 +9,6 @@ class ElementBuildingDbResource
     private $table = "building_element";
 
     private $fieldId = "element_id";
-    private $fieldBuildingId = "building_id";
     private $fieldSectionId = "section_id";
     private $fieldTypeId = "element_type_id";
     private $fieldFloorId = "floor_id";
@@ -38,11 +37,6 @@ class ElementBuildingDbResource
     public function getFieldId()
     {
         return $this->fieldId;
-    }
-
-    public function getFieldBuildingId()
-    {
-        return $this->fieldBuildingId;
     }
 
     public function getFieldSectionId()
@@ -79,7 +73,6 @@ class ElementBuildingDbResource
     {
         return $this->fieldRegistered;
     }
-
 
     // /FUNCTIONS
 

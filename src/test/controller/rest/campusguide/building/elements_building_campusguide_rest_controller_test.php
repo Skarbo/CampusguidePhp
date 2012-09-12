@@ -52,14 +52,12 @@ class ElementsBuildingCampusguideRestControllerTest extends StandardCampusguideR
      */
     protected function getEditedModel( StandardModel $model )
     {
-
         $modelEdited = ElementBuildingModel::get_( $model );
 
         $modelEdited->setName( "Updated Element" );
-        $modelEdited->setCoordinates( array ( array ( 500, 600 ), array ( 700, 800 ) ) );
+        $modelEdited->setCoordinates( array ( array ( array ( 500, 600, "L" ), array ( 700, 800, "L" ) ) ) );
 
         return $modelEdited;
-
     }
 
     /**
@@ -75,23 +73,21 @@ class ElementsBuildingCampusguideRestControllerTest extends StandardCampusguideR
      */
     protected function assertModelEquals( Model $modelOne, Model $modelTwo, SimpleTestCase $testCase )
     {
-
         $modelOne = ElementBuildingModel::get_( $modelOne );
         $modelTwo = ElementBuildingModel::get_( $modelTwo );
 
         ElementBuildingDaoTest::assertEqualsFunction( $modelOne->getName(), $modelTwo->getName(), "Room Building name",
                 $testCase );
-        ElementBuildingDaoTest::assertEqualsFunction( $modelOne->getCoordinates(), $modelTwo->getCoordinates(),
-                "Room Building coordinates", $testCase );
-        ElementBuildingDaoTest::assertEqualsFunction( $modelOne->getBuildingId(), $modelTwo->getBuildingId(),
-                "Room Building building id", $testCase );
-        ElementBuildingDaoTest::assertEqualsFunction( $modelOne->getTypeId(), $modelTwo->getTypeId(),
-                "Room Building element type id", $testCase );
         ElementBuildingDaoTest::assertEqualsFunction( $modelOne->getFloorId(), $modelTwo->getFloorId(),
                 "Room Building floor id", $testCase );
+        ElementBuildingDaoTest::assertEqualsFunction(
+                Resource::generateCoordinatesToString( $modelOne->getCoordinates() ),
+                Resource::generateCoordinatesToString( $modelTwo->getCoordinates() ), "Room Building coordinates",
+                $testCase );
+        ElementBuildingDaoTest::assertEqualsFunction( $modelOne->getTypeId(), $modelTwo->getTypeId(),
+                "Room Building element type id", $testCase );
         ElementBuildingDaoTest::assertEqualsFunction( $modelOne->getSectionId(), $modelTwo->getSectionId(),
                 "Room Building section", $testCase );
-
     }
 
     /**
@@ -99,18 +95,15 @@ class ElementsBuildingCampusguideRestControllerTest extends StandardCampusguideR
      */
     protected function assertModelNotNull( Model $model, SimpleTestCase $testCase )
     {
-
         $model = ElementBuildingModel::get_( $model );
 
         ElementBuildingDaoTest::assertNotNullFunction( $model->getId(), "Room Building id", $testCase );
+        ElementBuildingDaoTest::assertNotNullFunction( $model->getFloorId(), "Room Building floor id", $testCase );
         ElementBuildingDaoTest::assertNotNullFunction( $model->getName(), "Room Building name", $testCase );
         ElementBuildingDaoTest::assertNotNullFunction( $model->getCoordinates(), "Room Building coordinates",
                 $testCase );
-        ElementBuildingDaoTest::assertNotNullFunction( $model->getBuildingId(), "Room Building building id", $testCase );
         ElementBuildingDaoTest::assertNotNullFunction( $model->getTypeId(), "Room Building element type id", $testCase );
-        ElementBuildingDaoTest::assertNotNullFunction( $model->getFloorId(), "Room Building floor id", $testCase );
         ElementBuildingDaoTest::assertNotNullFunction( $model->getSectionId(), "Room Building section id", $testCase );
-
     }
 
     /**
@@ -138,8 +131,8 @@ class ElementsBuildingCampusguideRestControllerTest extends StandardCampusguideR
         $section = $this->addSection( $building->getId() );
 
         // Create Element
-        return ElementBuildingDaoTest::createElementBuildingTest( $building->getId(), $elementType->getId(),
-                $floor->getId(), $section->getId() );
+        return ElementBuildingDaoTest::createElementBuildingTest( $floor->getId(), $elementType->getId(),
+                $section->getId() );
 
     }
 
@@ -148,9 +141,8 @@ class ElementsBuildingCampusguideRestControllerTest extends StandardCampusguideR
      */
     protected function getSearchString( StandardModel $model )
     {
-        // TODO Auto-generated method stub
-
-
+        $model = ElementBuildingModel::get_( $model );
+        return $model->getName();
     }
 
     // /FUNCTIONS

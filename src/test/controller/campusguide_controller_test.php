@@ -127,12 +127,12 @@ abstract class CampusguideControllerTest extends WebTest
     /**
      * @return ElementBuildingModel
      */
-    protected function addElement( $buildingId, $elementTypeId = null, $floorId = null, $sectionId = null )
+    protected function addElement( $floorId, $elementTypeId = null, $sectionId = null )
     {
-        $element = ElementBuildingDaoTest::createElementBuildingTest( $buildingId, $elementTypeId, $floorId,
+        $element = ElementBuildingDaoTest::createElementBuildingTest( $floorId, $elementTypeId,
                 $sectionId );
 
-        $element->setId( $this->elementBuildingDao->add( $element, $buildingId ) );
+        $element->setId( $this->elementBuildingDao->add( $element, $floorId ) );
 
         return $element;
     }

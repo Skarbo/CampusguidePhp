@@ -26,11 +26,10 @@ class ElementBuildingDbDao extends StandardDbDao implements ElementBuildingDao
 
         // Create ElementBuilding
         $elementBuilding = ElementBuildingFactoryModel::createElementBuilding(
-                Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldBuildingId() ),
+                Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldFloorId() ),
                 Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldName() ),
                 Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldCoordinates() ),
                 Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldTypeId() ),
-                Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldFloorId() ),
                 Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldSectionId() ) );
 
         $elementBuilding->setId(
@@ -68,7 +67,7 @@ class ElementBuildingDbDao extends StandardDbDao implements ElementBuildingDao
      */
     protected function getForeignField()
     {
-        return Resource::db()->elementBuilding()->getFieldBuildingId();
+        return Resource::db()->elementBuilding()->getFieldFloorId();
     }
 
     /**
@@ -82,12 +81,16 @@ class ElementBuildingDbDao extends StandardDbDao implements ElementBuildingDao
         $fields = array ();
         $binds = array ();
 
-        $fields[ Resource::db()->elementBuilding()->getFieldBuildingId() ] = ":buildingId";
-        $binds[ "buildingId" ] = $foreignId;
+        $fields[ Resource::db()->elementBuilding()->getFieldFloorId() ] = ":floorId";
+        $binds[ "floorId" ] = $foreignId;
         $fields[ Resource::db()->elementBuilding()->getFieldName() ] = ":name";
         $binds[ "name" ] = $model->getName();
-        $fields[ Resource::db()->elementBuilding()->getFieldCoordinates() ] = ":coordinates";
-        $binds[ "coordinates" ] = Resource::generateCoordinatesToString( $model->getCoordinates() );
+
+        if ( !is_null( $model->getCoordinates() ) )
+        {
+            $fields[ Resource::db()->elementBuilding()->getFieldCoordinates() ] = ":coordinates";
+            $binds[ "coordinates" ] = Resource::generateCoordinatesToString( $model->getCoordinates() );
+        }
 
         $fields[ Resource::db()->elementBuilding()->getFieldSectionId() ] = $model->getSectionId() ? ":sectionId" : SB::$NULL;
         if ( $model->getSectionId() )
@@ -99,12 +102,6 @@ class ElementBuildingDbDao extends StandardDbDao implements ElementBuildingDao
         if ( $model->getTypeId() )
         {
             $binds[ "elementTypeId" ] = $model->getTypeId();
-        }
-
-        $fields[ Resource::db()->elementBuilding()->getFieldFloorId() ] = $model->getFloorId() ? ":floorId" : SB::$NULL;
-        if ( $model->getFloorId() )
-        {
-            $binds[ "floorId" ] = $model->getFloorId();
         }
 
         if ( !$isInsert )

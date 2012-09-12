@@ -519,44 +519,6 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
             $buildingId = $this->getBuildingDao()->add( $this->getBuildingAdmin(),
                     $this->getBuildingAdmin()->getFacilityId() );
 
-            // Add Floor
-            $floorId = $this->getFloorBuildingDao()->add(
-                    FloorBuildingFactoryModel::createFloorBuilding( $buildingId, "Floor", 0,
-                            "0,164|127,143|168,308|202,391|400,239|370,13|468,0|502,296|251,496|305,589|211,642|169,574|139,556|51,370" ),
-                    $buildingId );
-
-            // Add Elements
-            $this->getElementBuildingDao()->add(
-                    ElementBuildingFactoryModel::createElementBuilding( $buildingId, "Element1",
-                            "1,165|50,157|64,211|16,225", null, $floorId, null ), $buildingId );
-            $this->getElementBuildingDao()->add(
-                    ElementBuildingFactoryModel::createElementBuilding( $buildingId, "Element2",
-                            "16,225|64,211|79,266|29,279", null, $floorId, null ), $buildingId );
-            $this->getElementBuildingDao()->add(
-                    ElementBuildingFactoryModel::createElementBuilding( $buildingId, "Element3",
-                            "29,279|79,266|98,328|105,343|52,370", null, $floorId, null ), $buildingId );
-            $this->getElementBuildingDao()->add(
-                    ElementBuildingFactoryModel::createElementBuilding( $buildingId, "Element4",
-                            "52,370|105,343|161,462|111,494", null, $floorId, null ), $buildingId );
-            $this->getElementBuildingDao()->add(
-                    ElementBuildingFactoryModel::createElementBuilding( $buildingId, "Element5",
-                            "50,157|76,153|84,182|58,187", null, $floorId, null ), $buildingId );
-            $this->getElementBuildingDao()->add(
-                    ElementBuildingFactoryModel::createElementBuilding( $buildingId, "Element6",
-                            "76,153|126,144|138,192|90,203", null, $floorId, null ), $buildingId );
-            $this->getElementBuildingDao()->add(
-                    ElementBuildingFactoryModel::createElementBuilding( $buildingId, "Element7",
-                            "90,203|138,192|152,248|108,260", null, $floorId, null ), $buildingId );
-            $this->getElementBuildingDao()->add(
-                    ElementBuildingFactoryModel::createElementBuilding( $buildingId, "Element8",
-                            "108,260|152,248|167,308|127,326", null, $floorId, null ), $buildingId );
-            $this->getElementBuildingDao()->add(
-                    ElementBuildingFactoryModel::createElementBuilding( $buildingId, "Element9",
-                            "127,326|167,308|182,346|145,363", null, $floorId, null ), $buildingId );
-            $this->getElementBuildingDao()->add(
-                    ElementBuildingFactoryModel::createElementBuilding( $buildingId, "Element10",
-                            "145,363|182,346|201,391|165,406", null, $floorId, null ), $buildingId );
-
             // Redirect
             self::redirect(
                     Resource::url()->campusguide()->cms()->building()->getViewBuildingPage( $buildingId,

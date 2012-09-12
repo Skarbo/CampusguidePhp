@@ -24,8 +24,9 @@ class ElementsBuildingCampusguideRestController extends StandardCampusguideRestC
         parent::__construct( $api, $view );
 
         $this->setElementBuildingHandler(
-                new ElementBuildingHandler( $this->getCampusguideHandler()->getElementBuildingDao(), $this->getCampusguideHandler()->getSectionBuildingDao(),
-                        $this->getCampusguideHandler()->getTypeElementBuildingDao(), $this->getCampusguideHandler()->getFloorBuildingDao(),
+                new ElementBuildingHandler( $this->getCampusguideHandler()->getElementBuildingDao(),
+                        $this->getCampusguideHandler()->getSectionBuildingDao(),
+                        $this->getCampusguideHandler()->getTypeElementBuildingDao(),
                         new ElementBuildingValidator( $this->getLocale() ) ) );
     }
 
@@ -81,7 +82,7 @@ class ElementsBuildingCampusguideRestController extends StandardCampusguideRestC
      */
     protected function getForeignStandardDao()
     {
-        return $this->getCampusguideHandler()->getBuildingDao();
+        return $this->getCampusguideHandler()->getFloorBuildingDao();
     }
 
     /**
@@ -114,13 +115,14 @@ class ElementsBuildingCampusguideRestController extends StandardCampusguideRestC
         $element = $this->getModelPost();
 
         // Handle new Element
-        $elementAdded = $this->getElementBuildingHandler()->handleNewElement( $this->getForeignModel()->getId(), $element );
+        $elementAdded = $this->getElementBuildingHandler()->handleNewElement(
+                $this->getForeignModel()->getId(), $element );
 
         // Set Element
         $this->setModel( $elementAdded );
 
         // Set all Elements
-        $this->setModelList( $this->getStandardDao()->getForeign( array ( $elementAdded->getBuildingId() ) ) );
+        $this->setModelList( $this->getStandardDao()->getForeign( array ( $elementAdded->getForeignId() ) ) );
 
         // Set status code
         $this->setStatusCode( self::STATUS_CREATED );
@@ -137,14 +139,14 @@ class ElementsBuildingCampusguideRestController extends StandardCampusguideRestC
         $element = $this->getModelPost();
 
         // Handle edit Element
-        $elementEdited = $this->getElementBuildingHandler()->handleEditElement( $this->getModel()->getForeignId(),
-                $element );
+        $elementEdited = $this->getElementBuildingHandler()->handleEditElement(
+                $this->getModel()->getForeignId(), $element );
 
         // Set Element
         $this->setModel( $elementEdited );
 
         // Set all Elements
-        $this->setModelList( $this->getStandardDao()->getForeign( array ( $elementEdited->getBuildingId() ) ) );
+        $this->setModelList( $this->getStandardDao()->getForeign( array ( $elementEdited->getForeignId() ) ) );
 
         // Set status code
         $this->setStatusCode( self::STATUS_CREATED );

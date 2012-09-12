@@ -121,6 +121,31 @@ class ElementBuildingDbDao extends StandardDbDao implements ElementBuildingDao
         return new ElementBuildingListModel();
     }
 
+    /**
+     * @see ElementBuildingDao::getBuilding()
+     */
+    public function getBuilding( $buildingId )
+    {
+
+        $selectQuery = $this->getSelectQuery();
+
+        $selectQuery->getQuery()->addJoin(
+                SB::join( Resource::db()->floorBuilding()->getTable(),
+                        SB::equ( SB::pun( $this->getTable(), Resource::db()->elementBuilding()->getFieldFloorId() ),
+                                SB::pun( Resource::db()->floorBuilding()->getTable(),
+                                        Resource::db()->floorBuilding()->getFieldId() ) ) ) );
+        $selectQuery->getQuery()->addWhere(
+                SB::equ(
+                        SB::pun( Resource::db()->floorBuilding()->getTable(),
+                                Resource::db()->floorBuilding()->getFieldId() ), ":building_id" ) );
+        $selectQuery->addBind( array ( "building_id" => $buildingId ) );
+
+        $result = $this->getDbApi()->query( $selectQuery );
+
+        return $this->createList( $result->getRows() );
+
+    }
+
     // /FUNCTIONS
 
 

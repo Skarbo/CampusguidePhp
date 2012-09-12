@@ -47,6 +47,23 @@ StandardCampusguideAjaxDao.prototype.getUri = function(uri) {
 
 // ... /GET
 
+StandardCampusguideAjaxDao.prototype.query = function(uri, callback) {
+	// Generate url
+	var url = this.getUri(uri);
+
+	// Do ajax
+	$.ajax({
+		url : url,
+		dataType : "json",
+		success : function(data) {
+			callback(data["single"], data["list"]);
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			console.log(textStatus, errorThrown);
+		}
+	});
+};
+
 /**
  * @param {integer}
  *            id

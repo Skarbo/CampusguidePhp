@@ -8,6 +8,8 @@ class ElementsBuildingCampusguideRestController extends StandardCampusguideRestC
 
     public static $CONTROLLER_NAME = "buildingelements";
 
+    const COMMAND_GET_BUILDING = "building";
+
     /**
      * @var ElementBuildingHandler
      */
@@ -108,6 +110,23 @@ class ElementsBuildingCampusguideRestController extends StandardCampusguideRestC
     // ... /GET
 
 
+    // ... IS
+
+
+    /**
+     * @return boolean True if command is get Building
+     */
+    protected static function isGetBuildingCommand()
+    {
+        return self::isGet() && self::getURI( self::URI_COMMAND ) == self::COMMAND_GET_BUILDING && self::getId();
+    }
+
+    // ... /IS
+
+
+    /**
+     * @see StandardRestController::doAddCommand()
+     */
     protected function doAddCommand()
     {
 
@@ -130,7 +149,7 @@ class ElementsBuildingCampusguideRestController extends StandardCampusguideRestC
     }
 
     /**
-     * Do edit command
+     * @see StandardRestController::doEditCommand()
      */
     protected function doEditCommand()
     {
@@ -152,8 +171,48 @@ class ElementsBuildingCampusguideRestController extends StandardCampusguideRestC
         $this->setStatusCode( self::STATUS_CREATED );
 
     }
+
+    protected function doGetBuildingCommand()
+    {
+
+        // Set Model list
+        $this->setModelList( $this->getStandardDao()->getBuilding( self::getId() ) );
+
+        // Add to list
+        if ( !$this->getModelList()->isEmpty() )
+            $this->setModel( $this->getModelList()->get( 0 ) );
+
+            // Set status scode
+        $this->setStatusCode( self::STATUS_OK );
+
+    }
+
     // /FUNCTIONS
 
+
+    public function request()
+    {
+
+        try
+        {
+            parent::request();
+        }
+        catch ( BadrequestException $e )
+        {
+            if ( $e->getCustomCode() != BadrequestException::UNKNOWN_COMMAND )
+                throw $e;
+
+            if ( self::isGetBuildingCommand() )
+            {
+                $this->doGetBuildingCommand();
+            }
+            else
+            {
+                throw $e;
+            }
+        }
+
+    }
 
 }
 

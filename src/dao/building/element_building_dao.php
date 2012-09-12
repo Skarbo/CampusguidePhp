@@ -18,6 +18,14 @@ interface ElementBuildingDao extends StandardDao
     // FUNCTIONS
 
 
+    /**
+     * Elements for given Building
+     *
+     * @param int $buildingId
+     * @return ElementBuildingListModel
+     */
+    public function getBuilding( $buildingId );
+
     // /FUNCTIONS
 
 

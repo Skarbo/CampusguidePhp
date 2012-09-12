@@ -18,5 +18,15 @@ ElementBuildingStandardCampusguideDao.CONTROLLER_NAME = "buildingelements";
 
 // FUNCTIONS
 
+/**
+ * @param {Object}
+ *            buildingId
+ * @param {function}
+ *            callback
+ * @return {Object}
+ */
+StandardCampusguideDao.prototype.getBuilding = function(buildingId, callback) {
+	this.ajax.query(Core.sprintf("%s/%s", "building", buildingId), callback);
+};
 
 // /FUNCTIONS

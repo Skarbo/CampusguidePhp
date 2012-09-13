@@ -21,7 +21,7 @@ class SectionBuildingFactoryModel extends ClassCore
     /**
      * @param int $buildingId
      * @param string $name
-     * @param mixed $coordinates Array( Array( x, y ) )|String("x,y|x,y")
+     * @param string $coordinates
      * @return SectionBuildingModel
      */
     public static function createSectionBuilding( $buildingId, $name, $coordinates )
@@ -32,7 +32,7 @@ class SectionBuildingFactoryModel extends ClassCore
 
         $sectionBuilding->setBuildingId( intval( $buildingId ) );
         $sectionBuilding->setName( Core::utf8Encode( $name ) );
-        $sectionBuilding->setCoordinates( Resource::generateCoordinatesToArray( $coordinates ) );
+        $sectionBuilding->setCoordinates( $coordinates );
 
         // Return model
         return $sectionBuilding;

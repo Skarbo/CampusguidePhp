@@ -80,10 +80,8 @@ class ElementsBuildingCampusguideRestControllerTest extends StandardCampusguideR
                 $testCase );
         ElementBuildingDaoTest::assertEqualsFunction( $modelOne->getFloorId(), $modelTwo->getFloorId(),
                 "Room Building floor id", $testCase );
-        ElementBuildingDaoTest::assertEqualsFunction(
-                Resource::generateCoordinatesToString( $modelOne->getCoordinates() ),
-                Resource::generateCoordinatesToString( $modelTwo->getCoordinates() ), "Room Building coordinates",
-                $testCase );
+        ElementBuildingDaoTest::assertEqualsFunction( $modelOne->getCoordinates(), $modelTwo->getCoordinates(),
+                "Room Building coordinates", $testCase );
         ElementBuildingDaoTest::assertEqualsFunction( $modelOne->getTypeId(), $modelTwo->getTypeId(),
                 "Room Building element type id", $testCase );
         ElementBuildingDaoTest::assertEqualsFunction( $modelOne->getSectionId(), $modelTwo->getSectionId(),

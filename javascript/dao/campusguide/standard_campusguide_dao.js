@@ -213,5 +213,20 @@ StandardCampusguideDao.prototype.edit = function(id, object, callback) {
 	});
 };
 
+/**
+ * @param {Number}
+ *            id
+ * @param {function}
+ *            callback
+ * @return {Object}
+ */
+StandardCampusguideDao.prototype.remove = function(id, callback) {
+	var context = this;
+	this.ajax.remove(id, function(single, list) {
+		context.removeFromList(id);
+		callback(single, list);
+	});
+};
+
 // /FUNCTIONS
 

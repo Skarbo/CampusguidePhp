@@ -9,6 +9,7 @@ class ElementsBuildingCampusguideRestController extends StandardCampusguideRestC
     public static $CONTROLLER_NAME = "buildingelements";
 
     const COMMAND_GET_BUILDING = "building";
+    const COMMAND_DELETE = "delete";
 
     /**
      * @var ElementBuildingHandler
@@ -92,11 +93,9 @@ class ElementsBuildingCampusguideRestController extends StandardCampusguideRestC
      */
     protected function getModelPost()
     {
-
         $element = new ElementBuildingModel( $this->getPostObject() );
 
         return $element;
-
     }
 
     /**
@@ -121,6 +120,22 @@ class ElementsBuildingCampusguideRestController extends StandardCampusguideRestC
         return self::isGet() && self::getURI( self::URI_COMMAND ) == self::COMMAND_GET_BUILDING && self::getId();
     }
 
+    /**
+     * @return boolean True if command is get Building
+     */
+    protected static function isDeleteCommand()
+    {
+        return self::isGet() && self::getURI( self::URI_COMMAND ) == self::COMMAND_DELETE && self::getId();
+    }
+
+    /**
+     * @see StandardRestController::isTouchOnManipulate()
+     */
+    protected function isTouchOnManipulate()
+    {
+        return true;
+    }
+
     // ... /IS
 
 
@@ -143,6 +158,9 @@ class ElementsBuildingCampusguideRestController extends StandardCampusguideRestC
         // Set all Elements
         $this->setModelList( $this->getStandardDao()->getForeign( array ( $elementAdded->getForeignId() ) ) );
 
+        // Touch foreign object
+        $this->doTouchForeign();
+
         // Set status code
         $this->setStatusCode( self::STATUS_CREATED );
 
@@ -158,14 +176,17 @@ class ElementsBuildingCampusguideRestController extends StandardCampusguideRestC
         $element = $this->getModelPost();
 
         // Handle edit Element
-        $elementEdited = $this->getElementBuildingHandler()->handleEditElement(
-                $this->getModel()->getForeignId(), $element );
+        $elementEdited = $this->getElementBuildingHandler()->handleEditElement( $this->getModel()->getId(),
+                $element, $this->getModel()->getForeignId() );
 
         // Set Element
         $this->setModel( $elementEdited );
 
         // Set all Elements
         $this->setModelList( $this->getStandardDao()->getForeign( array ( $elementEdited->getForeignId() ) ) );
+
+        // Touch foreign object
+        $this->doTouchForeign();
 
         // Set status code
         $this->setStatusCode( self::STATUS_CREATED );
@@ -178,12 +199,29 @@ class ElementsBuildingCampusguideRestController extends StandardCampusguideRestC
         // Set Model list
         $this->setModelList( $this->getStandardDao()->getBuilding( self::getId() ) );
 
-        // Add to list
+        // Set Model
         if ( !$this->getModelList()->isEmpty() )
             $this->setModel( $this->getModelList()->get( 0 ) );
 
             // Set status scode
         $this->setStatusCode( self::STATUS_OK );
+
+    }
+
+    protected function doDeleteCommand()
+    {
+
+        // Delete model
+        $this->getStandardDao()->delete( self::getId() );
+
+        // Set Model
+        $this->setModel( $this->getStandardDao()->get( self::getId() ) );
+
+        // Set Model list
+        $this->setModelList( $this->getStandardDao()->getForeign( $this->getModel()->getForeignId() ) );
+
+        // Set status scode
+        $this->setStatusCode( self::STATUS_CREATED );
 
     }
 
@@ -205,6 +243,10 @@ class ElementsBuildingCampusguideRestController extends StandardCampusguideRestC
             if ( self::isGetBuildingCommand() )
             {
                 $this->doGetBuildingCommand();
+            }
+            else if ( self::isDeleteCommand() )
+            {
+                $this->doDeleteCommand();
             }
             else
             {

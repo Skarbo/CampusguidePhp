@@ -140,8 +140,8 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
         $gui = Xhtml::div()->class_( Resource::css()->gui()->getGui(), "theme2" );
 
         $gui->addContent(
-                Xhtml::div( "Building" )->addClass( Resource::css()->gui()->getComponent() )->attr( "data-menu",
-                        "building" ) );
+                Xhtml::div( "Floors" )->addClass( Resource::css()->gui()->getComponent() )->attr( "data-menu",
+                        "floors" ) );
         $gui->addContent(
                 Xhtml::div( "Elements" )->addClass( Resource::css()->gui()->getComponent() )->attr( "data-menu",
                         "elements" ) );
@@ -233,7 +233,7 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
 
         // ... ... Floors
         $sidebar = Xhtml::div()->class_( "sidebar" )->attr( "data-sidebar", "floors" )->attr(
-                "data-sidebar-group", "building elements navigation" );
+                "data-sidebar-group", "floors elements navigation" );
 
         $header = Xhtml::div()->class_( Resource::css()->getTable(), "sidebar_header_wrapper", "collapse" );
         $header->addContent( Xhtml::h( 1, "Floors" ) );
@@ -420,6 +420,10 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
 
         // Create gui
         $gui = Xhtml::div()->addClass( Resource::css()->gui()->getGui(), "theme2" );
+        $gui->addContent(
+                Xhtml::a( Xhtml::div()->attr( "data-icon", "copy" ) )->addClass(
+                        Resource::css()->gui()->getComponent() )->id( "copy" )->title( "Copy/paste" )->attr(
+                        "data-disabled", "true" ) );
         $gui->addContent(
                 Xhtml::a( Xhtml::div()->attr( "data-icon", "trashbin" ) )->addClass(
                         Resource::css()->gui()->getComponent() )->id( "delete" )->title( "Delete" )->attr(

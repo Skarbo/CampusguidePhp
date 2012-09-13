@@ -29,4 +29,15 @@ StandardCampusguideDao.prototype.getBuilding = function(buildingId, callback) {
 	this.ajax.query(Core.sprintf("%s/%s", "building", buildingId), callback);
 };
 
+/**
+ * @param {Object}
+ *            id
+ * @param {function}
+ *            callback
+ * @return {Object}
+ */
+StandardCampusguideDao.prototype.delete_ = function(id, callback) {
+	this.ajax.query(Core.sprintf("%s/%s", "delete", id), callback);
+};
+
 // /FUNCTIONS

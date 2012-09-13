@@ -96,10 +96,8 @@ class FloorsBuildingCampusguideRestControllerTest extends StandardCampusguideRes
                 $testCase );
         FloorBuildingDaoTest::assertEqualsFunction( $modelOne->getOrder(), $modelTwo->getOrder(),
                 "Floor Building foreign id", $testCase );
-        FloorBuildingDaoTest::assertEqualsFunction(
-                Resource::generateCoordinatesToString( $modelOne->getCoordinates() ),
-                Resource::generateCoordinatesToString( $modelTwo->getCoordinates() ), "Floor Building coordinates",
-                $testCase );
+        FloorBuildingDaoTest::assertEqualsFunction( $modelOne->getCoordinates(), $modelTwo->getCoordinates(),
+                "Floor Building coordinates", $testCase );
 
     }
 

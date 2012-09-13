@@ -3,11 +3,20 @@ BuildingsCmsCampusguideMainController.prototype = new CmsCampusguideMainControll
 
 function BuildingsCmsCampusguideMainController(eventHandler, mode, query) {
 	CmsCampusguideMainController.apply(this, arguments);
+	this.building = null;
+	this.floors = {};
+	this.elements = {};
+	this.saveCount = 0;
+	this.editedCount = 0;
 };
 
 // /CONSTRUCTOR
 
 // VARIABLES
+
+BuildingsCmsCampusguideMainController.TYPE_FLOORS = "floors";
+BuildingsCmsCampusguideMainController.TYPE_ELEMENTS = "elements";
+BuildingsCmsCampusguideMainController.TYPE_NAVIGATION = "navigation";
 
 // /VARIABLES
 
@@ -49,6 +58,28 @@ BuildingsCmsCampusguideMainController.prototype.doBindEventHandler = function() 
 
 	// EVENT
 
+	// Retrieved event
+	this.getEventHandler().registerListener(RetrievedEvent.TYPE,
+	/**
+	 * @param {RetrievedEvent}
+	 *            event
+	 */
+	function(event) {
+		switch (event.getRetrievedType()) {
+		case "building":
+			context.building = event.getRetrieved();
+			break;
+
+		case "building_floors":
+			context.floors = event.getRetrieved();
+			break;
+
+		case "building_elements":
+			context.elements = event.getRetrieved();
+			break;
+		}
+	});
+
 	// Edit event
 	this.getEventHandler().registerListener(EditEvent.TYPE,
 	/**
@@ -57,13 +88,13 @@ BuildingsCmsCampusguideMainController.prototype.doBindEventHandler = function() 
 	 */
 	function(event) {
 		switch (event.getEditType()) {
-		case "floor":
-			context.doFloorSave(event.getEdit());
+		case "building":
+			context.doSave(event.getEdit());
 			break;
 		}
 	});
 
-	// Edit event
+	// Edited event
 	this.getEventHandler().registerListener(EditedEvent.TYPE,
 	/**
 	 * @param {EditedEvent}
@@ -72,9 +103,16 @@ BuildingsCmsCampusguideMainController.prototype.doBindEventHandler = function() 
 	function(event) {
 		switch (event.getEditType()) {
 		case "floor":
-			location.reload();
+			context.editedCount++;
+			break;
+
+		case "element":
+			context.editedCount++;
 			break;
 		}
+
+		if (context.saveCount == context.editedCount)
+			location.reload();
 	});
 
 	// /EVENT
@@ -94,15 +132,79 @@ BuildingsCmsCampusguideMainController.prototype.doBindEventHandler = function() 
 
 };
 
-BuildingsCmsCampusguideMainController.prototype.doFloorSave = function(floor) {
+BuildingsCmsCampusguideMainController.prototype.doSave = function(save) {
 	var context = this;
+	console.log("Save", save);
+	var polygons = null, coordinatesArray = [], coordinates = "", element = 0;
+	for (type in save) {
+		for (id in save[type]) {
+			polygons = save[type][id];
+			coordinatesArray = [];
+			coordinates = "";
+			switch (type) {
 
-	if (!floor)
-		return;
+			case BuildingsCmsCampusguideMainController.TYPE_FLOORS:
+				// FLOORS
+				for (i in polygons.children) {
+					coordinatesArray.push(polygons.children[i].toData());
+				}
+				coordinates = coordinatesArray.join("$");
 
-	this.getFloorBuildingDao().edit(floor.id, floor, function(floor, floors) {
-		context.getEventHandler().handle(new EditedEvent("floor", floor));
-	});
+				if (this.floors[id] ? coordinates == this.floors[id].coordinates : !coordinates)
+					continue;
+
+				this.saveCount++;
+				this.floorBuildingDao.edit(id, {
+					coordinates : coordinates
+				}, function(floor, floors) {
+					context.getEventHandler().handle(new EditedEvent("floor", floor));
+				});
+				break;
+
+			case BuildingsCmsCampusguideMainController.TYPE_ELEMENTS:
+				// ELEMENTS
+				for (i in polygons.children) {
+					coordinates = polygons.children[i].toData();
+					element = polygons.children[i].object.element;
+
+					// Edit Element
+					if (element && element.id && !polygons.children[i].deleted) {
+						if (this.elements[element.id] ? coordinates == this.elements[element.id].coordinates : !coordinates)
+							continue;
+
+						this.saveCount++;
+						this.elementBuildingDao.edit(element.id, {
+							coordinates : coordinates
+						}, function(element, elements) {
+							context.getEventHandler().handle(new EditedEvent("element", elements));
+						});
+					}
+					// Delete Element
+					else if (element && element.id && polygons.children[i].deleted) {
+						this.saveCount++;
+						this.elementBuildingDao.delete_(element.id, function(element, elements) {
+							context.getEventHandler().handle(new EditedEvent("element", elements));
+						});
+					}
+					// New Element
+					else if (!element) {
+						if (!coordinates)
+							continue;
+
+						this.saveCount++;
+						this.elementBuildingDao.add(id, {
+							coordinates : coordinates
+						}, function(element, elements) {
+							context.getEventHandler().handle(new EditedEvent("element", elements));
+						});
+					}
+
+				}
+				break;
+
+			}
+		}
+	}
 
 };
 
@@ -158,25 +260,25 @@ BuildingsCmsCampusguideMainController.prototype.render = function(view) {
 			// Building retrieved event
 			context.getEventHandler().handle(new RetrievedEvent("building", building));
 
-			// Elements retrieve event
-			context.getEventHandler().handle(new RetrieveEvent("building_elements", buildingId));
-
 			// Floors retrieve event
 			context.getEventHandler().handle(new RetrieveEvent("building_floors", buildingId));
-
-			// Retrieve Elements
-			context.getElementBuildingDao().getForeign(building.id, function(elements) {
-
-				// Elements retrieved event
-				context.getEventHandler().handle(new RetrievedEvent("building_elements", elements));
-
-			}, true);
 
 			// Retrieve Floors
 			context.getFloorBuildingDao().getForeign(building.id, function(floors) {
 
 				// Floors retrieved event
 				context.getEventHandler().handle(new RetrievedEvent("building_floors", floors));
+
+				// Elements retrieve event
+				context.getEventHandler().handle(new RetrieveEvent("building_elements", buildingId));
+
+				// Retrieve Elements
+				context.getElementBuildingDao().getBuilding(building.id, function(element, elements) {
+
+					// Elements retrieved event
+					context.getEventHandler().handle(new RetrievedEvent("building_elements", elements));
+
+				}, true);
 
 			}, true);
 

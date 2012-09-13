@@ -89,9 +89,8 @@ class ElementBuildingDaoTest extends StandardDaoTest
         self::assertEqualsFunction( $modelOne->getSectionId(), $modelTwo->getSectionId(),
                 "Element Building section id", $this );
         self::assertEqualsFunction( $modelOne->getName(), $modelTwo->getName(), "Element Building name", $this );
-        self::assertEqualsFunction( Resource::generateCoordinatesToString( $modelOne->getCoordinates() ),
-                Resource::generateCoordinatesToString( $modelTwo->getCoordinates() ), "Element Building coordinates",
-                $this );
+        self::assertEqualsFunction( $modelOne->getCoordinates(), $modelTwo->getCoordinates(),
+                "Element Building coordinates", $this );
 
     }
 
@@ -118,6 +117,29 @@ class ElementBuildingDaoTest extends StandardDaoTest
     {
         $model = ElementBuildingModel::get_( $model );
         return $model->getName();
+    }
+
+    public function testShouldGetBuilding()
+    {
+
+        // Create test model
+        $model = ElementBuildingModel::get_( $this->createModelTest() );
+
+        $floor = $this->floorBuildingDao->get( $model->getForeignId() );
+
+        // Add Models
+        $this->getStandardDao()->add( $model, $model->getForeignId() );
+        $this->getStandardDao()->add( $model, $model->getForeignId() );
+        $this->getStandardDao()->add( $model, $model->getForeignId() );
+
+        // Get foreign List
+        $modelRetrievedForeignList = $this->getStandardDao()->getBuilding( $floor->getForeignId() );
+
+        // Assert foreign list
+        $this->assertEqual( 3, $modelRetrievedForeignList->size(),
+                sprintf( "Retrieved Foreign %s should be size %d but is %d", get_class( $model ), 3,
+                        $modelRetrievedForeignList->size() ) );
+
     }
 
     // /FUNCTIONS

@@ -46,17 +46,6 @@ class BuildingValidator extends Validator
     /**
      * @throws Exception
      */
-    protected function doCoordinates()
-    {
-        if ( !Core::isDoubleArray( $this->getModel()->getCoordinates() ) )
-        {
-            throw new Exception( "Coordinates must be double array" );
-        }
-    }
-
-    /**
-     * @throws Exception
-     */
     protected function doFacility()
     {
         if ( !$this->getModel()->getFacilityId() )

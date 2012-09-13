@@ -30,7 +30,8 @@ class ElementBuildingDbDao extends StandardDbDao implements ElementBuildingDao
                 Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldName() ),
                 Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldCoordinates() ),
                 Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldTypeId() ),
-                Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldSectionId() ) );
+                Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldSectionId() ),
+                Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldDeleted() ) );
 
         $elementBuilding->setId(
                 intval( Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldId() ) ) );
@@ -83,13 +84,17 @@ class ElementBuildingDbDao extends StandardDbDao implements ElementBuildingDao
 
         $fields[ Resource::db()->elementBuilding()->getFieldFloorId() ] = ":floorId";
         $binds[ "floorId" ] = $foreignId;
-        $fields[ Resource::db()->elementBuilding()->getFieldName() ] = ":name";
-        $binds[ "name" ] = $model->getName();
+
+        if ( !is_null( $model->getName() ) && !$isInsert )
+        {
+            $fields[ Resource::db()->elementBuilding()->getFieldName() ] = ":name";
+            $binds[ "name" ] = $model->getName();
+        }
 
         if ( !is_null( $model->getCoordinates() ) )
         {
             $fields[ Resource::db()->elementBuilding()->getFieldCoordinates() ] = ":coordinates";
-            $binds[ "coordinates" ] = Resource::generateCoordinatesToString( $model->getCoordinates() );
+            $binds[ "coordinates" ] = $model->getCoordinates();
         }
 
         $fields[ Resource::db()->elementBuilding()->getFieldSectionId() ] = $model->getSectionId() ? ":sectionId" : SB::$NULL;
@@ -137,12 +142,33 @@ class ElementBuildingDbDao extends StandardDbDao implements ElementBuildingDao
         $selectQuery->getQuery()->addWhere(
                 SB::equ(
                         SB::pun( Resource::db()->floorBuilding()->getTable(),
-                                Resource::db()->floorBuilding()->getFieldId() ), ":building_id" ) );
+                                Resource::db()->floorBuilding()->getFieldBuildingId() ), ":building_id" ) );
         $selectQuery->addBind( array ( "building_id" => $buildingId ) );
 
         $result = $this->getDbApi()->query( $selectQuery );
 
         return $this->createList( $result->getRows() );
+
+    }
+
+    /**
+     * @see ElementBuildingDao::delete()
+     */
+    public function delete( $id )
+    {
+
+        // Updated query
+        $updatedQuery = new UpdateQueryDbCore(
+                new UpdateSqlbuilderDbCore( $this->getTable(),
+                        array ( Resource::db()->elementBuilding()->getFieldDeleted() => "1",
+                                Resource::db()->elementBuilding()->getFieldUpdated() => SB::$CURRENT_TIMESTAMP ),
+                        SB::equ( Resource::db()->elementBuilding()->getFieldId(), ":id" ) ), array ( "id" => $id ) );
+
+        // Query
+        $result = $this->getDbApi()->query( $updatedQuery );
+
+        // Return result
+        return $result->isExecute();
 
     }
 

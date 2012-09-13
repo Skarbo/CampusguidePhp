@@ -74,9 +74,8 @@ class FloorBuildingDaoTest extends StandardDaoTest
         self::assertEqualsFunction( $modelOne->getName(), $modelTwo->getName(), "Floor Building name", $this );
         self::assertEqualsFunction( $modelOne->getOrder(), $modelTwo->getOrder(), "Floor Building foreign id", $this );
         self::assertEqualsFunction( $modelOne->getMain(), $modelTwo->getMain(), "Floor Building main id", $this );
-        self::assertEqualsFunction( Resource::generateCoordinatesToString( $modelOne->getCoordinates() ),
-                Resource::generateCoordinatesToString( $modelTwo->getCoordinates() ), "Floor Building coordinates",
-                $this );
+        self::assertEqualsFunction( $modelOne->getCoordinates(), $modelTwo->getCoordinates(),
+                "Floor Building coordinates", $this );
 
     }
 

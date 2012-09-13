@@ -46,6 +46,11 @@ abstract class StandardCampusguideRestView extends RestView
     // ... /GET
 
 
+    protected function isNoCache()
+    {
+        return StandardCampusguideRestController::isEditCommand() || StandardCampusguideRestController::isAddCommand() || StandardCampusguideRestController::isRemoveCommand();
+    }
+
     /**
      * @see RestView::getData()
      */

@@ -5,7 +5,6 @@ function BuildingcreatorBuildingCmsCampusguidePageMainView(view) {
 	PageMainView.apply(this, arguments);
 	this.stage = null;
 	this.layers = {
-		building : null,
 		floors : {},
 		floors_map : {},
 		elements : {}
@@ -29,12 +28,13 @@ function BuildingcreatorBuildingCmsCampusguidePageMainView(view) {
 		type : null,
 		element : null
 	};
+	this.selectedCopy = this.selected;
 	this.scale = 1.0;
 	this.stagePosition = {
 		x : 0,
 		y : 0
 	};
-	this.menu = null;
+	this.menu = BuildingcreatorBuildingCmsCampusguidePageMainView.MENU_FLOORS;
 	this.toolbar = null;
 	this.retrieved = 0;
 };
@@ -48,6 +48,10 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.SCALE_SIZE = 0.05;
 BuildingcreatorBuildingCmsCampusguidePageMainView.LINE_TYPE_STRAIGHT = "straight";
 BuildingcreatorBuildingCmsCampusguidePageMainView.LINE_TYPE_QUAD = "quad";
 BuildingcreatorBuildingCmsCampusguidePageMainView.LINE_TYPE_BEZIER = "bezier";
+
+BuildingcreatorBuildingCmsCampusguidePageMainView.MENU_FLOORS = "floors";
+BuildingcreatorBuildingCmsCampusguidePageMainView.MENU_ELEMENTS = "elements";
+BuildingcreatorBuildingCmsCampusguidePageMainView.MENU_NAVIGATION = "navigation";
 
 // /VARIABLES
 
@@ -199,22 +203,22 @@ $(function() {
 
 			switch (this.anchor.type) {
 			case BuildingcreatorBuildingCmsCampusguidePageMainView.LINE_TYPE_QUAD:
-				data.push(this.anchor.control.handleFirst.attrs.x.toFixed(1));
-				data.push(this.anchor.control.handleFirst.attrs.y.toFixed(1));
+				data.push(Core.roundNumber(this.anchor.control.handleFirst.attrs.x + this.anchor.polygon.attrs.x));
+				data.push(Core.roundNumber(this.anchor.control.handleFirst.attrs.y + this.anchor.polygon.attrs.y));
 				break;
 			case BuildingcreatorBuildingCmsCampusguidePageMainView.LINE_TYPE_BEZIER:
-				data.push(this.anchor.control.handleFirst.attrs.x.toFixed(1));
-				data.push(this.anchor.control.handleFirst.attrs.y.toFixed(1));
-				data.push(this.anchor.control.handleSecond.attrs.x.toFixed(1));
-				data.push(this.anchor.control.handleSecond.attrs.y.toFixed(1));
+				data.push(Core.roundNumber(this.anchor.control.handleFirst.attrs.x + this.anchor.polygon.attrs.x));
+				data.push(Core.roundNumber(this.anchor.control.handleFirst.attrs.y + this.anchor.polygon.attrs.y));
+				data.push(Core.roundNumber(this.anchor.control.handleSecond.attrs.x + this.anchor.polygon.attrs.x));
+				data.push(Core.roundNumber(this.anchor.control.handleSecond.attrs.y + this.anchor.polygon.attrs.y));
 				break;
 			}
 
 			return data.join("%");
 		},
 		fromData : function(data) {
-			data = data || [];
-			var dataArray = jQuery.isArray(data) ? data : data.split("%");
+			data = data || "";
+			var dataArray = data.split("%");
 
 			this.positionControl();
 
@@ -301,8 +305,8 @@ $(function() {
 		toData : function() {
 			var data = [];
 
-			data.push(this.attrs.x.toFixed(1));
-			data.push(this.attrs.y.toFixed(1));
+			data.push(Core.roundNumber(this.attrs.x + this.polygon.attrs.x));
+			data.push(Core.roundNumber(this.attrs.y + this.polygon.attrs.y));
 
 			switch (this.type) {
 			case BuildingcreatorBuildingCmsCampusguidePageMainView.LINE_TYPE_QUAD:
@@ -322,8 +326,8 @@ $(function() {
 			return data.join(",");
 		},
 		fromData : function(data) {
-			data = data || [];
-			var dataArray = jQuery.isArray(data) ? data : data.split(",");
+			data = data || "";
+			var dataArray = data.split(",");
 
 			this.setX(parseFloat(dataArray[0]));
 			this.setY(parseFloat(dataArray[1]));
@@ -463,22 +467,26 @@ $(function() {
 			this.anchorLast = null;
 			this.anchorDraw = null;
 			this.isCreating = false;
+			this.deleted = false;
+			this.object = {
+				type : null,
+				element : null
+			};
 
 			this.add(this.shape);
 			this.add(this.anchors);
 			this.add(this.controls);
 
-			// this.on("mouseover", function() {
-			// this.setDraggable(this.context.polygonsIsDraggable);
-			// if (this.context.polygonsIsDraggable && $("body").css("cursor")
-			// != "pointer")
-			// $("body").css("cursor", "pointer");
-			// });
-			// this.on("mouseout", function() {
-			// this.setDraggable(false);
-			// if ($("body").css("cursor") != "default")
-			// $("body").css("cursor", "default");
-			// });
+			this.on("mouseover", function() {
+				this.setDraggable(this.context.polygonsIsDraggable);
+				if (this.context.polygonsIsDraggable && $("body").css("cursor") != "pointer")
+					$("body").css("cursor", "pointer");
+			});
+			this.on("mouseout", function() {
+				this.setDraggable(false);
+				if ($("body").css("cursor") != "default")
+					$("body").css("cursor", "default");
+			});
 		},
 		addAnchor : function(anchor) {
 			if (!anchor)
@@ -520,8 +528,13 @@ $(function() {
 			this.controls.add(anchor.control);
 		},
 		deletePolygon : function() {
-			this.getParent().remove(this);
-			delete this;
+			if (this.object.element) {
+				this.hide();
+				this.deleted = true;
+			} else {
+				this.getParent().remove(this);
+				delete this;
+			}
 		},
 		removeAnchor : function(anchor) {
 			if (this.anchors.isAncestorOf(anchor)) {
@@ -549,8 +562,8 @@ $(function() {
 			var namespace = "mousemove.draw_polygon mouseup.draw_polygon";
 			var positionUser = this.getStage().getUserPosition();
 			var position = positionUser ? {
-				x : (positionUser.x - this.getStage().attrs.x) / this.getStage().attrs.scale.x,
-				y : (positionUser.y - this.getStage().attrs.y) / this.getStage().attrs.scale.y
+				x : ((positionUser.x - this.getStage().attrs.x) / this.getStage().attrs.scale.x) - this.attrs.x,
+				y : ((positionUser.y - this.getStage().attrs.y) / this.getStage().attrs.scale.y) - this.attrs.y
 			} : {
 				x : 0,
 				y : 0
@@ -629,8 +642,8 @@ $(function() {
 			return data.join("|");
 		},
 		fromData : function(data) {
-			data = data || [];
-			var dataAnchor = jQuery.isArray(data) ? data : data.split("|"), anchor;
+			data = data || "";
+			var dataAnchor = data.split("|"), anchor;
 			for (i in dataAnchor) {
 				anchor = new PolygonAnchor();
 				this.addAnchor(anchor);
@@ -643,6 +656,12 @@ $(function() {
 				coordinates = coordinates.concat(anchor.getCoordinates());
 			});
 			return coordinates;
+		},
+		copy : function(context) {
+			var data = this.toData();
+			var polygon = new Polygon({}, context);
+			polygon.fromData(data);
+			return polygon;
 		}
 	});
 
@@ -762,111 +781,40 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getBuildingLayer = f
 	return this.layers["building"];
 };
 
-// ... ... ... FLOOR
-
 /**
  * @returns {Kinetic.Layer}
  */
-BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getFloorLayer = function(floorId) {
-	return this.layers["floors"][floorId];
-};
-
-/**
- * @returns {Object}
- */
-BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getFloorLayers = function() {
-	return this.layers["floors"];
-};
-
-/**
- * @returns {Kinetic.Group}
- */
-BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getFloorGroup = function(floorId) {
-	return this.groups["floors"][floorId];
-};
-
-/**
- * @returns {Kinetic.Group}
- */
-BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getFloorGroups = function() {
-	return this.groups["floors"];
-};
-
-/**
- * @returns {Kinetic.Group}
- */
-BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getFloorPolygons = function(floorId) {
-	return this.polygons["floors"][floorId];
+BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getLayers = function(type) {
+	return this.layers[type];
 };
 
 /**
  * @returns {Kinetic.Layer}
  */
-BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getFloorMapLayer = function(floorId) {
-	return this.layers["floors_map"][floorId];
-};
-
-/**
- * @returns {Object}
- */
-BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getFloorMapLayers = function() {
-	return this.layers["floors_map"];
+BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getLayer = function(type, floorId) {
+	return this.layers[type][floorId];
 };
 
 /**
  * @returns {Kinetic.Group}
  */
-BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getFloorMapGroup = function(floorId) {
-	return this.groups["floors_map"][floorId];
+BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getGroups = function(type) {
+	return this.groups[type];
 };
 
 /**
  * @returns {Kinetic.Group}
  */
-BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getFloorMapGroups = function() {
-	return this.groups["floors_map"];
-};
-
-// ... ... ... /FLOOR
-
-// ... ... ... ELEMENT
-
-/**
- * @returns {Object}
- */
-BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getElementLayers = function() {
-	return this.layers["elements"];
-};
-
-/**
- * @returns {Kinetic.Layer}
- */
-BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getElementLayer = function(floorId) {
-	return this.layers["elements"][floorId];
-};
-
-/**
- * @returns {Object}
- */
-BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getElementsGroups = function() {
-	return this.groups["elements"];
+BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getGroup = function(type, floorId) {
+	return this.groups[type][floorId];
 };
 
 /**
  * @returns {Kinetic.Group}
  */
-BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getElementGroup = function(floorId) {
-	return this.groups["elements"][floorId];
+BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getPolygons = function(type, floorId) {
+	return this.polygons[type][floorId];
 };
-
-/**
- * @returns {Kinetic.Group}
- */
-BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getElementPolygons = function(floorId) {
-	return this.polygons["elements"][floorId];
-};
-
-// ... ... ... /ELEMENT
 
 // ... ... /KINETIC
 
@@ -891,6 +839,13 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getToolbarPolygonEle
  */
 BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getToolbarLineTypeElement = function() {
 	return this.getToolbarElement().find(".line_type");
+};
+
+/**
+ * @returns {Object}
+ */
+BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getToolbarCopyElement = function() {
+	return this.getToolbarElement().find("#copy");
 };
 
 /**
@@ -957,49 +912,17 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.setStagePosition = f
 	this.getController().setLocalStorageVariable("stagePosition", position.x + "," + position.y);
 };
 
-BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.setBuildingLayer = function(layer) {
-	this.layers["building"] = layer;
+BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.setLayer = function(type, floorId, layer) {
+	this.layers[type][floorId] = layer;
 };
 
-// ... ... ... FLOOR
-
-BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.setFloorLayer = function(floorId, layer) {
-	this.layers["floors"][floorId] = layer;
+BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.setGroup = function(type, floorId, group) {
+	this.groups[type][floorId] = group;
 };
 
-BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.setFloorGroup = function(floorId, group) {
-	this.groups["floors"][floorId] = group;
+BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.setPolygons = function(type, floorId, group) {
+	this.polygons[type][floorId] = group;
 };
-
-BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.setFloorPolygons = function(floorId, group) {
-	this.polygons["floors"][floorId] = group;
-};
-
-BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.setFloorMapLayer = function(floorId, layer) {
-	this.layers["floors_map"][floorId] = layer;
-};
-
-BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.setFloorMapGroup = function(floorId, group) {
-	this.groups["floors_map"][floorId] = group;
-};
-
-// ... ... ... /FLOOR
-
-// ... ... ... ELEMENT
-
-BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.setElementLayer = function(floorId, layer) {
-	this.layers["elements"][floorId] = layer;
-};
-
-BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.setElementGroup = function(floorId, group) {
-	this.groups["elements"][floorId] = group;
-};
-
-BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.setElementPolygons = function(floorId, group) {
-	this.polygons["elements"][floorId] = group;
-};
-
-// ... ... ... /ELEMENT
 
 // ... ... /KINETIC
 
@@ -1110,6 +1033,7 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doBindEventHandler =
 
 	var floorsTable = this.getSidebarFloorsTableElement();
 	var floorsTableRow = floorsTable.find("tbody.show tr.floor");
+	var floorsTableEditRow = floorsTable.find("tbody.edit tr.floor");
 	var floorsButtons = this.getSidebarFloorsButtonsElement();
 
 	// Edit Floor
@@ -1134,7 +1058,7 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doBindEventHandler =
 	});
 
 	// Order Floor
-	floorsTableRow.find(".order_edit .up, .order_edit .down").click(function(event) {
+	floorsTableEditRow.find(".order_edit .up, .order_edit .down").click(function(event) {
 		context.doFloorsOrder($(this).closest(".floor"), $(this).hasClass("up"));
 	});
 
@@ -1223,7 +1147,7 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doBindEventHandler =
 
 	this.getMenuSaveElement().click(function(event) {
 		if (!$(this).isDisabled())
-			context.doFloorCoordinatesSave();
+			context.doSave();
 	});
 
 	this.getMenuSubElement().click(function(event) {
@@ -1241,12 +1165,12 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doBindEventHandler =
 
 	this.getToolbarLayerFitElement().click(function(event) {
 		if (!$(this).isDisabled())
-			context.doFloorFitToScale();
+			context.doFitToScale();
 	});
 
 	this.getToolbarPolygonElement().click(function(event) {
 		if (!$(this).isDisabled())
-			context.doFloorPolygonDraw(null);
+			context.doPolygonDraw(null);
 	});
 
 	this.getToolbarLineTypeElement().click(function(event) {
@@ -1254,6 +1178,11 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doBindEventHandler =
 			if (context.selected && context.selected.type == "polygon_anchor")
 				context.doFloorPolygonLineType(context.selected.element, $(this).attr("data-line"));
 		}
+	});
+
+	this.getToolbarCopyElement().click(function(event) {
+		if (!$(this).isDisabled())
+			context.handleSelectedCopy();
 	});
 
 	this.getToolbarDeleteElement().click(function(event) {
@@ -1354,7 +1283,7 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doFloorsSave = funct
 };
 
 BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doFloorSelect = function(floorId) {
-	if (!floorId)
+	if (!floorId || !this.menu)
 		return false;
 
 	// Select toolbar Floor
@@ -1363,7 +1292,7 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doFloorSelect = func
 	floorRows.filter("[data-floor=" + floorId + "]").addClass("selected");
 
 	// Show/hide Floors map
-	var floorsMap = this.getFloorMapGroups();
+	var floorsMap = this.getGroups("floors_map");
 	for (id in floorsMap) {
 		if (id == floorId && this.floorMapShow) {
 			floorsMap[id].show();
@@ -1371,21 +1300,21 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doFloorSelect = func
 			floorsMap[id].hide();
 		}
 	}
-	
+
 	// Show/hide Floors
-	var floors = this.getFloorGroups();
+	var floors = this.getGroups(BuildingcreatorBuildingCmsCampusguidePageMainView.MENU_FLOORS);
 	for (id in floors) {
-		if (this.menu == "building" && id == floorId) {
+		if (this.menu == BuildingcreatorBuildingCmsCampusguidePageMainView.MENU_FLOORS && id == floorId) {
 			floors[id].show();
 		} else {
 			floors[id].hide();
 		}
 	}
-	
+
 	// Show/hide Elements
-	var elements = this.getElementsGroups();
+	var elements = this.getGroups(BuildingcreatorBuildingCmsCampusguidePageMainView.MENU_ELEMENTS);
 	for (id in elements) {
-		if (this.menu == "elements" && id == floorId) {
+		if (this.menu == BuildingcreatorBuildingCmsCampusguidePageMainView.MENU_ELEMENTS && id == floorId) {
 			elements[id].show();
 		} else {
 			elements[id].hide();
@@ -1398,6 +1327,9 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doFloorSelect = func
 	this.getToolbarToggleMapElement().enable();
 	this.getToolbarLayerFitElement().enable();
 
+	// De-select
+	this.getEventHandler().handle(new SelectEvent());
+
 	// Re-draw stage
 	this.stage.draw();
 
@@ -1407,7 +1339,7 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doFloorMapToggle = f
 	if (!this.floorSelected)
 		return;
 
-	var floorMap = this.getFloorMapGroup(this.floorSelected);
+	var floorMap = this.getGroup("floors_map", this.floorSelected);
 
 	if (!floorMap)
 		return;
@@ -1441,11 +1373,13 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doScale = function(s
 
 };
 
-BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doFloorPolygonDraw = function(event) {
-	if (!this.floorSelected)
+BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doPolygonDraw = function(event) {
+	if (!this.floorSelected || !this.menu)
 		return;
 
-	var polygons = this.getFloorPolygons(this.floorSelected);
+	var polygons = this.getPolygons(this.menu, this.floorSelected);
+	if (!polygons)
+		return;
 
 	// Create polygon
 	var polygon = new Polygon({}, this);
@@ -1453,6 +1387,8 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doFloorPolygonDraw =
 
 	// Create polygon with mouse
 	polygon.createPolygon();
+
+	polygon.getLayer().draw();
 };
 
 BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doFloorPolygonLineType = function(polygonAnchor, type) {
@@ -1476,35 +1412,15 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doFloorPolygonLineTy
 
 };
 
-BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doFloorCoordinatesSave = function() {
-
-	if (!this.floorSelected)
-		return false;
-
-	var floorPolygons = this.getFloorPolygons(this.floorSelected).getChildren();
-
-	var coordinates = [];
-	for (i in floorPolygons) {
-		coordinates.push(floorPolygons[i].toData());
-	}
-
-	var floor = this.floors[this.floorSelected];
-
-	if (!floor)
-		return;
-
-	floor.coordinates = coordinates.join("$");
-
-	this.getEventHandler().handle(new EditEvent("floor", floor));
-
+BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doSave = function() {
+	this.getEventHandler().handle(new EditEvent("building", this.polygons));
 };
 
-BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doFloorFitToScale = function() {
-
+BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doFitToScale = function() {
 	if (!this.floorSelected)
 		return false;
 
-	var polygons = this.getFloorPolygons(this.floorSelected).getChildren();
+	var polygons = this.getPolygons(this.menu, this.floorSelected).getChildren();
 
 	var scaleNew = 1.0;
 	var positionNew = {
@@ -1531,7 +1447,7 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doFloorFitToScale = 
 
 	} else {
 
-		var layer = this.getFloorMapLayer(this.floorSelected);
+		var layer = this.getLayer("floors_map", this.floorSelected);
 
 		if (layer.height && layer.width) {
 			var boundX = layer.width, boundY = layer.height;
@@ -1595,6 +1511,21 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.handleRetrieved = fu
 	if (this.retrieved == 3) {
 		this.getCanvasLoaderElement().hide();
 		this.getCanvasContentElement().show();
+
+		// Select Floor
+		var selectMainFloor = function(floors) {
+			var floorMain = null;
+			var i = 0;
+			for (floorId in floors) {
+				if (floors[floorId].main || i == 0)
+					floorMain = floorId;
+				i++;
+			}
+			return floorMain;
+		};
+
+		var floorSelect = this.floorSelected ? this.floorSelected : selectMainFloor(this.floors);
+		this.doFloorSelect(floorSelect);
 	}
 };
 
@@ -1612,31 +1543,15 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.handleFloorsRetrieve
 	for (floorId in floors) {
 		this.drawFloor(floors[floorId]);
 	}
-
-	// Select Floor
-	var selectMainFloor = function(floors) {
-		var floorMain = null;
-		var i = 0;
-		for (floorId in floors) {
-			if (floors[floorId].main || i == 0) {
-				floorMain = floors[floorId];
-			}
-			i++;
-		}
-		return floorMain;
-	};
-
-	var floorSelect = selectMainFloor(floors);
-	this.doFloorSelect(floorSelect ? floorSelect.id : null);
-
 };
 
 BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.handleElementsRetrieved = function(elements) {
 	this.elements = elements;
-	console.log("Elements retrieved", elements);
+
 	// Draw Elements
 	for (elementId in elements) {
-		this.drawElement(elements[elementId]);
+		if (!elements[elementId].deleted)
+			this.drawElement(elements[elementId]);
 	}
 };
 
@@ -1680,11 +1595,15 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.handleSelect = funct
 	}
 	this.getToolbarLineTypeElement().disable();
 	this.getToolbarDeleteElement().disable();
+	this.getToolbarCopyElement().disable();
 
 	if (!type || !element) {
 		if (this.selected.element)
 			this.selected.element.getLayer().draw();
 		this.selected = {};
+
+		if (this.selectedCopy.element)
+			this.getToolbarCopyElement().enable();
 		return;
 	}
 
@@ -1703,6 +1622,7 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.handleSelect = funct
 	switch (type) {
 	case "polygon_shape":
 		this.getToolbarDeleteElement().enable();
+		this.getToolbarCopyElement().enable();
 		this.selected.element.getLayer().draw();
 		break;
 
@@ -1715,6 +1635,40 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.handleSelect = funct
 	default:
 		this.selected = {};
 	}
+
+};
+
+BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.handleSelectedCopy = function() {
+
+	// COPY
+
+	if (this.selected.element) {
+		if (this.selected.type != "polygon_shape")
+			return;
+
+		this.selectedCopy = this.selected;
+	}
+
+	// /COPY
+
+	// PASTE
+
+	if (!this.selected.element) {
+		if (this.selectedCopy.type != "polygon_shape")
+			return;
+
+		var polygons = this.getPolygons(this.menu, this.floorSelected);
+		if (polygons) {
+			var polygon = this.selectedCopy.element.polygon.copy(this);
+			polygons.add(polygon);
+			if (this.selectedCopy.element.getLayer()._id == polygons.getLayer()._id)
+				polygon.move(20, 20);
+			polygon.getLayer().draw();
+		}
+
+	}
+
+	// /PASTE
 
 };
 
@@ -1751,8 +1705,8 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.handleMenu = functio
 		break;
 
 	default:
-		menu = "building";
-		submenuElements.filter("[data-menu=building]").addClass("highlight");
+		menu = "floors";
+		submenuElements.filter("[data-menu=floors]").addClass("highlight");
 		break;
 	}
 	this.menu = menu;
@@ -1777,6 +1731,8 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.handleMenu = functio
 	}
 
 	// /SIDEBAR
+
+	this.doFloorSelect(this.floorSelected);
 
 };
 
@@ -1817,7 +1773,7 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.draw = function(root
 		"width" : canvas.parent().width(),
 		"height" : canvas.parent().height(),
 		clearBeforeDraw : true,
-		scale : this.scale,
+		scale : this.scale
 	});
 	this.stage.setX(this.stagePosition.x);
 	this.stage.setY(this.stagePosition.y);
@@ -1834,60 +1790,12 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.draw = function(root
 	// /CANVAS
 
 	// Menu
-	this.handleMenu(this.getView().getController().getHash().menu);
+	this.handleMenu(this.getController().getHash().menu);
 
 };
 
 BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.drawFloor = function(floor) {
-
-	// Draw Floor map
-	this.drawFloorMap(floor);
-	
-	// Initiate layer
-	var layer = new Kinetic.Layer({
-		name : "floor_layer",
-		id : floor.id
-	});
-
-	// Initiate group
-	var group = new Kinetic.Group({
-		name : "floor_group",
-		id : floor.id,
-		visible : false
-	});
-
-	// Create polygon group
-	var groupPolygons = new Kinetic.Group({
-		name : "polygons"
-	});
-	group.add(groupPolygons);
-	groupPolygons.setZIndex(10);
-	this.setFloorPolygons(floor.id, groupPolygons);
-
-	// Create Floor polygon
-	if (floor.coordinates) {
-		for (i in floor.coordinates) {
-			var polygon = new Polygon({}, this);
-			polygon.fromData(floor.coordinates[i]);
-			groupPolygons.add(polygon);
-		}
-	}
-
-	// Set Floor layer
-	this.setFloorLayer(floor.id, layer);
-
-	// Set floor group
-	this.setFloorGroup(floor.id, group);
-
-	// Add group to layer
-	layer.add(group);
-
-	// Add layer to stage
-	this.stage.add(layer);
-
-};
-
-BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.drawFloorMap = function(floor) {
+	var context = this;
 
 	// Initiate layer
 	var layer = new Kinetic.Layer({
@@ -1920,83 +1828,163 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.drawFloorMap = funct
 		group.add(image);
 		image.setZIndex(0);
 		layer.height = imageObj.height;
-		layer.width = imageObj.width,
+		layer.width = imageObj.width;
+
+		// Draw Floor layer
+		context.drawFloorLayer(floor, layer.width, layer.height);
 
 		// Draw layer
 		layer.draw();
 
 	};
 	imageObj.src = Core.sprintf("image/%s/building/floor/%s_%s.png", this.getMode(), floor.buildingId, floor.id);
-	
+
 	// Set Floor layer
-	this.setFloorMapLayer(floor.id, layer);
+	this.setLayer("floors_map", floor.id, layer);
 
 	// Set floor group
-	this.setFloorMapGroup(floor.id, group);
+	this.setGroup("floors_map", floor.id, group);
 
 	// Add group to layer
 	layer.add(group);
 
 	// Add layer to stage
 	this.stage.add(layer);
-	
+
+};
+
+BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.drawFloorLayer = function(floor, width, height) {
+
+	// Initiate layer
+	var layer = new Kinetic.Layer({
+		name : "floor_layer",
+		id : floor.id
+	});
+
+	// Initiate group
+	var group = new Kinetic.Group({
+		name : "floor_group",
+		id : floor.id,
+		visible : false
+	});
+
+	// Create fill
+	var fill = new Kinetic.Rect({
+		name : "floor_fill",
+		x : 0,
+		y : 0,
+		width : width,
+		height : height,
+		stroke : "#CCC",
+		strokeWidth : 2,
+	});
+	group.add(fill);
+	fill.setZIndex(5);
+
+	// Create polygon group
+	var polygons = new Kinetic.Group({
+		name : "floor_polygons"
+	});
+	group.add(polygons);
+	polygons.setZIndex(10);
+	this.setPolygons(BuildingcreatorBuildingCmsCampusguidePageMainView.MENU_FLOORS, floor.id, polygons);
+
+	// Create Floor polygon
+	if (floor.coordinates) {
+		var coordinates = floor.coordinates.split("$");
+		for (i in coordinates) {
+			var polygon = new Polygon({}, this);
+			polygon.fromData(coordinates[i]);
+			polygons.add(polygon);
+		}
+	}
+
+	// Set Floor layer
+	this.setLayer(BuildingcreatorBuildingCmsCampusguidePageMainView.MENU_FLOORS, floor.id, layer);
+
+	// Set floor group
+	this.setGroup(BuildingcreatorBuildingCmsCampusguidePageMainView.MENU_FLOORS, floor.id, group);
+
+	// Add group to layer
+	layer.add(group);
+
+	// Add layer to stage
+	this.stage.add(layer);
+
+	// Draw Floor Element
+	this.drawFloorElement(floor, width, height);
+
+};
+
+BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.drawFloorElement = function(floor, width, height) {
+
+	// Initiate layer
+	var layer = new Kinetic.Layer({
+		name : "element_layer",
+		id : floor.id
+	});
+
+	this.setLayer(BuildingcreatorBuildingCmsCampusguidePageMainView.MENU_ELEMENTS, floor.id, layer);
+	this.stage.add(layer);
+
+	// Initiate group
+	var group = new Kinetic.Group({
+		name : "element_group",
+		id : floor.id,
+		visible : false
+	});
+
+	this.setGroup(BuildingcreatorBuildingCmsCampusguidePageMainView.MENU_ELEMENTS, floor.id, group);
+	layer.add(group);
+
+	// Create fill
+	var fill = new Kinetic.Rect({
+		name : "floor_fill",
+		x : 0,
+		y : 0,
+		width : width,
+		height : height,
+		stroke : "#CCC",
+		strokeWidth : 2
+	});
+	group.add(fill);
+	fill.setZIndex(5);
+
+	// Initiate polygons
+	var polygons = new Kinetic.Group({
+		name : "element_polygons",
+		id : floor.id,
+	});
+
+	this.setPolygons(BuildingcreatorBuildingCmsCampusguidePageMainView.MENU_ELEMENTS, floor.id, polygons);
+	group.add(polygons);
+	polygons.setZIndex(10);
+
 };
 
 BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.drawElement = function(element) {
 
-	// Initiate layer
-	var layer = this.getElementLayer(element.floorId);
+	var polygons = this.getPolygons(BuildingcreatorBuildingCmsCampusguidePageMainView.MENU_ELEMENTS, element.floorId);
 
-	if (!layer) {
-		layer = new Kinetic.Layer({
-			name : "element_layer",
-			id : element.floorId
-		});
-
-		this.setElementLayer(element.floorId, layer);
-		this.stage.add(layer);
-	}
-
-	// Initiate group
-	var group = this.getElementGroup(element.floorId);
-
-	if (!group) {
-		group = new Kinetic.Group({
-			name : "element_group",
-			id : element.floorId,
-			visible : false
-		});
-
-		this.setElementGroup(element.floorId, group);
-		layer.add(group);
-	}
-
-	// Initiate polygons
-	var polygons = this.getElementPolygons(element.floorId);
-
-	if (!polygons) {
-		polygons = new Kinetic.Group({
-			name : "element_polygons",
-			id : element.floorId,
-		});
-
-		this.setElementPolygons(element.floorId, polygons);
-		group.add(polygons);
-		polygons.setZIndex(10);
-	}
+	// TODO Add these elements to an unnamed floor?
+	if (!polygons)
+		return;
 
 	// Create polygon
 	if (element.coordinates) {
-		for (i in element.coordinates) {
+		var coordinates = element.coordinates.split("$");
+		for (i in coordinates) {
 			var polygon = new Polygon({}, this);
-			polygon.element = element;
-			polygon.fromData(element.coordinates[i]);
+			polygon.object = {
+				type : "element",
+				element : element
+			};
+			polygon.fromData(coordinates[i]);
 			polygons.add(polygon);
 		}
 	}
 
 };
-
 
 // ... /DRAW
 

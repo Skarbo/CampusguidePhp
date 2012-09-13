@@ -1,4 +1,4 @@
--- Tue, 11 Sep 2012 21:10:43 GMT
+-- Thu, 13 Sep 2012 00:44:58 GMT
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40014 SET FOREIGN_KEY_CHECKS=0 */;
 -- Dumping database structure for campusguide_test
@@ -22,13 +22,13 @@ CREATE TABLE `building` (
   PRIMARY KEY (`building_id`),
   KEY `facility_id` (`facility_id`),
   CONSTRAINT `FK_BUILDING_FACILITY` FOREIGN KEY (`facility_id`) REFERENCES `facility` (`facility_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=361 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=449 DEFAULT CHARSET=utf8;
 
 
 -- Dumping data for table campusguide_test.building: ~1 rows (approximately)
 /*!40000 ALTER TABLE `building` DISABLE KEYS */;
 INSERT INTO `building` (`building_id`, `facility_id`, `building_name`, `building_coordinates`, `building_address`, `building_location`, `building_position`, `building_updated`, `building_registered`) VALUES 
-	(360, 577, 'Test Building', '100|200$300|400', '', '', '', NULL, '2012-09-11 11:26:29')
+	(448, 665, 'Test Building', '100|200$300|400', '', '', '', NULL, '2012-09-12 17:39:10')
 ;
 /*!40000 ALTER TABLE `building` ENABLE KEYS */;
 
@@ -37,27 +37,32 @@ INSERT INTO `building` (`building_id`, `facility_id`, `building_name`, `building
 DROP TABLE IF EXISTS `building_element`;
 CREATE TABLE `building_element` (
   `element_id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `building_id` smallint(6) NOT NULL,
+  `floor_id` smallint(6) NOT NULL,
   `section_id` smallint(6) DEFAULT NULL,
   `element_type_id` smallint(6) DEFAULT NULL,
-  `floor_id` smallint(6) DEFAULT NULL,
   `element_name` varchar(255) NOT NULL,
   `element_coordinates` text NOT NULL,
+  `element_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `element_updated` datetime DEFAULT NULL,
   `element_registered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`element_id`),
   KEY `element_type_id` (`element_type_id`),
   KEY `section_id` (`section_id`),
   KEY `floor_id` (`floor_id`),
-  KEY `building_id` (`building_id`),
-  CONSTRAINT `FK_ROOM_BUILDING` FOREIGN KEY (`building_id`) REFERENCES `building` (`building_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_ROOM_ELEMENT` FOREIGN KEY (`element_type_id`) REFERENCES `building_element_type` (`type_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  CONSTRAINT `FK_ROOM_FLOOR` FOREIGN KEY (`floor_id`) REFERENCES `building_floor` (`floor_id`) ON DELETE SET NULL ON UPDATE SET NULL,
-  CONSTRAINT `FK_ROOM_SECTION` FOREIGN KEY (`section_id`) REFERENCES `building_section` (`section_id`) ON DELETE SET NULL ON UPDATE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `FK_ELEMENT_FLOOR` FOREIGN KEY (`floor_id`) REFERENCES `building_floor` (`floor_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_ELEMENT_SECTION` FOREIGN KEY (`section_id`) REFERENCES `building_section` (`section_id`) ON DELETE SET NULL ON UPDATE SET NULL,
+  CONSTRAINT `FK_ELEMENT_TYPE` FOREIGN KEY (`element_type_id`) REFERENCES `building_element_type` (`type_id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=154 DEFAULT CHARSET=utf8;
 
 
--- Dumping data for table campusguide_test.building_element: ~0 rows (approximately)
+-- Dumping data for table campusguide_test.building_element: ~3 rows (approximately)
+/*!40000 ALTER TABLE `building_element` DISABLE KEYS */;
+INSERT INTO `building_element` (`element_id`, `floor_id`, `section_id`, `element_type_id`, `element_name`, `element_coordinates`, `element_deleted`, `element_updated`, `element_registered`) VALUES 
+	(151, 386, 88, 88, '', '100,200,L|300,400,L', 0, NULL, '2012-09-12 17:39:10'),
+	(152, 386, 88, 88, '', '100,200,L|300,400,L', 0, NULL, '2012-09-12 17:39:10'),
+	(153, 386, 88, 88, '', '100,200,L|300,400,L', 0, NULL, '2012-09-12 17:39:10')
+;
+/*!40000 ALTER TABLE `building_element` ENABLE KEYS */;
 
 
 -- Dumping structure for table campusguide_test.building_element_type
@@ -72,10 +77,15 @@ CREATE TABLE `building_element_type` (
   PRIMARY KEY (`type_id`),
   KEY `type_group_id` (`type_group_id`),
   CONSTRAINT `FK_ELEMENT_GROUP` FOREIGN KEY (`type_group_id`) REFERENCES `building_element_type_group` (`group_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8;
 
 
--- Dumping data for table campusguide_test.building_element_type: ~0 rows (approximately)
+-- Dumping data for table campusguide_test.building_element_type: ~1 rows (approximately)
+/*!40000 ALTER TABLE `building_element_type` DISABLE KEYS */;
+INSERT INTO `building_element_type` (`type_id`, `type_name`, `type_group_id`, `type_icon`, `type_updated`, `type_registered`) VALUES 
+	(88, 'Test Element Building', 88, 'icon1', NULL, '2012-09-12 17:39:10')
+;
+/*!40000 ALTER TABLE `building_element_type` ENABLE KEYS */;
 
 
 -- Dumping structure for table campusguide_test.building_element_type_group
@@ -86,10 +96,15 @@ CREATE TABLE `building_element_type_group` (
   `group_updated` datetime DEFAULT NULL,
   `group_registered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`group_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8;
 
 
--- Dumping data for table campusguide_test.building_element_type_group: ~0 rows (approximately)
+-- Dumping data for table campusguide_test.building_element_type_group: ~1 rows (approximately)
+/*!40000 ALTER TABLE `building_element_type_group` DISABLE KEYS */;
+INSERT INTO `building_element_type_group` (`group_id`, `group_name`, `group_updated`, `group_registered`) VALUES 
+	(88, 'Test Group Type Element Building', NULL, '2012-09-12 17:39:10')
+;
+/*!40000 ALTER TABLE `building_element_type_group` ENABLE KEYS */;
 
 
 -- Dumping structure for table campusguide_test.building_floor
@@ -106,15 +121,13 @@ CREATE TABLE `building_floor` (
   PRIMARY KEY (`floor_id`),
   KEY `building_id` (`building_id`),
   CONSTRAINT `FK_FLOOR_BUILDING` FOREIGN KEY (`building_id`) REFERENCES `building` (`building_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=299 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=387 DEFAULT CHARSET=utf8;
 
 
--- Dumping data for table campusguide_test.building_floor: ~3 rows (approximately)
+-- Dumping data for table campusguide_test.building_floor: ~1 rows (approximately)
 /*!40000 ALTER TABLE `building_floor` DISABLE KEYS */;
 INSERT INTO `building_floor` (`floor_id`, `building_id`, `floor_name`, `floor_coordinates`, `floor_order`, `floor_main`, `floor_updated`, `floor_registered`) VALUES 
-	(296, 360, 'Test Floor', '100,200,L|300,400,L', 0, 0, NULL, '2012-09-11 11:26:29'),
-	(297, 360, 'Test Floor', '100,200,L|300,400,L', 0, 0, NULL, '2012-09-11 11:26:29'),
-	(298, 360, 'Test Floor', '100,200,L|300,400,L', 0, 0, NULL, '2012-09-11 11:26:29')
+	(386, 448, '', '100,200,L|300,400,L', 0, 0, NULL, '2012-09-12 17:39:10')
 ;
 /*!40000 ALTER TABLE `building_floor` ENABLE KEYS */;
 
@@ -131,10 +144,15 @@ CREATE TABLE `building_section` (
   PRIMARY KEY (`section_id`),
   KEY `building_id` (`building_id`),
   CONSTRAINT `FK_SECTION_BUILDING` FOREIGN KEY (`building_id`) REFERENCES `building` (`building_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8;
 
 
--- Dumping data for table campusguide_test.building_section: ~0 rows (approximately)
+-- Dumping data for table campusguide_test.building_section: ~1 rows (approximately)
+/*!40000 ALTER TABLE `building_section` DISABLE KEYS */;
+INSERT INTO `building_section` (`section_id`, `building_id`, `section_name`, `section_coordinates`, `section_updated`, `section_registered`) VALUES 
+	(88, 448, 'Section Test', '100|200$300|400', '0000-00-00 00:00:00', '2012-09-12 17:39:10')
+;
+/*!40000 ALTER TABLE `building_section` ENABLE KEYS */;
 
 
 -- Dumping structure for table campusguide_test.debug
@@ -266,13 +284,13 @@ CREATE TABLE `facility` (
   `facility_updated` datetime DEFAULT NULL,
   `facility_registered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`facility_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=578 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=666 DEFAULT CHARSET=utf8;
 
 
 -- Dumping data for table campusguide_test.facility: ~1 rows (approximately)
 /*!40000 ALTER TABLE `facility` DISABLE KEYS */;
 INSERT INTO `facility` (`facility_id`, `facility_name`, `facility_updated`, `facility_registered`) VALUES 
-	(577, 'Test Facility', NULL, '2012-09-11 11:26:29')
+	(665, 'Test Facility', NULL, '2012-09-12 17:39:10')
 ;
 /*!40000 ALTER TABLE `facility` ENABLE KEYS */;
 

@@ -12,6 +12,7 @@ class ElementBuildingModel extends Model implements StandardModel
     public $floorId;
     public $name;
     public $coordinates;
+    public $deleted;
     public $updated;
     public $registered;
 
@@ -140,6 +141,16 @@ class ElementBuildingModel extends Model implements StandardModel
 
     // /FUNCTIONS
 
+
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    public function setDeleted( $deleted )
+    {
+        $this->deleted = $deleted;
+    }
 
 }
 

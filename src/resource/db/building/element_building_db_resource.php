@@ -14,6 +14,7 @@ class ElementBuildingDbResource
     private $fieldFloorId = "floor_id";
     private $fieldName = "element_name";
     private $fieldCoordinates = "element_coordinates";
+    private $fieldDeleted = "element_deleted";
     private $fieldUpdated = "element_updated";
     private $fieldRegistered = "element_registered";
 
@@ -76,6 +77,11 @@ class ElementBuildingDbResource
 
     // /FUNCTIONS
 
+
+    public function getFieldDeleted()
+    {
+        return $this->fieldDeleted;
+    }
 
 }
 

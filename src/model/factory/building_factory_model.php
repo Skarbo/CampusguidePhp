@@ -21,7 +21,7 @@ class BuildingFactoryModel extends ClassCore
     /**
      * @param string $name
      * @param int $facilityId
-     * @param mixed $coordinates Array( Array( x, y ) )|String(x,y|x,y)
+     * @param string $coordinates
      * @param mixed $address Array( "streetname", "city", "postal", "country" )|String("streetname|city|postal|country")
      * @param mixed $position Array( Array( lat, lon ), ... )|String( "lat,lon|..." )
      * @return BuildingModel
@@ -34,7 +34,7 @@ class BuildingFactoryModel extends ClassCore
 
         $building->setName( Core::utf8Encode( $name ) );
         $building->setFacilityId( intval( $facilityId ) );
-        $building->setCoordinates( Resource::generateCoordinatesToArray( $coordinates ) );
+        $building->setCoordinates( $coordinates );
         $building->setAddress( Core::utf8Encode( is_array( $address ) ? $address : explode( "|", $address ) ) );
         $building->setPosition( BuildingUtil::generatePositionToArray( $position ) );
         $building->setLocation( BuildingUtil::generateLocationToArray( $location ) );

@@ -26,6 +26,14 @@ interface ElementBuildingDao extends StandardDao
      */
     public function getBuilding( $buildingId );
 
+    /**
+     * Sets Element as deleted
+     *
+     * @param int $id
+     * @return boolean True if deleted
+     */
+    public function delete( $id );
+
     // /FUNCTIONS
 
 

@@ -182,17 +182,17 @@ class ElementBuildingHandler extends Handler
      * @return ElementBuildingModel
      * @throws ValidatorException
      */
-    public function handleEditElement( $floorId, ElementBuildingModel $element )
+    public function handleEditElement( $elementId, ElementBuildingModel $element, $floorId )
     {
 
         // Handle Element
         $element = $this->handleElement( $floorId, $element );
 
         // Edit Element
-        $this->getElementBuildingDao()->edit( $element->getId(), $element, $floorId );
+        $this->getElementBuildingDao()->edit( $elementId, $element, $floorId );
 
         // Get edited Element
-        $elementEdited = $this->getElementBuildingDao()->get( $element->getId() );
+        $elementEdited = $this->getElementBuildingDao()->get( $elementId );
 
         // Return edited Element
         return $elementEdited;

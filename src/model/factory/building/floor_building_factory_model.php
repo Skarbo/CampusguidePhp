@@ -22,7 +22,7 @@ class FloorBuildingFactoryModel extends ClassCore
      * @param int $buildingId
      * @param string $name
      * @param int $order
-     * @param mixed $coordinates Array( Array( x,y ), ... )|String( "x,y|..." );
+     * @param string $coordinates
      * @param boolean $main [false]
      * @return FloorBuildingModel
      */
@@ -35,7 +35,7 @@ class FloorBuildingFactoryModel extends ClassCore
         $floorBuilding->setOrder( intval( $order ) );
         $floorBuilding->setBuildingId( intval( $buildingId ) );
         $floorBuilding->setName( Core::utf8Encode( $name ) );
-        $floorBuilding->setCoordinates( Resource::generateCoordinatesToArray( $coordinates ) );
+        $floorBuilding->setCoordinates( $coordinates );
         $floorBuilding->setMain( intval( $main ) );
 
         // Return model

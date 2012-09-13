@@ -69,6 +69,14 @@ class FloorBuildingDbDao extends StandardDbDao implements FloorBuildingDao
     }
 
     /**
+     * @see StandardDbDao::getTouchField()
+     */
+    protected function getTouchField()
+    {
+        return Resource::db()->floorBuilding()->getFieldUpdated();
+    }
+
+    /**
      * @see StandardDao::getInsertUpdateFieldsBinds()
      */
     protected function getInsertUpdateFieldsBinds( StandardModel $model, $foreignId = null, $isInsert = false )
@@ -81,19 +89,28 @@ class FloorBuildingDbDao extends StandardDbDao implements FloorBuildingDao
 
         $fields[ Resource::db()->floorBuilding()->getFieldBuildingId() ] = ":buildingId";
         $binds[ ":buildingId" ] = $foreignId;
-        $fields[ Resource::db()->floorBuilding()->getFieldName() ] = ":name";
-        $binds[ ":name" ] = Core::decodeUtf8( $model->getName() );
-        $fields[ Resource::db()->floorBuilding()->getFieldOrder() ] = ":order";
-        $binds[ ":order" ] = $model->getOrder();
 
-        if ( !Core::isEmpty($model->getCoordinates()))
+        if ( !is_null( $model->getName() ) && !$isInsert )
         {
-            $fields[ Resource::db()->floorBuilding()->getFieldCoordinates() ] = ":coordinates";
-            $binds[ ":coordinates" ] = Resource::generateCoordinatesToString( $model->getCoordinates() );
+            $fields[ Resource::db()->floorBuilding()->getFieldName() ] = ":name";
+            $binds[ ":name" ] = Core::decodeUtf8( $model->getName() );
+        }
+        if ( !is_null( $model->getOrder() ) && !$isInsert )
+        {
+            $fields[ Resource::db()->floorBuilding()->getFieldOrder() ] = ":order";
+            $binds[ ":order" ] = $model->getOrder();
+        }
+        if ( !is_null( $model->getMain() ) && !$isInsert )
+        {
+            $fields[ Resource::db()->floorBuilding()->getFieldMain() ] = ":main";
+            $binds[ ":main" ] = $model->getMain();
         }
 
-        $fields[ Resource::db()->floorBuilding()->getFieldMain() ] = ":main";
-        $binds[ ":main" ] = $model->getMain();
+        if ( !Core::isEmpty( $model->getCoordinates() ) )
+        {
+            $fields[ Resource::db()->floorBuilding()->getFieldCoordinates() ] = ":coordinates";
+            $binds[ ":coordinates" ] = $model->getCoordinates();
+        }
 
         if ( !$isInsert )
         {

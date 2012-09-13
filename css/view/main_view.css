@@ -61,6 +61,10 @@
 	content: "T";
 }
 
+*[data-icon=copy]:AFTER {
+	content: "C";
+}
+
 *[data-icon=polygon]:AFTER {
 	content: "0";
 }

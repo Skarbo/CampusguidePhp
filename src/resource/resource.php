@@ -128,7 +128,7 @@ class Resource extends AbstractResource
     public static function generateCoordinatesToArray( $coordinates )
     {
         if ( empty( $coordinates ) )
-            return array();
+            return array ();
         return !is_array( $coordinates ) ? array_map(
                 function ( $polygon )
                 {

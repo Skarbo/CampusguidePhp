@@ -40,17 +40,6 @@ class ElementBuildingValidator extends Validator
         $this->validateCharacters( "Element name", $this->getModel()->getName() );
     }
 
-    /**
-     * @throws Exception
-     */
-    protected function doCoordinates()
-    {
-        if ( !Core::isDoubleArray( $this->getModel()->getCoordinates() ) )
-        {
-            throw new Exception( "Element coordinates must be double array" );
-        }
-    }
-
     // /FUNCTIONS
 
 

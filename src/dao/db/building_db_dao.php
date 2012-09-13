@@ -97,7 +97,7 @@ class BuildingDbDao extends StandardDbDao implements BuildingDao
         $fields[ Resource::db()->building()->getFieldFacilityId() ] = ":facilityId";
         $binds[ "facilityId" ] = $foreignId;
         $fields[ Resource::db()->building()->getFieldCoordinates() ] = ":coordinates";
-        $binds[ "coordinates" ] = Resource::generateCoordinatesToString( $model->getCoordinates() );
+        $binds[ "coordinates" ] = $model->getCoordinates();
         $fields[ Resource::db()->building()->getFieldLocation() ] = ":location";
         $binds[ "location" ] = BuildingUtil::generateLocationToString( $model->getLocation() );
         $fields[ Resource::db()->building()->getFieldAddress() ] = ":address";

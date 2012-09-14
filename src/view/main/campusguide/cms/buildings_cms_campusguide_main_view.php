@@ -143,6 +143,14 @@ class BuildingsCmsCampusguideMainView extends CmsCampusguideMainView implements 
         return $this->getController()->getBuildingFloors();
     }
 
+    /**
+     * @see BuildingcreatorBuildingsCmsCampusguideInterfaceView::getBuildingElements()
+     */
+    public function getBuildingElements()
+    {
+        return $this->getController()->getBuildingElements();
+    }
+
     // ... /GET
 
 

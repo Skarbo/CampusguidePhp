@@ -6,6 +6,7 @@ function BuildingsCmsCampusguideMainController(eventHandler, mode, query) {
 	this.building = null;
 	this.floors = {};
 	this.elements = {};
+	this.saving = false;
 	this.saveCount = 0;
 	this.editedCount = 0;
 };
@@ -91,6 +92,10 @@ BuildingsCmsCampusguideMainController.prototype.doBindEventHandler = function() 
 		case "building":
 			context.doSave(event.getEdit());
 			break;
+
+		case "element":
+			context.doElementSave(event.getEdit());
+			break;
 		}
 	});
 
@@ -106,12 +111,12 @@ BuildingsCmsCampusguideMainController.prototype.doBindEventHandler = function() 
 			context.editedCount++;
 			break;
 
-		case "element":
+		case "elements":
 			context.editedCount++;
 			break;
 		}
 
-		if (context.saveCount == context.editedCount)
+		if (context.saving && context.saveCount == context.editedCount)
 			location.reload();
 	});
 
@@ -134,7 +139,7 @@ BuildingsCmsCampusguideMainController.prototype.doBindEventHandler = function() 
 
 BuildingsCmsCampusguideMainController.prototype.doSave = function(save) {
 	var context = this;
-	console.log("Save", save);
+
 	var polygons = null, coordinatesArray = [], coordinates = "", element = 0;
 	for (type in save) {
 		for (id in save[type]) {
@@ -176,14 +181,14 @@ BuildingsCmsCampusguideMainController.prototype.doSave = function(save) {
 						this.elementBuildingDao.edit(element.id, {
 							coordinates : coordinates
 						}, function(element, elements) {
-							context.getEventHandler().handle(new EditedEvent("element", elements));
+							context.getEventHandler().handle(new EditedEvent("elements", elements));
 						});
 					}
 					// Delete Element
 					else if (element && element.id && polygons.children[i].deleted) {
 						this.saveCount++;
 						this.elementBuildingDao.delete_(element.id, function(element, elements) {
-							context.getEventHandler().handle(new EditedEvent("element", elements));
+							context.getEventHandler().handle(new EditedEvent("elements", elements));
 						});
 					}
 					// New Element
@@ -195,7 +200,7 @@ BuildingsCmsCampusguideMainController.prototype.doSave = function(save) {
 						this.elementBuildingDao.add(id, {
 							coordinates : coordinates
 						}, function(element, elements) {
-							context.getEventHandler().handle(new EditedEvent("element", elements));
+							context.getEventHandler().handle(new EditedEvent("elements", elements));
 						});
 					}
 
@@ -205,7 +210,20 @@ BuildingsCmsCampusguideMainController.prototype.doSave = function(save) {
 			}
 		}
 	}
+	
+	if (this.saveCount>0)
+		this.saving = true;
 
+};
+
+BuildingsCmsCampusguideMainController.prototype.doElementSave = function(element) {
+	if (!element || !element.id || !element.name)
+		return;
+	var context = this;
+
+	this.elementBuildingDao.edit(element.id, element, function(element, elements) {
+		context.getEventHandler().handle(new EditedEvent("element", element));
+	});
 };
 
 // ... /DO

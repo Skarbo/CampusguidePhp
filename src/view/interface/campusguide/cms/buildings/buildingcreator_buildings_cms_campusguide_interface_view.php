@@ -8,6 +8,11 @@ interface BuildingcreatorBuildingsCmsCampusguideInterfaceView extends BuildingsC
      */
     public function getBuildingFloors();
 
+    /**
+     * @return ElementBuildingListModel
+     */
+    public function getBuildingElements();
+
 }
 
 ?>

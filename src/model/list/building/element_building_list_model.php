@@ -19,6 +19,20 @@ class ElementBuildingListModel extends StandardListModel
 
 
     /**
+     * @param int $floorId
+     * @param boolean $deleted True includes deleted Elements
+     * @return ElementBuildingListModel
+     */
+    public function getFloor( $floorId, $deleted = false )
+    {
+        return $this->filter(
+                function ( ElementBuildingModel $model ) use($floorId, $deleted )
+                {
+                    return $model->getFloorId() == $floorId && (!$deleted ? !$model->getDeleted() : true);
+                } );
+    }
+
+    /**
      * @see IteratorCore::get()
      * @return ElementBuildingModel
      */
@@ -60,7 +74,7 @@ class ElementBuildingListModel extends StandardListModel
     // ... /STATIC
 
 
-// /FUNCTIONS
+    // /FUNCTIONS
 
 
 }

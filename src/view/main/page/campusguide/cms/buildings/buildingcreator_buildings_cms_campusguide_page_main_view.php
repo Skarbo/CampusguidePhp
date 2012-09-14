@@ -20,11 +20,23 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
     private static $ID_CREATOR_CONTENT_CANVAS_LOADER_WRAPPER = "buildingcreator_planner_content_canvas_loader_wrapper";
     private static $ID_CREATOR_CONTENT_CANVAS_LOADER_STATUS_WRAPPER = "buildingcreator_planner_content_canvas_loader_status_wrapper";
 
+    /**
+     * @var ElementsSidebarBuildingcreatorBuildingsCmsCampusguidePresenterView
+     */
+    private $elementsSidebarPresenter;
+
     // /VARIABLES
 
 
     // CONSTRUCTOR
 
+
+    public function __construct( MainView $view )
+    {
+        parent::__construct( $view );
+
+        $this->elementsSidebarPresenter = new ElementsSidebarBuildingcreatorBuildingsCmsCampusguidePresenterView( $this );
+    }
 
     // /CONSTRUCTOR
 
@@ -49,7 +61,7 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
      */
     public function getBuilding()
     {
-        return $this->getView()->getController()->getBuilding();
+        return $this->getView()->getBuilding();
     }
 
     /**
@@ -57,7 +69,15 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
      */
     public function getBuildingFloors()
     {
-        return $this->getView()->getController()->getBuildingFloors();
+        return $this->getView()->getBuildingFloors();
+    }
+
+    /**
+     * @see BuildingcreatorBuildingsCmsCampusguideInterfaceView::getBuildingElements()
+     */
+    public function getBuildingElements()
+    {
+        return $this->getView()->getBuildingElements();
     }
 
     // ... /GET
@@ -85,8 +105,11 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
                 Resource::css()->getTable() );
         $table->addContent(
                 Xhtml::div(
-                        Xhtml::div( Xhtml::div( "Maxmimize" )->class_( Resource::css()->gui()->getComponent() )->attr("data-type", "toggle")->id("maximize") )->class_(
-                                Resource::css()->gui()->getGui(), "theme2" ) )->class_( Resource::css()->getRight() )->style("font-size: 0.7em;") );
+                        Xhtml::div(
+                                Xhtml::div( "Maxmimize" )->class_( Resource::css()->gui()->getComponent() )->attr(
+                                        "data-type", "toggle" )->id( "maximize" ) )->class_(
+                                Resource::css()->gui()->getGui(), "theme2" ) )->class_( Resource::css()->getRight() )->style(
+                        "font-size: 0.7em;" ) );
         $pageWrapper->addContent( $table );
 
         // Draw menu to wrapper
@@ -307,20 +330,7 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
         $wrapper->addContent( $sidebar );
 
         // ... ... Elements
-        $sidebar = Xhtml::div()->class_( "sidebar" )->attr( "data-sidebar", "elements" )->attr(
-                "data-sidebar-group", "elements" );
-
-        $header = Xhtml::div()->class_( Resource::css()->getTable(), "sidebar_header_wrapper", "collapse" );
-        $header->addContent( Xhtml::h( 1, "Elements" ) );
-        $header->addContent( Xhtml::span( 0 ) );
-
-        // ... ... ... Content
-        $content = Xhtml::div( "Content" )->class_( "content" );
-
-        $sidebar->addContent( $header );
-        $sidebar->addContent( $content );
-
-        $wrapper->addContent( $sidebar );
+        $this->elementsSidebarPresenter->draw($wrapper);
 
         // Add wrapper to root
         $root->addContent( $wrapper );

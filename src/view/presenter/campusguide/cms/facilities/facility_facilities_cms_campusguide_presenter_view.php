@@ -1,6 +1,6 @@
 <?php
 
-class FacilityFacilitiesCmsCampusguidePresenterView extends PresenterView
+class FacilityFacilitiesCmsCampusguidePresenterView extends CampusguidePresenterView
 {
 
     // VARIABLES
@@ -82,9 +82,9 @@ class FacilityFacilitiesCmsCampusguidePresenterView extends PresenterView
     /**
      * @return DefaultLocale
      */
-    private function getLocale()
+    public function getLocale()
     {
-        return $this->getView()->getController()->getLocale();
+        return parent::getLocale();
     }
 
     // ... /GET
@@ -159,8 +159,8 @@ class FacilityFacilitiesCmsCampusguidePresenterView extends PresenterView
 
         // Facility map
         $map = Xhtml::img(
-                Resource::url()->campusguide()->cms()->facility()->getFacilityImage( $this->getFacility()->getId(), null, null,
-                        $this->getView()->getController()->getMode() ), "Map" )->class_(
+                Resource::url()->campusguide()->cms()->facility()->getFacilityImage( $this->getFacility()->getId(),
+                        null, null, $this->getView()->getController()->getMode() ), "Map" )->class_(
                 $this->getBuildings()->isEmpty() ? Resource::css()->campusguide()->cms()->getInactive() : "" );
         $row->addContent( Xhtml::td( $map )->class_( Resource::css()->campusguide()->cms()->facility()->getMap() ) );
 

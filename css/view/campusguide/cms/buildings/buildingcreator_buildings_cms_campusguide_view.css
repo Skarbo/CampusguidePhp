@@ -13,7 +13,6 @@
     box-shadow: 0 0 0.5em #888;
 }
 
-
 /* Florplanner menu */
 #buildingcreator_page_wrapper #buildingcreator_menu_wrapper {
     border-bottom: 1px solid #999999;
@@ -64,12 +63,11 @@
 
 /* ... Sidebar */
 #buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper {
-    margin-top: 0.5em;
-    border-bottom: 1px solid gray;
+    margin-top: 0.5em;    
 }
 
 #buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar {
-
+    border-bottom: 1px solid gray;
 }
 
 #buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar:FIRST-CHILD {
@@ -260,6 +258,75 @@
     margin-top: 0.2em;
     font-size: 0.8em;
 }
+
+/* ... ... Elements */
+
+#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements {
+
+}
+
+#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements {
+    border: 1px solid gray;
+    border-radius: 0.2em;
+    font-size: 0.8em;
+    width: 100%;
+}
+
+#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements td {
+    padding: 0.2em;
+}
+
+#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements .element.selected > * {
+    background-color: #C9DAF8;
+}
+
+#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements .element .show {
+    cursor: pointer;
+    /* no_select */
+}
+
+#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements tr:first-child td {
+    border-top: 0;
+}
+
+#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements tr td {
+    border-top: 1px solid #777777;
+}
+
+#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements .id {
+    width: 1px;
+    font-size: 0.7em;
+    color: #888888;
+}
+
+#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements .name {
+
+}
+
+#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements .name i {
+    color: #666666;
+}
+
+#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements .name.edit input {
+    padding: 0 0.2em;
+    width: 9em;
+}
+
+#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements .delete.edit {
+    width: 1px;
+    text-align: right;
+    padding: 0 0.4em;
+}
+
+#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements .delete.edit .guiComp {
+    color: #AAA;
+}
+
+#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements .delete.edit .guiComp:FOCUS, #buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements .delete.edit .guiComp:HOVER {
+    color: darkRed;
+}
+
+/* ... ... /Elements */
 
 /* ... Content */
 #buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_content_wrapper {

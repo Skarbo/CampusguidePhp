@@ -19,6 +19,7 @@ function BuildingcreatorBuildingCmsCampusguidePageMainView(view) {
 		elements : {}
 	};
 	this.building = null;
+	this.elements = {};
 	this.floors = null;
 	this.floorSelected = false;
 	this.floorMapShow = true;
@@ -380,7 +381,6 @@ $(function() {
 			}, config));
 
 			this.polygon = polygon;
-			this.isSelected = false;
 
 			this.setDrawFunc(function(context) {
 				var shape = this;
@@ -422,27 +422,11 @@ $(function() {
 				event.cancelBubble = true;
 				if (!this.polygon.isCreating) {
 					if (event.which == 1)
-						this.polygon.context.getEventHandler().handle(new SelectEvent("polygon_shape", this));
+						this.polygon.context.getEventHandler().handle(new SelectEvent("polygon", this.polygon));
 					else if (event.which == 3 && this.isSelected)
 						this.polygon.context.getEventHandler().handle(new DeleteEvent());
 				}
 			});
-		},
-		select : function(secondary) {
-			this.setShadow({
-				color : 'black',
-				blur : 10,
-				offset : [ 10, 10 ],
-				alpha : 0.3
-			});
-			this.isSelected = true;
-		},
-		deselect : function() {
-			this.setShadow(null);
-			this.isSelected = false;
-		},
-		erase : function() {
-			this.polygon.deletePolygon();
 		}
 	});
 
@@ -454,6 +438,7 @@ $(function() {
 			}, config));
 			this.context = context;
 
+			this.isSelected = false;
 			this.shape = new PolygonShape({}, this);
 
 			this.anchors = new Kinetic.Group({
@@ -662,6 +647,22 @@ $(function() {
 			var polygon = new Polygon({}, context);
 			polygon.fromData(data);
 			return polygon;
+		},
+		select : function(secondary) {
+			this.shape.setShadow({
+				color : 'black',
+				blur : 10,
+				offset : [ 10, 10 ],
+				alpha : 0.3
+			});
+			this.isSelected = true;
+		},
+		deselect : function() {
+			this.shape.setShadow(null);
+			this.isSelected = false;
+		},
+		erase : function() {
+			this.deletePolygon();
 		}
 	});
 
@@ -682,6 +683,20 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getView = function()
 
 BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getMaximizeElement = function() {
 	return this.getRoot().find("#maximize");
+};
+
+BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getElementPolygon = function(elementId, floorId) {
+	var elementPolygons = this.getPolygons(BuildingcreatorBuildingCmsCampusguidePageMainView.MENU_ELEMENTS, floorId);
+
+	if (!elementPolygons)
+		return null;
+
+	for (var i = 0; i < elementPolygons.children.length; i++) {
+		if (elementPolygons.children[i].object.type == "element" && elementPolygons.children[i].object.element.id == elementId)
+			return elementPolygons.children[i];
+	}
+
+	return null;
 };
 
 // ... ... SIDEBAR
@@ -740,6 +755,20 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getSidebarFloorsErro
  */
 BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getSidebarFloorsErrorElement = function() {
 	return this.getSidebarFloorsElement().find("#show_map");
+};
+
+/**
+ * @return {Object}
+ */
+BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getSidebarElementsElement = function() {
+	return this.getSidebarElement().find(".sidebar[data-sidebar=elements]");
+};
+
+/**
+ * @return {Object}
+ */
+BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getSidebarElementsFloorsElement = function() {
+	return this.getSidebarElement().find("table.elements tbody[data-floor]");
 };
 
 // ... ... /SIDEBAR
@@ -999,9 +1028,9 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doBindEventHandler =
 	});
 
 	// Handle "Edit" event
-	this.getView().getController().getEventHandler().registerListener(EditEvent.TYPE,
+	this.getEventHandler().registerListener(EditEvent.TYPE,
 	/**
-	 * @param {DeleteEvent}
+	 * @param {EditEvent}
 	 *            event
 	 */
 	function(event) {
@@ -1011,9 +1040,21 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doBindEventHandler =
 			context.getCanvasLoaderElement().show();
 		}
 	});
+	
+	// Handle "Edited" event
+	this.getEventHandler().registerListener(EditedEvent.TYPE,
+			/**
+			 * @param {EditedEvent}
+			 *            event
+			 */
+			function(event) {
+		if (event.getEditType() == "element") {
+			context.doElementSaved(event.getEdit());
+		}
+	});
 
 	// Handle "Menu" event
-	this.getView().getController().getEventHandler().registerListener(MenuEvent.TYPE,
+	this.getEventHandler().registerListener(MenuEvent.TYPE,
 	/**
 	 * @param {MenuEvent}
 	 *            event
@@ -1075,13 +1116,56 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doBindEventHandler =
 		context.getView().getController().updateHash({
 			"floor" : floorId
 		});
-
-		// Send Floor Building event
-		// context.getView().getController().getEventHandler().handle(new
-		// FloorBuildingEvent(floorId));
 	});
 
 	// ... /FLOORS
+
+	// ... ELEMENTS
+
+	var elementsTableRows = this.getSidebarElementsFloorsElement().find("tr");
+
+	// Select element
+	elementsTableRows.click(function(event) {
+		if (!this.polygon)
+			this.polygon = context.getElementPolygon($(this).attr("data-element"), $(this).parent().attr("data-floor"));
+		if (this.polygon)
+			context.getEventHandler().handle(new SelectEvent("polygon", this.polygon));
+	});
+
+	// Edit element
+	elementsTableRows.dblclick(function(event) {
+		context.doElementEdit(true, $(this));
+	});
+
+	// Save/cancel element
+	elementsTableRows.keyup(function(event) {
+		// Save
+		if (event.keyCode == 13) {
+			context.doElementSave($(this));
+			context.doElementEdit(false, $(this));
+		}
+		// Cancel
+		if (event.keyCode == 27) {
+			context.doElementEdit(false, $(this));
+		}
+	}).keydown(function(event){
+		// Next Element
+		if (event.which == 9) {
+			context.doElementSave($(this));
+			context.doElementEdit(false, $(this));			
+			var next = $(this).next();
+			if (next) {
+				event.preventDefault();
+				next.click();
+				context.doElementEdit(true, next);
+			}
+		}
+	}).focusout(function(event) {
+		// Cancel
+		context.doElementEdit(false, $(this));
+	});
+
+	// ... /ELEMENTS
 
 	// /SIDEBAR
 
@@ -1301,6 +1385,10 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doFloorSelect = func
 	floorRows.removeClass("selected");
 	floorRows.filter("[data-floor=" + floorId + "]").addClass("selected");
 
+	// Select sidebar Elements
+	this.getSidebarElementsFloorsElement().addClass("hide");
+	this.getSidebarElementsFloorsElement().filter("[data-floor=" + floorId + "]").removeClass("hide");
+
 	// Show/hide Floors map
 	var floorsMap = this.getGroups("floors_map");
 	for (id in floorsMap) {
@@ -1481,7 +1569,6 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doFitToScale = funct
 };
 
 BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doMaximize = function() {
-
 	var maxmized = !this.getRoot().hasClass("maximized");
 
 	var canvas = this.getCanvasContentElement();
@@ -1509,6 +1596,52 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doMaximize = functio
 		this.getRoot().addClass("maximized");
 	else
 		this.getRoot().removeClass("maximized");
+};
+
+BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doElementEdit = function(edit, element) {
+	if (!element)
+		return;
+	
+	if (edit)
+	{
+		element.find(".show").addClass("hide");
+		element.find(".edit").removeClass("hide").find("input").select();
+	}
+	else
+	{
+		element.find(".show").removeClass("hide");
+		element.find(".edit").addClass("hide");
+		var input = element.find(".edit input");
+		if (input)
+			input.val(input.attr("data-value") || "");
+	}
+};
+
+BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doElementSave = function(elementElement) {
+	var elementId = elementElement.attr("data-element");
+	var input = elementElement.find(".edit input");
+	
+	if (!input)
+		return;
+	
+	if (input.val() == (input.attr("data-value") || ""))
+		return;
+	
+	var element = this.elements[elementId];	
+	if (!element)
+		return;
+	
+	this.getEventHandler().handle(new EditEvent("element", { id : elementId, name : input.val() }));
+};
+
+
+BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doElementSaved = function(element) {
+	if (!element)
+		return;
+	
+	var elementElement = this.getSidebarElementsFloorsElement().find(".element[data-element=" + element.id + "]");
+	elementElement.find(".name.show").text(element.name);
+	elementElement.find(".name.edit input").attr("data-name", element.name).val(element.name);
 };
 
 // ... /DO
@@ -1637,6 +1770,7 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.handleSelect = funct
 	this.getToolbarLineTypeElement().disable();
 	this.getToolbarDeleteElement().disable();
 	this.getToolbarCopyElement().disable();
+	this.getSidebarElementsFloorsElement().find("[data-element]").removeClass("selected");
 
 	if (!type || !element) {
 		if (this.selected.element)
@@ -1661,10 +1795,14 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.handleSelect = funct
 	this.selected.element.select();
 
 	switch (type) {
-	case "polygon_shape":
+	case "polygon":
 		this.getToolbarDeleteElement().enable();
 		this.getToolbarCopyElement().enable();
 		this.selected.element.getLayer().draw();
+		
+		if (element.object.type == "element" && element.object.element) {
+			this.getSidebarElementsFloorsElement().find("[data-element=" + element.object.element.id + "]").addClass("selected");
+		}
 		break;
 
 	case "polygon_anchor":
@@ -1684,7 +1822,7 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.handleSelectedCopy =
 	// COPY
 
 	if (this.selected.element) {
-		if (this.selected.type != "polygon_shape")
+		if (this.selected.type != "polygon")
 			return;
 
 		this.selectedCopy = this.selected;
@@ -1695,7 +1833,7 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.handleSelectedCopy =
 	// PASTE
 
 	if (!this.selected.element) {
-		if (this.selectedCopy.type != "polygon_shape")
+		if (this.selectedCopy.type != "polygon")
 			return;
 
 		var polygons = this.getPolygons(this.menu, this.floorSelected);
@@ -1714,21 +1852,23 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.handleSelectedCopy =
 };
 
 BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.handleSelectedDelete = function() {
-
 	if (!this.selected.element)
 		return false;
 
-	var selectedElement = this.selected.element;
-	var layer = selectedElement.getLayer();
+	var selected = this.selected;
+	var layer = selected.element.getLayer();
 
 	// Deselect
 	this.getEventHandler().handle(new SelectEvent());
 
 	// Delete selected
-	selectedElement.erase();
+	selected.element.erase();
 
 	layer.draw();
-
+	
+	// Delete Element from sidebar
+	if (selected.type == "polygon" && selected.element.object.type == "element" && selected.element.object.element)
+		this.getSidebarElementsFloorsElement().find(".element[data-element=" + selected.element.object.element.id + "]").remove();
 };
 
 BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.handleMenu = function(menu, sidebar) {
@@ -2015,7 +2155,6 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.drawFloorElement = f
 };
 
 BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.drawElement = function(element) {
-
 	var polygons = this.getPolygons(BuildingcreatorBuildingCmsCampusguidePageMainView.MENU_ELEMENTS, element.floorId);
 
 	// TODO Add these elements to an unnamed floor?

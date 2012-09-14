@@ -31,6 +31,10 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
      */
     private $buildingFloors;
     /**
+     * @var ElementBuildingListModel
+     */
+    private $buildingElements;
+    /**
      * @var BuildingModel
      */
     private $buildingAdmin;
@@ -74,6 +78,7 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
 
         $this->setBuilding( BuildingFactoryModel::createBuilding( "", 0, array () ) );
         $this->setBuildingFloors( FloorBuildingFactoryModel::createFloorBuilding( 0, "", 0, array () ) );
+        $this->setBuildingElements( new ElementBuildingListModel() );
 
         $this->setFloorBuildingHandler(
                 new FloorBuildingHandler( $this->getCampusguideHandler()->getFloorBuildingDao(),
@@ -151,6 +156,22 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
     public function setBuildings( BuildingListModel $buildings )
     {
         $this->buildings = $buildings;
+    }
+
+    /**
+     * @see BuildingcreatorBuildingsCmsCampusguideInterfaceView::getBuildingElements()
+     */
+    public function getBuildingElements()
+    {
+        return $this->buildingElements;
+    }
+
+    /**
+     * @param ElementBuildingListModel $buildingElements
+     */
+    public function setBuildingElements( ElementBuildingListModel $buildingElements )
+    {
+        $this->buildingElements = $buildingElements;
     }
 
     /**
@@ -620,6 +641,10 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
         $this->setBuildingFloors(
                 $this->getCampusguideHandler()->getFloorBuildingDao()->getForeign(
                         array ( $this->getBuilding()->getId() ) ) );
+
+        // Get Elements
+        $this->setBuildingElements(
+                $this->getCampusguideHandler()->getElementBuildingDao()->getBuilding( $this->getBuilding()->getId() ) );
 
         // POST
 

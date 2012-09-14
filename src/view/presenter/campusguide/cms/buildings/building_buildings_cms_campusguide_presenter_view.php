@@ -82,9 +82,9 @@ class BuildingBuildingsCmsCampusguidePresenterView extends PresenterView
     /**
      * @return DefaultLocale
      */
-    private function getLocale()
+    public function getLocale()
     {
-        return $this->getView()->getController()->getLocale();
+        return parent::getLocale();
     }
 
     // ... /GET

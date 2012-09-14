@@ -81,7 +81,13 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
         $pageWrapper = Xhtml::div()->id( self::$ID_BUILDINGCREATOR_WRAPPER );
 
         // Add header to wrapper
-        $pageWrapper->addContent( Xhtml::h( 2, "Building Creator" ) );
+        $table = Xhtml::div( Xhtml::div( Xhtml::h( 2, "Building Creator" ) ) )->addClass(
+                Resource::css()->getTable() );
+        $table->addContent(
+                Xhtml::div(
+                        Xhtml::div( Xhtml::div( "Maxmimize" )->class_( Resource::css()->gui()->getComponent() )->attr("data-type", "toggle")->id("maximize") )->class_(
+                                Resource::css()->gui()->getGui(), "theme2" ) )->class_( Resource::css()->getRight() )->style("font-size: 0.7em;") );
+        $pageWrapper->addContent( $table );
 
         // Draw menu to wrapper
         $this->drawMenu( $pageWrapper );
@@ -170,7 +176,7 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
         $gui = Xhtml::div()->class_( Resource::css()->gui()->getGui(), "theme2" );
 
         $gui->addContent( Xhtml::a( "Cancel" )->addClass( Resource::css()->gui()->getComponent() ) );
-        $gui->addContent( Xhtml::a( "Save" )->addClass( Resource::css()->gui()->getComponent() )->id("save") );
+        $gui->addContent( Xhtml::a( "Save" )->addClass( Resource::css()->gui()->getComponent() )->id( "save" ) );
 
         // Add GUI to wrapper
         $wrapper->addContent( $gui );
@@ -309,7 +315,7 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
         $header->addContent( Xhtml::span( 0 ) );
 
         // ... ... ... Content
-        $content = Xhtml::div("Content")->class_( "content" );
+        $content = Xhtml::div( "Content" )->class_( "content" );
 
         $sidebar->addContent( $header );
         $sidebar->addContent( $content );
@@ -378,13 +384,18 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
         $gui = Xhtml::div()->addClass( Resource::css()->gui()->getGui(), "theme2" );
         $gui->addContent( Xhtml::a( "-" )->id( "scale_dec" )->addClass( Resource::css()->gui()->getComponent() ) );
         $gui->addContent( Xhtml::a( "+" )->id( "scale_inc" )->addClass( Resource::css()->gui()->getComponent() ) );
-        $gui->addContent( Xhtml::a( Xhtml::div()->attr("data-icon", "layer_max") )->id( "layer_fit" )->addClass( Resource::css()->gui()->getComponent() )->attr("data-disabled", "true")->title("Fit to stage") );
+        $gui->addContent(
+                Xhtml::a( Xhtml::div()->attr( "data-icon", "layer_max" ) )->id( "layer_fit" )->addClass(
+                        Resource::css()->gui()->getComponent() )->attr( "data-disabled", "true" )->title( "Fit to stage" ) );
 
         $left->addContent( $gui );
 
         // Create gui
         $gui = Xhtml::div()->addClass( Resource::css()->gui()->getGui(), "theme2" );
-        $gui->addContent( Xhtml::a( Xhtml::div()->attr("data-icon", "map") )->id( "toggle_map" )->attr( "data-type", "toggle" )->attr( "data-disabled", "true" )->addClass( Resource::css()->gui()->getComponent(), "checked" )->title("Toggle map") );
+        $gui->addContent(
+                Xhtml::a( Xhtml::div()->attr( "data-icon", "map" ) )->id( "toggle_map" )->attr( "data-type", "toggle" )->attr(
+                        "data-disabled", "true" )->addClass( Resource::css()->gui()->getComponent(), "checked" )->title(
+                        "Toggle map" ) );
 
         $left->addContent( $gui );
 

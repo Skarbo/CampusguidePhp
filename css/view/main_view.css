@@ -84,3 +84,7 @@
 *[data-icon=layer_max]:AFTER {
 	content: "4";
 }
+
+*[data-icon=maximize]:AFTER {
+	content: "5";
+}

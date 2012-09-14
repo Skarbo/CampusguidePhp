@@ -2,6 +2,18 @@
 
 }
 
+/* Maxmized */
+#buildingcreator_page_wrapper.maximized {
+    position: absolute;
+    left: 0;
+    margin-left: 1em;
+    padding: 1em;
+    border: 1px solid darkgray;
+    background-color: white;
+    box-shadow: 0 0 0.5em #888;
+}
+
+
 /* Florplanner menu */
 #buildingcreator_page_wrapper #buildingcreator_menu_wrapper {
     border-bottom: 1px solid #999999;

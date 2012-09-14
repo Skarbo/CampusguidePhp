@@ -680,6 +680,10 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getView = function()
 	return PageMainView.prototype.getView.call(this);
 };
 
+BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.getMaximizeElement = function() {
+	return this.getRoot().find("#maximize");
+};
+
 // ... ... SIDEBAR
 
 /**
@@ -1197,6 +1201,12 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doBindEventHandler =
 
 	// /TOOLBAR
 
+	// Maxmize
+	this.getMaximizeElement().click(function() {
+		if (!$(this).isDisabled())
+			context.doMaximize();
+	});
+
 };
 
 BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doFloorsEdit = function(edit) {
@@ -1468,6 +1478,37 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doFitToScale = funct
 	this.stage.setY(this.stagePosition.y);
 	this.stage.draw();
 
+};
+
+BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doMaximize = function() {
+
+	var maxmized = !this.getRoot().hasClass("maximized");
+
+	var canvas = this.getCanvasContentElement();
+	if (maxmized) {
+		this.getController().setLocalStorageVariable("maximized", "true");
+
+		var widthMax = Math.round($(document).width() - 75);
+		var widthMaxCanvas = Math.round($(document).width() - this.getSidebarElement().width() - 75);
+		var heightMax = Math.round($(document).height() - this.getRoot().position().top);
+
+		this.getRoot().css("width", widthMax);
+		canvas.parent().css("width", widthMaxCanvas).css("height", heightMax);
+		this.stage.resize();
+
+		$(window).scrollTop(this.getRoot().position().top);
+	} else {
+		this.getController().removeLocalStorageVariable("scale");
+
+		this.getRoot().css("width", "");
+		canvas.parent().css("width", "").css("height", "");
+		this.stage.resize();
+	}
+
+	if (maxmized)
+		this.getRoot().addClass("maximized");
+	else
+		this.getRoot().removeClass("maximized");
 };
 
 // ... /DO
@@ -1777,6 +1818,10 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.draw = function(root
 	});
 	this.stage.setX(this.stagePosition.x);
 	this.stage.setY(this.stagePosition.y);
+	this.stage.resize = function() {
+		this.setSize(canvas.parent().width(), canvas.parent().height());
+		this.draw();
+	};
 
 	this.stage.on("click", function(event) {
 		if (event.which == 3)
@@ -1791,6 +1836,13 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.draw = function(root
 
 	// Menu
 	this.handleMenu(this.getController().getHash().menu);
+
+	// Maxmimize
+	if (this.getController().getLocalStorageVariable("maxmized")) {
+		setTimeout(function() {
+			context.getMaximizeElement().click();
+		}, 200); // Because of the GUI i had to add an delay
+	}
 
 };
 

@@ -1,4 +1,4 @@
--- Thu, 13 Sep 2012 00:44:58 GMT
+-- Fri, 14 Sep 2012 12:48:43 GMT
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40014 SET FOREIGN_KEY_CHECKS=0 */;
 -- Dumping database structure for campusguide_test

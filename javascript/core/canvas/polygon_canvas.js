@@ -6,12 +6,13 @@ var Polygon, PolygonShape, PolygonAnchor, PolygonAnchorControl, PolygonAnchorPoi
 $(function() {
 
 	// Kinetic must exist
-	if (!Kinetic)
+	if (typeof Kinetic === "undefined")
 		return;
-	
+
 	PolygonAnchorHandle = Kinetic.Circle.extend({
-		init : function(config) {
+		init : function(config, polygon) {
 			config = config || {};
+			polygon = polygon || null;
 			this._super($.extend({
 				name : "anchor_handle",
 				x : 0,
@@ -21,11 +22,19 @@ $(function() {
 				strokeWidth : 2,
 				draggable : true
 			}, config));
+			this.polygon = polygon;
+			this.positionPrev = {};
 
 			this.on("dragstart", function(event) {
+				this.positionPrev = this.getPosition();
 				this.moveToTop();
 			});
 			this.on("dragend", function(event) {
+				event.cancelBubble = true;
+				this.polygon.context.getEventHandler().handle(new AddHistoryEvent({
+					type : "selected_drag",
+					element : this
+				}));
 				this.moveToTop();
 			});
 			this.on("mouseover", function() {
@@ -38,6 +47,12 @@ $(function() {
 				this.setStrokeWidth(2);
 				this.getLayer().draw();
 			});
+		},
+		undoMove : function() {
+			if (this.positionPrev) {
+				this.setPosition(this.positionPrev);
+				this.getLayer().draw();
+			}
 		}
 	});
 
@@ -50,8 +65,8 @@ $(function() {
 			}, config));
 			this.anchor = anchor;
 
-			this.handleFirst = new PolygonAnchorHandle();
-			this.handleSecond = new PolygonAnchorHandle();
+			this.handleFirst = new PolygonAnchorHandle({}, this.anchor.polygon);
+			this.handleSecond = new PolygonAnchorHandle({}, this.anchor.polygon);
 			this.line = new Kinetic.Line({
 				name : "control_line",
 				dashArray : [ 10, 10, 0, 10 ],
@@ -192,8 +207,9 @@ $(function() {
 	});
 
 	PolygonAnchor = PolygonAnchorHandle.extend({
-		init : function(config) {
+		init : function(config, polygon) {
 			config = config || {};
+			polygon = polygon || null;
 			this._super($.extend({
 				name : "anchor",
 				stroke : "#666"
@@ -202,7 +218,7 @@ $(function() {
 			this.type = Polygon.LINE_TYPE_STRAIGHT;
 			this.next = null;
 			this.prev = null;
-			this.polygon = null;
+			this.polygon = polygon;
 			this.control = null;
 			this.isSelected = false;
 
@@ -250,6 +266,10 @@ $(function() {
 		},
 		erase : function() {
 			this.polygon.removeAnchor(this);
+		},
+		undo : function() {
+			this.polygon.addAnchorAfter(this, this.prev);
+			this.getLayer().draw();
 		},
 		toData : function() {
 			var data = [];
@@ -406,8 +426,8 @@ $(function() {
 				name : "name",
 				visible : false,
 				text : "",
-				textFill: '#000',
-				fontSize: 20,
+				textFill : '#000',
+				fontSize : 20,
 				listening : false
 			});
 			this.text.polygon = this;
@@ -436,6 +456,15 @@ $(function() {
 				this.setDraggable(false);
 				if ($("body").css("cursor") != "default")
 					$("body").css("cursor", "default");
+			});
+			this.on("dragstart", function() {
+				this.positionPrev = this.getPosition();
+			});
+			this.on("dragend", function() {
+				this.context.getEventHandler().handle(new AddHistoryEvent({
+					type : "selected_drag",
+					element : this
+				}));
 			});
 		},
 		addAnchor : function(anchor) {
@@ -476,15 +505,6 @@ $(function() {
 
 			anchor.control = new PolygonAnchorControl({}, anchor);
 			this.controls.add(anchor.control);
-		},
-		deletePolygon : function() {
-			if (this.object.element) {
-				this.hide();
-				this.deleted = true;
-			} else {
-				this.getParent().remove(this);
-				delete this;
-			}
 		},
 		removeAnchor : function(anchor) {
 			if (this.anchors.isAncestorOf(anchor)) {
@@ -628,37 +648,52 @@ $(function() {
 			this.isSelected = false;
 		},
 		erase : function() {
-			this.deletePolygon();
+			this.hide();
+			this.deleted = true;
 		},
-		drawText : function()
-		{
+		undo : function() {
+			this.show();
+			this.deleted = false;
+			this.getLayer().draw();
+		},
+		undoMove : function() {
+			if (this.positionPrev) {
+				this.setPosition(this.positionPrev);
+				this.getLayer().draw();
+			}
+		},
+		drawText : function() {
 			if (this.object.type != "element" || !this.object.element)
 				return;
-			
+
 			if (this.anchors.length < 2)
 				return;
-			
+
 			var coordinates = [];
-			this.eachAnchor(function(anchor){
-				coordinates.push([anchor.attrs.x, anchor.attrs.y]);
+			this.eachAnchor(function(anchor) {
+				coordinates.push([ anchor.attrs.x, anchor.attrs.y ]);
 			});
 			// Find angle of first vector
-			//var outerBounds = CanvasUtil.getOuterBounds(coordinates);
+			// var outerBounds = CanvasUtil.getOuterBounds(coordinates);
 
-			//var angle = Math.atan2(this.anchorFirst.next.getY() - this.anchorFirst.getY(), this.anchorFirst.next.getX() - this.anchorFirst.getX());
-			//var angle = Math.atan2(outerBounds[2][1] - outerBounds[1][1], outerBounds[2][0] - outerBounds[1][0]);
-		
+			// var angle = Math.atan2(this.anchorFirst.next.getY() -
+			// this.anchorFirst.getY(), this.anchorFirst.next.getX() -
+			// this.anchorFirst.getX());
+			// var angle = Math.atan2(outerBounds[2][1] - outerBounds[1][1],
+			// outerBounds[2][0] - outerBounds[1][0]);
+
 			// Get element center
 			var elementCenter = CanvasUtil.centerCoordinates(coordinates);
-						
+
 			var bounds = CanvasUtil.getMaxBounds(coordinates);
-			
+
 			this.text.setWidth(bounds[2] - bounds[0]);
 			this.text.setHeight(bounds[3] - bounds[1]);
-			
+
 			this.text.setText(this.object.element.name);
-			//this.text.setRotation(angle);
-			//this.text.setX(elementLegendText.getX() - (elementLegendText.getTextWidth() / 2));
+			// this.text.setRotation(angle);
+			// this.text.setX(elementLegendText.getX() -
+			// (elementLegendText.getTextWidth() / 2));
 			this.text.setX(elementCenter[0] - (this.text.getTextWidth() / 2));
 			this.text.setY(elementCenter[1]);
 			this.text.show(true);

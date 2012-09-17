@@ -50,6 +50,26 @@ MenuBuildingcreatorCmsCampusguidePresenterView.prototype.doBindEventHandler = fu
 		context.handleMenuSelect(event.getMenu(), event.getSidebar());
 	});
 
+	// Add history event
+	this.getView().getController().getEventHandler().registerListener(AddHistoryEvent.TYPE,
+	/**
+	 * @param {AddHistoryEvent}
+	 *            event
+	 */
+	function(event) {
+		context.handleHistory();
+	});
+
+	// Undo history event
+	this.getView().getController().getEventHandler().registerListener(UndoHistoryEvent.TYPE,
+	/**
+	 * @param {UndoHistoryEvent}
+	 *            event
+	 */
+	function(event) {
+		context.handleHistory();
+	});
+
 	// /EVENTS
 
 	// MENU
@@ -94,6 +114,16 @@ MenuBuildingcreatorCmsCampusguidePresenterView.prototype.handleMenuSelect = func
 	}
 	this.menu = menu;
 
+};
+
+MenuBuildingcreatorCmsCampusguidePresenterView.prototype.handleHistory = function() {
+	var context = this;
+	setTimeout(function() {
+		if (context.getView().canvasPresenter.history.length == 0)
+			context.getMenuSaveElement().disable();
+		else
+			context.getMenuSaveElement().enable();
+	}, 10);
 };
 
 // ... /HANDLE

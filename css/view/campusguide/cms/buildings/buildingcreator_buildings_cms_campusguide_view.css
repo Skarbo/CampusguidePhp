@@ -280,6 +280,10 @@
     background-color: #C9DAF8;
 }
 
+#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements .element.deleted {
+    display: none;
+}
+
 #buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements .element .show {
     cursor: pointer;
     /* no_select */

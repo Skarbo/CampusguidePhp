@@ -33,6 +33,7 @@ function CanvasCampusguidePresenterView(view) {
 		element : null
 	};
 	this.selectedCopy = this.selected;
+	this.history = [];
 
 	this.type = CanvasCampusguidePresenterView.TYPE_FLOORS;
 	this.floorSelected = false;
@@ -193,9 +194,9 @@ CanvasCampusguidePresenterView.prototype.doBindEventHandler = function() {
 			break;
 		}
 	});
-	
+
 	// ... CANVAS
-	
+
 	// Floor select event
 	this.getView().getController().getEventHandler().registerListener(FloorSelectEvent.TYPE,
 	/**
@@ -254,7 +255,7 @@ CanvasCampusguidePresenterView.prototype.doBindEventHandler = function() {
 	 */
 	function(event) {
 		if (context.selected && context.selected.type == "polygon_anchor")
-			context.doFloorPolygonLineType(context.selected.element, event.getLineType());
+			context.doPolygonLine(context.selected.element, event.getLineType());
 	});
 
 	// Copy event
@@ -276,7 +277,27 @@ CanvasCampusguidePresenterView.prototype.doBindEventHandler = function() {
 	function(event) {
 		context.handleSelectedDelete();
 	});
-	
+
+	// Add history event
+	this.getView().getController().getEventHandler().registerListener(AddHistoryEvent.TYPE,
+	/**
+	 * @param {AddHistoryEvent}
+	 *            event
+	 */
+	function(event) {
+		context.handleHistoryAdd(event.getHistory());
+	});
+
+	// Undo history event
+	this.getView().getController().getEventHandler().registerListener(UndoHistoryEvent.TYPE,
+	/**
+	 * @param {UndoHistoryEvent}
+	 *            event
+	 */
+	function(event) {
+		context.handleHistoryUndo();
+	});
+
 	// ... /CANVAS
 
 	// /EVENTS
@@ -604,7 +625,7 @@ CanvasCampusguidePresenterView.prototype.handleSelectedCopy = function() {
 
 	// PASTE
 
-	if (!this.selected.element) {		
+	if (!this.selected.element) {
 		if (this.selectedCopy.type != "polygon")
 			return;
 
@@ -627,7 +648,7 @@ CanvasCampusguidePresenterView.prototype.handleSelectedDelete = function() {
 		return false;
 
 	var selected = this.selected;
-	var layer = selected.element.getLayer();
+	var parent = selected.element.getParent();
 
 	// Deselect
 	this.getEventHandler().handle(new SelectEvent());
@@ -636,11 +657,18 @@ CanvasCampusguidePresenterView.prototype.handleSelectedDelete = function() {
 	selected.element.erase();
 
 	// Draw layer
-	layer.draw();
+	parent.getLayer().draw();
 
 	// Deleted event
 	if (selected.type == "polygon" && selected.element.object.type == "element" && selected.element.object.element)
 		this.getEventHandler().handle(new DeletedEvent("element", selected.element.object.element.id));
+
+	// Add history
+	this.getEventHandler().handle(new AddHistoryEvent({
+		type : "selected_delete",
+		element : selected,
+		parent : parent
+	}));
 };
 
 CanvasCampusguidePresenterView.prototype.handleTypeSelect = function(type) {
@@ -649,6 +677,32 @@ CanvasCampusguidePresenterView.prototype.handleTypeSelect = function(type) {
 	if (this.floorSelected)
 		this.getEventHandler().handle(new FloorSelectEvent(this.floorSelected));
 };
+
+// ... ... HISTORY
+
+CanvasCampusguidePresenterView.prototype.handleHistoryAdd = function(history) {
+	this.history.push(history);
+};
+
+CanvasCampusguidePresenterView.prototype.handleHistoryUndo = function() {
+	if (this.history.length == 0)
+		return;
+
+	var historyObject = this.history.pop();
+
+	switch (historyObject.type) {
+	case "selected_delete":
+		historyObject.element.element.undo();
+		break;
+	case "selected_drag":
+		historyObject.element.undoMove();
+		break;
+	}
+
+	this.getEventHandler().handle(new UndidHistoryEvent(historyObject));
+};
+
+// ... ... /HISTORY
 
 // ... /HANDLE
 
@@ -722,7 +776,7 @@ CanvasCampusguidePresenterView.prototype.drawFloor = function(floor, width, heig
 		width : width,
 		height : height,
 		stroke : "#CCC",
-		strokeWidth : 2,
+		strokeWidth : 2
 	});
 	group.add(fill);
 	fill.setZIndex(5);
@@ -799,7 +853,7 @@ CanvasCampusguidePresenterView.prototype.drawFloorElement = function(floor, widt
 	// Initiate polygons
 	var polygons = new Kinetic.Group({
 		name : "element_polygons",
-		id : floor.id,
+		id : floor.id
 	});
 
 	this.setPolygons(CanvasCampusguidePresenterView.TYPE_ELEMENTS, floor.id, polygons);

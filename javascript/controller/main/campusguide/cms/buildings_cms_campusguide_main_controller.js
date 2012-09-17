@@ -151,7 +151,8 @@ BuildingsCmsCampusguideMainController.prototype.doSave = function(save) {
 			case BuildingsCmsCampusguideMainController.TYPE_FLOORS:
 				// FLOORS
 				for (i in polygons.children) {
-					coordinatesArray.push(polygons.children[i].toData());
+					if (!polygons.children[i].deleted)
+						coordinatesArray.push(polygons.children[i].toData());
 				}
 				coordinates = coordinatesArray.join("$");
 
@@ -211,9 +212,10 @@ BuildingsCmsCampusguideMainController.prototype.doSave = function(save) {
 		}
 	}
 
-	if (this.saveCount > 0)
+	if (this.saveCount > 0) {
 		this.saving = true;
-
+		this.getEventHandler().handle(new SavingEvent());
+	}
 };
 
 BuildingsCmsCampusguideMainController.prototype.doElementSave = function(element) {

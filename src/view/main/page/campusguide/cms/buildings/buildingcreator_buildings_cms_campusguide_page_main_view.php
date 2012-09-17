@@ -361,7 +361,8 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
                         Xhtml::div(
                                 Xhtml::div( Xhtml::div( "Loading building" )->class_( "loading_building" ) )->addContent(
                                         Xhtml::div( "Loading floors" )->class_( "loading_floors" ) )->addContent(
-                                        Xhtml::div( "Loading elements" )->class_( "loading_elements" ) )->id(
+                                        Xhtml::div( "Loading elements" )->class_( "loading_elements" ) )->addContent(
+                                        Xhtml::div( "Saving..." )->class_( "saving" ) )->id(
                                         self::$ID_CREATOR_CONTENT_CANVAS_LOADER_STATUS_WRAPPER ) )->addContent(
                                 Xhtml::img( Resource::image()->icon()->getSpinnerBar(), "Loading" ) )->class_(
                                 Resource::css()->getMiddle() ) )->id( self::$ID_CREATOR_CONTENT_CANVAS_LOADER_WRAPPER )->class_(
@@ -459,9 +460,7 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
         // Create gui
         $gui = Xhtml::div()->addClass( Resource::css()->gui()->getGui(), "theme2" );
         $gui->addContent(
-                Xhtml::a( "Redo" )->attr( "data-disabled", "true" )->addClass( Resource::css()->gui()->getComponent() ) );
-        $gui->addContent(
-                Xhtml::a( "Undo" )->attr( "data-disabled", "true" )->addClass( Resource::css()->gui()->getComponent() ) );
+                Xhtml::a( "Undo" )->id("undo")->attr( "data-disabled", "true" )->addClass( Resource::css()->gui()->getComponent() ) );
 
         $right->addContent( $gui );
 

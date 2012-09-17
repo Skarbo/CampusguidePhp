@@ -3,41 +3,6 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype = new PageMainView()
 
 function BuildingcreatorBuildingCmsCampusguidePageMainView(view) {
 	PageMainView.apply(this, arguments);
-	this.stage = null;
-	this.layers = {
-		floors : {},
-		floors_map : {},
-		elements : {}
-	};
-	this.groups = {
-		floors : {},
-		floors_map : {},
-		elements : {}
-	};
-	this.polygons = {
-		floors : {},
-		elements : {}
-	};
-	this.building = null;
-	this.elements = {};
-	this.floors = null;
-	this.floorSelected = false;
-	this.floorMapShow = true;
-	this.stageIsDragging = false;
-	this.polygonsIsDraggable = false;
-	this.selected = {
-		type : null,
-		element : null
-	};
-	this.selectedCopy = this.selected;
-	this.scale = 1.0;
-	this.stagePosition = {
-		x : 0,
-		y : 0
-	};
-	this.menu = BuildingcreatorBuildingCmsCampusguidePageMainView.MENU_FLOORS;
-	this.toolbar = null;
-	this.retrieved = 0;
 
 	this.menuPresenter = new MenuBuildingcreatorCmsCampusguidePresenterView(this);
 	this.sidebarPresenter = new SidebarBuildingcreatorCmsCampusguidePresenterView(this);
@@ -148,9 +113,9 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doBindEventHandler =
 BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doMaximize = function() {
 	var maxmized = !this.getRoot().hasClass("maximized");
 
-	var canvas = this.getCanvasContentElement();
+	var canvas = this.canvasPresenter.getCanvasContentElement();
 	if (maxmized) {
-		this.getController().setLocalStorageVariable("maximized", "true");
+		this.getController().setLocalStorageVariable("max", "true");
 
 		var widthMax = Math.round($(document).width() - 75);
 		var widthMaxCanvas = Math.round($(document).width() - this.getSidebarWrapperElement().width() - 75);
@@ -158,15 +123,15 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.doMaximize = functio
 
 		this.getRoot().css("width", widthMax);
 		canvas.parent().css("width", widthMaxCanvas).css("height", heightMax);
-		this.stage.resize();
+		this.canvasPresenter.stage.resize();
 
 		$(window).scrollTop(this.getRoot().position().top);
 	} else {
-		this.getController().removeLocalStorageVariable("scale");
+		this.getController().removeLocalStorageVariable("max");
 
 		this.getRoot().css("width", "");
 		canvas.parent().css("width", "").css("height", "");
-		this.stage.resize();
+		this.canvasPresenter.stage.resize();
 	}
 
 	if (maxmized)
@@ -197,7 +162,7 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.draw = function(root
 	this.canvasPresenter.draw(this.getCanvasWrapperElement());
 
 	// Maxmimize
-	if (this.getController().getLocalStorageVariable("maxmized")) {
+	if (this.getController().getLocalStorageVariable("max")) {
 		setTimeout(function() {
 			context.getMaximizeElement().click();
 		}, 200); // Because of the GUI i had to add an delay

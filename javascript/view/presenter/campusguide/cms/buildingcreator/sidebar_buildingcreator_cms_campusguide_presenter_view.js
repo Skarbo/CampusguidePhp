@@ -136,7 +136,7 @@ SidebarBuildingcreatorCmsCampusguidePresenterView.prototype.doBindEventHandler =
 		context.handleFloorSelect(event.getFloorId());
 	});
 
-	// Handle "Edited" event
+	// Edited event
 	this.getEventHandler().registerListener(EditedEvent.TYPE,
 	/**
 	 * @param {EditedEvent}
@@ -148,6 +148,26 @@ SidebarBuildingcreatorCmsCampusguidePresenterView.prototype.doBindEventHandler =
 			context.doElementSaved(event.getEdit());
 			break;
 		}
+	});
+
+	// Deleted event
+	this.getEventHandler().registerListener(DeletedEvent.TYPE,
+	/**
+	 * @param {DeletedEvent}
+	 *            event
+	 */
+	function(event) {
+		context.handleDeleted(event.getDeleteType(), event.getDeleted());
+	});
+
+	// Undid history event
+	this.getEventHandler().registerListener(UndidHistoryEvent.TYPE,
+	/**
+	 * @param {UndidHistoryEvent}
+	 *            event
+	 */
+	function(event) {
+		context.handleHistoryUndid(event.getHistory());
 	});
 
 	// /EVENTS
@@ -436,7 +456,17 @@ SidebarBuildingcreatorCmsCampusguidePresenterView.prototype.handleMenu = functio
 SidebarBuildingcreatorCmsCampusguidePresenterView.prototype.handleDeleted = function(type, deleted) {
 	switch (type) {
 	case "element":
-		this.getSidebarElementsFloorsElement().find(".element[data-element=" + deleted + "]").remove();
+		this.getSidebarElementsFloorsElement().find(".element[data-element=" + deleted + "]").addClass("deleted");
+		break;
+	}
+};
+
+SidebarBuildingcreatorCmsCampusguidePresenterView.prototype.handleHistoryUndid = function(history) {
+	switch (history.type) {
+	case "selected_delete":
+		if (history.element.type == "polygon" && history.element.element.object.type == "element") {
+			this.getSidebarElementsFloorsElement().find(".element[data-element=" + history.element.element.object.element.id + "]").removeClass("deleted");
+		}
 		break;
 	}
 };

@@ -71,6 +71,13 @@ ToolbarBuildingcreatorCmsCampusguidePresenterView.prototype.getToolbarScaleIncEl
 	return this.getRoot().find("#scale_inc");
 };
 
+/**
+ * @returns {Object}
+ */
+ToolbarBuildingcreatorCmsCampusguidePresenterView.prototype.getToolbarUndoElement = function() {
+	return this.getRoot().find("#undo");
+};
+
 // ... ... /TOOLTIP
 
 // ... /GET
@@ -100,6 +107,26 @@ ToolbarBuildingcreatorCmsCampusguidePresenterView.prototype.doBindEventHandler =
 	 */
 	function(event) {
 		context.handleSelect(event.getSelectType(), event.getElement());
+	});
+
+	// Add history event
+	this.getView().getController().getEventHandler().registerListener(AddHistoryEvent.TYPE,
+	/**
+	 * @param {AddHistoryEvent}
+	 *            event
+	 */
+	function(event) {
+		context.handleHistory();
+	});
+
+	// Undo history event
+	this.getView().getController().getEventHandler().registerListener(UndoHistoryEvent.TYPE,
+	/**
+	 * @param {UndoHistoryEvent}
+	 *            event
+	 */
+	function(event) {
+		context.handleHistory();
 	});
 
 	// /EVENT
@@ -135,15 +162,20 @@ ToolbarBuildingcreatorCmsCampusguidePresenterView.prototype.doBindEventHandler =
 		if (!$(this).isDisabled())
 			context.getEventHandler().handle(new MapFloorEvent());
 	});
-	
+
 	this.getToolbarScaleIncElement().click(function(event) {
 		if (!$(this).isDisabled())
 			context.getEventHandler().handle(new ScaleEvent(true));
 	});
-	
+
 	this.getToolbarScaleDecElement().click(function(event) {
 		if (!$(this).isDisabled())
 			context.getEventHandler().handle(new ScaleEvent(false));
+	});
+
+	this.getToolbarUndoElement().click(function(event) {
+		if (!$(this).isDisabled())
+			context.getEventHandler().handle(new UndoHistoryEvent());
 	});
 
 	// /TOOLBAR
@@ -187,6 +219,16 @@ ToolbarBuildingcreatorCmsCampusguidePresenterView.prototype.handleSelect = funct
 		this.getToolbarLineTypeElement().filter("[data-line=" + element.type + "]").click();
 		break;
 	}
+};
+
+ToolbarBuildingcreatorCmsCampusguidePresenterView.prototype.handleHistory = function() {
+	var context = this;
+	setTimeout(function() {
+		if (context.getView().canvasPresenter.history.length == 0)
+			context.getToolbarUndoElement().disable();
+		else
+			context.getToolbarUndoElement().enable();
+	}, 10);
 };
 
 // ... /HANDLE

@@ -103,6 +103,16 @@ BuildingcreatorCmsCanvasCampusguidePresenterView.prototype.doBindEventHandler = 
 		context.handleMenuSelect(event.getMenu());
 	});
 
+	// Saving event
+	this.getEventHandler().registerListener(SavingEvent.TYPE,
+	/**
+	 * @param {SavingEvent}
+	 *            event
+	 */
+	function(event) {
+		context.handleSaving();
+	});
+
 	// /EVENTS
 
 };
@@ -219,6 +229,13 @@ BuildingcreatorCmsCanvasCampusguidePresenterView.prototype.handleMenuSelect = fu
 	}
 
 	this.handleTypeSelect(type);
+};
+
+BuildingcreatorCmsCanvasCampusguidePresenterView.prototype.handleSaving = function(type) {
+	this.getCanvasLoaderStatusElement().children().hide();
+	this.getCanvasLoaderStatusElement().find(".saving").show();
+	this.getCanvasLoaderElement().show();
+	this.getCanvasContentElement().hide();
 };
 
 // ... /HANDLE

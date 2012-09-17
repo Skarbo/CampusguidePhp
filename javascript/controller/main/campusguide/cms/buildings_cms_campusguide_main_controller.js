@@ -210,8 +210,8 @@ BuildingsCmsCampusguideMainController.prototype.doSave = function(save) {
 			}
 		}
 	}
-	
-	if (this.saveCount>0)
+
+	if (this.saveCount > 0)
 		this.saving = true;
 
 };
@@ -219,6 +219,10 @@ BuildingsCmsCampusguideMainController.prototype.doSave = function(save) {
 BuildingsCmsCampusguideMainController.prototype.doElementSave = function(element) {
 	if (!element || !element.id || !element.name)
 		return;
+
+	if (!this.elements[element.id])
+		return;
+
 	var context = this;
 
 	this.elementBuildingDao.edit(element.id, element, function(element, elements) {
@@ -240,7 +244,7 @@ BuildingsCmsCampusguideMainController.prototype.handleHistory = function() {
 
 	// Floor
 	if (hash.floor) {
-		this.getEventHandler().handle(new FloorBuildingEvent(hash.floor), "RetrievedEvent",
+		this.getEventHandler().handle(new FloorSelectEvent(hash.floor), "RetrievedEvent",
 		/**
 		 * @param {RetrievedEvent}
 		 *            event

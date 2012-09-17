@@ -62,20 +62,12 @@ class ElementsSidebarBuildingcreatorBuildingsCmsCampusguidePresenterView extends
                                 Xhtml::input( $element->getName(), "element_name" )->placeholder( "Name" )->attr(
                                         "data-value", $element->getName() ) )->class_( "name", "edit", Resource::css()->getHide() )->title( "Name" ) );
 
-                // Element delete
-                $tableRow->addContent(
-                        Xhtml::td(
-                                Xhtml::div(
-                                        Xhtml::div( Xhtml::div()->attr( "data-icon", "cross" ) )->attr( "data-type",
-                                                "button" )->class_( Resource::css()->gui()->getComponent() ) )->class_(
-                                        Resource::css()->gui()->getGui() ) )->class_( "delete", "edit", Resource::css()->getHide() )->title( "Delete" ) );
-
                 $tableBody->addContent( $tableRow );
             }
 
             if ( $elements->isEmpty() )
             {
-                $tableBody->addContent( Xhtml::tr( Xhtml::td( Xhtml::italic( "No elements" ) )->colspan(4) )->attr( "data-element", $element->getId() ) );
+                $tableBody->addContent( Xhtml::tr( Xhtml::td( Xhtml::italic( "No elements" ) )->colspan(4) ) );
             }
 
             $table->addContent( $tableBody );

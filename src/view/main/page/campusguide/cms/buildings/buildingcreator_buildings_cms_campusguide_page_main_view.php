@@ -198,8 +198,8 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
         // Create table
         $gui = Xhtml::div()->class_( Resource::css()->gui()->getGui(), "theme2" );
 
-        $gui->addContent( Xhtml::a( "Cancel" )->addClass( Resource::css()->gui()->getComponent() ) );
-        $gui->addContent( Xhtml::a( "Save" )->addClass( Resource::css()->gui()->getComponent() )->id( "save" ) );
+        $gui->addContent( Xhtml::a( "Cancel" )->addClass( Resource::css()->gui()->getComponent() )->attr("data-disabled", "true") );
+        $gui->addContent( Xhtml::a( "Save" )->addClass( Resource::css()->gui()->getComponent() )->id( "save" )->attr("data-disabled", "true") );
 
         // Add GUI to wrapper
         $wrapper->addContent( $gui );
@@ -330,7 +330,7 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
         $wrapper->addContent( $sidebar );
 
         // ... ... Elements
-        $this->elementsSidebarPresenter->draw($wrapper);
+        $this->elementsSidebarPresenter->draw( $wrapper );
 
         // Add wrapper to root
         $root->addContent( $wrapper );
@@ -392,8 +392,12 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
 
         // Create gui
         $gui = Xhtml::div()->addClass( Resource::css()->gui()->getGui(), "theme2" );
-        $gui->addContent( Xhtml::a( "-" )->id( "scale_dec" )->addClass( Resource::css()->gui()->getComponent() ) );
-        $gui->addContent( Xhtml::a( "+" )->id( "scale_inc" )->addClass( Resource::css()->gui()->getComponent() ) );
+        $gui->addContent(
+                Xhtml::a( "-" )->id( "scale_dec" )->attr( "data-disabled", "true" )->addClass(
+                        Resource::css()->gui()->getComponent() ) );
+        $gui->addContent(
+                Xhtml::a( "+" )->id( "scale_inc" )->attr( "data-disabled", "true" )->addClass(
+                        Resource::css()->gui()->getComponent() ) );
         $gui->addContent(
                 Xhtml::a( Xhtml::div()->attr( "data-icon", "layer_max" ) )->id( "layer_fit" )->addClass(
                         Resource::css()->gui()->getComponent() )->attr( "data-disabled", "true" )->title( "Fit to stage" ) );
@@ -454,8 +458,10 @@ class BuildingcreatorBuildingsCmsCampusguidePageMainView extends PageMainView im
 
         // Create gui
         $gui = Xhtml::div()->addClass( Resource::css()->gui()->getGui(), "theme2" );
-        $gui->addContent( Xhtml::a( "Redo" )->addClass( Resource::css()->gui()->getComponent() ) );
-        $gui->addContent( Xhtml::a( "Undo" )->addClass( Resource::css()->gui()->getComponent() ) );
+        $gui->addContent(
+                Xhtml::a( "Redo" )->attr( "data-disabled", "true" )->addClass( Resource::css()->gui()->getComponent() ) );
+        $gui->addContent(
+                Xhtml::a( "Undo" )->attr( "data-disabled", "true" )->addClass( Resource::css()->gui()->getComponent() ) );
 
         $right->addContent( $gui );
 

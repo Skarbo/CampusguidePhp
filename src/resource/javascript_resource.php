@@ -8,6 +8,7 @@ class JavascriptResource extends AbstractJavascriptResource
 
     private $javascriptFile = "campusguide.js.php?mode=%s";
     private $javascriptAppFile = "campusguide_app.js.php?mode=%s";
+    private $javascriptCanvasFile = "campusguide_canvas.js.php?mode=%s";
     private $googleMapsApiUrl = "http://maps.googleapis.com/maps/api/js?key=%s&sensor=%s&callback=%s";
     private $googleMapsApiFile = "google.maps.api.js";
 
@@ -23,8 +24,8 @@ class JavascriptResource extends AbstractJavascriptResource
 
         $this->javascriptFile = sprintf( "%s/%s", self::$ROOT_FOLDER, $this->javascriptFile );
         $this->javascriptAppFile = sprintf( "%s/%s", self::$ROOT_FOLDER, $this->javascriptAppFile );
+        $this->javascriptCanvasFile = sprintf( "%s/%s", self::$ROOT_FOLDER, $this->javascriptCanvasFile );
         $this->googleMapsApiFile = sprintf( "%s/%s/%s", self::$ROOT_FOLDER, self::$ROOT_API, $this->googleMapsApiFile );
-
     }
 
     // /CONSTRUCTOR
@@ -54,6 +55,11 @@ class JavascriptResource extends AbstractJavascriptResource
     public function getJavascriptAppFile( $mode = null )
     {
         return sprintf( $this->javascriptAppFile, $mode );
+    }
+
+    public function getJavascriptCanvasFile( $mode = null )
+    {
+        return sprintf( $this->javascriptCanvasFile, $mode );
     }
 
 }

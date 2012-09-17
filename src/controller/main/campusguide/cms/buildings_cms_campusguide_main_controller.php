@@ -758,10 +758,11 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
             $this->addJavascriptFile( Resource::javascript()->getJqueryHistoryApiFile() );
         }
 
-        // Add Kinectic api
+        // Add Kinectic api, canvas
         if ( ( $this->isPageFloorplanner() || $this->isPageBuildingcreator() ) && self::getId() )
         {
             $this->addJavascriptFile( Resource::javascript()->getKineticApiFile() );
+            $this->addJavascriptFile( "javascript/campusguide_canvas.js.php" );
         }
 
     }

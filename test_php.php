@@ -2,11 +2,9 @@
 
 include '../KrisSkarboApi/src/core/core.php';
 
-$array = array(  );
-$arrays = array( array( 100, 200 ), array( 100, 300 ) );
-$result = array_filter($arrays, function($var) use($array) { return $var == $array; });
+$array1 = array( "test" => array( "key" => array() ) );
+$array2 = array( "test" => array( "key" => "test5" ) );
 
-
-var_dump($result, !empty( $result ));
+var_dump( array_merge($array1, $array2) );
 
 ?>

@@ -11,8 +11,8 @@ function BuildingsCmsCampusguideMainView(wrapperId) {
 	this.geocoder = null;
 	this.marker = null;
 	this.markerResult = null;
-	this.floorplannerPage = new FloorplannerBuildingCmsCampusguidePageMainView(this);
-	this.buildingcreatorPage = new BuildingcreatorBuildingCmsCampusguidePageMainView(this);
+	this.floorplannerPage = null;
+	this.buildingcreatorPage = null;
 	this.buildingPage = new BuildingCmsCampusguidePageMainView(this);
 };
 
@@ -79,6 +79,13 @@ BuildingsCmsCampusguideMainView.prototype.after = function() {
 BuildingsCmsCampusguideMainView.prototype.draw = function(controller) {
 	CmsCampusguideMainView.prototype.draw.call(this, controller);
 
+	if (typeof FloorplannerBuildingCmsCampusguidePageMainView !== "undefined")
+		this.floorplannerPage = new FloorplannerBuildingCmsCampusguidePageMainView(this);
+	if (typeof BuildingcreatorBuildingCmsCampusguidePageMainView !== "undefined")
+		this.buildingcreatorPage = new BuildingcreatorBuildingCmsCampusguidePageMainView(this);
+
+	$(".gui").gui();
+
 	// Do Floorplanner
 	if (this.getController().getQuery().page == "floorplanner" && this.getController().getQuery().id) {
 		this.getFloorplannerPage().draw(this.getWrapperElement().find("#floorplanner_page_wrapper"));
@@ -91,8 +98,6 @@ BuildingsCmsCampusguideMainView.prototype.draw = function(controller) {
 	else if (this.getController().getQuery().page == "building") {
 		this.getBuildingPage().draw(this.getWrapperElement().find("#building_page_wrapper"));
 	}
-
-	$(".gui").gui();
 };
 
 // /FUNCTIONS

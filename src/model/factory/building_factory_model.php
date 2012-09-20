@@ -34,7 +34,7 @@ class BuildingFactoryModel extends ClassCore
 
         $building->setName( Core::utf8Encode( $name ) );
         $building->setFacilityId( intval( $facilityId ) );
-        $building->setCoordinates( $coordinates );
+        $building->setCoordinates( Resource::generateCoordinatesToString( $coordinates ) );
         $building->setAddress( Core::utf8Encode( is_array( $address ) ? $address : explode( "|", $address ) ) );
         $building->setPosition( BuildingUtil::generatePositionToArray( $position ) );
         $building->setLocation( BuildingUtil::generateLocationToArray( $location ) );

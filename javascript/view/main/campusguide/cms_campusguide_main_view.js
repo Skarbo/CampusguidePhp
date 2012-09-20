@@ -195,7 +195,7 @@ CmsCampusguideMainView.prototype.handleQueue = function(queueType, queue) {
 	var queueView = new QueueCmsCampusguidePageMainView(this, queue);
 
 	// Get Queue element
-	var queueElement = this.getWrapperElement().find("#queue_wrapper #queue");
+	var queueElement = $("#cms_wrapper #queue_wrapper");
 
 	// Draw queue
 	queueView.draw(queueElement);

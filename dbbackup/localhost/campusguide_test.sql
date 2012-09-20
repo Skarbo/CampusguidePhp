@@ -1,4 +1,4 @@
--- Mon, 17 Sep 2012 02:57:59 GMT
+-- Thu, 20 Sep 2012 12:00:41 GMT
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40014 SET FOREIGN_KEY_CHECKS=0 */;
 -- Dumping database structure for campusguide_test
@@ -22,13 +22,13 @@ CREATE TABLE `building` (
   PRIMARY KEY (`building_id`),
   KEY `facility_id` (`facility_id`),
   CONSTRAINT `FK_BUILDING_FACILITY` FOREIGN KEY (`facility_id`) REFERENCES `facility` (`facility_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=449 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=454 DEFAULT CHARSET=utf8;
 
 
 -- Dumping data for table campusguide_test.building: ~1 rows (approximately)
 /*!40000 ALTER TABLE `building` DISABLE KEYS */;
 INSERT INTO `building` (`building_id`, `facility_id`, `building_name`, `building_coordinates`, `building_address`, `building_location`, `building_position`, `building_updated`, `building_registered`) VALUES 
-	(448, 665, 'Test Building', '100|200$300|400', '', '', '', NULL, '2012-09-12 17:39:10')
+	(453, 670, 'Test Building', '100|200$300|400', '', '', '', NULL, '2012-09-20 14:00:41')
 ;
 /*!40000 ALTER TABLE `building` ENABLE KEYS */;
 
@@ -55,14 +55,7 @@ CREATE TABLE `building_element` (
 ) ENGINE=InnoDB AUTO_INCREMENT=154 DEFAULT CHARSET=utf8;
 
 
--- Dumping data for table campusguide_test.building_element: ~3 rows (approximately)
-/*!40000 ALTER TABLE `building_element` DISABLE KEYS */;
-INSERT INTO `building_element` (`element_id`, `floor_id`, `section_id`, `element_type_id`, `element_name`, `element_coordinates`, `element_deleted`, `element_updated`, `element_registered`) VALUES 
-	(151, 386, 88, 88, '', '100,200,L|300,400,L', 0, NULL, '2012-09-12 17:39:10'),
-	(152, 386, 88, 88, '', '100,200,L|300,400,L', 0, NULL, '2012-09-12 17:39:10'),
-	(153, 386, 88, 88, '', '100,200,L|300,400,L', 0, NULL, '2012-09-12 17:39:10')
-;
-/*!40000 ALTER TABLE `building_element` ENABLE KEYS */;
+-- Dumping data for table campusguide_test.building_element: ~0 rows (approximately)
 
 
 -- Dumping structure for table campusguide_test.building_element_type
@@ -80,12 +73,7 @@ CREATE TABLE `building_element_type` (
 ) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8;
 
 
--- Dumping data for table campusguide_test.building_element_type: ~1 rows (approximately)
-/*!40000 ALTER TABLE `building_element_type` DISABLE KEYS */;
-INSERT INTO `building_element_type` (`type_id`, `type_name`, `type_group_id`, `type_icon`, `type_updated`, `type_registered`) VALUES 
-	(88, 'Test Element Building', 88, 'icon1', NULL, '2012-09-12 17:39:10')
-;
-/*!40000 ALTER TABLE `building_element_type` ENABLE KEYS */;
+-- Dumping data for table campusguide_test.building_element_type: ~0 rows (approximately)
 
 
 -- Dumping structure for table campusguide_test.building_element_type_group
@@ -99,12 +87,7 @@ CREATE TABLE `building_element_type_group` (
 ) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8;
 
 
--- Dumping data for table campusguide_test.building_element_type_group: ~1 rows (approximately)
-/*!40000 ALTER TABLE `building_element_type_group` DISABLE KEYS */;
-INSERT INTO `building_element_type_group` (`group_id`, `group_name`, `group_updated`, `group_registered`) VALUES 
-	(88, 'Test Group Type Element Building', NULL, '2012-09-12 17:39:10')
-;
-/*!40000 ALTER TABLE `building_element_type_group` ENABLE KEYS */;
+-- Dumping data for table campusguide_test.building_element_type_group: ~0 rows (approximately)
 
 
 -- Dumping structure for table campusguide_test.building_floor
@@ -124,12 +107,7 @@ CREATE TABLE `building_floor` (
 ) ENGINE=InnoDB AUTO_INCREMENT=387 DEFAULT CHARSET=utf8;
 
 
--- Dumping data for table campusguide_test.building_floor: ~1 rows (approximately)
-/*!40000 ALTER TABLE `building_floor` DISABLE KEYS */;
-INSERT INTO `building_floor` (`floor_id`, `building_id`, `floor_name`, `floor_coordinates`, `floor_order`, `floor_main`, `floor_updated`, `floor_registered`) VALUES 
-	(386, 448, '', '100,200,L|300,400,L', 0, 0, NULL, '2012-09-12 17:39:10')
-;
-/*!40000 ALTER TABLE `building_floor` ENABLE KEYS */;
+-- Dumping data for table campusguide_test.building_floor: ~0 rows (approximately)
 
 
 -- Dumping structure for table campusguide_test.building_section
@@ -147,12 +125,7 @@ CREATE TABLE `building_section` (
 ) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8;
 
 
--- Dumping data for table campusguide_test.building_section: ~1 rows (approximately)
-/*!40000 ALTER TABLE `building_section` DISABLE KEYS */;
-INSERT INTO `building_section` (`section_id`, `building_id`, `section_name`, `section_coordinates`, `section_updated`, `section_registered`) VALUES 
-	(88, 448, 'Section Test', '100|200$300|400', '0000-00-00 00:00:00', '2012-09-12 17:39:10')
-;
-/*!40000 ALTER TABLE `building_section` ENABLE KEYS */;
+-- Dumping data for table campusguide_test.building_section: ~0 rows (approximately)
 
 
 -- Dumping structure for table campusguide_test.debug
@@ -169,16 +142,17 @@ CREATE TABLE `debug` (
   `debug_type` varchar(50) NOT NULL DEFAULT '' COMMENT 'Data type',
   `debug_registered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`debug_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=224 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=226 DEFAULT CHARSET=utf8;
 
 
--- Dumping data for table campusguide_test.debug: ~4 rows (approximately)
+-- Dumping data for table campusguide_test.debug: ~5 rows (approximately)
 /*!40000 ALTER TABLE `debug` DISABLE KEYS */;
 INSERT INTO `debug` (`debug_id`, `debug_session`, `debug_level`, `debug_data`, `debug_file`, `debug_line`, `debug_backtrack`, `debug_trace`, `debug_type`, `debug_registered`) VALUES 
-	(220, 123, 1, 'Array\n(\n    [0] => BuildingCampusguideCommandController request\n    [1] => saveoverview\n    [2] => POST\n    [3] => Array\n        (\n            [0] => 188\n        )\n\n    [4] => 188\n)\n', '\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\command\\campusguide\\building_campusguide_command_controller.php', 199, '#1 DebugException->__construct C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\exception\\debug_exception.php:18\n#2 BuildingCampusguideCommandController->request C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\command\\campusguide\\building_campusguide_command_controller.php:200\n#3 Api->doControllerViewRender C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:562\n#4 Api->doRequest C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:531', '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(562): BuildingCampusguideCommandController->request()\n#1 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(531): Api->doControllerViewRender(Object(BuildingCampusguideCommandController))\n#2 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\command.php(106): Api->doRequest(Object(DoublearrayCore))\n#3 {main}', 'string, string, string, array, integer', '2012-08-13 10:16:43'),
 	(221, 124, 1, 'Array\n(\n    [0] => BuildingCampusguideCommandController request\n    [1] => saveoverview\n    [2] => POST\n    [3] => Array\n        (\n            [0] => 189\n        )\n\n    [4] => 189\n)\n', '\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\command\\campusguide\\building_campusguide_command_controller.php', 199, '#1 DebugException->__construct C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\exception\\debug_exception.php:18\n#2 BuildingCampusguideCommandController->request C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\command\\campusguide\\building_campusguide_command_controller.php:200\n#3 Api->doControllerViewRender C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:562\n#4 Api->doRequest C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:531', '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(562): BuildingCampusguideCommandController->request()\n#1 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(531): Api->doControllerViewRender(Object(BuildingCampusguideCommandController))\n#2 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\command.php(106): Api->doRequest(Object(DoublearrayCore))\n#3 {main}', 'string, string, string, array, integer', '2012-08-13 10:16:45'),
 	(222, 125, 1, 'Array\n(\n    [0] => BuildingCampusguideCommandController request\n    [1] => saveoverview\n    [2] => POST\n    [3] => Array\n        (\n            [0] => 187\n        )\n\n    [4] => 187\n)\n', '\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\command\\campusguide\\building_campusguide_command_controller.php', 199, '#1 DebugException->__construct C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\exception\\debug_exception.php:18\n#2 BuildingCampusguideCommandController->request C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\command\\campusguide\\building_campusguide_command_controller.php:200\n#3 Api->doControllerViewRender C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:562\n#4 Api->doRequest C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:531', '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(562): BuildingCampusguideCommandController->request()\n#1 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(531): Api->doControllerViewRender(Object(BuildingCampusguideCommandController))\n#2 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\command.php(106): Api->doRequest(Object(DoublearrayCore))\n#3 {main}', 'string, string, string, array, integer', '2012-08-13 10:16:50'),
-	(223, 126, 1, 'Array\n(\n    [0] => BuildingCampusguideCommandController request\n    [1] => saveoverview\n    [2] => POST\n    [3] => Array\n        (\n            [0] => 189\n        )\n\n    [4] => 189\n)\n', '\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\command\\campusguide\\building_campusguide_command_controller.php', 199, '#1 DebugException->__construct C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\exception\\debug_exception.php:18\n#2 BuildingCampusguideCommandController->request C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\command\\campusguide\\building_campusguide_command_controller.php:200\n#3 Api->doControllerViewRender C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:562\n#4 Api->doRequest C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:531', '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(562): BuildingCampusguideCommandController->request()\n#1 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(531): Api->doControllerViewRender(Object(BuildingCampusguideCommandController))\n#2 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\command.php(106): Api->doRequest(Object(DoublearrayCore))\n#3 {main}', 'string, string, string, array, integer', '2012-08-13 10:16:51')
+	(223, 126, 1, 'Array\n(\n    [0] => BuildingCampusguideCommandController request\n    [1] => saveoverview\n    [2] => POST\n    [3] => Array\n        (\n            [0] => 189\n        )\n\n    [4] => 189\n)\n', '\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\command\\campusguide\\building_campusguide_command_controller.php', 199, '#1 DebugException->__construct C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\exception\\debug_exception.php:18\n#2 BuildingCampusguideCommandController->request C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\command\\campusguide\\building_campusguide_command_controller.php:200\n#3 Api->doControllerViewRender C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:562\n#4 Api->doRequest C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:531', '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(562): BuildingCampusguideCommandController->request()\n#1 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(531): Api->doControllerViewRender(Object(BuildingCampusguideCommandController))\n#2 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\command.php(106): Api->doRequest(Object(DoublearrayCore))\n#3 {main}', 'string, string, string, array, integer', '2012-08-13 10:16:51'),
+	(224, 127, 1, 'Array\n(\n    [0] => BuildingCampusguideCommandController request\n    [1] => saveoverview\n    [2] => POST\n    [3] => Array\n        (\n            [0] => 452\n        )\n\n    [4] => 452\n)\n', '\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\command\\campusguide\\building_campusguide_command_controller.php', 199, '#1 DebugException->__construct C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\exception\\debug_exception.php:18\n#2 BuildingCampusguideCommandController->request C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\command\\campusguide\\building_campusguide_command_controller.php:200\n#3 Api->doControllerViewRender C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:571\n#4 Api->doRequest C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:540', '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(571): BuildingCampusguideCommandController->request()\n#1 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(540): Api->doControllerViewRender(Object(BuildingCampusguideCommandController))\n#2 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\command.php(106): Api->doRequest(Array)\n#3 {main}', 'string, string, string, array, integer', '2012-09-20 13:58:07'),
+	(225, 128, 1, 'Array\n(\n    [0] => BuildingCampusguideCommandController request\n    [1] => saveoverview\n    [2] => POST\n    [3] => Array\n        (\n            [0] => 453\n        )\n\n    [4] => 453\n)\n', '\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\command\\campusguide\\building_campusguide_command_controller.php', 199, '#1 DebugException->__construct C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\exception\\debug_exception.php:18\n#2 BuildingCampusguideCommandController->request C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\command\\campusguide\\building_campusguide_command_controller.php:200\n#3 Api->doControllerViewRender C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:571\n#4 Api->doRequest C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:540', '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(571): BuildingCampusguideCommandController->request()\n#1 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(540): Api->doControllerViewRender(Object(BuildingCampusguideCommandController))\n#2 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\command.php(106): Api->doRequest(Array)\n#3 {main}', 'string, string, string, array, integer', '2012-09-20 14:00:41')
 ;
 /*!40000 ALTER TABLE `debug` ENABLE KEYS */;
 
@@ -202,10 +176,10 @@ CREATE TABLE `error` (
   `error_registered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`error_id`),
   UNIQUE KEY `error_unique` (`error_file`,`error_line`)
-) ENGINE=InnoDB AUTO_INCREMENT=2020 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2021 DEFAULT CHARSET=utf8;
 
 
--- Dumping data for table campusguide_test.error: ~65 rows (approximately)
+-- Dumping data for table campusguide_test.error: ~66 rows (approximately)
 /*!40000 ALTER TABLE `error` DISABLE KEYS */;
 INSERT INTO `error` (`error_id`, `error_kill`, `error_code`, `error_message`, `error_file`, `error_line`, `error_occured`, `error_url`, `error_backtrack`, `error_trace`, `error_query`, `error_exception`, `error_updated`, `error_registered`) VALUES 
 	(1, 0, 0, 'Could not include class \"CampusguidePresenterView\" (C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\presenter\\campusguide_presenter_view.php) called from C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\presenter\\campusguide\\cms\\facilities\\facility_facilities_cms_campusguide_presenter_view.php:4', '\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\util\\initialize_util.php', 66, 29, 'cms.php?', NULL, '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\cms.php(10): InitializeUtil::getClassPathFile(\'CampusguidePres...\', \'C:\\Users\\Kris L...\')\n#1 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\presenter\\campusguide\\cms\\facilities\\facility_facilities_cms_campusguide_presenter_view.php(4): __autoload(\'CampusguidePres...\')\n#2 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\cms.php(11): require_once(\'C:\\Users\\Kris L...\')\n#3 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\main\\page\\campusguide\\cms\\facilities\\overview_facilities_cms_campusguide_page_main_view.php(31): __autoload(\'FacilityFacilit...\')\n#4 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\main\\campusguide\\cms\\facilities_cms_campusguide_main_view.php(99): OverviewFacilitiesCmsCampusguidePageMainView->__construct(Object(FacilitiesCmsCampusguideMainView))\n#5 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\controller.php(348): FacilitiesCmsCampusguideMainView->before()\n#6 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\main_controller.php(96): Controller->render(Object(DivXhtml))\n#7 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(586): MainController->render(Object(DivXhtml))\n#8 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(540): Api->doControllerViewRender(Object(FacilitiesCmsCampusguideMainController))\n#9 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\cms.php(103): Api->doRequest(Array)\n#10 {main}', NULL, 'Exception', '2012-09-14 17:27:01', '2012-04-04 12:08:00'),
@@ -272,7 +246,8 @@ INSERT INTO `error` (`error_id`, `error_kill`, `error_code`, `error_message`, `e
 	(2003, 0, 0, 'Missing argument 4 for CampusguideCommandController::__construct(), called in C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php on line 528 and defined', '\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\command\\campusguide_command_controller.php', 53, 2, 'command.php?/building/saveoverview/15/1', NULL, '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\command\\campusguide_command_controller.php(53): Api->doErrorHandling(2, \'Missing argumen...\', \'C:\\Users\\Kris L...\', 53, Array)\n#1 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(528): CampusguideCommandController->__construct(Object(CampusguideApi), Object(CommandView))\n#2 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\command.php(106): Api->doRequest(Array)\n#3 {main}', NULL, 'ErrorException', '2012-08-21 22:22:10', '2012-08-21 22:22:10'),
 	(2005, 0, 0, 'Building \"15\" does not exist', '\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\command\\campusguide\\building_campusguide_command_controller.php', 183, 6, 'command.php?/building/saveoverview/15/1', '#1 BadrequestException->__construct C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\exception\\badrequest_exception.php:10\n#2 BuildingCampusguideCommandController->before C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\command\\campusguide\\building_campusguide_command_controller.php:183\n#3 Api->doControllerViewRender C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:568\n#4 Api->doRequest C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:540', '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(568): BuildingCampusguideCommandController->before()\n#1 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(540): Api->doControllerViewRender(Object(BuildingCampusguideCommandController))\n#2 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\command.php(106): Api->doRequest(Array)\n#3 {main}', NULL, 'BadrequestException', '2012-08-21 22:35:38', '2012-08-21 22:22:10'),
 	(2017, 0, 0, 'Unknown command \"search\"', '\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\rest\\campusguide\\standard_campusguide_rest_controller.php', 519, 1, 'api_rest.php?%2Fbuildingfloors%2Fsearch%2F=&mode=3', '#1 BadrequestException->__construct C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\exception\\badrequest_exception.php:10\n#2 StandardCampusguideRestController->request C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\rest\\campusguide\\standard_campusguide_rest_controller.php:519\n#3 Api->doControllerViewRender C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:571\n#4 Api->doRequest C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:540', '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(571): StandardCampusguideRestController->request()\n#1 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(540): Api->doControllerViewRender(Object(FloorsBuildingCampusguideRestController))\n#2 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\api_rest.php(142): Api->doRequest(Array)\n#3 {main}', NULL, 'BadrequestException', NULL, '2012-09-11 10:21:30'),
-	(2018, 0, 0, 'Controller mapping \"buildings?mode\" does not exist', '\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php', 504, 2, 'cms.php?/buildings?mode=2', NULL, '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\cms.php(103): Api->doRequest(Array)\n#1 {main}', NULL, 'Exception', '2012-09-16 09:42:32', '2012-09-14 20:06:12')
+	(2018, 0, 0, 'Controller mapping \"buildings?mode\" does not exist', '\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php', 504, 2, 'cms.php?/buildings?mode=2', NULL, '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\cms.php(103): Api->doRequest(Array)\n#1 {main}', NULL, 'Exception', '2012-09-16 09:42:32', '2012-09-14 20:06:12'),
+	(2019, 0, 0, 'implode(): Invalid arguments passed', '\\Scripting\\KrisSkarbo\\CampusGuide\\src\\resource\\resource.php', 121, 2, 'command.php?/building/saveoverview/453&mode=3', NULL, '#0 [internal function]: Api->doErrorHandling(2, \'implode(): Inva...\', \'C:\\Users\\Kris L...\', 121, Array)\n#1 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\resource\\resource.php(121): implode(\'$\', NULL)\n#2 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\model\\factory\\building_factory_model.php(37): Resource::generateCoordinatesToString(\'100|200$300|400\')\n#3 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\dao\\db\\building_db_dao.php(38): BuildingFactoryModel::createBuilding(\'Test Building\', \'670\', \'100|200$300|400\', \'\', \'\', \'\')\n#4 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\dao\\db\\standard_db_dao.php(175): BuildingDbDao->createModel(Array)\n#5 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\command\\campusguide\\building_campusguide_command_controller.php(178): StandardDbDao->get(453)\n#6 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(568): BuildingCampusguideCommandController->before()\n#7 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(540): Api->doControllerViewRender(Object(BuildingCampusguideCommandController))\n#8 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\command.php(106): Api->doRequest(Array)\n#9 {main}', NULL, 'ErrorException', '2012-09-20 14:00:41', '2012-09-20 14:00:41')
 ;
 /*!40000 ALTER TABLE `error` ENABLE KEYS */;
 
@@ -285,13 +260,13 @@ CREATE TABLE `facility` (
   `facility_updated` datetime DEFAULT NULL,
   `facility_registered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`facility_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=666 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=671 DEFAULT CHARSET=utf8;
 
 
 -- Dumping data for table campusguide_test.facility: ~1 rows (approximately)
 /*!40000 ALTER TABLE `facility` DISABLE KEYS */;
 INSERT INTO `facility` (`facility_id`, `facility_name`, `facility_updated`, `facility_registered`) VALUES 
-	(665, 'Test Facility', NULL, '2012-09-12 17:39:10')
+	(670, 'Test Facility', NULL, '2012-09-20 14:00:41')
 ;
 /*!40000 ALTER TABLE `facility` ENABLE KEYS */;
 

@@ -762,7 +762,7 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
         if ( ( $this->isPageFloorplanner() || $this->isPageBuildingcreator() ) && self::getId() )
         {
             $this->addJavascriptFile( Resource::javascript()->getKineticApiFile() );
-            $this->addJavascriptFile( "javascript/campusguide_canvas.js.php" );
+            $this->addJavascriptFile( Resource::javascript()->getJavascriptCanvasFile( $this->getMode() ) );
         }
 
     }

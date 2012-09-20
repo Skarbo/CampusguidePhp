@@ -51,18 +51,7 @@ class AllTests extends TestSuite
         //$this->add( new DbbackupHandlerTest() );
 //         $this->add(new QueueHandlerTest() );
 
-        //$this->add(new BuildingCampusguideCommandControllerTest());
-
-//         $coordinates = "94.9,53.3,L,|273.9,78.3,L,|219.9,177.3,L,|47.9,134.3,L,";
-//         $coordinates = "94.9,53.3,L,|273.9,78.3,L,|219.9,177.3,Q,310.4%137.0|47.9,134.3,L,";
-//         $coordinates = "";
-//         $coordinates = "94.9,53.3,L,|273.9,78.3,L,|219.9,177.3,Q,310.4%137.0|47.9,134.3,L,$336.9,45.3,L,|471.9,22.3,L,|515.9,133.3,L,|353.9,143.3,L,";
-//         var_dump($coordinates);
-//         echo "<br />";
-//         $coordinatesArray = Resource::generateCoordinatesToArray($coordinates);
-//         var_dump( $coordinatesArray );
-//         echo "<br />";
-//         var_dump(Resource::generateCoordinatesToString($coordinatesArray));
+$this->add(new BuildingCampusguideCommandControllerTest());
 
     }
 

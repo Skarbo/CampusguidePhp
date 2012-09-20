@@ -152,9 +152,6 @@ BuildingcreatorBuildingCmsCampusguidePageMainView.prototype.draw = function(root
 	PageMainView.prototype.draw.call(this, root);
 	var context = this;
 
-	// Bind
-	this.doBindEventHandler();
-
 	// Draw presenters
 	this.menuPresenter.draw(this.getMenuWrapperElement());
 	this.toolbarPresenter.draw(this.getToolbarWrapperElement());

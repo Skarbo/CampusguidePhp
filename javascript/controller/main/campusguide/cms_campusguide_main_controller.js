@@ -74,16 +74,23 @@ CmsCampusguideMainController.prototype.handleQueue = function(queueType, queue) 
 		}
 
 		// Building retrieve event
-		context.getEventHandler().handle(new BuildingRetrieveEvent(queue.buildingId));
+		context.getEventHandler().handle(new RetrieveEvent("building_queue", queue.buildingId));
 
 		// Retrieve Building
 		this.getBuildingDao().get(queue.buildingId, function(building) {
-			if (!building) {
-				console.error("Retrieved building is null");
-				return;
-			}
+			context.getEventHandler().handle(new RetrievedEvent("building_queue", building));
 
-			context.getEventHandler().handle(new BuildingRetrievedEvent(building));
+			// Retrieve Floors
+			context.getEventHandler().handle(new RetrieveEvent("building_floors_queue", building.id));
+			context.getFloorBuildingDao().getForeign(building.id, function(floors) {
+				context.getEventHandler().handle(new RetrievedEvent("building_floors_queue", floors));
+
+				// Retrieve Elements
+				context.getEventHandler().handle(new RetrieveEvent("building_elements_queue", building.id));
+				context.getElementBuildingDao().getBuilding(building.id, function(element, elements) {
+					context.getEventHandler().handle(new RetrievedEvent("building_elements_queue", elements));
+				});
+			});
 		});
 
 	}

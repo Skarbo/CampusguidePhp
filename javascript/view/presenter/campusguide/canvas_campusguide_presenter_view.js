@@ -159,28 +159,6 @@ CanvasCampusguidePresenterView.prototype.doBindEventHandler = function() {
 
 	// EVENTS
 
-	// Retrieved event
-	this.getView().getController().getEventHandler().registerListener(RetrievedEvent.TYPE,
-	/**
-	 * @param {RetrievedEvent}
-	 *            event
-	 */
-	function(event) {
-		switch (event.getRetrievedType()) {
-		case "building":
-			context.handleBuildingRetrieved(event.getRetrieved());
-			break;
-
-		case "building_floors":
-			context.handleFloorsRetrieved(event.getRetrieved());
-			break;
-
-		case "building_elements":
-			context.handleElementsRetrieved(event.getRetrieved());
-			break;
-		}
-	});
-
 	// Handle save event
 	this.getEventHandler().registerListener(SaveEvent.TYPE,
 	/**
@@ -329,7 +307,7 @@ CanvasCampusguidePresenterView.prototype.doBindEventHandler = function() {
 	});
 
 	// ... MOUSE SCROLL
-
+console.log(this.getCanvasContentElement());
 	// Get wrapper dom
 	var canvasWrapper = document.getElementById(this.getCanvasContentElement().attr("id"));
 
@@ -415,7 +393,7 @@ CanvasCampusguidePresenterView.prototype.doFitToScale = function() {
 		var boundX = coordinatesMaxBounds[2] - coordinatesMaxBounds[0], boundY = coordinatesMaxBounds[3] - coordinatesMaxBounds[1];
 
 		var stageX = this.stage.getWidth(), stageY = this.stage.getHeight();
-		scaleNew = parseFloat((Math.floor(parseFloat(Math.min(stageX / boundX, stageY / boundY).toFixed(2)) * 20) / 20).toFixed(2));
+		scaleNew = Core.roundNumber(Math.min(stageX / boundX, stageY / boundY), 4);
 		var boundsNewX = boundX * scaleNew, boundsNewY = boundY * scaleNew;
 
 		positionNew.x = ((stageX - boundsNewX) / 2) - (coordinatesMaxBounds[0] * scaleNew);
@@ -423,6 +401,7 @@ CanvasCampusguidePresenterView.prototype.doFitToScale = function() {
 
 	} else {
 
+		// TODO Fit to scale floors map
 		var layer = this.getLayer("floors_map", this.floorSelected);
 
 		if (layer.height && layer.width) {
@@ -436,7 +415,6 @@ CanvasCampusguidePresenterView.prototype.doFitToScale = function() {
 		}
 
 	}
-
 	this.setStageScale(scaleNew);
 	this.setStagePosition(positionNew);
 	this.stage.setScale(this.stageScale);

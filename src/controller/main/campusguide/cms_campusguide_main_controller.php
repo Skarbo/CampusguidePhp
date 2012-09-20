@@ -213,6 +213,7 @@ abstract class CmsCampusguideMainController extends CampusguideMainController
         if ( $this->getQueue() && $this->getQueue()->getType() == QueueModel::TYPE_IMAGE_BUILDING )
         {
             $this->addJavascriptFile( Resource::javascript()->getKineticApiFile() );
+            $this->addJavascriptFile( Resource::javascript()->getJavascriptCanvasFile( $this->getMode() ) );
         }
 
         // Add CSS files

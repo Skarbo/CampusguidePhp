@@ -54,6 +54,7 @@ class CampusguideHandler extends Handler
         $this->setTypeElementBuildingDao( new TypeElementBuildingDbDao( $dbApi ) );
         $this->setGroupTypeElementBuildingDao( new GroupTypeElementBuildingDbDao( $dbApi ) );
         $this->setFloorBuildingDao( new FloorBuildingDbDao( $dbApi ) );
+        $this->setQueueDao( new QueueDbDao( $dbApi ) );
     }
 
     // /CONSTRUCTOR

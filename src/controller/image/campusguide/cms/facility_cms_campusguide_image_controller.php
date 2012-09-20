@@ -261,7 +261,7 @@ class FacilityCmsCampusguideImageController extends CmsCampusguideImageControlle
     {
 
         // Set Facility
-        $this->setFacility( $this->getFacilityDao()->get( self::getId() ) );
+        $this->setFacility( $this->getCampusguideHandler()->getFacilityDao()->get( self::getId() ) );
 
         // Facility must exist
         if ( !$this->getFacility() )
@@ -270,7 +270,7 @@ class FacilityCmsCampusguideImageController extends CmsCampusguideImageControlle
         }
 
         // Set Facility Buildings
-        $this->setBuildings( $this->getBuildingDao()->getForeign( array ( $this->getFacility()->getId() ) ) );
+        $this->setBuildings( $this->getCampusguideHandler()->getBuildingDao()->getForeign( array ( $this->getFacility()->getId() ) ) );
 
         // Set Facility map url
         $this->setFacilityMapUrl( $this->createFacilityMapUrl() );

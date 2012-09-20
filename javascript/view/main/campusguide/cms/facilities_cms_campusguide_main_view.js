@@ -340,7 +340,7 @@ FacilitiesCmsCampusguideMainView.prototype.handleMapBuildings = function(buildin
 		};
 
 		// Foreach Buildings
-		var building, address, locationArray;
+		var building, address;
 		for (buildingId in buildings) {
 			building = buildings[buildingId];
 			address = jQuery.isArray(building.address) ? building.address.join(", ") : "";
@@ -353,9 +353,8 @@ FacilitiesCmsCampusguideMainView.prototype.handleMapBuildings = function(buildin
 			});
 
 			// Building location
-			if (building.location) {
-				locationArray = building.location.split(",");
-				setMarkerAtLocation(new google.maps.LatLng(locationArray[0], locationArray[1]), this.markers[buildingId]);
+			if (building.location && jQuery.isArray(building.location)) {
+				setMarkerAtLocation(new google.maps.LatLng(building.location[0], building.location[1]), this.markers[buildingId]);
 			}
 			// Building address
 			else if (address) {

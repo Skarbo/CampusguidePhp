@@ -26,7 +26,7 @@ abstract class CampusguideCommandController extends CommandController implements
     {
         parent::__construct( $api, $view );
 
-        $this->setCampsguideHandler( new FacilityDbDao( $this->getDbApi() ) );
+        $this->setCampusguideHandler( new CampusguideHandler( $this->getDbApi() ) );
     }
 
     // /CONSTRUCTOR

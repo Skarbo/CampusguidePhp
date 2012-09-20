@@ -9,10 +9,6 @@ class BuildingCmsCampusguideImageController extends CmsCampusguideImageControlle
     public static $CONTROLLER_NAME = "building";
 
     /**
-     * @var QueueDao
-     */
-    private $queueDao;
-    /**
      * @var QueueHandler
      */
     private $queueHandler;
@@ -20,6 +16,10 @@ class BuildingCmsCampusguideImageController extends CmsCampusguideImageControlle
      * @var BuildingModel
      */
     private $building;
+    /**
+     * @var FloorBuildingListModel
+     */
+    private $floors;
 
     // /VARIABLES
 
@@ -30,8 +30,9 @@ class BuildingCmsCampusguideImageController extends CmsCampusguideImageControlle
     public function __construct( Api $api, View $view )
     {
         parent::__construct( $api, $view );
-        $this->setQueueDao( new QueueDbDao( $this->getDbApi() ) );
-        $this->setQueueHandler( new QueueHandler( $this->getQueueDao(), new QueueValidator( $this->getLocale() ) ) );
+        $this->setQueueHandler( new QueueHandler( $this->getCampusguideHandler()->getQueueDao(), new QueueValidator( $this->getLocale() ) ) );
+
+        $this->setFloors( new FloorBuildingListModel() );
     }
 
     // /CONSTRUCTOR
@@ -46,7 +47,7 @@ class BuildingCmsCampusguideImageController extends CmsCampusguideImageControlle
     /**
      * @return BuildingModel
      */
-    public function getBuilding()
+    private function getBuilding()
     {
         return $this->building;
     }
@@ -54,25 +55,25 @@ class BuildingCmsCampusguideImageController extends CmsCampusguideImageControlle
     /**
      * @param BuildingModel $building
      */
-    public function setBuilding( BuildingModel $building )
+    private function setBuilding( BuildingModel $building )
     {
         $this->building = $building;
     }
 
     /**
-     * @return QueueDao
+     * @return FloorBuildingListModel
      */
-    public function getQueueDao()
+    private function getFloors()
     {
-        return $this->queueDao;
+        return $this->floors;
     }
 
     /**
-     * @param QueueDao $queueDao
+     * @param FloorBuildingListModel $floors
      */
-    public function setQueueDao( QueueDao $queueDao )
+    private function setFloors( FloorBuildingListModel $floors )
     {
-        $this->queueDao = $queueDao;
+        $this->floors = $floors;
     }
 
     /**
@@ -165,12 +166,24 @@ class BuildingCmsCampusguideImageController extends CmsCampusguideImageControlle
         {
             list ( $width, $height ) = self::getSizeWidthSize();
 
-            // Create Queue
-            $queue = QueueFactoryModel::createBuildingQueue( $this->getBuilding()->getId(),
-                    array ( "size" => array ( $width, $height ) ) );
+            // Delete image
+            if ( file_exists( $imagePath ) )
+            {
+                @unlink( $imagePath );
+            }
 
-            // Add Queue
-            $this->getQueueHandler()->handle( $queue );
+            // Must contain Floors
+            if ( !$this->getFloors()->isEmpty() )
+            {
+
+                // Create Queue
+                $queue = QueueFactoryModel::createBuildingQueue( $this->getBuilding()->getId(),
+                        array ( "size" => array ( $width, $height ) ) );
+
+                // Add Queue
+                $this->getQueueHandler()->handle( $queue );
+
+            }
 
         }
 
@@ -186,13 +199,18 @@ class BuildingCmsCampusguideImageController extends CmsCampusguideImageControlle
     {
 
         // Set Building
-        $this->setBuilding( $this->getBuildingDao()->get( self::getId() ) );
+        $this->setBuilding( $this->getCampusguideHandler()->getBuildingDao()->get( self::getId() ) );
 
         // Building must exist
         if ( !$this->getBuilding() )
         {
             throw new BadrequestException( sprintf( "Building \"%d\" does not exist", self::getId() ) );
         }
+
+        // Set Floors
+        $this->setFloors(
+                $this->getCampusguideHandler()->getFloorBuildingDao()->getForeign(
+                        array ( $this->getBuilding()->getId() ) ) );
 
     }
 

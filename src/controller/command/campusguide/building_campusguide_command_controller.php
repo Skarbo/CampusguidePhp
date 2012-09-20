@@ -156,7 +156,7 @@ class BuildingCampusguideCommandController extends CampusguideCommandController
         // Delete Queue if given
         if ( $this->getQueue() )
         {
-            $this->getQueueDao()->remove( $this->getQueue()->getId() );
+            $this->getCampusguideHandler()->getQueueDao()->remove( $this->getQueue()->getId() );
         }
 
     }
@@ -175,7 +175,7 @@ class BuildingCampusguideCommandController extends CampusguideCommandController
         if ( $this->isCommandSaveoverview() )
         {
             // Set Building
-            $this->setBuilding( $this->getCampsuguideHandler()->getBuildingDao()->get( self::getId() ) );
+            $this->setBuilding( $this->getCampusguideHandler()->getBuildingDao()->get( self::getId() ) );
 
             // Building must exist
             if ( !$this->getBuilding() )
@@ -184,7 +184,7 @@ class BuildingCampusguideCommandController extends CampusguideCommandController
             }
 
             // Set Queue
-            $this->setQueue( $this->getCampsuguideHandler()->getQueueDao()->get( self::getQueueId() ) );
+            $this->setQueue( $this->getCampusguideHandler()->getQueueDao()->get( self::getQueueId() ) );
         }
 
     }

@@ -75,21 +75,6 @@ class FacilityFacilitiesCmsCampusguidePresenterView extends CampusguidePresenter
 
     // ... /GETTERS/SETTERS
 
-
-    // ... GET
-
-
-    /**
-     * @return DefaultLocale
-     */
-    public function getLocale()
-    {
-        return parent::getLocale();
-    }
-
-    // ... /GET
-
-
     // ... CREATE
 
 

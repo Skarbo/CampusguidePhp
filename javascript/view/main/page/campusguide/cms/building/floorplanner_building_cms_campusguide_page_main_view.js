@@ -417,10 +417,7 @@ FloorplannerBuildingCmsCampusguidePageMainView.prototype.handleMenu = function(m
  */
 FloorplannerBuildingCmsCampusguidePageMainView.prototype.draw = function(root) {
 	PageMainView.prototype.draw.call(this, root);
-
-	// Bind
-	this.doBindEventHandler();
-
+	
 	// Handle hash
 	var menu = this.getView().getController().getHash().menu;
 

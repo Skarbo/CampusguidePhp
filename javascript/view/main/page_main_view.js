@@ -67,12 +67,20 @@ PageMainView.prototype.getEventHandler = function() {
 
 // ... /GET
 
+// ... DO
+
+PageMainView.prototype.doBindEventHandler = function() {
+};
+
+// ... /DO
+
 /**
  * @param {Element}
  *            root
  */
 PageMainView.prototype.draw = function(root) {
 	this.setRoot(root);
+	this.doBindEventHandler();
 };
 
 // FUNCTIONS

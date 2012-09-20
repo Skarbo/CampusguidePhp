@@ -35,7 +35,7 @@ class ElementBuildingFactoryModel extends ClassCore
 
         $elementBuilding->setFloorId( intval( $floorId ) );
         $elementBuilding->setName( Core::utf8Encode( $name ) );
-        $elementBuilding->setCoordinates( $coordinates );
+        $elementBuilding->setCoordinates( Resource::generateCoordinatesToString( $coordinates ) );
         $elementBuilding->setTypeId( intval( $typeId ) );
         $elementBuilding->setSectionId( intval( $sectionId ) );
         $elementBuilding->setDeleted( (boolean) $deleted );

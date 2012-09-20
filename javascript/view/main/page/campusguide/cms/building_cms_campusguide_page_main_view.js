@@ -717,10 +717,6 @@ BuildingCmsCampusguidePageMainView.prototype.handlePositionMap = function() {
  */
 BuildingCmsCampusguidePageMainView.prototype.draw = function(root) {
 	PageMainView.prototype.draw.call(this, root);
-
-	// Bind
-	this.doBindEventHandler();
-
 };
 
 // /FUNCTIONS

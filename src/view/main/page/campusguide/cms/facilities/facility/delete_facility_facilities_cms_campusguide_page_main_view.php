@@ -33,14 +33,6 @@ class DeleteFacilityFacilitiesCmsCampusguidePageMainView extends PageMainView
     }
 
     /**
-     * @return DefaultLocale
-     */
-    private function getLocale()
-    {
-        return $this->getView()->getController()->getLocale();
-    }
-
-    /**
      * @return FacilityListModel
      */
     private function getFacilities()

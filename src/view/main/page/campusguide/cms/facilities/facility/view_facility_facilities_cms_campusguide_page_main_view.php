@@ -52,14 +52,6 @@ class ViewFacilityFacilitiesCmsCampusguidePageMainView extends PageMainView
         return $this->getView()->getController()->getBuildings();
     }
 
-    /**
-     * @return DefaultLocale
-     */
-    private function getLocale()
-    {
-        return $this->getView()->getController()->getLocale();
-    }
-
     // ... /GET
 
 

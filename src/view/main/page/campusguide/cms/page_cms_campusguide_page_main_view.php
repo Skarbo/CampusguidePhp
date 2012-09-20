@@ -36,11 +36,12 @@ abstract class PageCmsCampusguidePageMainView extends PageMainView
     protected abstract function getWrapperId();
 
     /**
-     * @return string Controller mode
+     * @see PageMainView::getLocale()
+     * @return DefaultLocale
      */
-    protected function getMode()
+    public function getLocale()
     {
-        return $this->getView()->getController()->getMode();
+        return parent::getLocale();
     }
 
     // ... /GET

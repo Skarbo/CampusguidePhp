@@ -74,7 +74,7 @@ class FacilityDaoTest extends StandardDaoTest
         $modelOne = FacilityModel::get_( $modelOne );
         $modelTwo = FacilityModel::get_( $modelTwo );
 
-        self::assertEqualsFunction( $modelOne->getId(), $modelTwo->getId(), "Facility id", $testCase );
+        self::assertEqualsFunction( $modelOne->getIdURI(), $modelTwo->getIdURI(), "Facility id", $testCase );
         self::assertEqualsFunction( $modelOne->getName(), $modelTwo->getName(), "Facility name", $testCase );
     }
 
@@ -82,7 +82,7 @@ class FacilityDaoTest extends StandardDaoTest
     {
         $model = FacilityModel::get_( $model );
 
-        self::assertNotNullFunction( $model->getId(), "Facility id", $testCase );
+        self::assertNotNullFunction( $model->getIdURI(), "Facility id", $testCase );
         self::assertNotNullFunction( $model->getName(), "Facility name", $testCase );
     }
 

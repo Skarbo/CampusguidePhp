@@ -261,12 +261,12 @@ class FacilityCmsCampusguideImageController extends CmsCampusguideImageControlle
     {
 
         // Set Facility
-        $this->setFacility( $this->getCampusguideHandler()->getFacilityDao()->get( self::getId() ) );
+        $this->setFacility( $this->getCampusguideHandler()->getFacilityDao()->get( self::getIdURI() ) );
 
         // Facility must exist
         if ( !$this->getFacility() )
         {
-            throw new BadrequestException( sprintf( "Facility \"%d\" does not exist", self::getId() ) );
+            throw new BadrequestException( sprintf( "Facility \"%d\" does not exist", self::getIdURI() ) );
         }
 
         // Set Facility Buildings

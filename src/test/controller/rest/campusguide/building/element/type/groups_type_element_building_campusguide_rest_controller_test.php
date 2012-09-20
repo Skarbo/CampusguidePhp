@@ -91,7 +91,7 @@ class GroupsTypeElementBuildingCampusguideRestControllerTest extends StandardCam
 
         $model = GroupTypeElementBuildingModel::get_( $model );
 
-        GroupTypeElementBuildingDaoTest::assertNotNullFunction( $model->getId(), "Group Type Element Building id",
+        GroupTypeElementBuildingDaoTest::assertNotNullFunction( $model->getIdURI(), "Group Type Element Building id",
                 $testCase );
         GroupTypeElementBuildingDaoTest::assertNotNullFunction( $model->getName(), "Group Type Element Building name",
                 $testCase );

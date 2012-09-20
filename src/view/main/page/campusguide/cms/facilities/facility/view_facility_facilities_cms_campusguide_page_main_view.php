@@ -79,7 +79,7 @@ class ViewFacilityFacilitiesCmsCampusguidePageMainView extends PageMainView
         $headerTableCell = Xhtml::div()->class_( Resource::css()->getTableCell(), Resource::css()->getRight() );
 
         // Buttons gui
-        $buttonsGui = Xhtml::div()->id( "sub_menu_gui" )->addClass( Resource::css()->gui()->getGui() );
+        $buttonsGui = Xhtml::div()->id( "sub_menu_gui" )->addClass( Resource::css()->gui()->getGui(), "theme2" );
 
         // Delete button
         $buttonsGui->addContent(
@@ -164,8 +164,8 @@ class ViewFacilityFacilitiesCmsCampusguidePageMainView extends PageMainView
 
             // ... Image
             $img = Xhtml::img()->src(
-                    Resource::url()->campusguide()->cms()->building()->getImageController( $building->getId(), 100, 75,
-                            $this->getView()->getController()->getMode() ) );
+                    Resource::url()->campusguide()->cms()->building()->getBuildingOverviewImage( $building->getId(), 100, 75,
+                            $this->getView()->getMode() ) );
 
             $cell->addContent( $img );
             $row->addContent( $cell );

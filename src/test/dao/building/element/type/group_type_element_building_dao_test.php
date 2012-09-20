@@ -75,7 +75,7 @@ class GroupTypeElementBuildingDaoTest extends StandardDaoTest
 
         $model = GroupTypeElementBuildingModel::get_( $model );
 
-        self::assertNotNullFunction( $model->getId(), "Group Type Element Building id", $this );
+        self::assertNotNullFunction( $model->getIdURI(), "Group Type Element Building id", $this );
         self::assertNotNullFunction( $model->getName(), "Group Type Element Building name", $this );
 
     }

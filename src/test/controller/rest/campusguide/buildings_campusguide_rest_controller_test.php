@@ -97,7 +97,7 @@ class BuildingsCampusguideRestControllerTest extends StandardCampusguideRestCont
     {
         $model = BuildingModel::get_( $model );
 
-        StandardDaoTest::assertNotNullFunction( $model->getId(), "Building id", $testCase );
+        StandardDaoTest::assertNotNullFunction( $model->getIdURI(), "Building id", $testCase );
         StandardDaoTest::assertNotNullFunction( $model->getName(), "Building name", $testCase );
         StandardDaoTest::assertNotNullFunction( $model->getFacilityId(), "Building Facility id", $testCase );
         StandardDaoTest::assertNotNullFunction( $model->getCoordinates(), "Building coordinates", $testCase );

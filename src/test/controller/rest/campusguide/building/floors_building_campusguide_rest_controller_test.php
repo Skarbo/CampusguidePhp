@@ -108,7 +108,7 @@ class FloorsBuildingCampusguideRestControllerTest extends StandardCampusguideRes
     {
         $model = FloorBuildingModel::get_( $model );
 
-        FloorBuildingDaoTest::assertNotNullFunction( $model->getId(), "Floor Building id", $testCase );
+        FloorBuildingDaoTest::assertNotNullFunction( $model->getIdURI(), "Floor Building id", $testCase );
         FloorBuildingDaoTest::assertNotNullFunction( $model->getBuildingId(), "Floor Building building id", $testCase );
         FloorBuildingDaoTest::assertNotNullFunction( $model->getName(), "Floor Building name", $testCase );
         FloorBuildingDaoTest::assertNotNullFunction( $model->getOrder(), "Floor Building order", $testCase );

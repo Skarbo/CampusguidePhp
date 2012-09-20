@@ -2,9 +2,15 @@
 
 include '../KrisSkarboApi/src/core/core.php';
 
-$array1 = array( "test" => array( "key" => array() ) );
-$array2 = array( "test" => array( "key" => "test5" ) );
+class Test
+{
+    public static function testing()
+    {
+        return "TEST";
+    }
+}
 
-var_dump( array_merge($array1, $array2) );
+$test = new Test();
+var_dump($test->testing(), Test::testing());
 
 ?>

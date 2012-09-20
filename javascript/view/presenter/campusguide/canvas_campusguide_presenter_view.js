@@ -307,7 +307,7 @@ CanvasCampusguidePresenterView.prototype.doBindEventHandler = function() {
 	});
 
 	// ... MOUSE SCROLL
-console.log(this.getCanvasContentElement());
+
 	// Get wrapper dom
 	var canvasWrapper = document.getElementById(this.getCanvasContentElement().attr("id"));
 

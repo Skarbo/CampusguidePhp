@@ -136,7 +136,7 @@ class OverviewFacilitiesCmsCampusguidePageMainView extends PageMainView
     {
 
         // Search GUI
-        $search_gui = Xhtml::div()->id( "sub_menu_gui" )->addClass( Resource::css()->gui()->getGui() );
+        $search_gui = Xhtml::div()->id( "sub_menu_gui" )->addClass( Resource::css()->gui()->getGui(), "theme2" );
 
         // Search input
         $search_input = Xhtml::input()->autocomplete( InputXhtml::$AUTOCOMPLETE_OFF )->type(
@@ -144,8 +144,8 @@ class OverviewFacilitiesCmsCampusguidePageMainView extends PageMainView
                 Resource::css()->getDefaultText(), Resource::css()->gui()->getComponent() )->attr( "data-type", "input" );
 
         // Reset button
-        $reset_button = Xhtml::a()->id( "facilities_search_reset" )->title( "Reset" )->attr( "data-type",
-                "reset" )->attr( "data-icon", "cross" )->attr( "data-reset-id", "facilities_search" )->addClass(
+        $reset_button = Xhtml::a( Xhtml::div()->attr( "data-icon", "cross" ) )->id( "facilities_search_reset" )->title( "Reset" )->attr( "data-type",
+                "reset" )->attr( "data-reset-id", "facilities_search" )->addClass(
                 Resource::css()->gui()->getComponent() );
 
         // Delete button

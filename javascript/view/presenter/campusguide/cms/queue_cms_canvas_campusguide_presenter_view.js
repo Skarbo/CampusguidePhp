@@ -71,7 +71,7 @@ QueueCmsCanvasCampusguidePresenterView.prototype.handleRetrieved = function(type
 		break;
 	}
 
-	if (this.retrieved == 3 && this.getView().floors.length > 0) {
+	if (this.retrieved == 3 && Core.countObject(this.getView().getFloors()) > 0) {
 		// Select Floor
 		var selectMainFloor = function(floors) {
 			var floorMain = null;
@@ -85,7 +85,7 @@ QueueCmsCanvasCampusguidePresenterView.prototype.handleRetrieved = function(type
 		};
 
 		var selectFloor = selectMainFloor(this.getView().getFloors());
-		console.log("Select floor", selectFloor);
+		
 		this.doFloorSelect(selectFloor);
 
 		// Fit to scale

@@ -417,16 +417,7 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
         $this->setBuildings( $this->getBuildingDao()->getAll() );
 
         // Get Facilit ids
-        $facilityIds = array ();
-
-        for ( $this->getBuildings()->rewind(); $this->getBuildings()->valid(); $this->getBuildings()->next() )
-        {
-            $building = $this->getBuildings()->current();
-
-            $facilityIds[] = $building->getFacilityId();
-        }
-
-        $facilityIds = array_unique( $facilityIds );
+        $facilityIds = $this->getBuildings()->getForeignIds();
 
         // Set Buildings' Facilities
         $this->setFacilities( $this->getFacilityDao()->getList( $facilityIds ) );

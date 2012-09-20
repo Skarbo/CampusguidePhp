@@ -96,7 +96,7 @@ class FloorBuildingHandlerTest extends CampusguideDaoTest
             for ( $i = 0; $i < count( $floorsEditedArray ); $i++ )
             {
                 $floorEdited = FloorBuildingModel::get_( $floorsEditedArray[ $i ] );
-                $floorHandled = $floorsHandled->getId( $floorEdited->getId() );
+                $floorHandled = $floorsHandled->getId( $floorEdited->getIdURI() );
 
                 if ( $this->assertNotNull( $floorHandled,
                         sprintf( "Handled floor (index #%d) should not be null", $i ) ) )

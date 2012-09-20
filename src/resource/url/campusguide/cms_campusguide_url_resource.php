@@ -29,9 +29,9 @@ class CmsCampusguideUrlResource extends ClassCore
         return UrlResource::getUrl( self::$FILE, $mode, sprintf( "/%s%s", $controller, $url ) );
     }
 
-    public static function getImageController( $controller, $id, $width = null, $height = null, $mode = null, $url = "" )
+    public static function getImageController( $controller, $id, $type, $width = null, $height = null, $mode = null, $url = "" )
     {
-        return UrlResource::getUrl( self::$FILE_IMAGE, $mode, sprintf( "/%s/%s%s%s", $controller, $id, $width && $height ? sprintf( "/%s%s%s", $width, CampusguideImageResource::$SIZE_SPLITTER, $height ) : null, $url ) );
+        return UrlResource::getUrl( self::$FILE_IMAGE, $mode, sprintf( "/%s/%s/%s%s%s", $controller, $id, $type, $width && $height ? sprintf( "/%s%s%s", $width, CampusguideImageResource::$SIZE_SPLITTER, $height ) : null, $url ) );
     }
 
     public static function getPage( $controller, $page, $mode = null, $url = "" )

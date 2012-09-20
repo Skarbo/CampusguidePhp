@@ -7,7 +7,8 @@ abstract class CmsCampusguideImageController extends CampusguideImageController
 
 
     const URI_ID = 1;
-    const URI_SIZE = 2;
+    const URI_TYPE = 2;
+    const URI_SIZE = 3;
 
     protected static $IMAGE_SIZE_CACHE = array ( array ( 100, 50 ), array ( 150, 75 ), array ( 200, 100 ) );
     protected static $IMAGE_SIZE_DEFAULT = array ( 200, 100 );
@@ -30,15 +31,23 @@ abstract class CmsCampusguideImageController extends CampusguideImageController
     /**
      * @return int Id given in URI
      */
-    protected static function getId()
+    protected static function getIdURI()
     {
         return intval( self::getURI( self::URI_ID ) );
     }
 
     /**
+     * @return string Type given in URI
+     */
+    protected static function getTypeURI()
+    {
+        return self::getURI( self::URI_TYPE );
+    }
+
+    /**
      * @return array Array( width, height ) Size given in URI, empty array if none given
      */
-    protected static function getSize()
+    protected static function getSizeURI()
     {
         return array_map( function ( $var )
         {
@@ -57,7 +66,8 @@ abstract class CmsCampusguideImageController extends CampusguideImageController
      */
     protected static function getSizeWidthSize( array $default = array() )
     {
-        return Core::arrayEquals( self::getSize(), self::$IMAGE_SIZE_CACHE ) ? self::getSize() : ( empty( $default ) ? self::$IMAGE_SIZE_DEFAULT : $default );
+        return Core::arrayEquals( self::getSizeURI(), self::$IMAGE_SIZE_CACHE ) ? self::getSizeURI() : ( empty(
+                $default ) ? self::$IMAGE_SIZE_DEFAULT : $default );
     }
 
     // ... /GET
@@ -88,7 +98,7 @@ abstract class CmsCampusguideImageController extends CampusguideImageController
         // Cache image
         if ( $fileContents )
         {
-            DebugHandler::doDebug(DebugHandler::LEVEL_LOW, new DebugException("Cache image", $imagePath, $imageUrl ));
+            DebugHandler::doDebug( DebugHandler::LEVEL_LOW, new DebugException( "Cache image", $imagePath, $imageUrl ) );
 
             file_put_contents( $imagePath, $fileContents );
         }

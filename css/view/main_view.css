@@ -5,6 +5,11 @@
 	font-style: normal;
 }
 
+*[data-icon][data-text]:AFTER
+{
+	margin-left: 0.5em;
+}
+
 *[data-icon]:AFTER {
 	font-family: CampusGuide;
 }
@@ -63,6 +68,10 @@
 
 *[data-icon=copy]:AFTER {
 	content: "C";
+}
+
+*[data-icon=check]:AFTER {
+	content: "c";
 }
 
 *[data-icon=polygon]:AFTER {

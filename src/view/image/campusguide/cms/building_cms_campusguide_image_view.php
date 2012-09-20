@@ -42,29 +42,11 @@ class BuildingCmsCampusguideImageView extends ImageView
 
 
     /**
-     * @see View::draw()
+     * @see ImageView::getImagePath()
      */
-    public function draw( AbstractXhtml $root )
+    protected function getImagePath()
     {
-        parent::draw( $root );
-
-        // Set Image PNG as Content type
-        @header( 'Content-Type: image/png' );
-
-        // Get image path
-        $imagePath = $this->getController()->getImage();
-
-        // Image must exist
-        if ( !file_exists( $imagePath ) )
-        {
-            $imagePath = Resource::image()->campusguide()->building()->getDefaultBuildingOverview();
-        }
-
-        // Get image contents
-        $img = file_get_contents( $imagePath );
-
-        $root->content( $img );
-
+        return $this->getController()->getImage();
     }
 
     // /FUNCTIONS

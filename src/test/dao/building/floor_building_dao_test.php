@@ -87,7 +87,7 @@ class FloorBuildingDaoTest extends StandardDaoTest
 
         $model = FloorBuildingModel::get_( $model );
 
-        self::assertNotNullFunction( $model->getId(), "Floor Building id", $this );
+        self::assertNotNullFunction( $model->getIdURI(), "Floor Building id", $this );
         self::assertNotNullFunction( $model->getBuildingId(), "Floor Building building id", $this );
         self::assertNotNullFunction( $model->getName(), "Floor Building name", $this );
         self::assertNotNullFunction( $model->getOrder(), "Floor Building order", $this );

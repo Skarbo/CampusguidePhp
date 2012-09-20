@@ -197,8 +197,8 @@ class BuildingBuildingsCmsCampusguidePresenterView extends PresenterView
         // Create table
         $table = Xhtml::div()->class_( Resource::css()->getTable() )->style(
                 sprintf( "background-image: url('%s');",
-                        Resource::url()->campusguide()->cms()->facility()->getImageController(
-                                $this->getFacility()->getId(), 150, 75, $this->getView()->getController()->getMode() ) ) );
+                        Resource::url()->campusguide()->cms()->facility()->getFacilityImage(
+                                $this->getFacility()->getId(), 150, 75, $this->getMode( true ) ) ) );
 
         // Create Facility link
         $facilityLink = Xhtml::a( $this->getFacility()->getName() )->href(
@@ -219,8 +219,11 @@ class BuildingBuildingsCmsCampusguidePresenterView extends PresenterView
 
         // Create img
         $img = Xhtml::img(
-                Resource::url()->campusguide()->cms()->building()->getImageController( $this->getBuilding()->getId(),
-                        150, 75, $this->getView()->getController()->getMode() ) );
+                Resource::url()->campusguide()->cms()->building()->getBuildingOverviewImage(
+                        $this->getBuilding()->getId(), 150, 75, $this->getMode() ) )->style(
+                sprintf( "background-image: url('%s');",
+                        Resource::url()->campusguide()->cms()->building()->getBuildingMapImage(
+                                $this->getBuilding()->getId(), 150, 75, $this->getMode() ) ) );
 
         $root->addContent( $img );
 

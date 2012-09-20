@@ -33,22 +33,19 @@
 
 /* Input */
 #cms_wrapper .gui.theme2 .guiComp[data-type=input] {
-	border: 1px solid rgb(102, 102, 102);
+	/*border: 1px solid rgb(102, 102, 102);*/
 	color: inherit;
 }
 
 /* Reset */
 #cms_wrapper .gui.theme2 .guiComp[data-type=reset] {
 	background-color: rgb(102, 102, 102);
+	color: white;
 }
 
 #cms_wrapper .gui.theme2 .guiComp[data-type=reset]:FOCUS,#cms_wrapper .gui.theme2 .guiComp[data-type=reset]:HOVER {
-	background-color: rgb(102, 102, 102) !important;
-}
-
-/* ... Icon */
-#cms_wrapper .gui .guiComp[data-type=reset] .icon {
-	color: white;
+	color: rgb(102, 102, 102);
+	background-color: #AAAAAA;
 }
 
 /* 

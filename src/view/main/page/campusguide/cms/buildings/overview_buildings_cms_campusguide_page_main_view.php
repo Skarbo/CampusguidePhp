@@ -126,12 +126,12 @@ class OverviewBuildingsCmsCampusguidePageMainView extends PageMainView
     {
 
         // Search GUI
-        $search_gui = Xhtml::div()->id( "sub_menu_gui" )->addClass( Resource::css()->gui()->getGui() );
+        $search_gui = Xhtml::div()->id( "sub_menu_gui" )->addClass( Resource::css()->gui()->getGui(), "theme2" );
 
         // Search input
-        $search_input = Xhtml::input()->type( InputXhtml::$TYPE_TEXT )->title( "Search" )->id(
-                "buildings_search" )->addClass( Resource::css()->getDefaultText(),
-                Resource::css()->gui()->getComponent() )->attr( "data-type", "input" );
+        $search_input = Xhtml::input()->type( InputXhtml::$TYPE_TEXT )->autocomplete( false )->title( "Search" )->id(
+                "buildings_search" )->addClass( Resource::css()->gui()->getComponent() )->attr( "data-type", "input" )->attr(
+                "placeholder", "Search" );
 
         // Reset button
         $reset_button = Xhtml::a()->id( "buildings_search_reset" )->title( "Reset" )->attr( "data-type",
@@ -210,7 +210,6 @@ class OverviewBuildingsCmsCampusguidePageMainView extends PageMainView
         for ( $this->getView()->getController()->getBuildings()->rewind(); $this->getView()->getController()->getBuildings()->valid(); $this->getView()->getController()->getBuildings()->next() )
         {
             $building = $this->getView()->getController()->getBuildings()->current();
-
             // Set Building presenter
             $this->getBuildingPresenter()->setBuilding( $building );
             $this->getBuildingPresenter()->setFacility(

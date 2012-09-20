@@ -253,8 +253,8 @@ class FacilityFacilitiesCmsCampusguidePresenterView extends CampusguidePresenter
         $table = Xhtml::div()->class_( Resource::css()->getTable(),
                 Resource::css()->campusguide()->cms()->facility()->getFacilityBuildingsBuildingTable() )->style(
                 sprintf( "background-image: url(%s)",
-                        Resource::url()->campusguide()->cms()->building()->getBuildingImage( $building->getId(), 150,
-                                75, $this->getView()->getController()->getMode() ) ) );
+                        Resource::url()->campusguide()->cms()->building()->getBuildingOverviewImage( $building->getId(), 150,
+                                75, $this->getMode() ) ) );
 
         // Create cell
         $cell = Xhtml::div()->title( $building->getName() );

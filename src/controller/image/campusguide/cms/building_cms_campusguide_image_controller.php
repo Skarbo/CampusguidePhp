@@ -8,6 +8,9 @@ class BuildingCmsCampusguideImageController extends CmsCampusguideImageControlle
 
     public static $CONTROLLER_NAME = "building";
 
+    public static $TYPE_OVERVIEW = "overview";
+    public static $TYPE_MAP = "map";
+
     /**
      * @var QueueHandler
      */
@@ -20,6 +23,10 @@ class BuildingCmsCampusguideImageController extends CmsCampusguideImageControlle
      * @var FloorBuildingListModel
      */
     private $floors;
+    /**
+     * @var string
+     */
+    private $buildingMapUrl;
 
     // /VARIABLES
 
@@ -30,7 +37,9 @@ class BuildingCmsCampusguideImageController extends CmsCampusguideImageControlle
     public function __construct( Api $api, View $view )
     {
         parent::__construct( $api, $view );
-        $this->setQueueHandler( new QueueHandler( $this->getCampusguideHandler()->getQueueDao(), new QueueValidator( $this->getLocale() ) ) );
+        $this->setQueueHandler(
+                new QueueHandler( $this->getCampusguideHandler()->getQueueDao(),
+                        new QueueValidator( $this->getLocale() ) ) );
 
         $this->setFloors( new FloorBuildingListModel() );
     }
@@ -112,8 +121,18 @@ class BuildingCmsCampusguideImageController extends CmsCampusguideImageControlle
 
         list ( $width, $height ) = self::getSizeWidthSize();
 
-        $imagePath = Resource::image()->campusguide()->building()->getBuildingOverview( $this->getBuilding()->getId(),
-                $this->getMode(), $width, $height );
+        switch ( self::getTypeURI() )
+        {
+            case self::$TYPE_MAP :
+                $imagePath = Resource::image()->campusguide()->building()->getBuildingMap(
+                        $this->getBuilding()->getId(), $this->getMode(), $width, $height );
+                break;
+
+            default :
+                $imagePath = Resource::image()->campusguide()->building()->getBuildingOverview(
+                        $this->getBuilding()->getId(), $this->getMode(), $width, $height );
+                break;
+        }
 
         return $imagePath;
 
@@ -121,9 +140,8 @@ class BuildingCmsCampusguideImageController extends CmsCampusguideImageControlle
 
     public function getImage()
     {
-
         $imagePath = $this->getImagePath();
-
+DebugHandler::doDebug( DebugHandler::LEVEL_LOW, new DebugException( "Get image", $imagePath ) );
         if ( file_exists( $imagePath ) )
         {
             return $imagePath;
@@ -131,7 +149,15 @@ class BuildingCmsCampusguideImageController extends CmsCampusguideImageControlle
         else
         {
             list ( $width, $height ) = self::getSizeWidthSize();
-            return Resource::image()->campusguide()->building()->getDefaultBuildingOverview( $width, $height );
+
+            switch ( self::getTypeURI() )
+            {
+                case self::$TYPE_MAP :
+                    return Resource::image()->campusguide()->building()->getBuildingMapDefault( $width, $height );
+
+                default :
+                    return Resource::image()->campusguide()->building()->getBuildingOverviewDefault( $width, $height );
+            }
         }
 
     }
@@ -149,7 +175,49 @@ class BuildingCmsCampusguideImageController extends CmsCampusguideImageControlle
         return null;
     }
 
+    /**
+     * @return integer Unixtime last time modified, null if not exist
+     */
+    private function getBuildingMapModified()
+    {
+        list ( $width, $height ) = self::getSizeWidthSize();
+
+        $buildingMapImage = Resource::image()->campusguide()->building()->getBuildingMap(
+                $this->getBuilding()->getId(), $this->getMode(), $width, $height );
+
+        if ( file_exists( $buildingMapImage ) )
+        {
+            return filemtime( $buildingMapImage );
+        }
+        return null;
+    }
+
     // ... /GET
+
+
+    // ... IS
+
+
+    /**
+     * @return boolean True if cache Building map
+     */
+    private function isBuildingMapCache()
+    {
+        // Don't cache if no Building location or position
+        $location = $this->getBuilding()->getLocation();
+        $position = Core::arrayAt( $this->getBuilding()->getPosition(), 3, array () );
+        if ( empty( $location ) && empty( $position ) )
+        {
+            return false;
+        }
+
+        $buildingMapModified = $this->getBuildingMapModified();
+
+        // Return true if modified or never cached
+        return !$buildingMapModified || $buildingMapModified < $this->getBuilding()->getLastModified();
+    }
+
+    // ... /IS
 
 
     // ... DO
@@ -157,7 +225,6 @@ class BuildingCmsCampusguideImageController extends CmsCampusguideImageControlle
 
     private function doQueueCacheBuildingImage()
     {
-
         // Get image path
         $imagePath = $this->getImagePath();
 
@@ -189,7 +256,55 @@ class BuildingCmsCampusguideImageController extends CmsCampusguideImageControlle
 
     }
 
+    private function doCacheBuildingMap()
+    {
+        if ( !$this->isBuildingMapCache() )
+            return;
+
+        list ( $width, $height ) = self::getSizeWidthSize();
+
+        $buildingMapFile = Resource::image()->campusguide()->building()->getBuildingMap( $this->getBuilding()->getId(),
+                $this->getMode(), $width, $height );
+
+        try
+        {
+            $this->doCacheImage( $buildingMapFile, $this->buildingMapUrl );
+        }
+        catch ( Exception $exception )
+        {
+            ErrorHandler::doError(
+                    new Exception(
+                            sprintf( "Error while caching Building map image \"%s\" \"%s\": %s",
+                                    $this->getBuilding()->getId(), $buildingMapFile, $exception->getMessage() ),
+                            $exception->getCode(), $exception ) );
+        }
+
+    }
+
     // ... /DO
+
+
+    // ... CREATE
+
+
+    /**
+     * @return string Building Map URL
+     */
+    private function createBuildingMapUrl()
+    {
+        $location = $this->getBuilding()->getLocation();
+        $positionCenter = Core::arrayAt( $this->getBuilding()->getPosition(), 3, array () );
+        $coordinates = !empty( $positionCenter ) ? $positionCenter : $location;
+
+        if ( empty( $coordinates ) )
+            return null;
+
+        list ( $width, $height ) = self::getSizeWidthSize();
+
+        return Resource::image()->campusguide()->building()->getBuildingMapUrl( $coordinates, $width, $height );
+    }
+
+    // ... /CREATE
 
 
     /**
@@ -199,18 +314,21 @@ class BuildingCmsCampusguideImageController extends CmsCampusguideImageControlle
     {
 
         // Set Building
-        $this->setBuilding( $this->getCampusguideHandler()->getBuildingDao()->get( self::getId() ) );
+        $this->setBuilding( $this->getCampusguideHandler()->getBuildingDao()->get( self::getIdURI() ) );
 
         // Building must exist
         if ( !$this->getBuilding() )
         {
-            throw new BadrequestException( sprintf( "Building \"%d\" does not exist", self::getId() ) );
+            throw new BadrequestException( sprintf( "Building \"%d\" does not exist", self::getIdURI() ) );
         }
 
         // Set Floors
         $this->setFloors(
                 $this->getCampusguideHandler()->getFloorBuildingDao()->getForeign(
                         array ( $this->getBuilding()->getId() ) ) );
+
+        // Set Building map url
+        $this->buildingMapUrl = $this->createBuildingMapUrl();
 
     }
 
@@ -220,9 +338,23 @@ class BuildingCmsCampusguideImageController extends CmsCampusguideImageControlle
     public function request()
     {
 
-        // Queue cache Building image
-        $this->doQueueCacheBuildingImage();
+    }
 
+    /**
+     * @see Controller::destroy()
+     */
+    public function destroy()
+    {
+        switch ( self::getTypeURI() )
+        {
+            case self::$TYPE_MAP :
+                $this->doCacheBuildingMap();
+                break;
+
+            default :
+                $this->doQueueCacheBuildingImage();
+                break;
+        }
     }
 
     // /FUNCTIONS

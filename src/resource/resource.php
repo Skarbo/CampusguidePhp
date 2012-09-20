@@ -91,10 +91,12 @@ class Resource extends AbstractResource
      * @param array $coordinates
      * @return string String("x,y|x,y")
      */
-    public static function generateCoordinatesToString( array $coordinates )
+    public static function generateCoordinatesToString( $coordinates )
     {
         if ( empty( $coordinates ) )
             return "";
+        if ( is_string($coordinates ) )
+            return $coordinates;
         return implode( self::$COORDINATES_POLYGONS_SPLITTER,
                 array_map(
                         function ( $polygon )

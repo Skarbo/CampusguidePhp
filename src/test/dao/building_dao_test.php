@@ -81,7 +81,7 @@ class BuildingDaoTest extends StandardDaoTest
         $modelOne = BuildingModel::get_( $modelOne );
         $modelTwo = BuildingModel::get_( $modelTwo );
 
-        self::assertEqualsFunction( $modelOne->getId(), $modelTwo->getId(), "Building id", $testCase );
+        self::assertEqualsFunction( $modelOne->getIdURI(), $modelTwo->getIdURI(), "Building id", $testCase );
         self::assertEqualsFunction( $modelOne->getName(), $modelTwo->getName(), "Building name", $testCase );
         self::assertEqualsFunction( $modelOne->getCoordinates(), $modelTwo->getCoordinates(), "Building coordinates",
                 $testCase );
@@ -94,7 +94,7 @@ class BuildingDaoTest extends StandardDaoTest
     {
         $model = BuildingModel::get_( $model );
 
-        self::assertNotNullFunction( $model->getId(), "Building id", $testCase );
+        self::assertNotNullFunction( $model->getIdURI(), "Building id", $testCase );
         self::assertNotNullFunction( $model->getName(), "Building name", $testCase );
         self::assertNotNullFunction( $model->getCoordinates(), "Building coordinates", $testCase );
     }

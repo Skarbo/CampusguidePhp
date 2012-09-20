@@ -77,7 +77,7 @@ class TypeElementBuildingDaoTest extends StandardDaoTest
     {
         $model = TypeElementBuildingModel::get_( $model );
 
-        self::assertNotNullFunction( $model->getId(), "Type Element Building id", $testCase );
+        self::assertNotNullFunction( $model->getIdURI(), "Type Element Building id", $testCase );
         self::assertNotNullFunction( $model->getName(), "Type Element Building name", $testCase );
         self::assertNotNullFunction( $model->getGroupId(), "Type Element Building group id", $testCase );
         self::assertNotNullFunction( $model->getIcon(), "Type Element Building icon", $testCase );

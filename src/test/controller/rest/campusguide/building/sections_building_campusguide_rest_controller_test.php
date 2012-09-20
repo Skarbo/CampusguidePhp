@@ -96,7 +96,7 @@ class SectionsBuildingCampusguideRestControllerTest extends StandardCampusguideR
 
         $model = FloorBuildingModel::get_( $model );
 
-        SectionBuildingDaoTest::assertNotNullFunction( $model->getId(), "Section Building id", $testCase );
+        SectionBuildingDaoTest::assertNotNullFunction( $model->getIdURI(), "Section Building id", $testCase );
         SectionBuildingDaoTest::assertNotNullFunction( $model->getBuildingId(), "Section Building building id",
                 $testCase );
         SectionBuildingDaoTest::assertNotNullFunction( $model->getName(), "Section Building name", $testCase );

@@ -96,7 +96,7 @@ class TypesElementBuildingCampusguideRestControllerTest extends StandardCampusgu
 
         $model = TypeElementBuildingModel::get_( $model );
 
-        TypeElementBuildingDaoTest::assertNotNullFunction( $model->getId(), "Type Element Building id", $testCase );
+        TypeElementBuildingDaoTest::assertNotNullFunction( $model->getIdURI(), "Type Element Building id", $testCase );
         TypeElementBuildingDaoTest::assertNotNullFunction( $model->getName(), "Type Element Building name", $testCase );
         TypeElementBuildingDaoTest::assertNotNullFunction( $model->getGroupId(), "Type Element Building group id",
                 $testCase );

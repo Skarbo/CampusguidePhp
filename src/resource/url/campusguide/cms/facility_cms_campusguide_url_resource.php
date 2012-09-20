@@ -34,9 +34,9 @@ class FacilityCmsCampusguideUrlResource extends ClassCore
                 $mode, $url );
     }
 
-    public function getImageController( $id, $width = null, $height = null, $mode = null, $url = "" )
+    private function getImageController( $id, $type, $width = null, $height = null, $mode = null, $url = "" )
     {
-        return CmsCampusguideUrlResource::getImageController( FacilityCmsCampusguideImageController::$CONTROLLER_NAME, $id,
+        return CmsCampusguideUrlResource::getImageController( FacilityCmsCampusguideImageController::$CONTROLLER_NAME, $id, $type,
                 $width, $height, $mode, $url );
     }
 
@@ -92,7 +92,7 @@ class FacilityCmsCampusguideUrlResource extends ClassCore
 
     public function getFacilityImage( $facilityId, $width = null, $height = null, $mode = null,  $url = "" )
     {
-        return self::getImageController( $facilityId, $width, $height, $mode, $url );
+        return self::getImageController( $facilityId, "", $width, $height, $mode, $url );
     }
 
     // /FUNCTIONS

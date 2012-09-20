@@ -116,6 +116,10 @@ body {
 	margin-bottom: 1em;
 }
 
+#cms_wrapper .header_wrapper #sub_menu_gui {
+	font-size: 0.8em;
+}
+
 /* Main wrapper */
 #cms_wrapper #main_cms_wrapper {
 	background-color: white;

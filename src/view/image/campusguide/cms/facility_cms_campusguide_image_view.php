@@ -40,34 +40,16 @@ class FacilityCmsCampusguideImageView extends ImageView
         return max( parent::getLastModified(), filemtime( __FILE__ ), $this->getController()->getLastModified() );
     }
 
+    /**
+     * @see ImageView::getImagePath()
+     */
+    protected function getImagePath()
+    {
+        return $this->getController()->getImage();
+    }
+
     // ... /GET
 
-
-    /**
-     * @see View::draw()
-     */
-    public function draw( AbstractXhtml $root )
-    {
-        parent::draw( $root );
-
-        // Set Image PNG as Content type
-        @header( "Content-Type: image/png" );
-
-        // Get image path
-        $imagePath = $this->getController()->getImage();
-
-        // Image must exist
-        if ( !file_exists( $imagePath ) )
-        {
-            $imagePath = Resource::image()->campusguide()->facility()->getDefaultFacilityMap();
-        }
-
-        // Get image contents
-        $img = file_get_contents( $imagePath );
-
-        $root->content( $img );
-
-    }
 
     // /FUNCTIONS
 

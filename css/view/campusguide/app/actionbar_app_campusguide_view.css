@@ -1,0 +1,136 @@
+/* Action bar */
+#app_wrapper .action_bar {
+    border: 1px solid #999999;
+    background-color: #666666;
+    color: white;
+    font-size: 1.5em;
+    cursor: default;
+}
+
+#app_wrapper .action_bar .table > * {
+    white-space: nowrap;
+}
+
+#app_wrapper .action_bar .button {
+    cursor: pointer;
+}
+
+/* ... Icon */
+
+#app_wrapper .action_bar .action_icon {
+    display: inherit;
+    width: 1px;
+    padding: 0.4em 0.5em;
+}
+
+#app_wrapper .action_bar a.action_icon {
+    padding-left: 0;
+}
+
+#app_wrapper .action_bar .action_icon > * {
+    display: inline;
+}
+
+/* ... /Icon */
+
+/* ... View control */
+
+#app_wrapper .action_bar .view_control {
+    display: inherit;
+}
+
+#app_wrapper .action_bar .view_control > * {
+    display: inline;
+    padding: 0.4em 0.5em;
+}
+
+#app_wrapper .action_bar .view_control > *.more {
+    cursor: pointer;
+}
+
+#app_wrapper .action_bar .view_control > *.more:AFTER {
+    font-size: 0.4em;
+    vertical-align: bottom;
+    margin-left: 0.5em;
+}
+
+/* ... /View control */
+
+/* ... Buttons */
+
+#app_wrapper .action_bar .action_buttons > .table > * > * {
+    padding: 0.4em 0.5em;
+}
+
+#app_wrapper .action_bar#action_bar_top .action_buttons > .table > * + * > * {
+    border-left: 1px solid gray;
+}
+
+/* ... /Buttons */
+
+/* ... Top */
+
+#app_wrapper .action_bar#action_bar_top {
+    border-width: 0 0 1px 0;
+}
+
+#app_wrapper .action_bar#action_bar_top > .table > .right {
+    width: 1px;
+}
+
+#app_wrapper.portrait .action_bar#action_bar_top .action_buttons {
+    display: none;
+}
+
+/* ... /Top */
+
+/* ... Bottom */
+
+#app_wrapper.landscape .action_bar#action_bar_bottom {
+    display: none;
+}
+
+#app_wrapper .action_bar#action_bar_bottom {
+    border-width: 1px 0 0 0;
+}
+
+/* ... /Bottom */
+
+/* ... Menu */
+
+#app_wrapper #page_wrapper #actionbar_menu_wrapper {
+    position: absolute;
+    z-index: 1000;
+}
+
+#app_wrapper #page_wrapper #actionbar_menu_wrapper #actionbar_menu {
+    border-radius: 0.2em 0.2em 0.2em 0.2em;
+    background-color: rgb(102, 102, 102);
+    color: white;
+    margin: 0pt 0.5em;
+}
+
+#app_wrapper #page_wrapper #actionbar_menu_wrapper #actionbar_menu .menu_item {
+    cursor: pointer;
+}
+
+#app_wrapper #page_wrapper #actionbar_menu_wrapper #actionbar_menu .menu_item >* {
+    padding: 0.3em;
+    border-top: 1px solid gray;
+}
+
+#app_wrapper #page_wrapper #actionbar_menu_wrapper #actionbar_menu .menu_item:first-child >* {
+    border: 0;
+}
+
+#app_wrapper #page_wrapper #actionbar_menu_wrapper #actionbar_menu .menu_item >*:first-child {
+    font-size: 1.5em;
+    width: 1%;
+}
+
+#app_wrapper #page_wrapper #actionbar_menu_wrapper #actionbar_menu .menu_item > * + * {
+    font-weight: bold;
+    padding-left: 0.4em;
+}
+
+/* ... /Menu */

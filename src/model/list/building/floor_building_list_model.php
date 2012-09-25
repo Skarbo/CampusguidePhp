@@ -19,6 +19,22 @@ class FloorBuildingListModel extends StandardListModel
 
 
     /**
+     * @return FloorBuildingModel
+     */
+    public function getMainFloor()
+    {
+        for ( $this->rewind(); $this->valid(); $this->next() )
+        {
+            $floor = $this->current();
+            if ( $floor->getMain() )
+            {
+                return $floor;
+            }
+        }
+        return $this->get( 0 );
+    }
+
+    /**
      * @return number Next order in list
      */
     public function getNextOrder()
@@ -37,9 +53,11 @@ class FloorBuildingListModel extends StandardListModel
      */
     public function sortByOrder()
     {
-        usort($this->getArray(), function( FloorBuildingModel $floorLeft, FloorBuildingModel $floorRight ){
-            return $floorLeft->getOrder() == $floorRight->getOrder() ? 0 : ( $floorLeft->getOrder() < $floorRight->getOrder() ? -1 : 1 );
-        });
+        usort( $this->getArray(),
+                function ( FloorBuildingModel $floorLeft, FloorBuildingModel $floorRight )
+                {
+                    return $floorLeft->getOrder() == $floorRight->getOrder() ? 0 : ( $floorLeft->getOrder() < $floorRight->getOrder() ? -1 : 1 );
+                } );
     }
 
     /**

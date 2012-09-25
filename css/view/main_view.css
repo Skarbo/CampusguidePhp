@@ -5,8 +5,7 @@
 	font-style: normal;
 }
 
-*[data-icon][data-text]:AFTER
-{
+*[data-icon][data-text]:AFTER {
 	margin-left: 0.5em;
 }
 
@@ -54,6 +53,14 @@
 	content: "_";
 }
 
+*[data-icon=rightdown]:AFTER {
+	content: ".";
+}
+
+*[data-icon=left]:AFTER {
+	content: "<";
+}
+
 *[data-icon=star]:AFTER {
 	content: "*";
 }
@@ -96,4 +103,24 @@
 
 *[data-icon=maximize]:AFTER {
 	content: "5";
+}
+
+/* Arrow */
+.arrow {
+	vertical-align: top;
+	width: 0pt;
+	height: 0pt;
+	display: block;
+}
+
+.arrow[data-arrow=up] {
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-bottom: 5px solid rgb(102, 102, 102);
+}
+
+.arrow[data-arrow=down] {
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-top: 5px solid rgb(102, 102, 102);
 }

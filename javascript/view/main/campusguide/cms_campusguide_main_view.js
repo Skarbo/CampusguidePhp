@@ -229,11 +229,6 @@ CmsCampusguideMainView.prototype.draw = function(controller) {
 
 	// /DEFAULT TEXT
 
-	// INPUT HINT
-
-	$("input[data-hint]").inputHint();
-
-	// /INPUT HINT
 
 };
 

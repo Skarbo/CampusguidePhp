@@ -16,7 +16,7 @@ function MapAppCampusguideMainView(wrapperId) {
 
 // VARIABLES
 
-MapAppCampusguideMainView.POSITION_LENGTH_MIN = 0.01; // 10 meters
+MapAppCampusguideMainView.POSITION_LENGTH_MIN = 0.03; // 30 meters
 
 // /VARIABLES
 
@@ -34,8 +34,29 @@ MapAppCampusguideMainView.prototype.getController = function() {
 /**
  * @return {Object}
  */
+MapAppCampusguideMainView.prototype.getPageWrapper = function() {
+	return this.getWrapperElement().find("#page_wrapper");
+};
+
+/**
+ * @return {Object}
+ */
 MapAppCampusguideMainView.prototype.getSearchOverlayElement = function() {
-	return this.getWrapperElement().find("#map_search_overlay");
+	return this.getWrapperElement().find("#search_overlay");
+};
+
+/**
+ * @return {Object}
+ */
+MapAppCampusguideMainView.prototype.getBuildingSliderElement = function() {
+	return this.getWrapperElement().find("#building_slider_wrapper");
+};
+
+/**
+ * @return {Object}
+ */
+MapAppCampusguideMainView.prototype.getMenuActionBar = function() {
+	return this.getWrapperElement().find(".menu_wrapper .action_bar");
 };
 
 // ... /GET
@@ -162,15 +183,6 @@ MapAppCampusguideMainView.prototype.doBindEventHandler = function() {
 
 	// ... /BUILDING SLIDER
 
-	this.getController().getEventHandler().registerListener(ViewBuildingEvent.TYPE,
-	/**
-	 * @param {ViewBuildingEvent}
-	 *            event
-	 */
-	function(event) {
-		context.handleBuildingView(event.getBuildingId());
-	});
-
 	this.getController().getEventHandler().registerListener(PositionEvent.TYPE,
 	/**
 	 * @param {PositionEvent}
@@ -184,50 +196,37 @@ MapAppCampusguideMainView.prototype.doBindEventHandler = function() {
 
 	// MENU
 
-	// Menu close function
-	var menuCloseFunction = function() {
-		context.getWrapperElement().find("#menu_wrapper .sub_wrapper").addClass("hide");
-		context.getWrapperElement().find("#menu_wrapper .sub_wrapper #menu_sub_position").addClass("hide");
-		$(document).unbind(".submenu");
-	};
-
 	// Search
-	this.getWrapperElement().find("#menu_button_search").click(function(event) {
+	this.getWrapperElement().find(".menu_button_search").click(function(event) {
 		event.preventDefault();
-
 		// Send overlay event
-		context.getController().getEventHandler().handle(new OverlayEvent({}, "map_search_overlay"));
+		context.getController().getEventHandler().handle(new OverlayEvent({}, "search_overlay"));
 	});
 
 	// Location
-	this.getWrapperElement().find("#menu_button_location").click(500, function(event) {
+	this.getMenuActionBar().find(".menu_button_location").click(500, function(event) {
 		event.preventDefault();
-
-		context.getWrapperElement().find("#menu_wrapper .sub_wrapper").removeClass("hide");
-		context.getWrapperElement().find("#menu_wrapper .sub_wrapper #menu_sub_position").removeClass("hide");
-		context.getWrapperElement().find("#menu_wrapper .sub_wrapper .arrow-up").css("margin-left", "37%");
-		$(document).bind("click.submenu", function(event) {
-			var close = $(event.target).parentsUntil(".sub_wrapper").parent().filter(".sub_wrapper").length == 0;
-			if (close) {
-				menuCloseFunction();
-			}
-		});
-	});
-
-	this.getWrapperElement().find("#menu_button_location").click(function(event) {
+		context.doActionBarMenu(event, context.getWrapperElement().find("#actionbar_menu_wrapper #actionbar_menu_locationpin"));
+	}).click(function(event) {
 		event.preventDefault();
 		context.doGeolocationInit();
 	});
 
+	// Actionbar view control
+	this.getMenuActionBar().find("#actionbar_viewcontrol_map").click(function(event) {
+		event.preventDefault();
+		context.doActionBarMenu(event, context.getWrapperElement().find("#actionbar_menu_wrapper .menu_item.viewcontrol"));
+	});
+
 	// Set location
-	this.getWrapperElement().find("#menu_sub_position_setposition").click(function(event) {
+	this.getWrapperElement().find("#actionbar_menu_locationpin").click(function(event) {
 		event.preventDefault();
 
 		// Do set position
 		context.doPositionSet();
 
 		// Close menu
-		menuCloseFunction();
+		// context.doActionBarMenuClose();
 	});
 
 	// /MENU
@@ -269,8 +268,8 @@ MapAppCampusguideMainView.prototype.doBindEventHandler = function() {
 
 	searchInput.keypress(function(e) {
 		var code = (e.keyCode ? e.keyCode : e.which);
-		if (code == 13 && searchInput.inputHint("value") != "") {
-			context.doMapSearch(searchInput.inputHint("value"));
+		if (code == 13 && searchInput.val() != "") {
+			context.doMapSearch(searchInput.val());
 		}
 	});
 
@@ -284,8 +283,8 @@ MapAppCampusguideMainView.prototype.doBindEventHandler = function() {
 	// Search button
 	this.getSearchOverlayElement().find("#search_button").click(function(event) {
 		event.preventDefault();
-		if (searchInput.inputHint("value") != "") {
-			context.doMapSearch(searchInput.inputHint("value"));
+		if (searchInput.val() != "") {
+			context.doMapSearch(searchInput.val());
 		}
 	});
 
@@ -293,61 +292,56 @@ MapAppCampusguideMainView.prototype.doBindEventHandler = function() {
 
 	// HASH
 
-	$(window).hashchange(
-			function() {
-				var hashObject = context.getController().getHash();
+	$(window).hashchange(function() {
+		var hashObject = context.getController().getHash();
 
-				// BUILDING OVERLAY
+		// BUILDING OVERLAY
 
-				if (hashObject.building) {
-					context.getController().getBuildingDao().get(
-							hashObject.building,
-							function(building) {
+		if (hashObject.building) {
+			context.getController().getBuildingDao().get(hashObject.building, function(building) {
 
-								// Overlay options
-								var overlayOptions = {
-									cancelHandle : function() {
-										context.getController().updateHash({
-											building : null
-										});
-										context.overlayBuilding = false;
-									},
-									title : building.name,
-									bodyHandle : function(body) {
-										var takemethereElement = body.find("a.takemethere");
-										takemethereElement.unbind("click");
-										takemethereElement.click(function(event) {
-											event.preventDefault();
-											context.handleBuildingTakemethere(building, takemethereElement
-													.attr("data-url"));
-										});
+				// Overlay options
+				var overlayOptions = {
+					cancelHandle : function() {
+						context.getController().updateHash({
+							building : null
+						});
+						context.overlayBuilding = false;
+					},
+					title : building.name,
+					bodyHandle : function(body) {
+						var takemethereElement = body.find("a.takemethere");
+						takemethereElement.unbind("click");
+						takemethereElement.click(function(event) {
+							event.preventDefault();
+							context.handleBuildingTakemethere(building, takemethereElement.attr("data-url"));
+						});
 
-										var view = body.find("a.view");
-										view.attr("href", Core.sprintf(view.attr("data-url"), building.id));
-//										view.unbind("click");
-//										view.click(function(event) {
-//											event.preventDefault();
-//											context.getController().getEventHandler().handle(
-//													new ViewBuildingEvent(building.id));
-//										});
-									}
-								};
+						var view = body.find("a.view");
+						view.attr("href", Core.sprintf(view.attr("data-url"), building.id));
+						// view.unbind("click");
+						// view.click(function(event) {
+						// event.preventDefault();
+						// context.getController().getEventHandler().handle(
+						// new ViewBuildingEvent(building.id));
+						// });
+					}
+				};
 
-								// Send overlay event
-								context.getController().getEventHandler().handle(
-										new OverlayEvent(overlayOptions, "map_building_overlay"));
+				// Send overlay event
+				context.getController().getEventHandler().handle(new OverlayEvent(overlayOptions, "map_building_overlay"));
 
-								context.overlayBuilding = true;
-
-							});
-
-				} else if (context.overlayBuilding) {
-					context.getController().getEventHandler().handle(new OverlayCloseEvent("map_building_overlay"));
-				}
-
-				// /BUILDING OVERLAY
+				context.overlayBuilding = true;
 
 			});
+
+		} else if (context.overlayBuilding) {
+			context.getController().getEventHandler().handle(new OverlayCloseEvent("map_building_overlay"));
+		}
+
+		// /BUILDING OVERLAY
+
+	});
 
 	$(window).hashchange();
 
@@ -375,7 +369,6 @@ MapAppCampusguideMainView.prototype.doGeolocationStop = function() {
 };
 
 MapAppCampusguideMainView.prototype.doBuildingSlider = function(buildingId) {
-	console.log("Building slider", buildingId);
 	var buildingSlider = this.getWrapperElement().find("#building_slider_wrapper");
 
 	if (buildingId) {
@@ -395,21 +388,78 @@ MapAppCampusguideMainView.prototype.doMapSearch = function(search) {
 
 MapAppCampusguideMainView.prototype.doPositionSet = function() {
 	var context = this;
-	
+
 	if (this.mapLoaded) {
 
 		// Map click
 		google.maps.event.addListenerOnce(this.map, 'click', function(event) {
-			console.log("Click map", event);
+
 			// Set marker position
 			context.markerLocation.setPosition(event.latLng);
-			
+
 			// Handle position set
 			context.handlePositionSet(event.latLng);
 		});
 
 	}
 
+};
+
+MapAppCampusguideMainView.prototype.doFitToParent = function() {
+	if (this.map)
+		$("#map_page_wrapper").hide();
+	AppCampusguideMainView.prototype.doFitToParent.call(this);
+
+	// Resize map
+	if (this.map) {
+		$("#map_page_wrapper").show();
+		google.maps.event.trigger(this.map, 'resize');
+	}
+
+};
+
+MapAppCampusguideMainView.prototype.doActionBarMenu = function(event, menuItem) {
+	var context = this;
+	var button = $(event.target);
+	var menu = button.parents(".menu_wrapper");
+	var isTopMenu = menu.filter("#menu_top_wrapper").length > 0;
+	var arrow = this.getWrapperElement().find("#actionbar_menu_wrapper .arrow");
+
+	this.getWrapperElement().find("#actionbar_menu_wrapper").removeClass("hide");
+	menuItem.removeClass("hide");
+	arrow.hide();
+
+	var arrowMargin = Core.roundNumber(((button.position().left + (button.outerWidth() / 2) - (arrow.outerWidth() / 2)) - menu.position().left)
+			/ ((menu.position().left + menu.outerWidth()) - menu.position().left) * 100, 2);
+
+	if (isTopMenu) {
+		var arrowUp = arrow.filter("[data-arrow=up]");
+		arrowUp.show();
+		arrowUp.css("margin-left", arrowMargin + "%");
+
+		this.getWrapperElement().find("#actionbar_menu_wrapper > *").css("vertical-align", "top");
+	} else {
+		var arrowDown = arrow.filter("[data-arrow=down]");
+		arrowDown.show();
+		arrowDown.css("margin-left", arrowMargin + "%");
+
+		this.getWrapperElement().find("#actionbar_menu_wrapper > *").css("vertical-align", "bottom");
+	}
+
+	setTimeout(function() {
+		$(document).unbind(".actionbar_menu").bind("click.actionbar_menu", function(event) {
+			var close = $(event.target).parentsUntil("#actionbar_menu_wrapper #actionbar_menu").parent().filter("#actionbar_menu_wrapper #actionbar_menu").length == 0;
+			if (close) {
+				context.doActionBarMenuClose();
+			}
+		});
+	}, 100);
+};
+
+MapAppCampusguideMainView.prototype.doActionBarMenuClose = function() {
+	this.getWrapperElement().find("#actionbar_menu_wrapper").addClass("hide");
+	this.getWrapperElement().find("#actionbar_menu_wrapper .menu_item").addClass("hide");
+	$(document).unbind(".actionbar_menu");
 };
 
 // ... /DO
@@ -428,8 +478,7 @@ MapAppCampusguideMainView.prototype.handleMapInit = function() {
 	if (!this.map) {
 
 		// Set canvsa width/height
-		this.getWrapperElement().find("#map_canvas").height(this.getWrapperElement().find("#page_wrapper").height())
-				.width(this.getWrapperElement().find("#page_wrapper").width());
+		// this.getWrapperElement().find("#map_canvas").height(this.getWrapperElement().find("#page_wrapper").height()).width(this.getWrapperElement().find("#page_wrapper").width());
 
 		var latlng = new google.maps.LatLng(60.39126, 5.32205);
 		var options = {
@@ -495,7 +544,7 @@ MapAppCampusguideMainView.prototype.handleMapLoaded = function() {
 
 MapAppCampusguideMainView.prototype.handleMapBuildings = function(buildings) {
 	var context = this;
-console.log("Handle map buildings");
+
 	if (this.mapLoaded) {
 
 		// Map buildings loaded function
@@ -546,13 +595,11 @@ console.log("Handle map buildings");
 
 			// Building position
 			if (jQuery.isArray(building.position) && building.position.length == 4) {
-				setMarkerAtLocation(new google.maps.LatLng(building.position[0][0], building.position[0][1]),
-						this.markerBuildings[buildingId]);
+				setMarkerAtLocation(new google.maps.LatLng(building.position[0][0], building.position[0][1]), this.markerBuildings[buildingId]);
 			}
 			// Building location
 			else if (jQuery.isArray(building.location) && building.location.length == 2) {
-				setMarkerAtLocation(new google.maps.LatLng(building.location[0], building.location[1]),
-						this.markerBuildings[buildingId]);
+				setMarkerAtLocation(new google.maps.LatLng(building.location[0], building.location[1]), this.markerBuildings[buildingId]);
 			}
 			// Building address
 			else if (address) {
@@ -628,7 +675,7 @@ MapAppCampusguideMainView.prototype.handleGeolocationError = function(error) {
 };
 
 MapAppCampusguideMainView.prototype.handleGeolocationQuery = function(position) {
-console.log("Handle geo query", position);	
+
 	if (this.mapLoaded) {
 
 		// Set lat/lng
@@ -646,7 +693,7 @@ console.log("Handle geo query", position);
 
 			// Set marker as visible
 			this.markerLocation.setVisible(true);
-			
+
 			// Set map center
 			this.map.setCenter(latlng);
 
@@ -676,8 +723,7 @@ console.log("Handle geo query", position);
 MapAppCampusguideMainView.prototype.handleBuildingTakemethere = function(building, dataUrl) {
 
 	// From location
-	var fromLocation = this.markerLocation ? Core.sprintf("%s,%s", this.markerLocation.position.lat().toFixed(5),
-			this.markerLocation.position.lng().toFixed(5)) : "";
+	var fromLocation = this.markerLocation ? Core.sprintf("%s,%s", this.markerLocation.position.lat().toFixed(5), this.markerLocation.position.lng().toFixed(5)) : "";
 
 	// To location
 	var toLocation = jQuery.isArray(building.address) ? building.address.join(", ") : building.location || "";
@@ -690,22 +736,16 @@ MapAppCampusguideMainView.prototype.handleBuildingTakemethere = function(buildin
 
 };
 
-MapAppCampusguideMainView.prototype.handleBuildingView = function(buildingId) {
-
-	console.log("Handle building view", buildingId);
-
-};
-
 MapAppCampusguideMainView.prototype.handleBuildingSlide = function() {
 
-	var buildingSlider = this.getWrapperElement().find("#building_slider_wrapper");
+	var buildingSlider = this.getBuildingSliderElement();
+	var buildingUrl = buildingSlider.attr("data-url");
 	var buildingId = buildingSlider.attr("data-buildingid");
 
-	// Send view building event
+	// Redirect to view building
 	if (buildingId) {
-		this.getController().getEventHandler().handle(new ViewBuildingEvent(parseInt(buildingId)));
+		window.location = Core.sprintf(buildingUrl, buildingId);
 	}
-
 };
 
 /**
@@ -713,15 +753,14 @@ MapAppCampusguideMainView.prototype.handleBuildingSlide = function() {
  *            latlng
  */
 MapAppCampusguideMainView.prototype.handlePosition = function(latlng) {
-console.log("Handle position", latlng);
+	console.log("Handle position", latlng);
 	var position = null, distance = null, closest = null, closestDistance = null;
 	for (buildingId in this.markerBuildings) {
 		position = this.markerBuildings[buildingId].getPosition();
 		if (position) {
 			distance = MapUtil.distance(latlng.lat(), latlng.lng(), position.lat(), position.lng());
 
-			if (distance <= MapAppCampusguideMainView.POSITION_LENGTH_MIN
-					&& ((closestDistance != null && distance < closestDistance) || closestDistance == null)) {
+			if (distance <= MapAppCampusguideMainView.POSITION_LENGTH_MIN && ((closestDistance != null && distance < closestDistance) || closestDistance == null)) {
 				closest = this.markerBuildings[buildingId];
 				closestDistance = distance;
 			}
@@ -737,7 +776,7 @@ console.log("Handle position", latlng);
 };
 
 MapAppCampusguideMainView.prototype.handlePositionSet = function(latlng) {
-console.log("Handle position set", latlng);
+
 	// Stop geolocation watch
 	this.doGeolocationStop();
 
@@ -758,7 +797,7 @@ console.log("Handle position set", latlng);
 			this.markerLocation.setVisible(true);
 
 			// Set map center
-			this.map.setCenter(latlng);			
+			this.map.setCenter(latlng);
 
 			// Set automatic
 			this.markerLocation.automatic = false;

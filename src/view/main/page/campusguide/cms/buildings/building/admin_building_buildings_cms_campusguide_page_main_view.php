@@ -272,23 +272,23 @@ class AdminBuildingBuildingsCmsCampusguidePageMainView extends AdminCmsCampusgui
         // Street name
         $addressName = sprintf( "%s[]", Resource::db()->building()->getFieldAddress() );
         $cell->addContent(
-                Xhtml::input( Core::arrayAt( $this->getBuildingAdmin()->getAddress(), 0 ), $addressName )->id(
-                        "address_street" )->title( "Streetname" )->attr( "data-hint", "true" ) );
+                Xhtml::input( Core::arrayAt( $this->getBuildingAdmin()->getAddress(), 0 ), $addressName )->placeholder(
+                        "Streetname" )->id( "address_street" )->title( "Streetname" ) );
 
         // City
         $cell->addContent(
-                Xhtml::input( Core::arrayAt( $this->getBuildingAdmin()->getAddress(), 1 ), $addressName )->id(
-                        "address_city" )->title( "City" )->attr( "data-hint", "true" ) );
+                Xhtml::input( Core::arrayAt( $this->getBuildingAdmin()->getAddress(), 1 ), $addressName )->placeholder(
+                        "City" )->id( "address_city" )->title( "City" ) );
 
         // Postal
         $cell->addContent(
-                Xhtml::input( Core::arrayAt( $this->getBuildingAdmin()->getAddress(), 2 ), $addressName )->id(
-                        "address_postal" )->title( "Postal" )->attr( "data-hint", "true" ) );
+                Xhtml::input( Core::arrayAt( $this->getBuildingAdmin()->getAddress(), 2 ), $addressName )->placeholder(
+                        "Postal" )->id( "address_postal" )->title( "Postal" ) );
 
         // Country
         $cell->addContent(
-                Xhtml::input( Core::arrayAt( $this->getBuildingAdmin()->getAddress(), 3 ), $addressName )->id(
-                        "address_country" )->title( "Country" )->attr( "data-hint", "true" ) );
+                Xhtml::input( Core::arrayAt( $this->getBuildingAdmin()->getAddress(), 3 ), $addressName )->placeholder(
+                        "Country" )->id( "address_country" )->title( "Country" ) );
 
         $row->addContent( $cell );
 
@@ -312,8 +312,8 @@ class AdminBuildingBuildingsCmsCampusguidePageMainView extends AdminCmsCampusgui
         // Location
         $cell->addContent(
                 Xhtml::input( implode( BuildingUtil::$SPLITTER_LOCATION, $this->getBuildingAdmin()->getLocation() ),
-                        Resource::db()->building()->getFieldLocation() )->readonly( true )->id(
-                        Resource::db()->building()->getFieldLocation() )->title( "Location" )->attr( "data-hint", "true" ) );
+                        Resource::db()->building()->getFieldLocation() )->readonly( true )->placeholder( "Location" )->id(
+                        Resource::db()->building()->getFieldLocation() )->title( "Location" ) );
 
         $row->addContent( $cell );
         $table->addContent( $row );
@@ -333,25 +333,25 @@ class AdminBuildingBuildingsCmsCampusguidePageMainView extends AdminCmsCampusgui
                 Xhtml::input(
                         implode( BuildingUtil::$SPLITTER_POSITION,
                                 Core::arrayAt( $this->getBuildingAdmin()->getPosition(), 0, array () ) ), $positionName )->readonly(
-                        true )->id( "position_center" )->title( "Center" )->attr( "data-hint", "true" ) );
+                        true )->placeholder( "Center" )->id( "position_center" )->title( "Center" ) );
 
         $root->addContent(
                 Xhtml::input(
                         implode( BuildingUtil::$SPLITTER_POSITION,
                                 Core::arrayAt( $this->getBuildingAdmin()->getPosition(), 1, array () ) ), $positionName )->readonly(
-                        true )->id( "position_topleft" )->title( "Top left" )->attr( "data-hint", "true" ) );
+                        true )->placeholder( "Top left" )->id( "position_topleft" )->title( "Top left" ) );
 
         $root->addContent(
                 Xhtml::input(
                         implode( BuildingUtil::$SPLITTER_POSITION,
                                 Core::arrayAt( $this->getBuildingAdmin()->getPosition(), 2, array () ) ), $positionName )->readonly(
-                        true )->id( "position_topright" )->title( "Top right" )->attr( "data-hint", "true" ) );
+                        true )->placeholder( "Top right" )->id( "position_topright" )->title( "Top right" ) );
 
         $root->addContent(
                 Xhtml::input(
                         implode( BuildingUtil::$SPLITTER_POSITION,
                                 Core::arrayAt( $this->getBuildingAdmin()->getPosition(), 3, array () ) ), $positionName )->readonly(
-                        true )->id( "position_bottomright" )->title( "Bottom right" )->attr( "data-hint", "true" ) );
+                        true )->placeholder( "Bottom right" )->id( "position_bottomright" )->title( "Bottom right" ) );
 
         $root->addContent(
                 Xhtml::a( "Map" )->class_( Resource::css()->campusguide()->cms()->getButton() )->id( "position_map" )->href(

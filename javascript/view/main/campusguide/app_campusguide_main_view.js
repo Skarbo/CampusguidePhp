@@ -3,6 +3,7 @@ AppCampusguideMainView.prototype = new CampusguideMainView();
 
 function AppCampusguideMainView(wrapperId) {
 	CampusguideMainView.apply(this, arguments);
+	this.timerOrientationDelay = null;
 }
 
 // /CONSTRUCTOR
@@ -30,12 +31,31 @@ AppCampusguideMainView.prototype.doBindEventHandler = function() {
 	CampusguideMainView.prototype.doBindEventHandler.call(this);
 	var context = this;
 
+	// EVENT
+
+	// Orientation event
+	this.getController().getEventHandler().registerListener(OrientationEvent.TYPE,
+	/**
+	 * @param {OrientationEvent}
+	 *            event
+	 */
+	function(event) {
+		context.handleOrientation();
+	});
+
+	// /EVENT
+
 	// ORIENTATION
 
 	var supportsOrientationChange = "onorientationchange" in window;
 	var orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
-
-	// window.addEventListener(orientationEvent, this.handleOrientation, false);
+	window.addEventListener(orientationEvent, function() {
+		if (context.timerOrientationDelay)
+			clearTimeout(context.timerOrientationDelay);
+		context.timerOrientationDelay = setTimeout(function() {
+			context.getEventHandler().handle(new OrientationEvent());
+		}, 200);
+	}, false);
 
 	// /ORIENTATION
 
@@ -63,19 +83,38 @@ AppCampusguideMainView.prototype.doBindEventHandler = function() {
 
 };
 
+AppCampusguideMainView.prototype.doFitToParent = function() {
+	var parent = null, target = null, parentSelector = null, fitparentType = null;
+	$("[data-fitparent],[data-fitparent-width]").each(function(i, element) {
+		target = $(element);
+		fitparentType = target.attr("data-fitparent-width") ? "width" : "all";
+		parentSelector = target.attr(fitparentType == "width" ? "data-fitparent-width" : "data-fitparent");
+		parent = parentSelector == "true" ? null : target.parentsUntil(parentSelector).parent();
+		parent = parent && parent.length > 0 ? parent : target.parent();
+		if (fitparentType == "width") {
+			target.width(parent.width());
+		} else {
+			target.width(parent.width()).height(parent.height());
+		}
+	});
+};
+
 // ... /DO
 
 // ... HANDLE
 
 AppCampusguideMainView.prototype.handleOrientation = function() {
-
 	var landscape = window.orientation == -90 || window.orientation == 90 ? true : false;
 	if (landscape) {
-		$("body").addClass("landscape");
+		this.getWrapperElement().addClass("landscape");
+		this.getWrapperElement().removeClass("portrait");
 	} else {
-		$("body").removeClass("landscape");
+		this.getWrapperElement().addClass("portrait");
+		this.getWrapperElement().removeClass("landscape");
 	}
 
+	// Fit to parent
+	this.doFitToParent();
 };
 
 /**
@@ -170,46 +209,22 @@ AppCampusguideMainView.prototype.draw = function(controller) {
 	CampusguideMainView.prototype.draw.call(this, controller);
 
 	// Handle orientation
-	// this.handleOrientation();
-
-	// $("body").addClass("landscape");
-
-	// FIT TO PARENT
-
-	var parent = null, target = null, parentSelector = null, fitparentType = null;
-	$("[data-fitparent],[data-fitparent-width]").each(function(i, element) {
-		target = $(element);
-		fitparentType = target.attr("data-fitparent-width") ? "width" : "all";
-		parentSelector = target.attr(fitparentType == "width" ? "data-fitparent-width" : "data-fitparent");
-		parent = parentSelector == "true" ? null : target.parentsUntil(parentSelector).parent();
-		parent = parent && parent.length > 0 ? parent : target.parent();
-		if (fitparentType == "width") {
-			target.width(parent.width());
-		} else {
-			target.width(parent.width()).height(parent.height());
-		}
-	});
-
-	// /FIT TO PARENT
+	this.handleOrientation();
+	//this.getWrapperElement().addClass("portrait");
+//	this.doFitToParent();
+//	this.getWrapperElement().addClass("landscape");
 
 	// HOVER
 
-	this.getWrapperElement().find(".hover").bind("touchstart.hovering touchend.hovering touchend.hovering touchcancel.hovering",
-			function(event) { 
-				if (event.type == "touchstart") {
-					$(this).addClass("hovering");
-				} else {
-					$(this).removeClass("hovering");
-				}
-			});
+	this.getWrapperElement().find(".hover").bind("touchstart.hovering touchend.hovering touchend.hovering touchcancel.hovering", function(event) {
+		if (event.type == "touchstart") {
+			$(this).addClass("hovering");
+		} else {
+			$(this).removeClass("hovering");
+		}
+	});
 
 	// /HOVER
-	
-	// INPUT HINT
-
-	$("input[data-hint]").inputHint();
-
-	// /INPUT HINT
 
 };
 

@@ -228,7 +228,7 @@ BuildingcreatorCmsCanvasCampusguidePresenterView.prototype.handleMenuSelect = fu
 		break;
 	}
 
-	this.handleTypeSelect(type);
+	this.handleTypeSelect([ type ]);
 };
 
 BuildingcreatorCmsCanvasCampusguidePresenterView.prototype.handleSaving = function(type) {

@@ -35,7 +35,9 @@ function CanvasCampusguidePresenterView(view) {
 	this.selectedCopy = this.selected;
 	this.history = [];
 
+	this.mode = CanvasCampusguidePresenterView.MODE_SHOW;
 	this.type = CanvasCampusguidePresenterView.TYPE_FLOORS;
+	this.types = [ CanvasCampusguidePresenterView.TYPE_FLOORS ];
 	this.floorSelected = false;
 	this.stageIsDragging = false;
 	this.polygonsIsDraggable = false;
@@ -48,6 +50,9 @@ CanvasCampusguidePresenterView.SCALE_SIZE = 0.05;
 CanvasCampusguidePresenterView.TYPE_FLOORS = "floors";
 CanvasCampusguidePresenterView.TYPE_ELEMENTS = "elements";
 CanvasCampusguidePresenterView.TYPE_NAVIGATION = "navigation";
+
+CanvasCampusguidePresenterView.MODE_SHOW = "show";
+CanvasCampusguidePresenterView.MODE_EDIT = "edit";
 
 // /VARIABLES
 
@@ -182,7 +187,7 @@ CanvasCampusguidePresenterView.prototype.doBindEventHandler = function() {
 	 *            event
 	 */
 	function(event) {
-		context.doFloorSelect(event.getFloorId());
+		context.doFloorSelect(event.getFloorId(), context.types);
 	});
 
 	// Select event
@@ -334,14 +339,15 @@ CanvasCampusguidePresenterView.prototype.doSave = function() {
 	this.getEventHandler().handle(new EditEvent("building", this.polygons));
 };
 
-CanvasCampusguidePresenterView.prototype.doFloorSelect = function(floorId) {
-	if (!floorId || !this.type)
+CanvasCampusguidePresenterView.prototype.doFloorSelect = function(floorId, types) {
+	if (!floorId)
 		return false;
-
+	types = types ? (jQuery.isArray( types ) ? types : [ types ]) : this.types;
+	
 	// Show/hide Floors
 	var floors = this.getGroups(CanvasCampusguidePresenterView.TYPE_FLOORS);
 	for (id in floors) {
-		if (this.type == CanvasCampusguidePresenterView.TYPE_FLOORS && id == floorId) {
+		if (jQuery.inArray(CanvasCampusguidePresenterView.TYPE_FLOORS, types) !== false && id == floorId) {
 			floors[id].show();
 		} else {
 			floors[id].hide();
@@ -351,7 +357,7 @@ CanvasCampusguidePresenterView.prototype.doFloorSelect = function(floorId) {
 	// Show/hide Elements
 	var elements = this.getGroups(CanvasCampusguidePresenterView.TYPE_ELEMENTS);
 	for (id in elements) {
-		if (this.type == CanvasCampusguidePresenterView.TYPE_ELEMENTS && id == floorId) {
+		if (jQuery.inArray(CanvasCampusguidePresenterView.TYPE_ELEMENTS, types) !== false && id == floorId) {
 			elements[id].show();
 		} else {
 			elements[id].hide();
@@ -359,6 +365,7 @@ CanvasCampusguidePresenterView.prototype.doFloorSelect = function(floorId) {
 	}
 
 	this.floorSelected = floorId;
+	this.types = types;
 
 	// De-select
 	this.getEventHandler().handle(new SelectEvent());
@@ -370,11 +377,11 @@ CanvasCampusguidePresenterView.prototype.doFloorSelect = function(floorId) {
 
 // ... ... STAGE
 
-CanvasCampusguidePresenterView.prototype.doFitToScale = function() {
-	if (!this.floorSelected)
+CanvasCampusguidePresenterView.prototype.doFitToScale = function(type) {
+	if (!this.floorSelected || !type)
 		return false;
 
-	var polygons = this.getPolygons(this.type, this.floorSelected).getChildren();
+	var polygons = this.getPolygons(type, this.floorSelected).getChildren();
 
 	var scaleNew = 1.0;
 	var positionNew = {
@@ -453,11 +460,11 @@ CanvasCampusguidePresenterView.prototype.doStageDraggable = function(draggable) 
 
 // ... ... POLYGON
 
-CanvasCampusguidePresenterView.prototype.doPolygonDraw = function() {
-	if (!this.floorSelected || !this.type)
+CanvasCampusguidePresenterView.prototype.doPolygonDraw = function(type) {
+	if (!this.floorSelected || !type)
 		return;
 
-	var polygons = this.getPolygons(this.type, this.floorSelected);
+	var polygons = this.getPolygons(type, this.floorSelected);
 	if (!polygons)
 		return;
 
@@ -607,7 +614,7 @@ CanvasCampusguidePresenterView.prototype.handleSelectedCopy = function() {
 		if (this.selectedCopy.type != "polygon")
 			return;
 
-		var polygons = this.getPolygons(this.type, this.floorSelected);
+		var polygons = this.selectedCopy.polygon.parent();
 		if (polygons) {
 			var polygon = this.selectedCopy.element.copy(this);
 			polygons.add(polygon);
@@ -649,8 +656,8 @@ CanvasCampusguidePresenterView.prototype.handleSelectedDelete = function() {
 	}));
 };
 
-CanvasCampusguidePresenterView.prototype.handleTypeSelect = function(type) {
-	this.type = type;
+CanvasCampusguidePresenterView.prototype.handleTypeSelect = function(types) {
+	types = jQuery.isArray( types ) ? types : [ types ];
 
 	if (this.floorSelected)
 		this.getEventHandler().handle(new FloorSelectEvent(this.floorSelected));
@@ -693,13 +700,13 @@ CanvasCampusguidePresenterView.prototype.draw = function(root) {
 	// Set variables from local storage
 	var scale = this.getController().getLocalStorageVariable("scale");
 	if (scale)
-		this.stageScale = parseFloat(scale);
+		this.stageScale = 1.0;// parseFloat(scale);
 	var stagePosition = this.getController().getLocalStorageVariable("stagePosition");
 	if (stagePosition) {
 		stagePosition = stagePosition.split(",");
 		this.stagePosition = {
-			x : parseFloat(stagePosition[0]),
-			y : parseFloat(stagePosition[1])
+			x : 0, // parseFloat(stagePosition[0]),
+			y : 0 // parseFloat(stagePosition[1])
 		};
 	}
 

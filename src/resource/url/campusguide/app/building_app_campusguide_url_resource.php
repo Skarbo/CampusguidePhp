@@ -17,10 +17,11 @@ class BuildingAppCampusguideUrlResource extends ClassCore
 
     // FUNCTIONS
 
+
     private static function getController( $mode = null, $url = "" )
     {
-        return AppCampusguideUrlResource::getController( BuildingAppCampusguideMainController::$CONTROLLER_NAME,
-                $mode, $url );
+        return AppCampusguideUrlResource::getController( BuildingAppCampusguideMainController::$CONTROLLER_NAME, $mode,
+                $url );
     }
 
     public function getBuilding( $id, $mode = null, $url = "" )

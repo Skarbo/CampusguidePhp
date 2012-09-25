@@ -5,6 +5,7 @@ class AppCampusguideUrlResource extends ClassCore
 
     // VARIABLES
 
+
     private static $FILE = "app.php";
     private static $BUILDING;
 
@@ -19,6 +20,7 @@ class AppCampusguideUrlResource extends ClassCore
 
     // FUNCTIONS
 
+
     public static function getController( $controller, $mode = null, $url = "" )
     {
         return UrlResource::getUrl( self::$FILE, $mode, sprintf( "/%s%s", $controller, $url ) );
@@ -31,6 +33,11 @@ class AppCampusguideUrlResource extends ClassCore
     {
         self::$BUILDING = self::$BUILDING ? self::$BUILDING : new BuildingAppCampusguideUrlResource();
         return self::$BUILDING;
+    }
+
+    public function getMap( $mode, $url )
+    {
+        return self::getController( MapAppCampusguideMainController::$CONTROLLER_NAME, $mode, $url );
     }
 
     // /FUNCTIONS

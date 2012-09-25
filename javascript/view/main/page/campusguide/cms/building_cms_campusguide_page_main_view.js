@@ -449,8 +449,8 @@ BuildingCmsCampusguidePageMainView.prototype.doCommonMap = function(options) {
 
 		// Address
 		if (type == "address") {
-			var address = addressElement.inputHint("value");
-			var location = locationElement.inputHint("value");
+			var address = addressElement.val();
+			var location = locationElement.val();
 			if (address.join("") != "") {
 				mapSearchInput.val(address.join(", "));
 				MapUtil.setLocationAtAddress(this.geocoder, address.join(", "), function(result) {
@@ -465,7 +465,7 @@ BuildingCmsCampusguidePageMainView.prototype.doCommonMap = function(options) {
 		}
 		// Position
 		else if (type == "position") {
-			var position = positionElement.inputHint("value");
+			var position = positionElement.val();
 			var positions = new google.maps.LatLngBounds();
 			var positionArray = [], latLng = null, count = 0;
 			for (i in position) {
@@ -597,13 +597,13 @@ BuildingCmsCampusguidePageMainView.prototype.handleAddressMap = function() {
 			}
 		}
 
-		$(addressElement[0]).inputHint("value",
-				addressNumber || addressName ? Core.sprintf("%s %s", addressName, addressNumber) : "");
-		$(addressElement[1]).inputHint("value", addressCity ? addressCity : "");
-		$(addressElement[2]).inputHint("value", addressPostal ? addressPostal : "");
-		$(addressElement[3]).inputHint("value", addressCountry ? addressCountry : "");
-		
-		locationElement.inputHint("value", location.getVisible() ? Core.sprintf("%s,%s", location.position.lat().toFixed(5), location.position.lng().toFixed(5)) : "");
+//		$(addressElement[0]).inputHint("value",
+//				addressNumber || addressName ? Core.sprintf("%s %s", addressName, addressNumber) : "");
+//		$(addressElement[1]).inputHint("value", addressCity ? addressCity : "");
+//		$(addressElement[2]).inputHint("value", addressPostal ? addressPostal : "");
+//		$(addressElement[3]).inputHint("value", addressCountry ? addressCountry : "");
+//		
+//		locationElement.inputHint("value", location.getVisible() ? Core.sprintf("%s,%s", location.position.lat().toFixed(5), location.position.lng().toFixed(5)) : "");
 
 	};
 

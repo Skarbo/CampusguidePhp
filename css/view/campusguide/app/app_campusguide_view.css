@@ -1,404 +1,552 @@
-html, body
-{
-	height: 100%;
-	width: 100%;
+html, body {
+    height: 100%;
+    width: 100%;
 }
 
 #wrapper {
-	height: 100%;
+    height: 100%;
 }
 
 #app_wrapper {
-	height: 100%;
+    height: 100%;
 }
 
 /* Hover */
-#app_wrapper .hover, #app_wrapper .hover *
-{
-	-webkit-user-select: none;
-	-webkit-touch-callout: none;
-	-webkit-tap-highlight-color: RGBA(0, 0, 0, 0);
-	outline: none;
+#app_wrapper .hover, #app_wrapper .hover * {
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: RGBA(0, 0, 0, 0);
+    outline: none;
 }
 
 /* Display */
 #app_wrapper #display_wrapper {
-	display: table;
-	height: 100%;
-	width: 100%;
+    display: table;
+    height: 100%;
+    width: 100%;
 }
 
-#app_wrapper #display_wrapper>* {
-	display: table-row;
+#app_wrapper #display_wrapper > * {
+    display: table-row;
 }
 
 /* ... Landscape */
-body.landscape #app_wrapper #display_wrapper>* {
-	display: table-cell;
-	vertical-align: middle;
+body.landscape #app_wrapper #display_wrapper > * {
+    display: table-cell;
+    vertical-align: middle;
 }
 
-body.landscape #app_wrapper #display_wrapper>*>* {
-	height: 100%;
-	width: 100%;
+body.landscape #app_wrapper #display_wrapper > * > * {
+    height: 100%;
+    width: 100%;
 }
 
 /* Menu */
-#app_wrapper #menu_wrapper {
-	
+#app_wrapper .menu_wrapper {
+
 }
 
-#app_wrapper #menu_wrapper .hover:ACTIVE, #app_wrapper #menu_wrapper .hover.hovering
-{
-	background-color: gray;
+#app_wrapper .hover:ACTIVE, #app_wrapper .hover.hovering {
+    background-color: gray;
 }
 
-#app_wrapper #menu_wrapper .sub_wrapper {
-	position: absolute;
-display: block;
-z-index: 1000;
+/* ... Sub wrapper */
+
+#app_wrapper .menu_wrapper .sub_wrapper {
+    position: absolute;
+    display: block;
+    z-index: 1000;
 }
 
-#app_wrapper #menu_wrapper .sub_wrapper .arrow-up {
-	width: 0pt; 
-	height: 0pt; 
-	border-left: 5px solid transparent; 
-	border-right: 5px solid transparent; 
-	vertical-align: top; 
-	display: block; 
-	border-bottom: 5px solid rgb(102, 102, 102);
+#app_wrapper .menu_wrapper .sub_wrapper .arrow-up {
+    width: 0pt;
+    height: 0pt;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    vertical-align: top;
+    display: block;
+    border-bottom: 5px solid rgb(102, 102, 102);
 }
 
-#app_wrapper #menu_wrapper .sub_wrapper .sub {
-	border-radius: 0.2em 0.2em 0.2em 0.2em;
-	background-color: rgb(102, 102, 102);
-	color: white;
-	margin: 0pt 1.5em;
+#app_wrapper .menu_wrapper .sub_wrapper .sub {
+    border-radius: 0.2em 0.2em 0.2em 0.2em;
+    background-color: rgb(102, 102, 102);
+    color: white;
+    margin: 0pt 1.5em;
 }
 
-#app_wrapper #menu_wrapper .sub_wrapper .sub > * {
-	display: table;
-	width: 100%;
+#app_wrapper .menu_wrapper .sub_wrapper .sub > * {
+    display: table;
+    width: 100%;
 }
 
-#app_wrapper #menu_wrapper .sub_wrapper .sub > * > * {
-	display: table-row-group;
+#app_wrapper .menu_wrapper .sub_wrapper .sub > * > * {
+    display: table-row-group;
 }
 
-#app_wrapper #menu_wrapper .sub_wrapper .sub > * > * > * {
-	display: table-row;	
+#app_wrapper .menu_wrapper .sub_wrapper .sub > * > * > * {
+    display: table-row;
 }
 
-#app_wrapper #menu_wrapper .sub_wrapper .sub > * > * > * > * {
-	display: table-cell;
-	padding: 0.3em;
-	cursor: pointer;
+#app_wrapper .menu_wrapper .sub_wrapper .sub > * > * > * > * {
+    display: table-cell;
+    padding: 0.3em;
+    cursor: pointer;
 }
 
-#app_wrapper #menu_wrapper .sub_wrapper .sub > * > * > * > *:FIRST-CHILD {	
-	font-size: 1.5em;
-	width: 1%;
+#app_wrapper .menu_wrapper .sub_wrapper .sub > * > * > * > *:FIRST-CHILD {
+    font-size: 1.5em;
+    width: 1%;
 }
 
-#app_wrapper #menu_wrapper .sub_wrapper .sub > * > * > * > * + * {
-	font-weight: bold; 
-	padding-left: 0.4em;
+#app_wrapper .menu_wrapper .sub_wrapper .sub > * > * > * > *+ * {
+    font-weight: bold;
+    padding-left: 0.4em;
 }
 
-#app_wrapper #menu_wrapper a {
-	color: white;
-	background-color: #666666;
-	text-decoration: none;
+/* ... /Sub wrapper */
+
+#app_wrapper .menu_wrapper a {
+    color: white;
+    background-color: #666666;
+    text-decoration: none;
 }
 
-body.landscape #app_wrapper #menu_wrapper {
-	width: 1px;
+body.landscape #app_wrapper .menu_wrapper {
+    width: 1px;
 }
 
-body:not(.landscape) #app_wrapper #menu_wrapper>* {
-	display: table-cell;
-	height: 1px;
+body:not(.landscape) #app_wrapper .menu_wrapper > * {
+    display: table-cell;
+    height: 1px;
 }
 
-#app_wrapper #menu_wrapper .table {
-	border: 1px solid #999999;
-	border-width: 0 0 1px 0;
+#app_wrapper .menu_wrapper .menu_buttons.table {
+    border: 1px solid #999999;
+    border-width: 0 0 1px 0;
 }
 
-#app_wrapper #menu_wrapper .table>* {
-	font-size: 1.5em;
+#app_wrapper .menu_wrapper .menu_buttons.table > * {
+    font-size: 1.5em;
 }
 
-body:not(.landscape) #app_wrapper #menu_wrapper .table>* {
-	width: 25%;
+body:not(.landscape) #app_wrapper .menu_wrapper .menu_buttons.table > * {
+    width: 25%;
 }
 
-#app_wrapper #menu_wrapper .table>*>* {
-	padding: 0.2em;
-	border: 1px solid #999999;
-	border-width: 0 0 0 1px;
-	text-align: center;
-	display: block;
-color: white;
-	background-color: #666666;
-cursor: pointer;
+#app_wrapper .menu_wrapper .menu_buttons.table > * > * {
+    padding: 0.2em;
+    border: 1px solid #999999;
+    border-width: 0 0 0 1px;
+    text-align: center;
+    display: block;
+    color: white;
+    background-color: #666666;
+    cursor: pointer;
 }
 
-#app_wrapper #menu_wrapper .table>*:FIRST-CHILD>* {
-	border-width: 0;
+#app_wrapper .menu_wrapper .menu_buttons.table > *:FIRST-CHILD > * {
+    border-width: 0;
 }
 
 /* ... Landscape */
-body.landscape #app_wrapper #menu_wrapper .table {
-	border-width: 0 1px 0 0;
-	height: 100%;
+body.landscape #app_wrapper .menu_wrapper .menu_buttons.table {
+    border-width: 0 1px 0 0;
+    height: 100%;
 }
 
-body.landscape #app_wrapper #menu_wrapper .table>* {
-	display: table-row;
+body.landscape #app_wrapper .menu_wrapper .menu_buttons.table > * {
+    display: table-row;
 }
 
-body.landscape #app_wrapper #menu_wrapper .table>*>* {
-	display: table-cell;
-	vertical-align: middle;
-	border-width: 0 0 1px 0;
-	height: 25%;
+body.landscape #app_wrapper .menu_wrapper .menu_buttons.table > * > * {
+    display: table-cell;
+    vertical-align: middle;
+    border-width: 0 0 1px 0;
+    height: 25%;
 }
 
 /* Page */
 #app_wrapper #page_wrapper {
-	
+
 }
 
-body:not(.landscape) #app_wrapper #page_wrapper>* {
-	display: table-cell;
-	vertical-align: middle;
+body:not (.landscape) #app_wrapper #page_wrapper > * {
+    display: table-cell;
+    vertical-align: middle;
 }
 
 /* ... Overlay */
 #app_wrapper #page_wrapper .overlay_wrapper {
-	position: absolute;
-	z-index: 1000;
-background: none repeat scroll 0 0 rgba(0, 0, 0, 0.5);
-display: table;
+    position: absolute;
+    z-index: 1000;
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.5);
+    display: table;
 }
 
 #app_wrapper #page_wrapper .overlay_wrapper > * {
-	display: table-cell;
-	vertical-align: middle;
+    display: table-cell;
+    vertical-align: middle;
 }
 
 #app_wrapper #page_wrapper .overlay {
-background-color: white;
+    background-color: white;
     border-radius: 1em;
     margin: 0.5em;
     padding: 0.5em;
-border: 2px solid black;
+    border: 2px solid black;
 }
 
 #app_wrapper #page_wrapper .overlay .title {
-	font-size: 1.2em;
+    font-size: 1.2em;
 }
 
 #app_wrapper #page_wrapper .overlay .body {
-	
+
 }
 
 /* ... ... Menu */
 #app_wrapper #page_wrapper .overlay .menu {
-	font-size: 1.5em;
-	display: table;
-	width: 100%;
+    font-size: 1.5em;
+    display: table;
+    width: 100%;
 }
 
 #app_wrapper #page_wrapper .overlay .menu > * {
-	display: table-row;
+    display: table-row;
 }
 
 #app_wrapper #page_wrapper .overlay .menu > * > * {
-	display: table-cell;
-	vertical-align: middle;
+    display: table-cell;
+    vertical-align: middle;
 }
 
 #app_wrapper #page_wrapper .overlay .menu > * > * a {
-	display: block;
-	color: inherit;
-	text-decoration: none;
-	padding: 0.5em 0;
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    padding: 0.5em 0;
 }
 
 #app_wrapper #page_wrapper .overlay .menu > * > *:FIRST-CHILD {
-	width: 1px;
+    width: 1px;
 }
 
 #app_wrapper #page_wrapper .overlay .menu > * > *:FIRST-CHILD a {
-	padding: 0.5em 0.5em 0.5em 0;
+    padding: 0.5em 0.5em 0.5em 0;
 }
 
 #app_wrapper #page_wrapper .overlay .menu > * > *:FIRST-CHILD span {
-	border: 1px solid black;
-	background-color: #DDD;
-	padding: 0.1em 0.2em;
-	border-radius: 0.2em;
+    border: 1px solid black;
+    background-color: #DDD;
+    padding: 0.1em 0.2em;
+    border-radius: 0.2em;
 }
 
 /* Desktop */
 #app_wrapper.desktop {
-	height: 100%;
-	width: 100%;
-	display: table;
-	background-color: #EEE;
+    height: 100%;
+    width: 100%;
+    display: table;
+    background-color: #EEE;
 }
 
-#app_wrapper.desktop>* {
-	display: table-cell;
-	vertical-align: middle;
+#app_wrapper.desktop > * {
+    display: table-cell;
+    vertical-align: middle;
 }
 
 /* ... Mobile */
 #app_wrapper.desktop #mobile_wrapper {
-	background-color: black;
-	border: 4px solid #BBB;
-	border-radius: 40px;
-	display: table;
-	margin: 0 auto;
-	padding: 20px;
+    background-color: black;
+    border: 4px solid #BBB;
+    border-radius: 40px;
+    display: table;
+    margin: 0 auto;
+    padding: 20px;
 }
 
-#app_wrapper.desktop #mobile_wrapper>* {
-	display: table-row;
-	vertical-align: middle;
+#app_wrapper.desktop #mobile_wrapper > * {
+    display: table-row;
+    vertical-align: middle;
 }
 
 /* ... ... Top */
-#app_wrapper.desktop #mobile_wrapper>#mobile_top_wrapper {
-	text-align: center;
+#app_wrapper.desktop #mobile_wrapper > #mobile_top_wrapper {
+    text-align: center;
 }
 
-#app_wrapper.desktop #mobile_wrapper>#mobile_top_wrapper>div {
-	display: inline-block;
-	margin: 20px 0 40px;
-	padding: 2px;
-	border: 0px;
-	border-radius: 4px;
-line-height: 1px;
-	/* gradient */
-	/*
-	background-image: linear-gradient(right bottom, rgb(140, 140, 140) 0%,
-		rgb(0, 0, 0) 100% );
-	background-image: -o-linear-gradient(right bottom, rgb(140, 140, 140) 0%,
-		rgb(0, 0, 0) 100% );
-	background-image: -moz-linear-gradient(right bottom, rgb(140, 140, 140)
-		0%, rgb(0, 0, 0) 100% );
-	background-image: -webkit-linear-gradient(right bottom, rgb(140, 140, 140)
-		0%, rgb(0, 0, 0) 100% );
-	background-image: -ms-linear-gradient(right bottom, rgb(140, 140, 140)
-		0%, rgb(0, 0, 0) 100% );
-	background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, rgb(140,
-		140, 140) ), color-stop(1, rgb(0, 0, 0) ) );*/
-	background-image: linear-gradient(right, rgb(0, 0, 0) 40%,
-		rgb(153, 153, 153) 100% );
-	background-image: -o-linear-gradient(right, rgb(0, 0, 0) 40%,
-		rgb(153, 153, 153) 100% );
-	background-image: -moz-linear-gradient(right, rgb(0, 0, 0) 40%,
-		rgb(153, 153, 153) 100% );
-	background-image: -webkit-linear-gradient(right, rgb(0, 0, 0) 40%,
-		rgb(153, 153, 153) 100% );
-	background-image: -ms-linear-gradient(right, rgb(0, 0, 0) 40%,
-		rgb(153, 153, 153) 100% );
-	background-image: -webkit-gradient(linear, right top, left top, color-stop(0.4, rgb(0, 0,
-		0) ), color-stop(1, rgb(153, 153, 153) ) );
+#app_wrapper.desktop #mobile_wrapper > #mobile_top_wrapper > div {
+    display: inline-block;
+    margin: 20px 0 40px;
+    padding: 2px;
+    border: 0px;
+    border-radius: 4px;
+    line-height: 1px;
+    /* gradient */
+    /*
+     background-image: linear-gradient(right bottom, rgb(140, 140, 140) 0%,
+     rgb(0, 0, 0) 100% );
+     background-image: -o-linear-gradient(right bottom, rgb(140, 140, 140) 0%,
+     rgb(0, 0, 0) 100% );
+     background-image: -moz-linear-gradient(right bottom, rgb(140, 140, 140)
+     0%, rgb(0, 0, 0) 100% );
+     background-image: -webkit-linear-gradient(right bottom, rgb(140, 140, 140)
+     0%, rgb(0, 0, 0) 100% );
+     background-image: -ms-linear-gradient(right bottom, rgb(140, 140, 140)
+     0%, rgb(0, 0, 0) 100% );
+     background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, rgb(140,
+     140, 140) ), color-stop(1, rgb(0, 0, 0) ) );*/
+    background-image: linear-gradient(right, rgb(0, 0, 0) 40%,
+    rgb(153, 153, 153) 100% );
+    background-image: -o-linear-gradient(right, rgb(0, 0, 0) 40%,
+    rgb(153, 153, 153) 100% );
+    background-image: -moz-linear-gradient(right, rgb(0, 0, 0) 40%,
+    rgb(153, 153, 153) 100% );
+    background-image: -webkit-linear-gradient(right, rgb(0, 0, 0) 40%,
+    rgb(153, 153, 153) 100% );
+    background-image: -ms-linear-gradient(right, rgb(0, 0, 0) 40%,
+    rgb(153, 153, 153) 100% );
+    background-image: -webkit-gradient(linear, right top, left top, color-stop(0.4, rgb(0, 0,
+    0) ), color-stop(1, rgb(153, 153, 153) ) );
 }
 
-#app_wrapper.desktop #mobile_wrapper>#mobile_top_wrapper>div>div {
-	background-color: #666666;
-	border: 0 none;
-	border-radius: 4px 4px 4px 4px;
-	display: inline-block;
-	height: 7px;
-	width: 60px;
+#app_wrapper.desktop #mobile_wrapper > #mobile_top_wrapper > div > div {
+    background-color: #666666;
+    border: 0 none;
+    border-radius: 4px 4px 4px 4px;
+    display: inline-block;
+    height: 7px;
+    width: 60px;
 }
 
 /* ... ... Middle */
-#app_wrapper.desktop #mobile_wrapper>#mobile_middle_wrapper {
-	
+#app_wrapper.desktop #mobile_wrapper > #mobile_middle_wrapper {
+
 }
 
 /* ... ... Bottom */
-#app_wrapper.desktop #mobile_wrapper>#mobile_bottom_wrapper {
-	text-align: center;
+#app_wrapper.desktop #mobile_wrapper > #mobile_bottom_wrapper {
+    text-align: center;
 }
 
-#app_wrapper.desktop #mobile_wrapper>#mobile_bottom_wrapper>div {
-	border: 2px solid #333;
-	border-radius: 30px;
-	display: inline-block;
-	margin-top: 10px;
-	padding: 15px;
-	/* gradient */
-	background-image: linear-gradient(right, rgb(0, 0, 0) 40%,
-		rgb(153, 153, 153) 100% );
-	background-image: -o-linear-gradient(right, rgb(0, 0, 0) 40%,
-		rgb(153, 153, 153) 100% );
-	background-image: -moz-linear-gradient(right, rgb(0, 0, 0) 40%,
-		rgb(153, 153, 153) 100% );
-	background-image: -webkit-linear-gradient(right, rgb(0, 0, 0) 40%,
-		rgb(153, 153, 153) 100% );
-	background-image: -ms-linear-gradient(right, rgb(0, 0, 0) 40%,
-		rgb(153, 153, 153) 100% );
-	background-image: -webkit-gradient(linear, right top, left top, color-stop(0.4, rgb(0, 0,
-		0) ), color-stop(1, rgb(153, 153, 153) ) );
+#app_wrapper.desktop #mobile_wrapper > #mobile_bottom_wrapper > div {
+    border: 2px solid #333;
+    border-radius: 30px;
+    display: inline-block;
+    margin-top: 10px;
+    padding: 15px;
+    /* gradient */
+    background-image: linear-gradient(right, rgb(0, 0, 0) 40%,
+    rgb(153, 153, 153) 100% );
+    background-image: -o-linear-gradient(right, rgb(0, 0, 0) 40%,
+    rgb(153, 153, 153) 100% );
+    background-image: -moz-linear-gradient(right, rgb(0, 0, 0) 40%,
+    rgb(153, 153, 153) 100% );
+    background-image: -webkit-linear-gradient(right, rgb(0, 0, 0) 40%,
+    rgb(153, 153, 153) 100% );
+    background-image: -ms-linear-gradient(right, rgb(0, 0, 0) 40%,
+    rgb(153, 153, 153) 100% );
+    background-image: -webkit-gradient(linear, right top, left top, color-stop(0.4, rgb(0, 0,
+    0) ), color-stop(1, rgb(153, 153, 153) ) );
 }
 
-#app_wrapper.desktop #mobile_wrapper>#mobile_bottom_wrapper>div>div {
-	border: 2px solid gray;
-	border-radius: 5px 5px 5px 5px;
-	display: inline-block;
-	height: 20px;
-	width: 20px;
+#app_wrapper.desktop #mobile_wrapper > #mobile_bottom_wrapper > div > div {
+    border: 2px solid gray;
+    border-radius: 5px 5px 5px 5px;
+    display: inline-block;
+    height: 20px;
+    width: 20px;
 }
 
 /* ... ... Screen */
 #app_wrapper.desktop #mobile_wrapper #mobile_screen_wrapper {
-	background-color: white;
-	height: 480px; /*960px;*/
-	width: 320px; /*640px;*/
+    background-color: white;
+    height: 480px; /*960px;*/
+    width: 320px; /*640px;*/
 }
 
 /* Input */
 input {
-	-webkit-tap-highlight-color: RGBA(0, 0, 0, 0);
+    -webkit-tap-highlight-color: RGBA(0, 0, 0, 0);
 }
 
 /* Button */
-.button
-{
-	display: inline-block;
-	background-color: #666666;
-	color: white;
-	padding: 0.4em;
-	cursor: pointer;
-	text-decoration: none;	
+/*.button {
+    display: inline-block;
+    background-color: #666666;
+    color: white;
+    padding: 0.4em;
+    cursor: pointer;
+    text-decoration: none;
 }
 
-.button:ACTIVE
-{
-	background-color: white;
-}
+.button:ACTIVE {
+    background-color: white;
+}*/
 
 /* Error */
-.error
-{
-	padding: 1em;
+.error {
+    padding: 1em;
 }
 
-.error h1
-{
-	color: darkred;
+.error h1 {
+    color: darkred;
 }
 
-.error div
-{
-	padding-top: 0.5em;
-	text-align: right;
+.error div {
+    padding-top: 0.5em;
+    text-align: right;
 }
+
+/* Search */
+#app_wrapper #search_overlay {
+
+}
+
+#app_wrapper #search_overlay > * {
+    vertical-align: top !important;
+}
+
+#page_wrapper #app_wrapper #search_overlay .overlay {
+    background-color: transparent;
+    border: 0;
+    padding: 0;
+}
+
+#app_wrapper #search_overlay .overlay .title {
+    display: none;
+}
+
+#app_wrapper #search_overlay #search_wrapper {
+
+}
+
+/* ... Input */
+#app_wrapper #search_overlay #search_wrapper #search_input_wrapper {
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 0.2em 0.2em 0 0;
+    display: table;
+    font-size: 1.5em;
+}
+
+#app_wrapper #search_overlay #search_wrapper #search_input_wrapper > * {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+#app_wrapper #search_overlay #search_wrapper #search_input_wrapper > * > * {
+
+}
+
+#app_wrapper #search_overlay #search_wrapper #search_input_wrapper > *:FIRST-CHILD {
+    width: 99%;
+    padding: 0 0.2em;
+}
+
+#app_wrapper #search_overlay #search_wrapper #search_input_wrapper > *+ * {
+    width: 1%;
+}
+
+#app_wrapper #search_overlay #search_wrapper #search_input_wrapper > *+ *+ * {
+    width: 1%;
+}
+
+#app_wrapper #search_overlay #search_wrapper #search_input_wrapper #search_button {
+    display: inline-block;
+    background-color: #666666;
+    color: white;
+    border-left: 2px solid black;
+    padding: 0.2em 0.4em;
+    cursor: pointer;
+}
+
+#app_wrapper #search_overlay #search_wrapper #search_input_wrapper #search_input {
+    background-color: white;
+    font-size: 1em;
+    width: 100%;
+    padding: 0.2em 0;
+}
+
+#app_wrapper #search_overlay #search_wrapper #search_input_wrapper #search_spinner {
+    display: inline;
+    height: 16px;
+    margin-left: -16px;
+    width: 16px;
+}
+
+#app_wrapper #search_overlay #search_wrapper #search_input_wrapper #search_reset {
+    display: inline-block;
+    background-color: #666666;
+    color: white;
+    border-left: 2px solid black;
+    padding: 0.2em 0.4em;
+    cursor: pointer;
+}
+
+#app_wrapper #search_overlay #search_wrapper #search_input_wrapper #search_spinner:NOT
+(.hide ) + #search_reset {
+    margin-left: 10px;
+}
+
+#app_wrapper #search_overlay #search_wrapper #search_input_wrapper .hover:ACTIVE, #app_wrapper #search_overlay #search_wrapper #search_input_wrapper .hover.hovering {
+    background-color: gray !important;
+}
+
+/* ... Result */
+#app_wrapper #search_overlay #search_wrapper #search_result_wrapper {
+    background-color: #E6E6E6;
+    border-color: black;
+    border-style: solid;
+    border-width: 0 2px 2px;
+    border-radius: 0 0 0.2em 0.2em;
+}
+
+#app_wrapper #search_overlay #search_wrapper #search_result_wrapper #search_result #search_result_table {
+    width: 100%;
+}
+
+#app_wrapper #search_overlay #search_wrapper #search_result_wrapper #search_result tr {
+    cursor: pointer;
+}
+
+#app_wrapper #search_overlay #search_wrapper #search_result_wrapper #search_result tbody.search_result_body:ACTIVE, #app_wrapper #search_overlay #search_wrapper #search_result_wrapper #search_result tbody.search_result_body.touching {
+    background-color: white !important;
+}
+
+#app_wrapper #search_overlay #search_wrapper #search_result_wrapper #search_result tr.search_result_row_first td {
+    padding: 0.8em 0.2em 0;
+    border-top: 1px solid #999999;
+}
+
+#app_wrapper #search_overlay #search_wrapper #search_result_wrapper #search_result tbody.search_result_body:FIRST-CHILD tr.search_result_row_first td {
+    border: 0;
+}
+
+#app_wrapper #search_overlay #search_wrapper #search_result_wrapper #search_result tr.search_result_row_second td {
+    padding: 0 0.2em;
+    font-size: 0.7em;
+    color: #777;
+}
+
+#app_wrapper #search_overlay #search_wrapper #search_result_wrapper #search_result .search_result_icon {
+    width: 1%;
+}
+
+#app_wrapper #search_overlay #search_wrapper #search_result_wrapper #search_result .search_result_title {
+
+}
+
+#app_wrapper #search_overlay #search_wrapper #search_result_wrapper #search_result .search_result_direction {
+    color: #777;
+    font-size: 0.8em;
+    text-align: right;
+    width: 1%;
+}
+
+#app_wrapper #search_overlay #search_wrapper #search_result_wrapper #search_result #search_result_noresult td {
+    padding: 0.4em;
+}
+
+/* /Search */

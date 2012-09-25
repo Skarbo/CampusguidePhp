@@ -20,32 +20,43 @@ $(function() {
 				radius : 8,
 				stroke : "#AAA",
 				strokeWidth : 2,
-				draggable : true
+				draggable : false,
+				visible : false
 			}, config));
 			this.polygon = polygon;
 			this.positionPrev = {};
+
+			this.setDraggable(this.polygon.mode == Polygon.MODE_EDIT);
+			if (this.polygon.mode == Polygon.MODE_EDIT)
+				this.show();
 
 			this.on("dragstart", function(event) {
 				this.positionPrev = this.getPosition();
 				this.moveToTop();
 			});
 			this.on("dragend", function(event) {
-				event.cancelBubble = true;
-				this.polygon.context.getEventHandler().handle(new AddHistoryEvent({
-					type : "selected_drag",
-					element : this
-				}));
-				this.moveToTop();
+				if (this.polygon.mode == Polygon.MODE_EDIT) {
+					event.cancelBubble = true;
+					this.polygon.context.getEventHandler().handle(new AddHistoryEvent({
+						type : "selected_drag",
+						element : this
+					}));
+					this.moveToTop();
+				}
 			});
 			this.on("mouseover", function() {
-				$("body").css("cursor", "pointer");
-				this.setStrokeWidth(4);
-				this.getLayer().draw();
+				if (this.polygon.mode == Polygon.MODE_EDIT) {
+					$("body").css("cursor", "pointer");
+					this.setStrokeWidth(4);
+					this.getLayer().draw();
+				}
 			});
 			this.on("mouseout", function() {
-				$("body").css("cursor", "default");
-				this.setStrokeWidth(2);
-				this.getLayer().draw();
+				if (this.polygon.mode == Polygon.MODE_EDIT) {
+					$("body").css("cursor", "default");
+					this.setStrokeWidth(2);
+					this.getLayer().draw();
+				}
 			});
 		},
 		undoMove : function() {
@@ -213,31 +224,34 @@ $(function() {
 			this._super($.extend({
 				name : "anchor",
 				stroke : "#666"
-			}, config));
+			}, config), polygon);
 
 			this.type = Polygon.LINE_TYPE_STRAIGHT;
 			this.next = null;
 			this.prev = null;
-			this.polygon = polygon;
 			this.control = null;
 			this.isSelected = false;
 
 			this.on("click", function(event) {
-				event.cancelBubble = true;
-				if (!this.polygon.isCreating) {
-					if (event.which == 1)
-						this.polygon.context.getEventHandler().handle(new SelectEvent("polygon_anchor", this));
-					else if (event.which == 3 && this.isSelected) {
-						this.polygon.context.getEventHandler().handle(new SelectEvent());
-						this.polygon.removeAnchor(this);
+				if (this.polygon.mode == Polygon.MODE_EDIT) {
+					event.cancelBubble = true;
+					if (!this.polygon.isCreating) {
+						if (event.which == 1)
+							this.polygon.context.getEventHandler().handle(new SelectEvent("polygon_anchor", this));
+						else if (event.which == 3 && this.isSelected) {
+							this.polygon.context.getEventHandler().handle(new SelectEvent());
+							this.polygon.removeAnchor(this);
+						}
 					}
 				}
 			});
 			this.on("dblclick", function(event) {
-				event.cancelBubble = true;
-				if (!this.polygon.isCreating) {
-					if (event.which == 1)
-						this.polygon.createPolygon(null, this);
+				if (this.polygon.mode == Polygon.MODE_EDIT) {
+					event.cancelBubble = true;
+					if (!this.polygon.isCreating) {
+						if (event.which == 1)
+							this.polygon.createPolygon(null, this);
+					}
 				}
 			});
 		},
@@ -387,19 +401,23 @@ $(function() {
 			};
 
 			this.on("click", function(event) {
-				event.cancelBubble = true;
-				if (!this.polygon.isCreating) {
-					if (event.which == 1)
-						this.polygon.context.getEventHandler().handle(new SelectEvent("polygon", this.polygon));
-					else if (event.which == 3 && this.isSelected)
-						this.polygon.context.getEventHandler().handle(new DeleteEvent());
+				if (this.polygon.mode == Polygon.MODE_EDIT) {
+					event.cancelBubble = true;
+					if (!this.polygon.isCreating) {
+						if (event.which == 1)
+							this.polygon.context.getEventHandler().handle(new SelectEvent("polygon", this.polygon));
+						else if (event.which == 3 && this.isSelected)
+							this.polygon.context.getEventHandler().handle(new DeleteEvent());
+					}
 				}
 			});
 			this.on("dblclick", function(event) {
-				event.cancelBubble = true;
-				if (!this.polygon.isCreating) {
-					if (event.which == 1)
-						this.polygon.createPolygon(null, this);
+				if (this.polygon.mode == Polygon.MODE_EDIT) {
+					event.cancelBubble = true;
+					if (!this.polygon.isCreating) {
+						if (event.which == 1)
+							this.polygon.createPolygon(null, this);
+					}
 				}
 			});
 		}
@@ -441,30 +459,40 @@ $(function() {
 				type : null,
 				element : null
 			};
+			this.mode = Polygon.MODE_SHOW;
 
 			this.add(this.shape);
 			this.add(this.anchors);
 			this.add(this.controls);
 			this.add(this.text);
 
+			this.on("click", function(event) {
+				event.cancelBubble = true;
+			});
 			this.on("mouseover", function() {
-				this.setDraggable(this.context.polygonsIsDraggable);
-				if (this.context.polygonsIsDraggable && $("body").css("cursor") != "pointer")
-					$("body").css("cursor", "pointer");
+				if (this.mode == Polygon.MODE_EDIT) {
+					this.setDraggable(this.context.polygonsIsDraggable);
+					if (this.context.polygonsIsDraggable && $("body").css("cursor") != "pointer")
+						$("body").css("cursor", "pointer");
+				}
 			});
 			this.on("mouseout", function() {
-				this.setDraggable(false);
-				if ($("body").css("cursor") != "default")
-					$("body").css("cursor", "default");
+				if (this.mode == Polygon.MODE_EDIT) {
+					this.setDraggable(false);
+					if ($("body").css("cursor") != "default")
+						$("body").css("cursor", "default");
+				}
 			});
 			this.on("dragstart", function() {
 				this.positionPrev = this.getPosition();
 			});
 			this.on("dragend", function() {
-				this.context.getEventHandler().handle(new AddHistoryEvent({
-					type : "selected_drag",
-					element : this
-				}));
+				if (this.mode == Polygon.MODE_EDIT) {
+					this.context.getEventHandler().handle(new AddHistoryEvent({
+						type : "selected_drag",
+						element : this
+					}));
+				}
 			});
 		},
 		addAnchor : function(anchor) {
@@ -548,7 +576,7 @@ $(function() {
 				this.anchorDraw = new PolygonAnchor({
 					x : position.x,
 					y : position.y
-				});
+				}, this);
 				if (anchorResume) {
 					this.addAnchorAfter(this.anchorDraw, anchorResume);
 				} else {
@@ -595,7 +623,7 @@ $(function() {
 					this.anchorDraw = new PolygonAnchor({
 						x : position.x,
 						y : position.y
-					});
+					}, this);
 					if (anchorResume) {
 						this.addAnchorAfter(this.anchorDraw, anchorResume);
 					} else {
@@ -615,7 +643,7 @@ $(function() {
 			data = data || "";
 			var dataAnchor = data.split("|"), anchor;
 			for (i in dataAnchor) {
-				anchor = new PolygonAnchor();
+				anchor = new PolygonAnchor({}, this);
 				this.addAnchor(anchor);
 				anchor.fromData(dataAnchor[i]);
 			}
@@ -702,5 +730,7 @@ $(function() {
 	Polygon.LINE_TYPE_STRAIGHT = "straight";
 	Polygon.LINE_TYPE_QUAD = "quad";
 	Polygon.LINE_TYPE_BEZIER = "bezier";
+	Polygon.MODE_SHOW = "show";
+	Polygon.MODE_EDIT = "edit";
 
 });

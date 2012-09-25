@@ -10,17 +10,12 @@ class MapAppCampusguideMainView extends AppCampusguideMainView
      * @var OverlayAppCampusguidePresenterView
      */
     private $overlayPresenter;
-    /**
-     * @var OverlayAppCampusguidePresenterView
-     */
-    private $searchOverlayPresenter;
 
     private static $ID_MAP_PAGE_WRAPPER = "map_page_wrapper";
     private static $ID_MAP_WRAPPER = "map_wrapper";
     private static $ID_MAP_CANVAS = "map_canvas";
     private static $ID_MAP_LOADER = "map_loader";
     private static $ID_MAP_BUILDING_OVERLAY = "map_building_overlay";
-    private static $ID_MAP_SEARCH_OVERLAY = "map_search_overlay";
 
     // /VARIABLES
 
@@ -53,22 +48,6 @@ class MapAppCampusguideMainView extends AppCampusguideMainView
         $this->overlayPresenter = $overlayPresenter;
     }
 
-    /**
-     * @return OverlayAppCampusguidePresenterView
-     */
-    public function getSearchOverlayPresenter()
-    {
-        return $this->searchOverlayPresenter;
-    }
-
-    /**
-     * @param OverlayAppCampusguidePresenterView $searchOverlayPresenter
-     */
-    public function setSearchOverlayPresenter( OverlayAppCampusguidePresenterView $searchOverlayPresenter )
-    {
-        $this->searchOverlayPresenter = $searchOverlayPresenter;
-    }
-
     // ... /GETTERS/SETTERS
 
 
@@ -83,8 +62,8 @@ class MapAppCampusguideMainView extends AppCampusguideMainView
      */
     public function before()
     {
+        parent::before();
         $this->setOverlayPresenter( new OverlayAppCampusguidePresenterView( $this ) );
-        $this->setSearchOverlayPresenter( new OverlayAppCampusguidePresenterView( $this ) );
     }
 
     // ... DRAW
@@ -117,58 +96,104 @@ class MapAppCampusguideMainView extends AppCampusguideMainView
 
     }
 
-    protected function drawMenu( AbstractXhtml $root )
+    protected function drawMenu( AbstractXhtml $rootTop, AbstractXhtml $rootBottom )
     {
 
-        // Create table
-        $table = Xhtml::div()->class_( Resource::css()->getTable() );
+        //         // Create table
+        //         $table = Xhtml::div()->class_( Resource::css()->getTable(), "menu_buttons" );
 
-        // MENU
 
+        //         // MENU
+
+
+        //         // Search
+        //         $table->addContent(
+        //                 Xhtml::div(
+        //                         Xhtml::div( "" )->id( "menu_button_search" )->attr( "data-icon", "search" )->title( "Search" )->class_(
+        //                                 Resource::css()->campusguide()->app()->getTouch() ) ) );
+
+
+        //         // Location
+        //         $table->addContent(
+        //                 Xhtml::div(
+        //                         Xhtml::div( "" )->id( "menu_button_location" )->attr( "data-icon", "location" )->title(
+        //                                 "Location" )->class_( Resource::css()->campusguide()->app()->getTouch() ) ) );
+
+
+        //         // Layers
+        //         $table->addContent(
+        //                 Xhtml::div(
+        //                         Xhtml::div( "" )->attr( "data-icon", "layers" )->title( "Layers" )->class_(
+        //                                 Resource::css()->campusguide()->app()->getTouch() ) ) );
+
+
+        //         // More
+        //         $table->addContent(
+        //                 Xhtml::div(
+        //                         Xhtml::div( "" )->attr( "data-icon", "more" )->title( "More" )->class_(
+        //                                 Resource::css()->campusguide()->app()->getTouch() ) ) );
+
+
+        //         // /MENU
+
+
+        //         // Add table to root
+        //         $rootTop->addContent( $table );
+
+
+        //         // Sub menu
+        //         $menuSub = Xhtml::div()->attr( "data-fitparent-width", "true" )->class_( "sub_wrapper",
+        //                 Resource::css()->getHide() );
+        //         $this->drawMenuSub( $menuSub );
+        //         $rootTop->addContent( $menuSub );
+
+
+        // ACTION BAR
+
+
+        $this->getActionbarPresenter()->setIcon( Xhtml::div()->attr( "data-icon", "map" ) );
+        $this->getActionbarPresenter()->setViewControl( Xhtml::div( "Map" )->id( "actionbar_viewcontrol_map" ) );
 
         // Search
-        $table->addContent(
-                Xhtml::div(
-                        Xhtml::div( "" )->id( "menu_button_search" )->attr( "data-icon", "search" )->title( "Search" )->class_(
-                                Resource::css()->campusguide()->app()->getTouch() ) ) );
+        $this->getActionbarPresenter()->addActionButton(
+                Xhtml::div( "" )->attr( "data-icon", "search" )->title( "Search" )->class_(
+                        Resource::css()->campusguide()->app()->getTouch(), "button", "menu_button_search" ) );
 
         // Location
-        $table->addContent(
-                Xhtml::div(
-                        Xhtml::div( "" )->id( "menu_button_location" )->attr( "data-icon", "location" )->title(
-                                "Location" )->class_( Resource::css()->campusguide()->app()->getTouch() ) ) );
-
-        // Layers
-        $table->addContent(
-                Xhtml::div(
-                        Xhtml::div( "" )->attr( "data-icon", "layers" )->title( "Layers" )->class_(
-                                Resource::css()->campusguide()->app()->getTouch() ) ) );
+        $this->getActionbarPresenter()->addActionButton(
+                Xhtml::div( "" )->attr( "data-icon", "location" )->title( "Location" )->class_(
+                        Resource::css()->campusguide()->app()->getTouch(), "button", "menu_button_location" ) );
 
         // More
-        $table->addContent(
-                Xhtml::div(
-                        Xhtml::div( "" )->attr( "data-icon", "more" )->title( "More" )->class_(
-                                Resource::css()->campusguide()->app()->getTouch() ) ) );
+        $this->getActionbarPresenter()->addActionButton(
+                Xhtml::div( "" )->attr( "data-icon", "more" )->title( "More" )->class_(
+                        Resource::css()->campusguide()->app()->getTouch(), "button", "menu_button_more" ) );
 
-        // /MENU
+        // Location pin
+        $this->getActionbarPresenter()->addMenu( Xhtml::div( Xhtml::div()->attr( "data-icon", "location_pin" ) )->addContent(
+                Xhtml::div( "Pin location" ) )->id("actionbar_menu_locationpin") );
 
+        // Buildings
+        $this->getActionbarPresenter()->addViewControlMenu(
+                Xhtml::div( Xhtml::div()->attr( "data-icon", "home" ) )->addContent( Xhtml::div( "Buildings" ) )->id("actionbar_menu_buildings") );
 
-        // Add table to root
-        $root->addContent( $table );
+        $this->getActionbarPresenter()->draw( $rootTop );
+        $this->getActionbarPresenter()->drawBottom( $rootBottom );
+
+        // /ACTION BAR
+
 
         // Sub menu
-        $menuSub = Xhtml::div()->attr( "data-fitparent-width", "true" )->class_( "sub_wrapper",
-                Resource::css()->getHide() );
-        $this->drawMenuSub( $menuSub );
-        $root->addContent( $menuSub );
+        //         $menuSub = Xhtml::div()->attr( "data-fitparent-width", "true" )->class_( "sub_wrapper",
+        //                 Resource::css()->getHide() );
+        //         $this->drawMenuSub( $menuSub );
+        //         $rootTop->addContent( $menuSub );
+
 
     }
 
     protected function drawMenuSub( AbstractXhtml $root )
     {
-
-        // Arrow
-        $arrow = Xhtml::div()->class_( "arrow-up" );
 
         $menu = Xhtml::div()->class_( "sub" );
 
@@ -188,20 +213,9 @@ class MapAppCampusguideMainView extends AppCampusguideMainView
         // /POSITION
 
 
-        $root->addContent( $arrow );
+        $root->addContent( Xhtml::div()->class_( "arrow" )->attr( "data-arrow", "up" ) );
         $root->addContent( $menu );
-
-        /*
-        <div data-fitparent-width="true" class="sub" style="width: 320px;">
-            <div>
-                <div style="width: 0pt; height: 0pt; border-left: 5px solid transparent; border-right: 5px solid transparent; vertical-align: top; display: block; margin-left: 116px; border-bottom: 5px solid rgb(102, 102, 102);"></div>
-            <div style="padding: 0.3em; border-radius: 0.2em 0.2em 0.2em 0.2em; margin: 0pt 1.5em; background-color: rgb(102, 102, 102); color: white;">
-                <div>
-                    <span data-icon="location" style="font-size: 1.5em;"></span> <span style="font-weight: bold; padding-left: 0.4em;">Set position</span>
-                </div>
-            </div>
-        </div>
-        */
+        $root->addContent( Xhtml::div()->class_( "arrow" )->attr( "data-arrow", "down" ) );
 
     }
 
@@ -222,7 +236,8 @@ class MapAppCampusguideMainView extends AppCampusguideMainView
         $wrapper->addContent( $mapLoaderWrapper );
 
         // Create map canvas
-        $mapCanvas = Xhtml::div()->id( self::$ID_MAP_CANVAS )->class_( Resource::css()->getHide() );
+        $mapCanvas = Xhtml::div()->id( self::$ID_MAP_CANVAS )->class_( Resource::css()->getHide() )->attr(
+                "data-fitparent", "#map_page_wrapper" );
 
         // Add map canvas to wrapper
         $wrapper->addContent( $mapCanvas );
@@ -285,49 +300,10 @@ class MapAppCampusguideMainView extends AppCampusguideMainView
     }
 
     /**
-     * @param AbstractXhtml searchIcon*/
-    protected function drawOverlaySearch( AbstractXhtml $root )
+     * @see AppCampusguideMainView::drawOverlaySearchTemplate()
+     */
+    protected function drawOverlaySearchTemplate( AbstractXhtml $root )
     {
-
-        // BODY
-
-
-        $body = Xhtml::div()->id( "search_wrapper" );
-
-        // ... SEARCH INPUT
-
-
-        $searchInputWrapper = Xhtml::div()->id( "search_input_wrapper" );
-        $searchButton = Xhtml::div(
-                Xhtml::div()->title( "Search" )->attr( "data-icon", "search" )->id( "search_button" )->class_(
-                        Resource::css()->campusguide()->app()->getTouch() ) );
-        $searchInput = Xhtml::div(
-                Xhtml::div(
-                        Xhtml::input()->autocomplete( InputXhtml::$AUTOCOMPLETE_OFF )->title( "Search..." )->id(
-                                "search_input" )->attr( "data-hint", "true" ) ) );
-        $searchReset = Xhtml::div(
-                Xhtml::img( Resource::image()->icon()->getSpinnerCircle(), "Searching..." )->id( "search_spinner" )->class_(
-                        Resource::css()->getHide() ) )->addContent(
-                Xhtml::div()->title( "Search" )->attr( "data-icon", "cross" )->id( "search_reset" )->class_(
-                        Resource::css()->campusguide()->app()->getTouch() ) );
-        $searchInputWrapper->addContent( $searchInput );
-        $searchInputWrapper->addContent( $searchReset );
-        $searchInputWrapper->addContent( $searchButton );
-
-        // ... /SEARCH INPUT
-
-
-        // ... SEARCH RESULT
-
-
-        $searchResultWrapper = Xhtml::div()->id( "search_result_wrapper" );
-
-        $searchResult = Xhtml::div()->id( "search_result" );
-
-        $searchResultTable = Xhtml::table()->id( "search_result_table" );
-
-        // ... ... TEMPLATE
-
 
         // Building template
         $searchResultTableTemplateBuilding = Xhtml::tbody()->class_( "search_result_body",
@@ -355,41 +331,7 @@ class MapAppCampusguideMainView extends AppCampusguideMainView
         $searchResultTableRowSecond->addContent( $searchResultTableCellDescription );
         $searchResultTableTemplateBuilding->addContent( $searchResultTableRowFirst );
         $searchResultTableTemplateBuilding->addContent( $searchResultTableRowSecond );
-        $searchResultTable->addContent( $searchResultTableTemplateBuilding );
-
-        // ... ... /TEMPLATE
-
-
-        // ... ... NO RESULT
-
-
-        $searchResultTableNoresult = Xhtml::tfoot()->id( "search_result_noresult" );
-        $searchResultTableRow = Xhtml::tr( Xhtml::td( "No result" ) );
-
-        $searchResultTableNoresult->addContent( $searchResultTableRow );
-        $searchResultTable->addContent( $searchResultTableNoresult );
-
-        // ... ... /NO RESULT
-
-
-        $searchResult->addContent( $searchResultTable );
-        $searchResultWrapper->addContent( $searchResult );
-
-        // ... /SEARCH RESULT
-
-
-        $body->addContent( $searchInputWrapper );
-        $body->addContent( $searchResultWrapper );
-
-        // /BODY
-
-
-        // Draw overlay
-        $this->getOverlayPresenter()->setId( self::$ID_MAP_SEARCH_OVERLAY );
-        $this->getOverlayPresenter()->setFitParent( "true" );
-        $this->getOverlayPresenter()->setTitle( "Search" );
-        $this->getOverlayPresenter()->setBody( $body );
-        $this->getOverlayPresenter()->draw( $root );
+        $root->addContent( $searchResultTableTemplateBuilding );
 
     }
 
@@ -399,7 +341,8 @@ class MapAppCampusguideMainView extends AppCampusguideMainView
     protected function drawBuildingSlider( AbstractXhtml $root )
     {
 
-        $wrapper = Xhtml::div()->id( "building_slider_wrapper" )->class_( Resource::css()->getHide() );
+        $wrapper = Xhtml::div()->id( "building_slider_wrapper" )->class_( Resource::css()->getHide() )->attr(
+                "data-url", Resource::url()->campusguide()->app()->building()->getBuilding( "%s", $this->getMode() ) );
 
         $div = Xhtml::div( Xhtml::span( "" )->attr( "data-icon", "home" ) )->class_( "building" );
 

@@ -111,10 +111,10 @@ class SearchCampusguideRestController extends CampusguideRestController
 
 
         // Facilities
-        $this->setFacilities( $this->getCampsuguideHandler()->getFacilityDao()->search( $searchString ) );
+        $this->setFacilities( $this->getCampusguideHandler()->getFacilityDao()->search( $searchString ) );
 
         // Buildings
-        $this->setBuildings( $this->getCampsuguideHandler()->getBuildingDao()->search( $searchString ) );
+        $this->setBuildings( $this->getCampusguideHandler()->getBuildingDao()->search( $searchString ) );
 
         // /SEARCH
 

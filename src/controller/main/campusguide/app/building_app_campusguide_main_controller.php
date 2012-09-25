@@ -14,12 +14,23 @@ class BuildingAppCampusguideMainController extends AppCampusguideMainController
      * @var BuildingModel
      */
     private $building;
+    /**
+     * @var FloorBuildingListModel
+     */
+    private $floors;
 
     // /VARIABLES
 
 
     // CONSTRUCTOR
 
+
+    public function __construct( Api $api, View $view )
+    {
+        parent::__construct( $api, $view );
+
+        $this->setFloors( new FloorBuildingListModel() );
+    }
 
     // /CONSTRUCTOR
 
@@ -44,6 +55,22 @@ class BuildingAppCampusguideMainController extends AppCampusguideMainController
     public function setBuilding( BuildingModel $building )
     {
         $this->building = $building;
+    }
+
+    /**
+     * @return FloorBuildingListModel
+     */
+    public function getFloors()
+    {
+        return $this->floors;
+    }
+
+    /**
+     * @param FloorBuildingListModel $floors
+     */
+    public function setFloors( FloorBuildingListModel $floors )
+    {
+        $this->floors = $floors;
     }
 
     // ... /GETTERS/SETTERS
@@ -114,6 +141,11 @@ class BuildingAppCampusguideMainController extends AppCampusguideMainController
                     throw new BadrequestException( sprintf( "Building \"%s\" does not exist", self::getId() ) );
                 }
 
+                // Set Floors
+                $this->setFloors(
+                        $this->getCampusguideHandler()->getFloorBuildingDao()->getForeign(
+                                array ( $this->getBuilding()->getId() ) ) );
+
             }
             // Id must be given
             else
@@ -136,18 +168,15 @@ class BuildingAppCampusguideMainController extends AppCampusguideMainController
     {
         parent::after();
 
-        // Add Kinectic api
+        // Add API's
         $this->addJavascriptFile( Resource::javascript()->getKineticApiFile() );
-
-        // Add hammer api
+        $this->addJavascriptFile( Resource::javascript()->getJavascriptCanvasFile( $this->getMode() ) );
         $this->addJavascriptFile( Resource::javascript()->getHammerApiFile() );
         $this->addJavascriptFile( Resource::javascript()->getHammerJqueryApiFile() );
 
     }
 
     // /FUNCTIONS
-
-
 
 
 }

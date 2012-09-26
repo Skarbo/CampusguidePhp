@@ -7,7 +7,7 @@ function CampusguideMainController(eventHandler, mode, query) {
 	this.buildingDao = new BuildingStandardCampusguideDao(mode);
 	this.elementBuildingDao = new ElementBuildingStandardCampusguideDao(mode);
 	this.floorBuildingDao = new FloorBuildingStandardCampusguideDao(mode);
-	this.searchHandler = new SearchCampusguideHandler(eventHandler, mode, this.facilityDao, this.buildingDao);
+	this.searchHandler = new SearchCampusguideHandler(eventHandler, mode, this.facilityDao, this.buildingDao, this.elementBuildingDao);
 }
 
 // /CONSTRUCTOR

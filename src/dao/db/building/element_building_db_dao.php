@@ -172,6 +172,35 @@ class ElementBuildingDbDao extends StandardDbDao implements ElementBuildingDao
 
     }
 
+    /**
+     * @see StandardDbDao::getSearchSelectQuery()
+     */
+    protected function getSearchSelectQuery( $search, $foreignId = null )
+    {
+
+        // Select query
+        $selectQuery = parent::getSearchSelectQuery( $search, $foreignId );
+
+        // Select build
+        $selectBuild = $selectQuery->getQuery();
+
+        // Search expression
+        $searchExpression = SB::like( Resource::db()->elementBuilding()->getFieldName(), ":search" );
+        $selectBuild->addWhere( $searchExpression );
+
+        if ( $foreignId )
+        {
+            $selectBuild->addWhere( SB::equ( SB::pun( $this->getTable(), $this->getForeignField() ), ":foreignId" ) );
+            $selectQuery->addBind( array ( "foreignId" => $foreignId ) );
+        }
+
+        // ... Binds
+        $selectQuery->addBind( array ( "search" => $search ) );
+
+        return $selectQuery;
+
+    }
+
     // /FUNCTIONS
 
 

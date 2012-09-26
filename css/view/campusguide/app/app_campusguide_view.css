@@ -11,12 +11,22 @@ html, body {
     height: 100%;
 }
 
+/* Anchor */
+#app_wrapper a {
+    color: white;
+    text-decoration: none;
+}
+
 /* Hover */
 #app_wrapper .hover, #app_wrapper .hover * {
     -webkit-user-select: none;
     -webkit-touch-callout: none;
     -webkit-tap-highlight-color: RGBA(0, 0, 0, 0);
     outline: none;
+}
+
+#app_wrapper .hover:ACTIVE, #app_wrapper .hover.hovering {
+    background-color: gray;
 }
 
 /* Display */
@@ -46,125 +56,16 @@ body.landscape #app_wrapper #display_wrapper > * > * {
 
 }
 
-#app_wrapper .hover:ACTIVE, #app_wrapper .hover.hovering {
-    background-color: gray;
-}
-
-/* ... Sub wrapper */
-
-#app_wrapper .menu_wrapper .sub_wrapper {
-    position: absolute;
-    display: block;
-    z-index: 1000;
-}
-
-#app_wrapper .menu_wrapper .sub_wrapper .arrow-up {
-    width: 0pt;
-    height: 0pt;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    vertical-align: top;
-    display: block;
-    border-bottom: 5px solid rgb(102, 102, 102);
-}
-
-#app_wrapper .menu_wrapper .sub_wrapper .sub {
-    border-radius: 0.2em 0.2em 0.2em 0.2em;
-    background-color: rgb(102, 102, 102);
-    color: white;
-    margin: 0pt 1.5em;
-}
-
-#app_wrapper .menu_wrapper .sub_wrapper .sub > * {
-    display: table;
-    width: 100%;
-}
-
-#app_wrapper .menu_wrapper .sub_wrapper .sub > * > * {
-    display: table-row-group;
-}
-
-#app_wrapper .menu_wrapper .sub_wrapper .sub > * > * > * {
-    display: table-row;
-}
-
-#app_wrapper .menu_wrapper .sub_wrapper .sub > * > * > * > * {
-    display: table-cell;
-    padding: 0.3em;
-    cursor: pointer;
-}
-
-#app_wrapper .menu_wrapper .sub_wrapper .sub > * > * > * > *:FIRST-CHILD {
-    font-size: 1.5em;
-    width: 1%;
-}
-
-#app_wrapper .menu_wrapper .sub_wrapper .sub > * > * > * > *+ * {
-    font-weight: bold;
-    padding-left: 0.4em;
-}
-
-/* ... /Sub wrapper */
-
-#app_wrapper .menu_wrapper a {
-    color: white;
-    background-color: #666666;
-    text-decoration: none;
-}
-
-body.landscape #app_wrapper .menu_wrapper {
-    width: 1px;
-}
-
-body:not(.landscape) #app_wrapper .menu_wrapper > * {
+#app_wrapper .menu_wrapper > * {
     display: table-cell;
     height: 1px;
 }
 
-#app_wrapper .menu_wrapper .menu_buttons.table {
-    border: 1px solid #999999;
-    border-width: 0 0 1px 0;
+#app_wrapper.landscape .menu_wrapper#menu_bottom_wrapper {
+    display: none;
 }
 
-#app_wrapper .menu_wrapper .menu_buttons.table > * {
-    font-size: 1.5em;
-}
-
-body:not(.landscape) #app_wrapper .menu_wrapper .menu_buttons.table > * {
-    width: 25%;
-}
-
-#app_wrapper .menu_wrapper .menu_buttons.table > * > * {
-    padding: 0.2em;
-    border: 1px solid #999999;
-    border-width: 0 0 0 1px;
-    text-align: center;
-    display: block;
-    color: white;
-    background-color: #666666;
-    cursor: pointer;
-}
-
-#app_wrapper .menu_wrapper .menu_buttons.table > *:FIRST-CHILD > * {
-    border-width: 0;
-}
-
-/* ... Landscape */
-body.landscape #app_wrapper .menu_wrapper .menu_buttons.table {
-    border-width: 0 1px 0 0;
-    height: 100%;
-}
-
-body.landscape #app_wrapper .menu_wrapper .menu_buttons.table > * {
-    display: table-row;
-}
-
-body.landscape #app_wrapper .menu_wrapper .menu_buttons.table > * > * {
-    display: table-cell;
-    vertical-align: middle;
-    border-width: 0 0 1px 0;
-    height: 25%;
-}
+/* /Menu */
 
 /* Page */
 #app_wrapper #page_wrapper {
@@ -408,7 +309,7 @@ input {
     vertical-align: top !important;
 }
 
-#page_wrapper #app_wrapper #search_overlay .overlay {
+#app_wrapper #search_overlay .overlay {
     background-color: transparent;
     border: 0;
     padding: 0;

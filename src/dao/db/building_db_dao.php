@@ -160,11 +160,11 @@ class BuildingDbDao extends StandardDbDao implements BuildingDao
     /**
      * @see StandardDao::getSearchSelectQuery()
      */
-    protected function getSearchSelectQuery( $search )
+    protected function getSearchSelectQuery( $search, $foreignId = null )
     {
 
         // Select query
-        $selectQuery = parent::getSearchSelectQuery( $search );
+        $selectQuery = parent::getSearchSelectQuery( $search, $foreignId );
 
         // Select build
         $selectBuild = $selectQuery->getQuery();

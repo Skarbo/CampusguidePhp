@@ -23,6 +23,13 @@ AppCampusguideMainView.prototype.getController = function() {
 	return CampusguideMainView.prototype.getController.call(this);
 };
 
+/**
+ * @return {Object}
+ */
+AppCampusguideMainView.prototype.getSearchOverlayElement = function() {
+	return this.getWrapperElement().find("#search_overlay");
+};
+
 // ... /GET
 
 // ... DO
@@ -81,6 +88,65 @@ AppCampusguideMainView.prototype.doBindEventHandler = function() {
 
 	// /OVERLAY
 
+	// SEARCH
+
+	// Register "Search" listener
+	this.getController().getEventHandler().registerListener(SearchEvent.TYPE,
+	/**
+	 * @param {SearchEvent}
+	 *            event
+	 */
+	function(event) {
+		context.handleSearch(event.getSearch(), event.getOptions());
+	});
+
+	// Register "ResultSearch" listener
+	this.getController().getEventHandler().registerListener(ResultSearchEvent.TYPE,
+	/**
+	 * @param {ResultSearchEvent}
+	 *            event
+	 */
+	function(event) {
+		context.handleSearchResult(event.getResults());
+	});
+
+	// Register "ResetSearch" listener
+	this.getController().getEventHandler().registerListener(ResetSearchEvent.TYPE,
+	/**
+	 * @param {ResetSearchEvent}
+	 *            event
+	 */
+	function(event) {
+		context.handleSearchReset();
+	});
+
+	// Search input
+	var searchInput = this.getSearchOverlayElement().find("#search_input");
+
+	searchInput.keypress(function(e) {
+		var code = (e.keyCode ? e.keyCode : e.which);
+		if (code == 13 && searchInput.val() != "") {
+			context.doMapSearch(searchInput.val());
+		}
+	});
+
+	// Search reset
+	this.getSearchOverlayElement().find("#search_reset").click(function(event) {
+		event.preventDefault();
+		searchInput.val("").focus();
+		context.getController().getEventHandler().handle(new ResetSearchEvent());
+	});
+
+	// Search button
+	this.getSearchOverlayElement().find("#search_button").click(function(event) {
+		event.preventDefault();
+		if (searchInput.val() != "") {
+			context.doMapSearch(searchInput.val());
+		}
+	});
+
+	// /SEARCH
+
 };
 
 AppCampusguideMainView.prototype.doFitToParent = function() {
@@ -97,6 +163,12 @@ AppCampusguideMainView.prototype.doFitToParent = function() {
 			target.width(parent.width()).height(parent.height());
 		}
 	});
+};
+
+AppCampusguideMainView.prototype.doMapSearch = function(search) {
+	if (search) {
+		this.getController().getEventHandler().handle(new SearchEvent(search));
+	}
 };
 
 // ... /DO
@@ -201,6 +273,157 @@ AppCampusguideMainView.prototype.handleOverlayClose = function(overlayId) {
 
 };
 
+// ... ... SEARCH
+
+/**
+ * @param {String}
+ *            search
+ * @param {Object}
+ *            options
+ */
+AppCampusguideMainView.prototype.handleSearch = function(search, options) {
+
+	// Show search spinner
+	this.getSearchOverlayElement().find("#search_spinner").removeClass("hide");
+
+};
+
+/**
+ * @param {Object}
+ *            results
+ */
+AppCampusguideMainView.prototype.handleSearchResult = function(results) {
+	var context = this;
+
+	// Hide search spinner
+	this.getSearchOverlayElement().find("#search_spinner").addClass("hide");
+
+	// Search result table
+	var searchResultTable = this.getSearchOverlayElement().find("#search_result_table");
+
+	// Search result template
+	var searchResultBuildingTemplate = searchResultTable.find(".search_result_body#search_result_template_building");
+	var searchResultElementTemplate = searchResultTable.find(".search_result_body#search_result_template_element");
+
+	// Clear result table
+	this.handleSearchReset();
+
+	// BUILDINGS
+
+	var buildings = results.buildings;
+
+	var searchResultBody = null, building, address;
+	for (i in buildings) {
+		searchResultBody = searchResultBuildingTemplate.clone();
+		building = buildings[i];
+
+		searchResultBody.attr("id", null);
+		searchResultBody.removeClass("template");
+
+		// Set building id
+		searchResultBody.attr("data-buildingid", building.id);
+
+		// Remove hide
+		searchResultBody.removeClass("hide");
+
+		// Building name
+		searchResultBody.find(".search_result_title").text(building.name);
+
+		// Building address
+		address = jQuery.isArray(building.address) ? building.address.join(", ") : "";
+		searchResultBody.find(".search_result_description").text(address);
+
+		if (searchResultBody.find(".search_result_description").text() == "") {
+			searchResultBody.find(".search_result_description").html("&nbsp;");
+		}
+
+		// Bind body
+		searchResultBody.click(function(event) {
+			context.handleSearchSelect("building", $(this).attr("data-buildingid"));
+		});
+
+		// Touchable
+		searchResultBody.touchActive();
+
+		// Add row to table
+		searchResultTable.append(searchResultBody);
+	}
+
+	// /BUILDINGS
+
+	// ELEMENTS
+
+	var elements = results.elements;
+
+	var searchResultBody = null;
+	for (i in elements) {
+		searchResultBody = searchResultElementTemplate.clone();
+		element = elements[i];
+
+		searchResultBody.attr("id", null);
+		searchResultBody.removeClass("template");
+
+		// Set building id
+		searchResultBody.attr("data-element", element.id);
+
+		// Remove hide
+		searchResultBody.removeClass("hide");
+
+		// Building name
+		searchResultBody.find(".search_result_title").text(element.name);
+
+		// Building address
+		searchResultBody.find(".search_result_description").html("&nbsp;");
+
+		// Bind body
+		searchResultBody.click(function(event) {
+			context.handleSearchSelect("element", $(this).attr("data-element"));
+		});
+
+		// Touchable
+		searchResultBody.touchActive();
+
+		// Add row to table
+		searchResultTable.append(searchResultBody);
+	}
+
+	// /ELEMENTS
+	console.log(buildings, elements);
+	if (jQuery.isEmptyObject(buildings) && jQuery.isEmptyObject(elements)) {
+		searchResultTable.find("#search_result_noresult").removeClass("hide");
+	} else {
+		searchResultTable.find("#search_result_noresult").addClass("hide");
+	}
+
+};
+
+AppCampusguideMainView.prototype.handleSearchReset = function() {
+
+	// Search result table
+	var searchResultTable = this.getSearchOverlayElement().find("#search_result_table");
+
+	// Clear result table
+	searchResultTable.find(".search_result_body:NOT(.template)").remove();
+
+	// Show no result body
+	searchResultTable.find("#search_result_noresult").removeClass("hide");
+
+};
+
+AppCampusguideMainView.prototype.handleSearchSelect = function(type, id) {
+
+	console.log("Handle search select", type, id);
+	switch (type) {
+	case "building":
+		break;
+	case "element":
+		break;
+	}
+
+};
+
+// ... ... /SEARCH
+
 // ... /HANDLE
 
 // ... DRAW
@@ -210,9 +433,9 @@ AppCampusguideMainView.prototype.draw = function(controller) {
 
 	// Handle orientation
 	this.handleOrientation();
-	//this.getWrapperElement().addClass("portrait");
-//	this.doFitToParent();
-//	this.getWrapperElement().addClass("landscape");
+	// this.getWrapperElement().addClass("portrait");
+	// this.doFitToParent();
+	// this.getWrapperElement().addClass("landscape");
 
 	// HOVER
 

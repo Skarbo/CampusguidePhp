@@ -29,7 +29,7 @@ BuildingAppCampusguideMainController.prototype.getView = function() {
 BuildingAppCampusguideMainController.prototype.doBindEventHandler = function() {
 	AppCampusguideMainController.prototype.doBindEventHandler.call(this);
 	var context = this;
-	
+
 	// Handle history
 	$(window).hashchange(function() {
 		context.handleHistory();
@@ -59,6 +59,13 @@ BuildingAppCampusguideMainController.prototype.handleHistory = function() {
 		});
 	}
 
+};
+
+BuildingAppCampusguideMainController.prototype.handleSearch = function(search, options) {
+	var buildingId = this.getQuery().id;
+	
+	// Search
+	this.getSearchHandler().searchBuilding(search, buildingId, true);
 };
 
 // ... /HANDLE

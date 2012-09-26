@@ -9,6 +9,13 @@ class SearchCampusguideRestController extends CampusguideRestController
     public static $CONTROLLER_NAME = "search";
 
     const URI_SEARCH = 1;
+    const URI_TYPE = 2;
+    const URI_ID = 3;
+
+    const TYPE_BUILDING = "building";
+    private static $TYPES = array ( self::TYPE_BUILDING );
+
+    const QUERY_SIMPLE = "simple";
 
     /**
      * @var FacilityListModel
@@ -18,6 +25,10 @@ class SearchCampusguideRestController extends CampusguideRestController
      * @var BuildingListModel
      */
     private $buildings;
+    /**
+     * @var ElementBuildingListModel
+     */
+    private $elements;
 
     // /VARIABLES
 
@@ -31,6 +42,7 @@ class SearchCampusguideRestController extends CampusguideRestController
 
         $this->setFacilities( new FacilityListModel() );
         $this->setBuildings( new BuildingListModel() );
+        $this->setElements( new ElementBuildingListModel() );
     }
 
     // /CONSTRUCTOR
@@ -74,38 +86,94 @@ class SearchCampusguideRestController extends CampusguideRestController
         $this->buildings = $buildings;
     }
 
+    /**
+     * @return ElementBuildingListModel
+     */
+    public function getElements()
+    {
+        return $this->elements;
+    }
+
+    /**
+     * @param ElementBuildingListModel $elements
+     */
+    private function setElements( ElementBuildingListModel $elements )
+    {
+        $this->elements = $elements;
+    }
+
     // ... /GETTERS/SETTERS
 
 
     // ... GET
 
 
-    public static function getSearchString()
+    public static function getSearchUri()
     {
         return self::getURI( self::URI_SEARCH );
     }
 
+    private static function getTypeUri()
+    {
+        return self::getURI( self::URI_TYPE );
+    }
+
+    private static function getIdUri()
+    {
+        return intval( self::getURI( self::URI_ID, 0 ) );
+    }
+
+    public static function getSimpleQuery()
+    {
+        return Core::arrayAt( self::getQuery(), self::QUERY_SIMPLE );
+    }
 
     /**
      * @see CampusguideRestController::getLastModified()
      */
     public function getLastModified()
     {
-        return max( filemtime( __FILE__ ), parent::getLastModified(), $this->getFacilities()->getLastModified(), $this->getBuildings()->getLastModified() );
+        return max( filemtime( __FILE__ ), parent::getLastModified(), $this->getFacilities()->getLastModified(),
+                $this->getBuildings()->getLastModified() );
+    }
+
+    private function getSearchString()
+    {
+        return sprintf( "%%%s%%", preg_replace( "/[^\\w]/", "%", self::getSearchUri() ) );
     }
 
     // ... /GET
 
 
+    // ... IS
+
+
+    private static function isCommandSearchAll()
+    {
+        return self::getSearchUri() && !self::getTypeUri();
+    }
+
+    private static function isCommandSearchType()
+    {
+        return self::getSearchUri() && self::getTypeUri() && in_array( self::getTypeUri(), self::$TYPES ) && self::getIdUri();
+    }
+
+    public function isSimple()
+    {
+        return ( boolean ) self::getSimpleQuery();
+    }
+
+    // ... /IS
+
+
     // ... DO
 
 
-    private function doSearchCommand()
+    private function doSearchAllCommand()
     {
 
         // Search string
-        $searchString = sprintf( "%%%s%%", preg_replace( "/[^\\w]/", "%",
-                self::getSearchString() ) );
+        $searchString = $this->getSearchString();
 
         // SEARCH
 
@@ -116,9 +184,29 @@ class SearchCampusguideRestController extends CampusguideRestController
         // Buildings
         $this->setBuildings( $this->getCampusguideHandler()->getBuildingDao()->search( $searchString ) );
 
+        // Elements
+        $this->setElements( $this->getCampusguideHandler()->getElementBuildingDao()->search( $searchString ) );
+
         // /SEARCH
 
 
+    }
+
+    private function doSearchTypeCommand()
+    {
+        switch ( self::getTypeUri() )
+        {
+
+            case self::TYPE_BUILDING :
+                $this->doBuildingSearch( $this->getSearchString(), self::getIdUri() );
+                break;
+
+        }
+    }
+
+    private function doBuildingSearch( $search, $buildingId = null )
+    {
+        $this->setElements( $this->getCampusguideHandler()->getElementBuildingDao()->search( $search, $buildingId ) );
     }
 
     // ... /DO
@@ -129,20 +217,27 @@ class SearchCampusguideRestController extends CampusguideRestController
      */
     public function request()
     {
-
-        if ( self::getSearchString() )
+        if ( self::isCommandSearchAll() )
         {
-            $this->doSearchCommand();
+            $this->doSearchAllCommand();
+        }
+        else if ( self::isCommandSearchType() )
+        {
+            $this->doSearchTypeCommand();
         }
         else
         {
-            throw new BadrequestException( "Missing search string" );
+            if ( !self::getSearchString() )
+                throw new BadrequestException( "Missing search string" );
+            if ( !in_array( self::getTypeUri(), self::$TYPES ) )
+                throw new BadrequestException( sprintf( "Uknown type search \"%s\"", self::getTypeUri() ) );
+            if ( self::getTypeUri() && !self::getIdUri() )
+                throw new BadrequestException( "Missing search type id" );
+            throw new BadrequestException();
         }
-
     }
 
     // /FUNCTIONS
-
 
 
 }

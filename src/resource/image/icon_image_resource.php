@@ -9,6 +9,9 @@ class IconImageResource extends ClassCore
     private $spinnerBar = "image/icon/spinner_bar.gif";
     private $spinnerCircle = "image/icon/spinner_circle.gif";
 
+    private $roomAuditoriumSvg = "room_auditorium";
+    private static $SVG = "svg.php?svg=%s%s";
+
     // /VARIABLES
 
 
@@ -32,6 +35,16 @@ class IconImageResource extends ClassCore
     public function getSpinnerCircle()
     {
         return $this->spinnerCircle;
+    }
+
+    private static function getSvg( $svg, $color = null )
+    {
+        return sprintf( self::$SVG, $svg, $color ? sprintf( "&color=%s", urlencode( $color ) ) : "" );
+    }
+
+    public function getRoomAuditoriumSvg( $color = null )
+    {
+        return self::getSvg( $this->roomAuditoriumSvg, $color );
     }
 
 }

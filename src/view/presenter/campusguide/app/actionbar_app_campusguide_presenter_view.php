@@ -15,9 +15,9 @@ class ActionbarAppCampusguidePresenterView extends PresenterView
      */
     private $icon;
     /**
-     * @var AbstractXhtml
+     * @var array
      */
-    private $viewControl;
+    private $viewControl = array ();
     /**
      * @var array
      */
@@ -62,14 +62,6 @@ class ActionbarAppCampusguidePresenterView extends PresenterView
         $this->icon = $icon;
     }
 
-    /**
-     * @param AbstractXhtml $topLeft
-     */
-    public function setViewControl( AbstractXhtml $viewControl )
-    {
-        $this->viewControl = $viewControl;
-    }
-
     // ... /SET
 
 
@@ -77,11 +69,11 @@ class ActionbarAppCampusguidePresenterView extends PresenterView
 
 
     /**
-     * @param AbstractXhtml $button
+     * @param AbstractXhtml $viewControl
      */
-    public function addActionButton( AbstractXhtml $button )
+    public function addViewControl( AbstractXhtml $viewControl )
     {
-        $this->actionButtons[] = $button;
+        $this->viewControl[] = $viewControl;
     }
 
     /**
@@ -92,6 +84,14 @@ class ActionbarAppCampusguidePresenterView extends PresenterView
     public function addViewControlMenu( AbstractXhtml $menu )
     {
         $this->viewControlMenu[] = $menu;
+    }
+
+    /**
+     * @param AbstractXhtml $button
+     */
+    public function addActionButton( AbstractXhtml $button )
+    {
+        $this->actionButtons[] = $button;
     }
 
     /**
@@ -122,12 +122,15 @@ class ActionbarAppCampusguidePresenterView extends PresenterView
         // LEFT
         $left = Xhtml::div()->class_( Resource::css()->getLeft() );
 
+        $tableLeft = Xhtml::div()->class_( Resource::css()->getTable() );
+
         // Icon
-        $this->drawIcon( $left );
+        $this->drawIcon( $tableLeft );
 
         // View control
-        $this->drawViewControl( $left );
+        $this->drawViewControl( $tableLeft );
 
+        $left->addContent( $tableLeft );
         $table->addContent( $left );
 
         // /LEFT
@@ -159,7 +162,10 @@ class ActionbarAppCampusguidePresenterView extends PresenterView
     {
         $wrapper = Xhtml::div()->class_( "action_bar" )->id( "action_bar_bottom" );
 
-        // Action buttons
+        if ( empty( $this->actionButtons ) )
+            return;
+
+            // Action buttons
         $this->drawActionButtons( $wrapper );
 
         $root->addContent( $wrapper );
@@ -176,13 +182,14 @@ class ActionbarAppCampusguidePresenterView extends PresenterView
         {
             $wrapper = Xhtml::a()->href( $this->backReferer );
             $wrapper->addContent( Xhtml::div()->attr( "data-icon", "left" ) );
+            $wrapper->class_(Resource::css()->getHover());
         }
         else
         {
             $wrapper = Xhtml::div();
         }
 
-        $wrapper->class_( "action_icon" );
+        $wrapper->addClass( "action_icon" );
         $wrapper->addContent( $this->icon );
 
         $root->addContent( $wrapper );
@@ -196,9 +203,10 @@ class ActionbarAppCampusguidePresenterView extends PresenterView
         $wrapper = Xhtml::div()->class_( "view_control" );
 
         if ( !empty( $this->viewControlMenu ) )
-            $this->viewControl->attr( "data-icon", "rightdown" )->addClass( "more", Resource::css()->getHover() );
+            $wrapper->attr( "data-icon", "rightdown" )->addClass( "more", Resource::css()->getHover() );
 
-        $wrapper->addContent( $this->viewControl );
+        foreach ( $this->viewControl as $viewControl )
+            $wrapper->addContent( $viewControl );
 
         $root->addContent( $wrapper );
     }
@@ -215,7 +223,7 @@ class ActionbarAppCampusguidePresenterView extends PresenterView
         foreach ( $this->actionButtons as $actionButton )
         {
             $table->addContent(
-                    Xhtml::div( $actionButton )->class_( Resource::css()->getCenter() )->style(
+                    AbstractXhtml::get_( $actionButton )->addClass( Resource::css()->getCenter(), Resource::css()->campusguide()->app()->getTouch() )->style(
                             sprintf( "width: %s%%;", round( ( 1 / count( $this->actionButtons ) ) * 100, 2 ) ) ) );
         }
 
@@ -229,7 +237,8 @@ class ActionbarAppCampusguidePresenterView extends PresenterView
      */
     public function drawMenu( AbstractXhtml $root )
     {
-        $wrapper = Xhtml::div()->id( "actionbar_menu_wrapper" )->attr( "data-fitparent", "#page_wrapper" )->class_( Resource::css()->getTable(), Resource::css()->getHide() );
+        $wrapper = Xhtml::div()->id( "actionbar_menu_wrapper" )->attr( "data-fitparent", "#page_wrapper" )->class_(
+                Resource::css()->getTable(), Resource::css()->getHide() );
         $div = Xhtml::div();
         $menuWrapper = Xhtml::div()->id( "actionbar_menu" );
 

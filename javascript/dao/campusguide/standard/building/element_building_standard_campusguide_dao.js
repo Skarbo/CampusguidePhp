@@ -25,8 +25,12 @@ ElementBuildingStandardCampusguideDao.CONTROLLER_NAME = "buildingelements";
  *            callback
  * @return {Object}
  */
-StandardCampusguideDao.prototype.getBuilding = function(buildingId, callback) {
-	this.ajax.query(Core.sprintf("%s/%s", "building", buildingId), callback);
+ElementBuildingStandardCampusguideDao.prototype.getBuilding = function(buildingId, callback) {
+	var context = this;
+	this.ajax.query(Core.sprintf("%s/%s", "building", buildingId), function(single, list) {
+		context.addListToList(list);
+		callback(single, list);
+	});
 };
 
 /**
@@ -36,7 +40,7 @@ StandardCampusguideDao.prototype.getBuilding = function(buildingId, callback) {
  *            callback
  * @return {Object}
  */
-StandardCampusguideDao.prototype.delete_ = function(id, callback) {
+ElementBuildingStandardCampusguideDao.prototype.delete_ = function(id, callback) {
 	this.ajax.query(Core.sprintf("%s/%s", "delete", id), callback);
 };
 

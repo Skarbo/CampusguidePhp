@@ -82,9 +82,6 @@ class MapAppCampusguideMainView extends AppCampusguideMainView
         // Draw overlay to wrapper
         $this->drawOverlay( $wrapper );
 
-        // Draw search overlay to wrapper
-        $this->drawOverlaySearch( $wrapper );
-
         // Draw map to wrapper
         $this->drawMap( $wrapper );
 
@@ -152,22 +149,19 @@ class MapAppCampusguideMainView extends AppCampusguideMainView
 
 
         $this->getActionbarPresenter()->setIcon( Xhtml::div()->attr( "data-icon", "map" ) );
-        $this->getActionbarPresenter()->setViewControl( Xhtml::div( "Map" )->id( "actionbar_viewcontrol_map" ) );
+        $this->getActionbarPresenter()->addViewControl( Xhtml::div( "Map" )->id( "actionbar_viewcontrol_map" ) );
 
         // Search
         $this->getActionbarPresenter()->addActionButton(
-                Xhtml::div( "" )->attr( "data-icon", "search" )->title( "Search" )->class_(
-                        Resource::css()->campusguide()->app()->getTouch(), "button", "menu_button_search" ) );
+                Xhtml::div( "" )->attr( "data-icon", "search" )->title( "Search" )->class_("menu_button_search" ) );
 
         // Location
         $this->getActionbarPresenter()->addActionButton(
-                Xhtml::div( "" )->attr( "data-icon", "location" )->title( "Location" )->class_(
-                        Resource::css()->campusguide()->app()->getTouch(), "button", "menu_button_location" ) );
+                Xhtml::div( "" )->attr( "data-icon", "location" )->title( "Location" )->class_("menu_button_location" ) );
 
         // More
         $this->getActionbarPresenter()->addActionButton(
-                Xhtml::div( "" )->attr( "data-icon", "more" )->title( "More" )->class_(
-                        Resource::css()->campusguide()->app()->getTouch(), "button", "menu_button_more" ) );
+                Xhtml::div( "" )->attr( "data-icon", "more" )->title( "More" )->class_( "menu_button_more" ) );
 
         // Location pin
         $this->getActionbarPresenter()->addMenu( Xhtml::div( Xhtml::div()->attr( "data-icon", "location_pin" ) )->addContent(
@@ -296,42 +290,6 @@ class MapAppCampusguideMainView extends AppCampusguideMainView
         $this->getOverlayPresenter()->setTitle( "Header" );
         $this->getOverlayPresenter()->setBody( $menu );
         $this->getOverlayPresenter()->draw( $root );
-
-    }
-
-    /**
-     * @see AppCampusguideMainView::drawOverlaySearchTemplate()
-     */
-    protected function drawOverlaySearchTemplate( AbstractXhtml $root )
-    {
-
-        // Building template
-        $searchResultTableTemplateBuilding = Xhtml::tbody()->class_( "search_result_body",
-                Resource::css()->getHide() )->id( "search_result_template_building" );
-
-        $searchResultTableRowFirst = Xhtml::tr()->class_( "search_result_row_first" );
-        $searchResultTableRowSecond = Xhtml::tr()->class_( "search_result_row_second" );
-
-        // ... Icon
-        $searchResultTableCellIcon = Xhtml::td()->class_( "search_result_icon" );
-        $searchResultTableCellIcon->addContent( Xhtml::div()->attr( "data-icon", "home" ) );
-
-        // ... Title
-        $searchResultTableCellTitle = Xhtml::td( "Building" )->class_( "search_result_title" );
-
-        // ... Description
-        $searchResultTableCellDescription = Xhtml::td( "Description" )->colspan( 3 )->class_(
-                "search_result_description" );
-
-        // ... Direction
-        $searchResultTableCellDirection = Xhtml::td( "000m" )->class_( "search_result_direction" );
-
-        $searchResultTableRowFirst->addContent( $searchResultTableCellIcon )->addContent( $searchResultTableCellTitle )->addContent(
-                $searchResultTableCellDirection );
-        $searchResultTableRowSecond->addContent( $searchResultTableCellDescription );
-        $searchResultTableTemplateBuilding->addContent( $searchResultTableRowFirst );
-        $searchResultTableTemplateBuilding->addContent( $searchResultTableRowSecond );
-        $root->addContent( $searchResultTableTemplateBuilding );
 
     }
 

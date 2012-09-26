@@ -41,21 +41,7 @@ MapAppCampusguideMainController.prototype.doBindEventHandler = function() {
 		context.handleMapLoaded();
 	});
 
-	// /MAP
-	
-	// SEARCH
-	
-	// Register "Search" listener
-	this.getEventHandler().registerListener(SearchEvent.TYPE,
-	/**
-	 * @param {SearchEvent}
-	 *            event
-	 */
-	function(event) {
-		context.handleSearch(event.getSearch(), event.getOptions());
-	});
-	
-	// /SEARCH
+	// /MAP	
 
 };
 
@@ -78,13 +64,6 @@ MapAppCampusguideMainController.prototype.handleMapLoaded = function() {
 	});
 };
 
-
-MapAppCampusguideMainController.prototype.handleSearch = function(search) {
-
-	// Search
-	this.getSearchHandler().search(search);
-
-};
 
 // ... /HANDLE
 

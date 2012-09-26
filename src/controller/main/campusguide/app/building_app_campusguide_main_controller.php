@@ -1,6 +1,6 @@
 <?php
 
-class BuildingAppCampusguideMainController extends AppCampusguideMainController
+class BuildingAppCampusguideMainController extends AppCampusguideMainController implements BuildingAppCampusguideInterfaceView
 {
 
     // VARIABLES
@@ -10,6 +10,10 @@ class BuildingAppCampusguideMainController extends AppCampusguideMainController
 
     const PAGE_OVERVIEW = "overview";
 
+    /**
+     * @var FacilityModel
+     */
+    private $facility;
     /**
      * @var BuildingModel
      */
@@ -30,6 +34,7 @@ class BuildingAppCampusguideMainController extends AppCampusguideMainController
         parent::__construct( $api, $view );
 
         $this->setFloors( new FloorBuildingListModel() );
+        $this->facility = FacilityFactoryModel::createFacility( "" );
     }
 
     // /CONSTRUCTOR
@@ -116,6 +121,11 @@ class BuildingAppCampusguideMainController extends AppCampusguideMainController
         return sprintf( "%s - %s - %s", $this->getBuilding()->getName(), "Building", parent::getTitle() );
     }
 
+    public function getFacility()
+    {
+        return $this->facility;
+    }
+
     // ... /GET
 
 
@@ -140,6 +150,10 @@ class BuildingAppCampusguideMainController extends AppCampusguideMainController
                 {
                     throw new BadrequestException( sprintf( "Building \"%s\" does not exist", self::getId() ) );
                 }
+
+                // Set Facility
+                $this->facility = $this->getCampusguideHandler()->getFacilityDao()->get(
+                        $this->getBuilding()->getFacilityId() );
 
                 // Set Floors
                 $this->setFloors(

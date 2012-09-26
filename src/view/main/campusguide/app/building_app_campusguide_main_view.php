@@ -1,6 +1,6 @@
 <?php
 
-class BuildingAppCampusguideMainView extends AppCampusguideMainView
+class BuildingAppCampusguideMainView extends AppCampusguideMainView implements BuildingAppCampusguideInterfaceView
 {
 
     // VARIABLES
@@ -42,6 +42,16 @@ class BuildingAppCampusguideMainView extends AppCampusguideMainView
         return parent::getController();
     }
 
+    public function getBuilding()
+    {
+        return $this->getController()->getBuilding();
+    }
+
+    public function getFacility()
+    {
+        return $this->getController()->getFacility();
+    }
+
     // ... /GET
 
 
@@ -66,48 +76,24 @@ class BuildingAppCampusguideMainView extends AppCampusguideMainView
 
     }
 
+    /**
+     * @see AppCampusguideMainView::drawMenu()
+     */
     protected function drawMenu( AbstractXhtml $rootTop, AbstractXhtml $rootBottom )
     {
-
-        // Create table
-        $table = Xhtml::div()->class_( Resource::css()->getTable() );
-
-        // MENU
-
-
-        // Map
-        $table->addContent(
-                Xhtml::div(
-                        Xhtml::div( Xhtml::div()->attr( "data-icon", "left" ) )->addContent(
-                                Xhtml::div()->attr( "data-icon", "home" ) )->id( "menu_button_map" )->title(
-                                "Back to map" )->class_( Resource::css()->campusguide()->app()->getTouch() ) ) );
-
-        // Building
-        $table->addContent( Xhtml::div( "Building" ) );
-
-        // More
-        $table->addContent(
-                Xhtml::div(
-                        Xhtml::div( "" )->attr( "data-icon", "more" )->title( "More" )->class_(
-                                Resource::css()->campusguide()->app()->getTouch() ) ) );
-
-        // /MENU
-
-
-        // Add table to root
-        //$rootTop->addContent( $table );
-
-
         $this->getActionbarPresenter()->setIcon( Xhtml::div()->attr( "data-icon", "home" ) );
         $this->getActionbarPresenter()->setBackReferer(
                 Resource::url()->campusguide()->app()->getMap( $this->getMode() ) );
-        $this->getActionbarPresenter()->setViewControl( Xhtml::div( $this->getController()->getBuilding()->getName() ) );
+
+        $this->getActionbarPresenter()->addViewControl(
+                Xhtml::div( Xhtml::div( $this->getBuilding()->getName() ) )->addContent(
+                        Xhtml::div( $this->getFacility()->getName() ) )->class_( "building" ) );
+
+        $this->getActionbarPresenter()->addActionButton(
+                Xhtml::div()->attr( "data-icon", "search" )->title( "Search" )->class_( "actionbar_menu_search" ) );
+
         $this->getActionbarPresenter()->draw( $rootTop );
         $this->getActionbarPresenter()->drawBottom( $rootBottom );
-
-        //         $this->getActionbarPresenter()->addMenu($menu);
-
-
     }
 
     /**

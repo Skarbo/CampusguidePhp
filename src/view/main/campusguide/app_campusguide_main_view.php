@@ -150,9 +150,9 @@ abstract class AppCampusguideMainView extends MainView
         $wrapper = Xhtml::div()->id( self::$ID_APP_WRAPPER );
 
         // Detect device
-        if (  $this->getController()->getMobiledetectApi()->isDevice() )
+        if ( $this->getController()->getMobiledetectApi()->isDevice() )
         {
-            $wrapper->attr("data-fitparent", "body");
+            $wrapper->attr( "data-fitparent", "body" );
             $wrapper->addClass(
                     $this->getController()->getMobiledetectApi()->isMobile() ? Resource::css()->campusguide()->app()->getMobile() : Resource::css()->campusguide()->app()->getTablet() );
 
@@ -239,7 +239,10 @@ abstract class AppCampusguideMainView extends MainView
         $pageWrapper = Xhtml::div();
 
         // Draw Actionbar menu
-        $this->getActionbarPresenter()->drawMenu($pageWrapper);
+        $this->getActionbarPresenter()->drawMenu( $pageWrapper );
+
+        // Draw search overlay
+        $this->drawOverlaySearch( $pageWrapper );
 
         // Draw page
         if ( $this->getController()->getErrors() )
@@ -357,7 +360,7 @@ abstract class AppCampusguideMainView extends MainView
 
         // Draw overlay
         $this->getSearchOverlayPresenter()->setId( self::$ID_SEARCH_OVERLAY );
-        $this->getSearchOverlayPresenter()->setFitParent( "true" );
+        $this->getSearchOverlayPresenter()->setFitParent( "#page_wrapper" );
         $this->getSearchOverlayPresenter()->setTitle( "Search" );
         $this->getSearchOverlayPresenter()->setBody( $body );
         $this->getSearchOverlayPresenter()->draw( $root );
@@ -369,6 +372,75 @@ abstract class AppCampusguideMainView extends MainView
      */
     protected function drawOverlaySearchTemplate( AbstractXhtml $root )
     {
+
+        // BUILDINGS
+
+
+        // Building template
+        $searchResultTableTemplateBuilding = Xhtml::tbody()->class_( "search_result_body template",
+                Resource::css()->getHide() )->id( "search_result_template_building" );
+
+        $searchResultTableRowFirst = Xhtml::tr()->class_( "search_result_row_first" );
+        $searchResultTableRowSecond = Xhtml::tr()->class_( "search_result_row_second" );
+
+        // ... Icon
+        $searchResultTableCellIcon = Xhtml::td()->class_( "search_result_icon" );
+        $searchResultTableCellIcon->addContent( Xhtml::div()->attr( "data-icon", "home" ) );
+
+        // ... Title
+        $searchResultTableCellTitle = Xhtml::td( "Building" )->class_( "search_result_title" );
+
+        // ... Description
+        $searchResultTableCellDescription = Xhtml::td( "Description" )->colspan( 3 )->class_(
+                "search_result_description" );
+
+        // ... Direction
+        $searchResultTableCellDirection = Xhtml::td( "000m" )->class_( "search_result_direction" );
+
+        $searchResultTableRowFirst->addContent( $searchResultTableCellIcon )->addContent( $searchResultTableCellTitle )->addContent(
+                $searchResultTableCellDirection );
+        $searchResultTableRowSecond->addContent( $searchResultTableCellDescription );
+        $searchResultTableTemplateBuilding->addContent( $searchResultTableRowFirst );
+        $searchResultTableTemplateBuilding->addContent( $searchResultTableRowSecond );
+        $root->addContent( $searchResultTableTemplateBuilding );
+
+        // /BUILDINGS
+
+
+        // ELEMENTS
+
+
+        // Building template
+        $searchResultTableTemplateBuilding = Xhtml::tbody()->class_( "search_result_body template",
+                Resource::css()->getHide() )->id( "search_result_template_element" );
+
+        $searchResultTableRowFirst = Xhtml::tr()->class_( "search_result_row_first" );
+        $searchResultTableRowSecond = Xhtml::tr()->class_( "search_result_row_second" );
+
+        // ... Icon
+        $searchResultTableCellIcon = Xhtml::td()->class_( "search_result_icon" );
+        //$searchResultTableCellIcon->addContent( Xhtml::div()->attr( "data-icon", "home" ) );
+        $searchResultTableCellIcon->addContent( Xhtml::img(Resource::image()->icon()->getRoomAuditoriumSvg("#333333"))->style("height: 1.5em;") );
+
+        // ... Title
+        $searchResultTableCellTitle = Xhtml::td( "Element" )->class_( "search_result_title" );
+
+        // ... Description
+        $searchResultTableCellDescription = Xhtml::td( "Description" )->colspan( 3 )->class_(
+                "search_result_description" );
+
+        // ... Direction
+        $searchResultTableCellDirection = Xhtml::td( "000m" )->class_( "search_result_direction" );
+
+        $searchResultTableRowFirst->addContent( $searchResultTableCellIcon )->addContent( $searchResultTableCellTitle )->addContent(
+                $searchResultTableCellDirection );
+        $searchResultTableRowSecond->addContent( $searchResultTableCellDescription );
+        $searchResultTableTemplateBuilding->addContent( $searchResultTableRowFirst );
+        $searchResultTableTemplateBuilding->addContent( $searchResultTableRowSecond );
+        $root->addContent( $searchResultTableTemplateBuilding );
+
+        // /ELEMENTS
+
 
     }
 

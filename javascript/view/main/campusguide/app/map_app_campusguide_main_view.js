@@ -41,13 +41,6 @@ MapAppCampusguideMainView.prototype.getPageWrapper = function() {
 /**
  * @return {Object}
  */
-MapAppCampusguideMainView.prototype.getSearchOverlayElement = function() {
-	return this.getWrapperElement().find("#search_overlay");
-};
-
-/**
- * @return {Object}
- */
 MapAppCampusguideMainView.prototype.getBuildingSliderElement = function() {
 	return this.getWrapperElement().find("#building_slider_wrapper");
 };
@@ -59,7 +52,26 @@ MapAppCampusguideMainView.prototype.getMenuActionBar = function() {
 	return this.getWrapperElement().find(".menu_wrapper .action_bar");
 };
 
+/**
+ * @return {Array} [lat, lng, zoom] Null if not exit
+ */
+MapAppCampusguideMainView.prototype.getMapBounds = function() {
+	var mapBounds = this.getController().getLocalStorageVariable("mapbounds");
+	if (!mapBounds)
+		return null;
+	var mapBoundsArray = mapBounds.split("|");
+	return [ parseFloat(mapBoundsArray[0]), parseFloat(mapBoundsArray[1]), parseInt( mapBoundsArray[2] ) ];
+};
+
 // ... /GET
+
+// ... SET
+
+MapAppCampusguideMainView.prototype.setMapBounds = function(lat, lng, zoom) {
+	this.getController().setLocalStorageVariable("mapbounds", Core.sprintf("%s|%s|%s", lat, lng, zoom));
+};
+
+// ... /SET
 
 // ... DO
 
@@ -201,6 +213,8 @@ MapAppCampusguideMainView.prototype.doBindEventHandler = function() {
 		event.preventDefault();
 		// Send overlay event
 		context.getController().getEventHandler().handle(new OverlayEvent({}, "search_overlay"));
+
+		context.getWrapperElement().find("#search_input").select();
 	});
 
 	// Location
@@ -230,65 +244,6 @@ MapAppCampusguideMainView.prototype.doBindEventHandler = function() {
 	});
 
 	// /MENU
-
-	// SEARCH
-
-	// Register "Search" listener
-	this.getController().getEventHandler().registerListener(SearchEvent.TYPE,
-	/**
-	 * @param {SearchEvent}
-	 *            event
-	 */
-	function(event) {
-		context.handleSearch(event.getSearch(), event.getOptions());
-	});
-
-	// Register "ResultSearch" listener
-	this.getController().getEventHandler().registerListener(ResultSearchEvent.TYPE,
-	/**
-	 * @param {ResultSearchEvent}
-	 *            event
-	 */
-	function(event) {
-		context.handleSearchResult(event.getResults());
-	});
-
-	// Register "ResetSearch" listener
-	this.getController().getEventHandler().registerListener(ResetSearchEvent.TYPE,
-	/**
-	 * @param {ResetSearchEvent}
-	 *            event
-	 */
-	function(event) {
-		context.handleSearchReset();
-	});
-
-	// Search input
-	var searchInput = this.getSearchOverlayElement().find("#search_input");
-
-	searchInput.keypress(function(e) {
-		var code = (e.keyCode ? e.keyCode : e.which);
-		if (code == 13 && searchInput.val() != "") {
-			context.doMapSearch(searchInput.val());
-		}
-	});
-
-	// Search reset
-	this.getSearchOverlayElement().find("#search_reset").click(function(event) {
-		event.preventDefault();
-		searchInput.val("").focus();
-		context.getController().getEventHandler().handle(new ResetSearchEvent());
-	});
-
-	// Search button
-	this.getSearchOverlayElement().find("#search_button").click(function(event) {
-		event.preventDefault();
-		if (searchInput.val() != "") {
-			context.doMapSearch(searchInput.val());
-		}
-	});
-
-	// /SEARCH
 
 	// HASH
 
@@ -378,12 +333,6 @@ MapAppCampusguideMainView.prototype.doBuildingSlider = function(buildingId) {
 		buildingSlider.addClass("hide");
 	}
 
-};
-
-MapAppCampusguideMainView.prototype.doMapSearch = function(search) {
-	if (search) {
-		this.getController().getEventHandler().handle(new SearchEvent(search));
-	}
 };
 
 MapAppCampusguideMainView.prototype.doPositionSet = function() {
@@ -480,9 +429,13 @@ MapAppCampusguideMainView.prototype.handleMapInit = function() {
 		// Set canvsa width/height
 		// this.getWrapperElement().find("#map_canvas").height(this.getWrapperElement().find("#page_wrapper").height()).width(this.getWrapperElement().find("#page_wrapper").width());
 
-		var latlng = new google.maps.LatLng(60.39126, 5.32205);
+		var mapBounds = this.getMapBounds();
+		if (!mapBounds)
+			mapBounds = [60.39126, 5.32205, 15];
+console.log("Map bounds", mapBounds);		
+		var latlng = new google.maps.LatLng(mapBounds[0], mapBounds[1]);
 		var options = {
-			zoom : 15,
+			zoom : mapBounds[2],
 			center : latlng,
 			mapTypeId : google.maps.MapTypeId.ROADMAP,
 			zoomControl : true,
@@ -518,6 +471,12 @@ MapAppCampusguideMainView.prototype.handleMapInit = function() {
 		});
 
 		// /POSITION MARKER
+
+		// Map bound changed
+		google.maps.event.addListener(this.map, 'bounds_changed', function() {
+			var center = context.map.getBounds().getCenter();
+			context.setMapBounds(center.lat(), center.lng(), context.map.getZoom());
+		});
 
 		// Listen to map idle
 		context.getController().getEventHandler().handle(new MaploadedEvent());
@@ -807,112 +766,6 @@ MapAppCampusguideMainView.prototype.handlePositionSet = function(latlng) {
 		// Handle position
 		this.getController().getEventHandler().handle(new PositionEvent(latlng), BuildingMapLoadedEvent.TYPE);
 
-	}
-
-};
-
-/**
- * @param {String}
- *            search
- * @param {Object}
- *            options
- */
-MapAppCampusguideMainView.prototype.handleSearch = function(search, options) {
-
-	// Show search spinner
-	this.getSearchOverlayElement().find("#search_spinner").removeClass("hide");
-
-};
-
-/**
- * @param {Object}
- *            results
- */
-MapAppCampusguideMainView.prototype.handleSearchResult = function(results) {
-	var context = this;
-
-	// Hide search spinner
-	this.getSearchOverlayElement().find("#search_spinner").addClass("hide");
-
-	// Search result table
-	var searchResultTable = this.getSearchOverlayElement().find("#search_result_table");
-
-	// Search result template
-	var searchResultTemplate = searchResultTable.find(".search_result_body#search_result_template_building");
-
-	// Clear result table
-	searchResultTable.find(".search_result_body:NOT(#search_result_template_building)").remove();
-
-	// BUILDINGS
-
-	var buildings = results.buildings;
-
-	var searchResultBody, building, address;
-	for (i in buildings) {
-		searchResultBody = searchResultTemplate.clone();
-		building = buildings[i];
-
-		// Set body id
-		searchResultBody.attr("id", "");
-
-		// Set building id
-		searchResultBody.attr("data-buildingid", building.id);
-
-		// Remove hide
-		searchResultBody.removeClass("hide");
-
-		// Building name
-		searchResultBody.find(".search_result_title").text(building.name);
-
-		// Building address
-		address = jQuery.isArray(building.address) ? building.address.join(", ") : "";
-		searchResultBody.find(".search_result_description").text(address);
-
-		if (searchResultBody.find(".search_result_description").text() == "") {
-			searchResultBody.find(".search_result_description").html("&nbsp;");
-		}
-
-		// Bind body
-		searchResultBody.click(function(event) {
-			context.handleSearchSelect("building", $(this).attr("data-buildingid"));
-		});
-
-		// Touchable
-		searchResultBody.touchActive();
-
-		// Add row to table
-		searchResultTable.append(searchResultBody);
-	}
-
-	if (!buildings || Core.countObject(buildings) == 0) {
-		searchResultTable.find("#search_result_noresult").removeClass("hide");
-	} else {
-		searchResultTable.find("#search_result_noresult").addClass("hide");
-	}
-
-	// /BUILDINGS
-
-};
-
-MapAppCampusguideMainView.prototype.handleSearchReset = function() {
-
-	// Search result table
-	var searchResultTable = this.getSearchOverlayElement().find("#search_result_table");
-
-	// Clear result table
-	searchResultTable.find(".search_result_body:NOT(#search_result_template_building)").remove();
-
-	// Show no result body
-	searchResultTable.find("#search_result_noresult").removeClass("hide");
-
-};
-
-MapAppCampusguideMainView.prototype.handleSearchSelect = function(type, id) {
-
-	switch (type) {
-	case "building":
-		console.log("Handle search select", type, id);
-		break;
 	}
 
 };

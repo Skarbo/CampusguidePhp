@@ -28,9 +28,36 @@ AppCampusguideMainController.prototype.getView = function() {
 
 AppCampusguideMainController.prototype.doBindEventHandler = function() {
 	CampusguideMainController.prototype.doBindEventHandler.call(this);
+	var context = this;
+	
+	// EVENTS
+
+	// Search event
+	this.getEventHandler().registerListener(SearchEvent.TYPE,
+	/**
+	 * @param {SearchEvent}
+	 *            event
+	 */
+	function(event) {
+		context.handleSearch(event.getSearch(), event.getOptions());
+	});
+
+	// /EVENTS
+
 };
 
 // ... /DO
+
+// ... HANDLE
+
+AppCampusguideMainController.prototype.handleSearch = function(search, options) {
+
+	// Search
+	this.getSearchHandler().search(search);
+
+};
+
+// ... /HANDLE
 
 // ... RENDER
 

@@ -66,6 +66,16 @@ BuildingAppCampusguideMainView.prototype.doBindEventHandler = function() {
 		}
 	});
 
+	// Register "Search" listener
+	this.getEventHandler().registerListener(SearchEvent.TYPE,
+	/**
+	 * @param {SearchEvent}
+	 *            event
+	 */
+	function(event) {
+		context.handleSearch(event.getSearch(), event.getOptions());
+	});
+
 	// /EVENTS
 
 	// PINCH/DRAG
@@ -88,6 +98,17 @@ BuildingAppCampusguideMainView.prototype.doBindEventHandler = function() {
 
 	// /PINCH/DRAG
 
+	// MENU
+
+	// Search
+	this.getWrapperElement().find(".actionbar_menu_search").click(function(event) {
+		event.preventDefault();
+		context.getController().getEventHandler().handle(new OverlayEvent({}, "search_overlay"));
+		context.getWrapperElement().find("#search_input").select();
+	});
+
+	// /MENU
+
 };
 
 // ... /DO
@@ -102,5 +123,16 @@ BuildingAppCampusguideMainView.prototype.draw = function(controller) {
 };
 
 // ... /DRAW
+
+// ... HANDLE
+
+MapAppCampusguideMainController.prototype.handleSearch = function(search) {
+
+	// Search
+	this.getSearchHandler().search(search);
+
+};
+
+// ... /HANDLE
 
 // /FUNCTIONS

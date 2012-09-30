@@ -7,6 +7,7 @@ class DbResource extends ClassCore
 
 
     private static $BUILDING, $ELEMENTBUILDING, $TYPEELEMENTBUILDING, $GROUPTYPEELEMENTBUILDING, $FLOORBUILDING, $SECTIONBUILDING, $FACILITY, $QUEUE;
+    private static $ENTRYSCHEDULE, $OCCURENCEENTRYSCHEDULE, $FACULTYSCHEDULE, $GROUPSCHEDULE, $PROGRAMSCHEDULE, $ROOMSCHEDULE, $WEBSITESCHEDULE;
 
     // /VARIABLES
 
@@ -90,6 +91,60 @@ class DbResource extends ClassCore
     {
         self::$QUEUE = self::$QUEUE ? self::$QUEUE : new QueueDbResource();
         return self::$QUEUE;
+    }
+
+    /**
+     * @return EntryScheduleDbResource
+     */
+    public static function entrySchedule()
+    {
+        self::$ENTRYSCHEDULE = self::$ENTRYSCHEDULE ? self::$ENTRYSCHEDULE : new EntryScheduleDbResource();
+        return self::$ENTRYSCHEDULE;
+    }
+
+    /**
+     * @return FacultyScheduleDbResource
+     */
+    public static function facultySchedule()
+    {
+        self::$FACULTYSCHEDULE = self::$FACULTYSCHEDULE ? self::$FACULTYSCHEDULE : new FacultyScheduleDbResource();
+        return self::$FACULTYSCHEDULE;
+    }
+
+    /**
+     * @return GroupScheduleDbResource
+     */
+    public static function groupSchedule()
+    {
+        self::$GROUPSCHEDULE = self::$GROUPSCHEDULE ? self::$GROUPSCHEDULE : new GroupScheduleDbResource();
+        return self::$GROUPSCHEDULE;
+    }
+
+    /**
+     * @return ProgramScheduleDbResource
+     */
+    public static function programSchedule()
+    {
+        self::$PROGRAMSCHEDULE = self::$PROGRAMSCHEDULE ? self::$PROGRAMSCHEDULE : new ProgramScheduleDbResource();
+        return self::$PROGRAMSCHEDULE;
+    }
+
+    /**
+     * @return RoomScheduleDbResource
+     */
+    public static function roomSchedule()
+    {
+        self::$ROOMSCHEDULE = self::$ROOMSCHEDULE ? self::$ROOMSCHEDULE : new RoomScheduleDbResource();
+        return self::$ROOMSCHEDULE;
+    }
+
+    /**
+     * @return WebsiteScheduleDbResource
+     */
+    public static function websiteSchedule()
+    {
+        self::$WEBSITESCHEDULE = self::$WEBSITESCHEDULE ? self::$WEBSITESCHEDULE : new WebsiteScheduleDbResource();
+        return self::$WEBSITESCHEDULE;
     }
 
     // /FUNCTIONS

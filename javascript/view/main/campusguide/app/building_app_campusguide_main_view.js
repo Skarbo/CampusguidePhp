@@ -126,7 +126,7 @@ BuildingAppCampusguideMainView.prototype.draw = function(controller) {
 
 // ... HANDLE
 
-MapAppCampusguideMainController.prototype.handleSearch = function(search) {
+BuildingAppCampusguideMainView.prototype.handleSearch = function(search) {
 
 	// Search
 	this.getSearchHandler().search(search);

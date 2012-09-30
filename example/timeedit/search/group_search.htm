@@ -1,0 +1,365 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="cache-control" content="no-store">
+<meta http-equiv="cache-control" content="must-revalidate">
+<meta http-equiv="cache-control" content="private">
+<meta http-equiv="cache-control" content="max-age=0">
+<meta http-equiv="cache-control" content="post-check=0">
+<meta http-equiv="cache-control" content="pre-check=0">
+<meta http-equiv="cache-directive" content="no-cache">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="pragma-directive" content="no-cache">
+<meta http-equiv="expires" content="0">
+<meta http-equiv="expires" content="-1">
+<TITLE>TimeEdit</TITLE>
+<LINK rel="stylesheet" type="text/css" href="/styles/default.css">
+<SCRIPT language='JavaScript' type='text/javascript'>
+<!--
+function setSelectedMonth(month) {
+document.form.wv_selectedMonth.value = month;
+document.form.submit();
+}
+function adjustStartWeek() {
+if(document.form.wv_startWeek.selectedIndex > document.form.wv_stopWeek.selectedIndex)
+document.form.wv_startWeek.selectedIndex = document.form.wv_stopWeek.selectedIndex;
+}
+function adjustStopWeek() {
+if(document.form.wv_startWeek.selectedIndex > document.form.wv_stopWeek.selectedIndex)
+document.form.wv_stopWeek.selectedIndex = document.form.wv_startWeek.selectedIndex;
+}
+function addObject(id) {
+var reloadingdiv = document.getElementById('reloading');
+reloadingdiv.style.display = '';
+document.form.wv_addObj.value = id;
+document.form.submit();
+}
+function delObject(id) {
+document.form.wv_delObj.value = id;
+document.form.submit();
+}
+function setStartWeek(week) {
+var weekObj = document.form.wv_startWeek;
+for(i=0;i<weekObj.length;i++) {
+if(weekObj.options[i].value == week) {
+weekObj.selectedIndex = i;
+}
+}
+adjustStopWeek();
+}
+function setStopWeek(week) {
+var weekObj = document.form.wv_stopWeek;
+for(i=0;i<weekObj.length;i++) {
+if(weekObj.options[i].value == week) {
+weekObj.selectedIndex = i;
+}
+}
+adjustStartWeek();
+}
+function openHelp() {
+var win = window.open('', 'Help',
+'resizable=yes,scrollbars=yes,status=no,width=300,height=500');
+win.document.location = '/4DACTION/WebShowHome/2-1';
+}
+function mySubmit() {
+var reloadingdiv = document.getElementById('reloading');
+reloadingdiv.style.display = '';
+if(document.form.wv_search != null)
+document.form.wv_search.value = '';
+if(document.form.wv_first != null)
+document.form.wv_first.value = '0';
+document.form.submit();
+}
+function showCal() {
+var week = document.form.wv_startWeek.options[document.form.wv_startWeek.selectedIndex].value
+var win = window.open('', 'Calendar', 'resizable=yes,scrollbars=yes,status=no,width=300,height=200');
+win.document.location = '/4DACTION/WebShowSearchCalendar/2/1/'+week;
+}
+// -->
+</SCRIPT>
+</HEAD>
+<BODY onLoad='document.form.wv_search.focus()'>
+<table id='maintable' border='0' cellpadding='0' cellspacing='0'>
+<tr>
+<td id='headertd'>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td id="header_top_left"></td>
+<td id="header_top_center" colspan="2" width="100%"></td>
+<td id="header_top_right"></td>
+</tr>
+<tr>
+<td id="header_center_left"></td>
+<td id="header_center_logo"></td>
+<td id="header_center_center" align="right" valign="bottom"><span style="color:#FFFFFF; font-size: 12px; font-weight: bold; font-family: Verdana, sans-serif;">&nbsp;<!--Demo&nbsp;Universitet--></span></td>
+<td id="header_center_right"></td>
+</tr>
+<tr>
+<td id="header_bottom_left"></td>
+<td id="header_bottom_center" colspan="2"></td>
+<td id="header_bottom_right"></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td id='contenttd'>
+<FORM name='form' action='/4DACTION/WebShowSearch/1/2-0' method='get'>
+<TABLE width='100%' cellspacing='0' cellpadding='0' border='0'>
+<TR>
+<TD valign='top' width='100%'><table>
+<tr>
+<td><a href="/4DACTION/WebShowSearchBranch/2"><IMG src="/4daction/WebShowImage/arrow_back.gif" width="12" height="12" border="0" alt=""></a></td>
+</tr>
+<tr>
+<td><h2>Advanced reservation search</h2></td>
+</tr>
+</table>
+<br><br></TD>
+<TD valign='top' nowrap>    <a href='/4DACTION/WebShowSimpleSearch/1/2-0'>Simple search</a>&nbsp;&nbsp;&nbsp;&#124;&nbsp;&nbsp;&nbsp;<a href='/4DACTION/WebShowSearch/1/1-0'>P&aring; norsk</A></TD>
+</TR>
+</TABLE>
+<TABLE cellspacing='0' cellpadding='0' border='0' width='100%'>
+<TR>
+<TD valign='top' nowrap>
+<TABLE cellspacing='0' cellpadding='0' border='0'>
+<TR>
+<TD nowrap><b>Type</b></TD>
+<TD nowrap>&nbsp;&nbsp;&nbsp;</TD>
+<TD nowrap>
+<TABLE cellspacing='0' cellpadding='0' border='0'>
+<TR>
+<TD nowrap><SELECT name='wv_type' onChange='mySubmit()'>
+<OPTION value='5' selected>KlassGrupp</OPTION>
+<OPTION value='4'>Fag</OPTION>
+<OPTION value='6'>Lærer</OPTION>
+<OPTION value='7'>Rom</OPTION>
+<OPTION value='11'>Utvalg</OPTION>
+<OPTION value='14'>Undv-Type</OPTION>
+</SELECT></TD>
+<TD nowrap><div style='HEIGHT:13' >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></TD>
+<TD nowrap><div id='reloading' style='DISPLAY: none' ><img src='/img/reloading.gif' border='0' width='13' height='13' alt=''/></div></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD>&nbsp;</TD>
+</TR>
+<TR>
+<TD nowrap><b>Name</b></TD>
+<TD nowrap>&nbsp;&nbsp;&nbsp;</TD>
+<TD nowrap colspan='2'>
+<INPUT type='hidden' name='wv_ts' value='20120930T131941X2715'><INPUT type='text' name='wv_search' value=''>
+<INPUT type='submit' name='wv_bSearch' value='Search'>
+</TD>
+</TR>
+</TABLE>
+</TD>
+<TD valign='top'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+<TD rowspan='3' valign='top' bgcolor='#888888'><img src='/img/empty.gif' width='1' height='1' border='0' alt=''/></TD>
+<TD valign='top'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+<TD valign='top' nowrap>
+<TABLE cellspacing='0' cellpadding='0' border='0'>
+<TR>
+<TD valign='top' nowrap>
+<TABLE cellspacing='0' cellpadding='0' border='0'>
+<TR>
+<TD colspan='3'>
+<TABLE cellspacing='0' cellpadding='0' border='0' width='100%'>
+<TR>
+<TD width='100%'><b>Week</b></TD>
+<TD align='right'><a href='javascript:showCal()'><img border='0' width='13' height='13' alt='' src='/img/cal.gif'></a></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD colspan='3'>&nbsp;</TD>
+</TR>
+<TR>
+<TD>
+<SELECT name='wv_startWeek' onChange='adjustStopWeek()'>
+<OPTION value='1230'>w 30, 2012</OPTION>
+<OPTION value='1231'>w 31, 2012</OPTION>
+<OPTION value='1232'>w 32, 2012</OPTION>
+<OPTION value='1233'>w 33, 2012</OPTION>
+<OPTION value='1234'>w 34, 2012</OPTION>
+<OPTION value='1235'>w 35, 2012</OPTION>
+<OPTION value='1236'>w 36, 2012</OPTION>
+<OPTION value='1237'>w 37, 2012</OPTION>
+<OPTION value='1238'>w 38, 2012</OPTION>
+<OPTION value='1239' selected>w 39, 2012</OPTION>
+<OPTION value='1240'>w 40, 2012</OPTION>
+<OPTION value='1241'>w 41, 2012</OPTION>
+<OPTION value='1242'>w 42, 2012</OPTION>
+<OPTION value='1243'>w 43, 2012</OPTION>
+<OPTION value='1244'>w 44, 2012</OPTION>
+<OPTION value='1245'>w 45, 2012</OPTION>
+<OPTION value='1246'>w 46, 2012</OPTION>
+<OPTION value='1247'>w 47, 2012</OPTION>
+<OPTION value='1248'>w 48, 2012</OPTION>
+<OPTION value='1249'>w 49, 2012</OPTION>
+<OPTION value='1250'>w 50, 2012</OPTION>
+<OPTION value='1251'>w 51, 2012</OPTION>
+<OPTION value='1252'>w 52, 2012</OPTION>
+<OPTION value='1301'>w 1, 2013</OPTION>
+<OPTION value='1302'>w 2, 2013</OPTION>
+<OPTION value='1303'>w 3, 2013</OPTION>
+<OPTION value='1304'>w 4, 2013</OPTION>
+<OPTION value='1305'>w 5, 2013</OPTION>
+<OPTION value='1306'>w 6, 2013</OPTION>
+</SELECT>
+</TD>
+<TD nowrap>&nbsp;-&nbsp;</TD>
+<TD>
+<SELECT name='wv_stopWeek' onChange='adjustStartWeek()'>
+<OPTION value='1230'>w 30, 2012</OPTION>
+<OPTION value='1231'>w 31, 2012</OPTION>
+<OPTION value='1232'>w 32, 2012</OPTION>
+<OPTION value='1233'>w 33, 2012</OPTION>
+<OPTION value='1234'>w 34, 2012</OPTION>
+<OPTION value='1235'>w 35, 2012</OPTION>
+<OPTION value='1236'>w 36, 2012</OPTION>
+<OPTION value='1237'>w 37, 2012</OPTION>
+<OPTION value='1238'>w 38, 2012</OPTION>
+<OPTION value='1239'>w 39, 2012</OPTION>
+<OPTION value='1240' selected>w 40, 2012</OPTION>
+<OPTION value='1241'>w 41, 2012</OPTION>
+<OPTION value='1242'>w 42, 2012</OPTION>
+<OPTION value='1243'>w 43, 2012</OPTION>
+<OPTION value='1244'>w 44, 2012</OPTION>
+<OPTION value='1245'>w 45, 2012</OPTION>
+<OPTION value='1246'>w 46, 2012</OPTION>
+<OPTION value='1247'>w 47, 2012</OPTION>
+<OPTION value='1248'>w 48, 2012</OPTION>
+<OPTION value='1249'>w 49, 2012</OPTION>
+<OPTION value='1250'>w 50, 2012</OPTION>
+<OPTION value='1251'>w 51, 2012</OPTION>
+<OPTION value='1252'>w 52, 2012</OPTION>
+<OPTION value='1301'>w 1, 2013</OPTION>
+<OPTION value='1302'>w 2, 2013</OPTION>
+<OPTION value='1303'>w 3, 2013</OPTION>
+<OPTION value='1304'>w 4, 2013</OPTION>
+<OPTION value='1305'>w 5, 2013</OPTION>
+<OPTION value='1306'>w 6, 2013</OPTION>
+</SELECT>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+<TD rowspan='3' valign='top' nowrap>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+<TD rowspan='3' valign='top' width='100%'><table class='booking' border="0" cellpadding="5" cellspacing="0">
+<tr>
+<td style="border: 1px solid #888888" nowrap>
+<table border="0" cellpadding="2" cellspacing="0">
+<tr>
+<td valign="top" nowrap><small>1.</small></td>
+<td valign="top" nowrap><small>Select the type of resource you wish<br/>to search for</small></td>
+</tr>
+<tr>
+<td valign="top" nowrap><small>2.</small></td>
+<td valign="top" nowrap><small>Select category if possible</small></td>
+</tr>
+<tr>
+<td valign="top" nowrap><small>3.</small></td>
+<td valign="top" nowrap><small>Search by name or signature</small></td>
+</tr>
+<tr>
+<td valign="top" nowrap><small>4.</small></td>
+<td valign="top" nowrap><small>Add requested resource by clicking on<br/>the + sign</small></td>
+</tr>
+<tr>
+<td valign="top" nowrap><small>5.</small></td>
+<td valign="top" nowrap><small>Select start and stop weeks</small></td>
+</tr>
+<tr>
+<td valign="top" nowrap><small>6.</small></td>
+<td valign="top" nowrap><small>Select text or graphical format</small></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</TD>
+</TR>
+<TR>
+<TD>&nbsp;</TD>
+<TD>&nbsp;</TD>
+<TD>&nbsp;</TD>
+<TD>&nbsp;</TD>
+</TR>
+<TR>
+<TD rowspan='1' valign='top' nowrap>
+<INPUT type='hidden' name='wv_first' value='0'>
+<INPUT type='hidden' name='wv_addObj' value=''>
+<TABLE cellspacing='0' cellpadding='3' border='0'>
+<TR>
+<TD colspan='7'><b>Search result: 1-10 of 262</b></TD>    </TR>
+<TR>
+<TD colspan='7'><br><small>Add an object by clicking on&nbsp;+</small><br><br></TD>
+</TR>
+
+<TR> <TD><a href='javascript:addObject(301)'><img src='/img/plus.gif' width='12' height='12' border='0' alt=''></a></TD> <TD>   </TD> <TD nowrap>10HLOG</TD> <TD>   </TD> <TD colspan='3'>10HLOG</TD> </TR>
+<TR> <TD><a href='javascript:addObject(302)'><img src='/img/plus.gif' width='12' height='12' border='0' alt=''></a></TD> <TD>   </TD> <TD nowrap>10HADM</TD> <TD>   </TD> <TD colspan='3'>10HADM</TD> </TR>
+<TR> <TD><a href='javascript:addObject(303)'><img src='/img/plus.gif' width='12' height='12' border='0' alt=''></a></TD> <TD>   </TD> <TD nowrap>10HSAMFØ</TD> <TD>   </TD> <TD colspan='3'>10HSAMFØ</TD> </TR>
+<TR> <TD><a href='javascript:addObject(304)'><img src='/img/plus.gif' width='12' height='12' border='0' alt=''></a></TD> <TD>   </TD> <TD nowrap>10HREGN</TD> <TD>   </TD> <TD colspan='3'>10HREGN</TD> </TR>
+<TR> <TD><a href='javascript:addObject(305)'><img src='/img/plus.gif' width='12' height='12' border='0' alt=''></a></TD> <TD>   </TD> <TD nowrap>11HØA3</TD> <TD>   </TD> <TD colspan='3'>11HØA3</TD> </TR>
+<TR> <TD><a href='javascript:addObject(306)'><img src='/img/plus.gif' width='12' height='12' border='0' alt=''></a></TD> <TD>   </TD> <TD nowrap>12HØA3</TD> <TD>   </TD> <TD colspan='3'>12HØA3</TD> </TR>
+<TR> <TD><a href='javascript:addObject(307)'><img src='/img/plus.gif' width='12' height='12' border='0' alt=''></a></TD> <TD>   </TD> <TD nowrap>11HMMT</TD> <TD>   </TD> <TD colspan='3'>11HMMT</TD> </TR>
+<TR> <TD><a href='javascript:addObject(308)'><img src='/img/plus.gif' width='12' height='12' border='0' alt=''></a></TD> <TD>   </TD> <TD nowrap>10HDATA</TD> <TD>   </TD> <TD colspan='3'>10HDATA</TD> </TR>
+<TR> <TD><a href='javascript:addObject(309)'><img src='/img/plus.gif' width='12' height='12' border='0' alt=''></a></TD> <TD>   </TD> <TD nowrap>10HINF</TD> <TD>   </TD> <TD colspan='3'>10HINF</TD> </TR>
+<TR> <TD><a href='javascript:addObject(310)'><img src='/img/plus.gif' width='12' height='12' border='0' alt=''></a></TD> <TD>   </TD> <TD nowrap>10HMPR</TD> <TD>   </TD> <TD colspan='3'>10HMPR</TD> </TR>
+<TR> <TD><a href='javascript:addObject(311)'><img src='/img/plus.gif' width='12' height='12' border='0' alt=''></a></TD> <TD>   </TD> <TD nowrap>11HETK</TD> <TD>   </TD> <TD colspan='3'>11HETK</TD> </TR>
+
+<TR>
+<TD colspan='7'>&nbsp;</TD>
+</TR>
+<TR>
+<TD colspan='7'><INPUT type='submit' value='Next 10' name='wv_next'></TD>
+</TR>
+</TABLE>
+</TD>
+<TD>&nbsp;</TD>
+<TD>&nbsp;</TD>
+<TD valign='top' nowrap>
+<TABLE cellspacing='0' cellpadding='0' border='0'>
+<TR>
+<TD valign='top' nowrap>
+</TD>
+</TR>
+<TR>
+<TD>&nbsp;</TD>
+</TR>
+<TR>
+<TD>&nbsp;</TD>
+</TR>
+<TR>
+<TD>&nbsp;</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</FORM>
+</td>
+</tr>
+<tr>
+<td id='footertd'>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="700" valign="top" align="left" nowrap><span id="copyright">TimeEdit&nbsp;1.4.8 - Copyright &copy; 1992-2008 </span><a id="copyrighta" href="http://www.timeedit.com/en/" target="_blank">TimeEdit&nbsp;AB</a></td>
+<td width="12" valign="top" align="left" nowrap>&nbsp;</td>
+<td valign="top" align="right" nowrap><a href="http://validator.w3.org/check?uri=referer" target="_blank"><img border="0" src="/img/valid-html401.gif" alt="Valid HTML 4.01" height="20" width="57"/></a></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>

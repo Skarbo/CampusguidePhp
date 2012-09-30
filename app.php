@@ -31,6 +31,8 @@ $mapping[ MapAppCampusguideMainController::$CONTROLLER_NAME ][ CampusguideApi::M
 $mapping[ MapAppCampusguideMainController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = MapAppCampusguideMainView::class_();
 $mapping[ BuildingAppCampusguideMainController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = BuildingAppCampusguideMainController::class_();
 $mapping[ BuildingAppCampusguideMainController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = BuildingAppCampusguideMainView::class_();
+$mapping[ ElementBuildingAppCampusguideMainController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = ElementBuildingAppCampusguideMainController::class_();
+$mapping[ ElementBuildingAppCampusguideMainController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = ElementBuildingAppCampusguideMainView::class_();
 $mapping[ "" ] = $mapping[ MapAppCampusguideMainController::$CONTROLLER_NAME ];
 
 // Create KillHandler
@@ -93,7 +95,6 @@ class AppOutputHandler extends OutputHandler
         //$doctype = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n";
         $doctype = "<!DOCTYPE html>";
 
-
         return $doctype . $output;
 
     }
@@ -107,7 +108,7 @@ $campusguide_api->setKillHandler( new AppKillHandler() );
 $campusguide_api->setOutputHandler( new AppOutputHandler() );
 
 // Do request
-$campusguide_api->doRequest(  $mapping  );
+$campusguide_api->doRequest( $mapping );
 
 $campusguide_api->destruct();
 

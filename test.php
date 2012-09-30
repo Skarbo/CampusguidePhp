@@ -27,7 +27,7 @@ class AllTests extends TestSuite
         parent::TestSuite( "All tests" );
 
         //$this->add( new FacilityDaoTest() );
-//         $this->add( new BuildingDaoTest() );
+        //         $this->add( new BuildingDaoTest() );
         //$this->add( new ElementBuildingDaoTest() );
         //$this->add( new TypeElementBuildingDaoTest() );
         //$this->add( new GroupTypeElementBuildingDaoTest() );
@@ -39,19 +39,26 @@ class AllTests extends TestSuite
 
 
         //$this->add( new FacilitiesCampusguideRestControllerTest() );
-//         $this->add( new BuildingsCampusguideRestControllerTest() );
+        //         $this->add( new BuildingsCampusguideRestControllerTest() );
         //$this->add( new FloorsBuildingCampusguideRestControllerTest() );
         //$this->add( new ElementsBuildingCampusguideRestControllerTest() );
         //$this->add( new TypesElementBuildingCampusguideRestControllerTest() );
         //$this->add( new GroupsTypeElementBuildingCampusguideRestControllerTest() );
-//         $this->add( new SectionsBuildingCampusguideRestControllerTest() );
+        //         $this->add( new SectionsBuildingCampusguideRestControllerTest() );
         //$this->add( new SearchCampusguideRestControllerTest() );
 
 
         //$this->add( new DbbackupHandlerTest() );
-//         $this->add(new QueueHandlerTest() );
+        //         $this->add(new QueueHandlerTest() );
 
-$this->add(new BuildingCampusguideCommandControllerTest());
+
+        //$this->add(new BuildingCampusguideCommandControllerTest());
+
+
+//                 $this->add( new TypesTimeeditScheduleWebsiteParserTest() );
+//         $this->add( new TypesScheduleWebsiteHandlerTest() );
+//         $this->add( new EntriesTimeeditScheduleWebsiteParserTest() );
+// $this->add( new EntriesScheduleWebsiteHandlerTest() );
 
     }
 

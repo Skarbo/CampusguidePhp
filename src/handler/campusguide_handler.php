@@ -39,6 +39,27 @@ class CampusguideHandler extends Handler
      */
     private $queueDao;
 
+    /**
+     * @var EntryScheduleDao
+     */
+    private $entryScheduleDao;
+    /**
+     * @var FacultyScheduleDao
+     */
+    private $facultyScheduleDao;
+    /**
+     * @var ProgramScheduleDao
+     */
+    private $programScheduleDao;
+    /**
+     * @var RoomScheduleDao
+     */
+    private $roomScheduleDao;
+    /**
+     * @var WebsiteScheduleDao
+     */
+    private $websiteScheduleDao;
+
     // /VARIABLES
 
 
@@ -55,6 +76,13 @@ class CampusguideHandler extends Handler
         $this->setGroupTypeElementBuildingDao( new GroupTypeElementBuildingDbDao( $dbApi ) );
         $this->setFloorBuildingDao( new FloorBuildingDbDao( $dbApi ) );
         $this->setQueueDao( new QueueDbDao( $dbApi ) );
+
+        $this->setEntryScheduleDao( new EntryScheduleDbDao( $dbApi ) );
+        $this->setFacultyScheduleDao( new FacultyScheduleDbDao( $dbApi ) );
+        $this->setGroupScheduleDao( new GroupScheduleDbDao( $dbApi ) );
+        $this->setProgramScheduleDao( new ProgramScheduleDbDao( $dbApi ) );
+        $this->setRoomScheduleDao( new RoomScheduleDbDao( $dbApi ) );
+        $this->setWebsiteScheduleDao( new WebsiteScheduleDbDao( $dbApi ) );
     }
 
     // /CONSTRUCTOR
@@ -190,6 +218,108 @@ class CampusguideHandler extends Handler
     {
         $this->queueDao = $queueDao;
     }
+
+    // ... SCHEDULE
+
+
+    /**
+     * @return EntryScheduleDao
+     */
+    public function getEntryScheduleDao()
+    {
+        return $this->entryScheduleDao;
+    }
+
+    /**
+     * @param EntryScheduleDao $entryScheduleDao
+     */
+    public function setEntryScheduleDao( EntryScheduleDao $entryScheduleDao )
+    {
+        $this->entryScheduleDao = $entryScheduleDao;
+    }
+
+    /**
+     * @return FacultyScheduleDao
+     */
+    public function getFacultyScheduleDao()
+    {
+        return $this->facultyScheduleDao;
+    }
+
+    /**
+     * @param FacultyScheduleDao $facultyScheduleDao
+     */
+    public function setFacultyScheduleDao( FacultyScheduleDao $facultyScheduleDao )
+    {
+        $this->facultyScheduleDao = $facultyScheduleDao;
+    }
+
+    /**
+     * @return GroupScheduleDao
+     */
+    public function getGroupScheduleDao()
+    {
+        return $this->groupTypeElementBuildingDao;
+    }
+
+    /**
+     * @param GroupScheduleDao $groupTypeElementBuildingDao
+     */
+    public function setGroupScheduleDao( GroupScheduleDao $groupTypeElementBuildingDao )
+    {
+        $this->groupTypeElementBuildingDao = $groupTypeElementBuildingDao;
+    }
+
+    /**
+     * @return ProgramScheduleDao
+     */
+    public function getProgramScheduleDao()
+    {
+        return $this->programScheduleDao;
+    }
+
+    /**
+     * @param ProgramScheduleDao $programScheduleDao
+     */
+    public function setProgramScheduleDao( ProgramScheduleDao $programScheduleDao )
+    {
+        $this->programScheduleDao = $programScheduleDao;
+    }
+
+    /**
+     * @return RoomScheduleDao
+     */
+    public function getRoomScheduleDao()
+    {
+        return $this->roomScheduleDao;
+    }
+
+    /**
+     * @param RoomScheduleDao $roomScheduleDao
+     */
+    public function setRoomScheduleDao( RoomScheduleDao $roomScheduleDao )
+    {
+        $this->roomScheduleDao = $roomScheduleDao;
+    }
+
+    /**
+     * @return WebsiteScheduleDao
+     */
+    public function getWebsiteScheduleDao()
+    {
+        return $this->websiteScheduleDao;
+    }
+
+    /**
+     * @param WebsiteScheduleDao $websiteScheduleDao
+     */
+    public function setWebsiteScheduleDao( WebsiteScheduleDao $websiteScheduleDao )
+    {
+        $this->websiteScheduleDao = $websiteScheduleDao;
+    }
+
+    // ... /SCHEDULE
+
 
     // /FUNCTIONS
 

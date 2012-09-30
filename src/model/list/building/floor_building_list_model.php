@@ -53,7 +53,7 @@ class FloorBuildingListModel extends StandardListModel
      */
     public function sortByOrder()
     {
-        usort( $this->getArray(),
+        usort( $this->array,
                 function ( FloorBuildingModel $floorLeft, FloorBuildingModel $floorRight )
                 {
                     return $floorLeft->getOrder() == $floorRight->getOrder() ? 0 : ( $floorLeft->getOrder() < $floorRight->getOrder() ? -1 : 1 );

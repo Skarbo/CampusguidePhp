@@ -87,7 +87,7 @@ class BuildingAppCampusguideMainView extends AppCampusguideMainView implements B
 
         $this->getActionbarPresenter()->addViewControl(
                 Xhtml::div( Xhtml::div( $this->getBuilding()->getName() ) )->addContent(
-                        Xhtml::div( $this->getFacility()->getName() ) )->class_( "building" ) );
+                        Xhtml::div( $this->getFacility()->getName() ) )->class_( "double" ) );
 
         $this->getActionbarPresenter()->addActionButton(
                 Xhtml::div()->attr( "data-icon", "search" )->title( "Search" )->class_( "actionbar_menu_search" ) );

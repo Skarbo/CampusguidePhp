@@ -65,12 +65,12 @@
     margin-left: 0.5em;
 }
 
-#app_wrapper .action_bar .view_control .building > *:first-child {
+#app_wrapper .action_bar .view_control .double > *:first-child {
     font-size: 0.8em;
     font-weight: bold;
 }
 
-#app_wrapper .action_bar .view_control .building > * + * {
+#app_wrapper .action_bar .view_control .double > * + * {
     font-size: 0.6em;
 }
 

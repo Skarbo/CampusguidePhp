@@ -10,7 +10,8 @@ class ElementBuildingDbResource
 
     private $fieldId = "element_id";
     private $fieldSectionId = "section_id";
-    private $fieldTypeId = "element_type_id";
+    private $fieldType = "element_type";
+    private $fieldTypeGroup = "element_type_group";
     private $fieldFloorId = "floor_id";
     private $fieldName = "element_name";
     private $fieldCoordinates = "element_coordinates";
@@ -45,11 +46,6 @@ class ElementBuildingDbResource
         return $this->fieldSectionId;
     }
 
-    public function getFieldTypeId()
-    {
-        return $this->fieldTypeId;
-    }
-
     public function getFieldFloorId()
     {
         return $this->fieldFloorId;
@@ -81,6 +77,16 @@ class ElementBuildingDbResource
     public function getFieldDeleted()
     {
         return $this->fieldDeleted;
+    }
+
+    public function getFieldType()
+    {
+        return $this->fieldType;
+    }
+
+    public function getFieldTypeGroup()
+    {
+        return $this->fieldTypeGroup;
     }
 
 }

@@ -82,8 +82,6 @@ class ElementsBuildingCampusguideRestControllerTest extends StandardCampusguideR
                 "Room Building floor id", $testCase );
         ElementBuildingDaoTest::assertEqualsFunction( $modelOne->getCoordinates(), $modelTwo->getCoordinates(),
                 "Room Building coordinates", $testCase );
-        ElementBuildingDaoTest::assertEqualsFunction( $modelOne->getTypeId(), $modelTwo->getTypeId(),
-                "Room Building element type id", $testCase );
         ElementBuildingDaoTest::assertEqualsFunction( $modelOne->getSectionId(), $modelTwo->getSectionId(),
                 "Room Building section", $testCase );
     }
@@ -100,7 +98,6 @@ class ElementsBuildingCampusguideRestControllerTest extends StandardCampusguideR
         ElementBuildingDaoTest::assertNotNullFunction( $model->getName(), "Room Building name", $testCase );
         ElementBuildingDaoTest::assertNotNullFunction( $model->getCoordinates(), "Room Building coordinates",
                 $testCase );
-        ElementBuildingDaoTest::assertNotNullFunction( $model->getTypeId(), "Room Building element type id", $testCase );
         ElementBuildingDaoTest::assertNotNullFunction( $model->getSectionId(), "Room Building section id", $testCase );
     }
 
@@ -116,12 +113,6 @@ class ElementsBuildingCampusguideRestControllerTest extends StandardCampusguideR
         // Add Building
         $building = $this->addBuilding( $facility->getId() );
 
-        // Add Element Type Group
-        $elementTypeGroup = $this->addGroupTypeElement();
-
-        // Add Element Type
-        $elementType = $this->addTypeElement( $elementTypeGroup->getId() );
-
         // Add Floor
         $floor = $this->addFloor( $building->getId() );
 
@@ -129,7 +120,7 @@ class ElementsBuildingCampusguideRestControllerTest extends StandardCampusguideR
         $section = $this->addSection( $building->getId() );
 
         // Create Element
-        return ElementBuildingDaoTest::createElementBuildingTest( $floor->getId(), $elementType->getId(),
+        return ElementBuildingDaoTest::createElementBuildingTest( $floor->getId(),
                 $section->getId() );
 
     }

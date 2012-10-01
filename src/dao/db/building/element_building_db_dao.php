@@ -29,8 +29,9 @@ class ElementBuildingDbDao extends StandardDbDao implements ElementBuildingDao
                 Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldFloorId() ),
                 Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldName() ),
                 Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldCoordinates() ),
-                Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldTypeId() ),
                 Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldSectionId() ),
+                Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldType() ),
+                Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldType ),
                 Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldDeleted() ) );
 
         $elementBuilding->setId(
@@ -85,7 +86,7 @@ class ElementBuildingDbDao extends StandardDbDao implements ElementBuildingDao
         $fields[ Resource::db()->elementBuilding()->getFieldFloorId() ] = ":floorId";
         $binds[ "floorId" ] = $foreignId;
 
-        if ( !is_null( $model->getName() ) && !$isInsert )
+        if ( !is_null( $model->getName() ) )
         {
             $fields[ Resource::db()->elementBuilding()->getFieldName() ] = ":name";
             $binds[ "name" ] = $model->getName();
@@ -103,10 +104,16 @@ class ElementBuildingDbDao extends StandardDbDao implements ElementBuildingDao
             $binds[ "sectionId" ] = $model->getSectionId();
         }
 
-        $fields[ Resource::db()->elementBuilding()->getFieldTypeId() ] = $model->getTypeId() ? ":elementTypeId" : SB::$NULL;
-        if ( $model->getTypeId() )
+        if ( !is_null( $model->getType() ) )
         {
-            $binds[ "elementTypeId" ] = $model->getTypeId();
+            $fields[ Resource::db()->elementBuilding()->getFieldType() ] = ":type";
+            $binds[ "type" ] = $model->getType();
+        }
+
+        if ( !is_null( $model->getTypeGroup() ) )
+        {
+            $fields[ Resource::db()->elementBuilding()->getFieldTypeGroup() ] = ":typeGroup";
+            $binds[ "typeGroup" ] = $model->getTypeGroup();
         }
 
         if ( !$isInsert )

@@ -133,14 +133,6 @@ class ElementBuildingHandler extends Handler
             $element->setSectionId( null );
         }
 
-        // Element Type should exist
-        $elementType = $this->getTypeElementBuildingDao()->get( $element->getTypeId() );
-
-        if ( !$elementType )
-        {
-            $element->setTypeId( null );
-        }
-
         // Validate Element
         $this->getElementBuildingValidator()->doValidate( $element );
 

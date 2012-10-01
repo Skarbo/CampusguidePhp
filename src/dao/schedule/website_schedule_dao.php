@@ -17,6 +17,14 @@ interface WebsiteScheduleDao extends StandardDao
 
     // FUNCTIONS
 
+
+    /**
+     * @param integer $websiteId
+     * @param integer $buildingIs
+     * @return boolean True if added
+     */
+    public function addBuilding( $websiteId, $buildingId );
+
     // /FUNCTIONS
 
 

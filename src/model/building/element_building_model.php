@@ -6,8 +6,12 @@ class ElementBuildingModel extends Model implements StandardModel
     // VARIABLES
 
 
+    const TYPE_GROUP_ROOM = "room";
+
     public $id;
     public $sectionId;
+    public $type;
+    public $typeGroup;
     public $typeId;
     public $floorId;
     public $name;
@@ -150,6 +154,26 @@ class ElementBuildingModel extends Model implements StandardModel
     public function setDeleted( $deleted )
     {
         $this->deleted = $deleted;
+    }
+
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    public function getTypeGroup()
+    {
+        return $this->typeGroup;
+    }
+
+    public function setType( $type )
+    {
+        $this->type = $type;
+    }
+
+    public function setTypeGroup( $typeGroup )
+    {
+        $this->typeGroup = $typeGroup;
     }
 
 }

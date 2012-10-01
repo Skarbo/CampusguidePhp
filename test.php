@@ -59,6 +59,7 @@ class AllTests extends TestSuite
 //         $this->add( new TypesScheduleWebsiteHandlerTest() );
 //         $this->add( new EntriesTimeeditScheduleWebsiteParserTest() );
 // $this->add( new EntriesScheduleWebsiteHandlerTest() );
+        $this->add(new RoomScheduleDaoTest());
 
     }
 

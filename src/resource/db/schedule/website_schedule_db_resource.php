@@ -7,12 +7,16 @@ class WebsiteScheduleDbResource
 
 
     private $table = "schedule_website";
+    private $tableBuilding = "schedule_website_building";
 
     private $fieldId = "website_id";
     private $fieldUrl = "website_url";
     private $fieldType = "website_type";
     private $fieldParsed = "website_parsed";
     private $fieldRegistered = "website_registered";
+
+    private $fieldBuildingWebsiteId = "website_id";
+    private $fieldBuildingBuildingId = "building_id";
 
     // /VARIABLES
 
@@ -56,9 +60,23 @@ class WebsiteScheduleDbResource
         return $this->fieldRegistered;
     }
 
-
     // /FUNCTIONS
 
+
+    public function getTableBuilding()
+    {
+        return $this->tableBuilding;
+    }
+
+    public function getFieldBuildingWebsiteId()
+    {
+        return $this->fieldBuildingWebsiteId;
+    }
+
+    public function getFieldBuildingBuildingId()
+    {
+        return $this->fieldBuildingBuildingId;
+    }
 
 }
 

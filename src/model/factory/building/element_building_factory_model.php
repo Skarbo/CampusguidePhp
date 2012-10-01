@@ -19,15 +19,9 @@ class ElementBuildingFactoryModel extends ClassCore
 
 
     /**
-     * @param int $floorId
-     * @param string $name
-     * @param string $coordinates
-     * @param int $typeId
-     * @param int $sectionId
-     * @param boolean $deleted
      * @return ElementBuildingModel
      */
-    public static function createElementBuilding( $floorId, $name, $coordinates, $typeId, $sectionId, $deleted = false )
+    public static function createElementBuilding( $floorId, $name, $coordinates, $sectionId, $type = "", $typeGroup = "", $deleted = false )
     {
 
         // Initiate model
@@ -36,9 +30,10 @@ class ElementBuildingFactoryModel extends ClassCore
         $elementBuilding->setFloorId( intval( $floorId ) );
         $elementBuilding->setName( Core::utf8Encode( $name ) );
         $elementBuilding->setCoordinates( Resource::generateCoordinatesToString( $coordinates ) );
-        $elementBuilding->setTypeId( intval( $typeId ) );
+        $elementBuilding->setType( $type );
+        $elementBuilding->setTypeGroup( $typeGroup );
         $elementBuilding->setSectionId( intval( $sectionId ) );
-        $elementBuilding->setDeleted( (boolean) $deleted );
+        $elementBuilding->setDeleted( ( boolean ) $deleted );
 
         // Return model
         return $elementBuilding;

@@ -17,6 +17,13 @@ interface RoomScheduleDao extends TypeScheduleDao
 
     // FUNCTIONS
 
+
+
+    /**
+     * Merge Rooms with similar Elements
+     */
+    public function mergeElements();
+
     // /FUNCTIONS
 
 

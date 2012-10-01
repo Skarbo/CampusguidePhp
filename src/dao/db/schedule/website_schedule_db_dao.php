@@ -114,6 +114,28 @@ class WebsiteScheduleDbDao extends StandardDbDao implements WebsiteScheduleDao
     // ... /CREATE
 
 
+    /**
+     * @see WebsiteScheduleDao::addBuilding()
+     * @throws DbException
+     */
+    public function addBuilding( $websiteId, $buildingId )
+    {
+        $insertQuery = new InsertQueryDbCore();
+
+        $insertBuilder = new InsertSqlbuilderDbCore();
+        $insertBuilder->setInto( Resource::db()->websiteSchedule()->getTableBuilding() );
+        $insertBuilder->setSetValues(
+                array ( Resource::db()->websiteSchedule()->getFieldBuildingWebsiteId() => ":websiteId",
+                        Resource::db()->websiteSchedule()->getFieldBuildingBuildingId() => ":buildingId" ) );
+        $insertQuery->setQuery( $insertBuilder );
+
+        $insertQuery->addBind( array ( "websiteId" => $websiteId, "buildingId" => $buildingId ) );
+
+        $result = $this->getDbApi()->query( $insertQuery );
+
+        return $result->isExecute();
+    }
+
     // /FUNCTIONS
 
 

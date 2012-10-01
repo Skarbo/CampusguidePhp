@@ -35,7 +35,7 @@ class FloorBuildingFactoryModel extends ClassCore
         $floorBuilding->setOrder( intval( $order ) );
         $floorBuilding->setBuildingId( intval( $buildingId ) );
         $floorBuilding->setName( Core::utf8Encode( $name ) );
-        $floorBuilding->setCoordinates( $coordinates );
+        $floorBuilding->setCoordinates(Resource::generateCoordinatesToString( $coordinates ));
         $floorBuilding->setMain( intval( $main ) );
 
         // Return model

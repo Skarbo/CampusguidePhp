@@ -127,10 +127,9 @@ abstract class CampusguideControllerTest extends WebTest
     /**
      * @return ElementBuildingModel
      */
-    protected function addElement( $floorId, $elementTypeId = null, $sectionId = null )
+    protected function addElement( $floorId, $sectionId = null, $type = "", $typeGroup = "" )
     {
-        $element = ElementBuildingDaoTest::createElementBuildingTest( $floorId, $elementTypeId,
-                $sectionId );
+        $element = ElementBuildingDaoTest::createElementBuildingTest( $floorId, $sectionId, $type, $typeGroup );
 
         $element->setId( $this->elementBuildingDao->add( $element, $floorId ) );
 

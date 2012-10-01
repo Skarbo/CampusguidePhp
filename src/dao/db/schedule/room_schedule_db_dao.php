@@ -168,6 +168,99 @@ class RoomScheduleDbDao extends TypeScheduleDbDao implements RoomScheduleDao
     // ... /CREATE
 
 
+    /**
+     * @see RoomScheduleDao::mergeElements()
+     */
+    public function mergeElements()
+    {
+        /*
+        UPDATE schedule_room SET schedule_room.element_id = (
+                SELECT DISTINCT building_element.element_id
+                FROM schedule_website
+
+                LEFT JOIN schedule_website_building ON
+                schedule_website.website_id = schedule_website_building.website_id
+
+                LEFT JOIN building ON
+                schedule_website_building.building_id = building.building_id
+
+                LEFT JOIN building_floor ON
+                building.building_id = building_floor.building_id
+
+                LEFT JOIN building_element ON
+                building_floor.floor_id = building_element.floor_id AND building_element.element_type_group = 'room'
+
+                WHERE
+                schedule_room.website_id = schedule_website.website_id AND
+                schedule_room.room_name_short LIKE building_element.element_name)
+                */
+
+        $updateQuery = new UpdateQueryDbCore();
+
+        // Select Element builder
+        $selectElementBuilder = new SelectSqlbuilderDbCore();
+        $selectElementBuilder->setExpression(
+                Core::cc( " ", SB::$DISTINCT, Resource::db()->roomSchedule()->getFieldElementId() ) );
+        $selectElementBuilder->setFrom( Resource::db()->websiteSchedule()->getTable() );
+        $selectElementBuilder->addJoin(
+                SB::join( Resource::db()->websiteSchedule()->getTableBuilding(),
+                        SB::equ(
+                                SB::pun( Resource::db()->websiteSchedule()->getTable(),
+                                        Resource::db()->websiteSchedule()->getFieldId() ),
+                                SB::pun( Resource::db()->websiteSchedule()->getTableBuilding(),
+                                        Resource::db()->websiteSchedule()->getFieldBuildingWebsiteId() ) ) ) );
+        $selectElementBuilder->addJoin(
+                SB::join( Resource::db()->building()->getTable(),
+                        SB::equ(
+                                SB::pun( Resource::db()->websiteSchedule()->getTableBuilding(),
+                                        Resource::db()->websiteSchedule()->getFieldBuildingBuildingId() ),
+                                SB::pun( Resource::db()->building()->getTable(),
+                                        Resource::db()->building()->getFieldId() ) ) ) );
+        $selectElementBuilder->addJoin(
+                SB::join( Resource::db()->floorBuilding()->getTable(),
+                        SB::equ(
+                                SB::pun( Resource::db()->building()->getTable(),
+                                        Resource::db()->building()->getFieldId() ),
+                                SB::pun( Resource::db()->floorBuilding()->getTable(),
+                                        Resource::db()->floorBuilding()->getFieldBuildingId() ) ) ) );
+        $selectElementBuilder->addJoin(
+                SB::join( Resource::db()->elementBuilding()->getTable(),
+                        SB::and_(
+                                SB::equ(
+                                        SB::pun( Resource::db()->floorBuilding()->getTable(),
+                                                Resource::db()->floorBuilding()->getFieldId() ),
+                                        SB::pun( Resource::db()->elementBuilding()->getTable(),
+                                                Resource::db()->elementBuilding()->getFieldFloorId() ) ),
+                                SB::equ(
+                                        SB::pun( Resource::db()->elementBuilding()->getTable(),
+                                                Resource::db()->elementBuilding()->getFieldTypeGroup() ), ":typeGroup" ) ) ) );
+        $selectElementBuilder->setWhere(
+                SB::and_(
+                        SB::equ(
+                                SB::pun( Resource::db()->roomSchedule()->getTable(),
+                                        Resource::db()->roomSchedule()->getFieldWebsiteId() ),
+                                SB::pun( Resource::db()->websiteSchedule()->getTable(),
+                                        Resource::db()->websiteSchedule()->getFieldId() ) ),
+                        SB::like(
+                                SB::pun( Resource::db()->roomSchedule()->getTable(),
+                                        Resource::db()->roomSchedule()->getFieldNameShort() ),
+                                SB::pun( Resource::db()->elementBuilding()->getTable(),
+                                        Resource::db()->elementBuilding()->getFieldName() ) ) ) );
+
+        $updateBuilder = new UpdateSqlbuilderDbCore();
+        $updateBuilder->setTable( Resource::db()->roomSchedule()->getTable() );
+        $updateBuilder->setSet(
+                array (
+                        Resource::db()->roomSchedule()->getFieldElementId() => SB::par( $selectElementBuilder->build() ) ) );
+        $updateQuery->setQuery( $updateBuilder );
+
+        $updateQuery->addBind( array ( "typeGroup" => ElementBuildingModel::TYPE_GROUP_ROOM ) );
+
+        $result = $this->getDbApi()->query( $updateQuery );
+
+        return $result->getAffectedRows();
+    }
+
     // /FUNCTIONS
 
 

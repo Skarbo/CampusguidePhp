@@ -9,56 +9,56 @@ class CampusguideHandler extends Handler
     /**
      * @var FacilityDao
      */
-    private $facilityDao;
+    protected $facilityDao;
     /**
      * @var SectionBuildingDao
      */
-    private $sectionBuildingDao;
+    protected $sectionBuildingDao;
     /**
      * @var BuildingDao
      */
-    private $buildingDao;
+    protected $buildingDao;
     /**
      * @var ElementBuildingDao
      */
-    private $elementBuildingDao;
+    protected $elementBuildingDao;
     /**
      * @var TypeElementBuildingDao
      */
-    private $typeElementBuildingDao;
+    protected $typeElementBuildingDao;
     /**
      * @var GroupTypeElementBuildingDao
      */
-    private $groupTypeElementBuildingDao;
+    protected $groupTypeElementBuildingDao;
     /**
      * @var FloorBuildingDao
      */
-    private $floorBuildingDao;
+    protected $floorBuildingDao;
     /**
      * @var QueueDao
      */
-    private $queueDao;
+    protected $queueDao;
 
     /**
      * @var EntryScheduleDao
      */
-    private $entryScheduleDao;
+    protected $entryScheduleDao;
     /**
      * @var FacultyScheduleDao
      */
-    private $facultyScheduleDao;
+    protected $facultyScheduleDao;
     /**
      * @var ProgramScheduleDao
      */
-    private $programScheduleDao;
+    protected $programScheduleDao;
     /**
      * @var RoomScheduleDao
      */
-    private $roomScheduleDao;
+    protected $roomScheduleDao;
     /**
      * @var WebsiteScheduleDao
      */
-    private $websiteScheduleDao;
+    protected $websiteScheduleDao;
 
     // /VARIABLES
 

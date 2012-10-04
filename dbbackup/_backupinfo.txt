@@ -442,3 +442,9 @@ Wed, 26 Sep 2012 16:53:26 GMT - localhost - campusguide_dev, campusguide_test, c
 Wed, 26 Sep 2012 20:45:01 GMT - localhost - campusguide_dev, campusguide_test, campusguide_prod
 Wed, 26 Sep 2012 22:49:57 GMT - localhost - campusguide_dev, campusguide_test, campusguide_prod
 Thu, 27 Sep 2012 11:25:04 GMT - localhost - campusguide_dev, campusguide_test, campusguide_prod
+Mon, 01 Oct 2012 07:45:42 GMT - localhost - campusguide_dev, campusguide_test, campusguide_prod
+Mon, 01 Oct 2012 18:37:25 GMT - localhost - campusguide_dev, campusguide_test, campusguide_prod
+Tue, 02 Oct 2012 08:18:39 GMT - localhost - campusguide_dev, campusguide_test, campusguide_prod
+Wed, 03 Oct 2012 12:10:01 GMT - localhost - campusguide_dev, campusguide_test, campusguide_prod
+Wed, 03 Oct 2012 14:14:24 GMT - localhost - campusguide_dev, campusguide_test, campusguide_prod
+Wed, 03 Oct 2012 17:03:22 GMT - localhost - campusguide_dev, campusguide_test, campusguide_prod

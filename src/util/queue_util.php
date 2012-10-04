@@ -6,8 +6,8 @@ class QueueUtil extends ClassCore
     // VARIABLES
 
 
-    public static $SPLITTER_ARGUMENTS = "|";
-    public static $SPLITTER_ARGUMENT = "$";
+    public static $SPLITTER_ARGUMENTS = "$";
+    public static $SPLITTER_ARGUMENT = "=";
     public static $SPLITTER_ARGUMENT_VALUE = ",";
 
     // /VARIABLES
@@ -24,65 +24,36 @@ class QueueUtil extends ClassCore
 
     /**
      * @param mixed $arguments
-     * @return string "variable$value[,value]|..."
+     * @return string
      */
     public static function generateArgumentsToString( $arguments )
     {
-        if ( is_array( $arguments ) )
-        {
-            return Core::arrayImplode( $arguments, self::$SPLITTER_ARGUMENTS, self::$SPLITTER_ARGUMENT,
-                    function ( $value )
-                    {
-                        return is_array( $value ) ? implode( QueueUtil::$SPLITTER_ARGUMENT_VALUE, $value ) : $value;
-                    } );
-        }
-        else if ( is_string( $arguments ) )
-        {
-            return $arguments;
-        }
-        return "";
+        return is_array( $arguments ) ? http_build_query( $arguments ) : $arguments;
     }
 
     /**
      * @param mixed $arguments
-     * @return array array( "variable" = "value", ... )
+     * @return array
      */
     public static function generateArgumentsToArray( $arguments )
     {
         if ( is_string( $arguments ) )
         {
-            return Core::arrayExplode( $arguments, self::$SPLITTER_ARGUMENTS, self::$SPLITTER_ARGUMENT,
-                    function ( $value )
-                    {
-                        return strpos($value, QueueUtil::$SPLITTER_ARGUMENT_VALUE) !== false ? explode( QueueUtil::$SPLITTER_ARGUMENT_VALUE, $value ) : $value;
-                    } );
+            $array = array ();
+            parse_str( $arguments, $array );
+            return $array;
         }
-        else if ( is_array( $arguments ) )
-        {
-            return $arguments;
-        }
-        return array ();
+        return $arguments;
     }
 
+    /**
+     * @param array $argument1
+     * @param array $argument2
+     * @return array
+     */
     public static function mergeArguments( array $argument1, array $argument2 )
     {
-        $newArgument = $argument1;
-
-        foreach ( $argument2 as $key => $value )
-        {
-            if ( array_key_exists( $key, $newArgument ) && ( is_array( $value ) || is_array( $newArgument[ $key ] ) ) )
-            {
-                $newArgument[ $key ] = array_filter( array_merge( array(), array_unique(
-                        array_merge( is_array( $value ) ? $value : array ( $value ),
-                                is_array( $newArgument[ $key ] ) ? $newArgument[ $key ] : array ( $newArgument[ $key ] ) ) ) ), function( $var ) { return Core::empty_($var); } );
-            }
-            else
-            {
-                $newArgument[ $key ] = $value;
-            }
-        }
-
-        return $newArgument;
+        return Core::arrayMerge( $argument1, $argument2 );
     }
 
     // /FUNCTIONS

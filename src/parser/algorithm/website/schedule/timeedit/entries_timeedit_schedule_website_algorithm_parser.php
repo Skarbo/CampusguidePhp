@@ -40,7 +40,7 @@ class EntriesTimeeditScheduleWebsiteAlgorithmParser extends TimeeditWebsiteAlgor
 
         $entryNodes = $html->find( self::$SELECTOR_ENTRIES );
         if ( !$entryNodes )
-            throw new ParserException( "Incorrect entries path", self::PARSER_EXCEPTION_TOOMANYWEEKS );
+            throw new ParserException( "Incorrect entries path", self::PARSER_EXCEPTION_INCORRECTPATH );
 
         $filterFunc = function ( $var )
         {

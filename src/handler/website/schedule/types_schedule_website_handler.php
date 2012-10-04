@@ -6,8 +6,10 @@ class TypesScheduleWebsiteHandler extends Handler
     // VARIABLES
 
 
-    const MODE_ALLPAGES = "allpages";
-    const MODE_FIRSTPAGE = "firstpage";
+    const MODE_ONEPAGE = "onepage";
+    const MODE_MULTIPLEPAGES = "multieplpages";
+
+    public static $MAX_PAGES = 3;
 
     /**
      * @var WebsiteParser
@@ -97,7 +99,10 @@ class TypesScheduleWebsiteHandler extends Handler
     // ... /GETTERS/SETTERS
 
 
-    public function handle( WebsiteScheduleModel $website, TypesScheduleUrlWebsiteHandler $typesUrlHandler, $type, $mode = TypesScheduleWebsiteHandler::MODE_ALLPAGES )
+    /**
+     * @return TypesScheduleResultWebsiteHandler
+     */
+    public function handle( WebsiteScheduleModel $website, TypesScheduleUrlWebsiteHandler $typesUrlHandler, $type, $mode = TypesScheduleWebsiteHandler::MODE_ONEPAGE, $pageStart = 1 )
     {
         $algorithm = $this->getAlgorithm( $type, $website->getType() );
 
@@ -108,15 +113,17 @@ class TypesScheduleWebsiteHandler extends Handler
                     HandlerException::ALGORITHM_NOT_GIVEN );
         }
 
-        $page = 1;
+        $page = $pageStart;
+        $pageCount = 0;
+        $result = null;
         do
         {
-            if ( $page == 4 )
-                throw new Exception( "To many pages!" );
-                // Parse website
+            // Parse website
             $result = TypesScheduleAlgorithmResultParser::get_(
                     $this->getWebsiteParser()->parse(
                             $typesUrlHandler->getTypesUrl( $website->getUrl(), $type, $page ), $algorithm ) );
+            $page++;
+            $pageCount++;
 
             // Handle types
             if ( $result )
@@ -124,8 +131,18 @@ class TypesScheduleWebsiteHandler extends Handler
                 $this->getTypesScheduleHandler()->handle( $website->getId(), $result->getTypes() );
             }
 
-            $page++;
-        } while ( $mode == TypesScheduleWebsiteHandler::MODE_ALLPAGES && $result && $page <= $result->getPages() );
+            // Exceed max pages at one parsing
+            if ( $pageCount >= self::$MAX_PAGES )
+                return new TypesScheduleResultWebsiteHandler( $result->getPage(), $result->getPages(), false,
+                        TypesScheduleResultWebsiteHandler::CODE_EXCEEDPAGES, $pageCount );
+
+//                 // Empty types
+//             if ( $result->getTypes() && $result->getTypes()->isEmpty() )
+//                 return new TypesScheduleResultWebsiteHandler( $result->getPage(), $result->getPages(), true,
+//                         TypesScheduleResultWebsiteHandler::CODE_EMPTYTYPES, $pageCount );
+        } while ( $mode == TypesScheduleWebsiteHandler::MODE_MULTIPLEPAGES && $pageCount < self::$MAX_PAGES && $result && $page <= $result->getPages() );
+
+        return new TypesScheduleResultWebsiteHandler( $result->getPage(), $result->getPages(), true );
     }
 
     /**
@@ -138,6 +155,7 @@ class TypesScheduleWebsiteHandler extends Handler
         switch ( $websiteType )
         {
             case WebsiteScheduleModel::TYPE_TIMEEDIT :
+            case WebsiteScheduleModel::TYPE_TIMEEDIT_TEST:
                 return new TypesTimeeditScheduleWebsiteAlgorithmParser( $type );
                 break;
         }

@@ -115,6 +115,51 @@ class WebsiteScheduleDbDao extends StandardDbDao implements WebsiteScheduleDao
 
 
     /**
+     * @see StandardDbDao::search()
+     * @return WebsiteScheduleDbDao
+     */
+    public function get( $id )
+    {
+        return parent::get( $id );
+    }
+
+    /**
+     * @see StandardDbDao::search()
+     * @return WebsiteScheduleDbDao
+     */
+    public function getAll()
+    {
+        return parent::getAll();
+    }
+
+    /**
+     * @see StandardDbDao::search()
+     * @return WebsiteScheduleDbDao
+     */
+    public function getForeign( array $foreignIds )
+    {
+        return parent::getForeign( $foreignIds );
+    }
+
+    /**
+     * @see StandardDbDao::search()
+     * @return WebsiteScheduleDbDao
+     */
+    public function getList( array $ids )
+    {
+        return parent::getList( $ids );
+    }
+
+    /**
+     * @see StandardDbDao::search()
+     * @return WebsiteScheduleDbDao
+     */
+    public function search( $search, $foreignId = null )
+    {
+        return parent::search( $search, $foreignId );
+    }
+
+    /**
      * @see WebsiteScheduleDao::addBuilding()
      * @throws DbException
      */

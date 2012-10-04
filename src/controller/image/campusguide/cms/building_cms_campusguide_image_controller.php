@@ -38,7 +38,7 @@ class BuildingCmsCampusguideImageController extends CmsCampusguideImageControlle
     {
         parent::__construct( $api, $view );
         $this->setQueueHandler(
-                new QueueHandler( $this->getCampusguideHandler()->getQueueDao(),
+                new QueueHandler( $this->getCampusguideHandler(),
                         new QueueValidator( $this->getLocale() ) ) );
 
         $this->setFloors( new FloorBuildingListModel() );

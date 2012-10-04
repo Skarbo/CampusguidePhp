@@ -6,6 +6,9 @@ abstract class CampusguideControllerTest extends WebTest
     // VARIABLES
 
 
+    private static $PAGE_COMMAND = "command.php";
+    private static $PAGE_API_REST = "api_rest.php";
+
     /**
      * @var FacilityDao
      */
@@ -34,6 +37,10 @@ abstract class CampusguideControllerTest extends WebTest
      * @var FloorBuildingDao
      */
     protected $floorBuildingDao;
+    /**
+     * @var CampusguideHandlerTest
+     */
+    protected $campusguideHandlerTest;
 
     // /VARIABLES
 
@@ -52,6 +59,8 @@ abstract class CampusguideControllerTest extends WebTest
         $this->typeElementBuildingDao = new TypeElementBuildingDbDao( $this->getDbApi() );
         $this->groupTypeElementBuildingDao = new GroupTypeElementBuildingDbDao( $this->getDbApi() );
         $this->floorBuildingDao = new FloorBuildingDbDao( $this->getDbApi() );
+
+        $this->campusguideHandlerTest = new CampusguideHandlerTest($this->getDbApi());
     }
 
     // /CONSTRUCTOR
@@ -63,6 +72,8 @@ abstract class CampusguideControllerTest extends WebTest
     public function setUp()
     {
         parent::setUp();
+
+        $this->getCampusguideHandlerTest()->removeAll();
 
         $this->facilityDao->removeAll();
         $this->buildingDao->removeAll();
@@ -76,10 +87,22 @@ abstract class CampusguideControllerTest extends WebTest
     // ... GET
 
 
+    public static function getCommandWebsite( $arguments )
+    {
+        return self::getWebsiteApi( self::$PAGE_COMMAND, $arguments );
+    }
+
     public static function getRestWebsite( $arguments )
     {
-        return sprintf( "http://%s%s/api_rest.php?/%s&mode=3", $_SERVER[ "HTTP_HOST" ],
-                dirname( $_SERVER[ "REQUEST_URI" ] ), $arguments );
+        return self::getWebsiteApi( self::$PAGE_API_REST, $arguments );
+    }
+
+    /**
+     * @return CampusguideHandlerTest
+     */
+    public function getCampusguideHandlerTest()
+    {
+        return $this->campusguideHandlerTest;
     }
 
     // ... /GET

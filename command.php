@@ -32,6 +32,8 @@ $campusguide_api->setDebug(
 $mapping = array ();
 $mapping[ BuildingCampusguideCommandController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = BuildingCampusguideCommandController::class_();
 $mapping[ BuildingCampusguideCommandController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = CommandView::class_();
+$mapping[ QueueCampusguideCommandController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = QueueCampusguideCommandController::class_();
+$mapping[ QueueCampusguideCommandController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = CommandView::class_();
 
 // Create KillHandler
 class CommandKillHandler extends ClassCore implements KillHandler

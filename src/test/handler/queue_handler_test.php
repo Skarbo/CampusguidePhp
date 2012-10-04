@@ -26,7 +26,7 @@ class QueueHandlerTest extends DbTest
         parent::__construct( "QueueHandler Test" );
 
         $this->queueDao = new QueueDbDao( $this->getDbApi() );
-        $this->queueHandler = new QueueHandler( $this->queueDao, new QueueValidator( Locale::instance() ) );
+        $this->queueHandler = new QueueHandler( new CampusguideHandler($this->getDbApi()), new QueueValidator( Locale::instance() ) );
     }
 
     // /CONSTRUCTOR

@@ -68,6 +68,7 @@ class EntriesScheduleWebsiteHandlerTest extends ScheduleWebsiteHandlerTest
 
     public static $PATH_ENTRIES_ROOM = "example/timeedit/entries_room.htm";
     public static $PATH_ENTRIES_6FLOOR = "example/timeedit/entries_6floor.htm";
+    public static $PATH_ENTRIES_TOOMANYWEEKS = "example/timeedit/toomanyweeks.htm";
 
     public static $ENTRIES_ROOM_ENTRIES = 14;
     public static $ENTRIES_ROOM_ENTRIES_OCCURENCES = array ( 2, 2, 2, 2, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2 );
@@ -153,8 +154,10 @@ class EntriesScheduleWebsiteHandlerTest extends ScheduleWebsiteHandlerTest
     {
         $website = $this->generateEntryRoomWebsite();
 
-        $this->entriesScheduleWebsiteHandler->handle( $website, new TestEntriesScheduleUrlWebsiteHandler(),
+        $result = $this->entriesScheduleWebsiteHandler->handle( $website, new TestEntriesScheduleUrlWebsiteHandler(),
                 new RoomScheduleListModel(), null, null );
+
+        $this->assertEqual(EntriesScheduleResultWebsiteHandler::CODE_FINISHED, $result->getCode());
 
         $entries = EntryScheduleListModel::get_( $this->getCampsuguideHandler()->getEntryScheduleDao()->getAll() );
 
@@ -188,7 +191,7 @@ class EntriesScheduleWebsiteHandlerTest extends ScheduleWebsiteHandlerTest
 
     }
 
-    public function testEntriesSearch()
+    public function _testEntriesSearch()
     {
         $website = $this->generateWebsite( "%s", WebsiteScheduleModel::TYPE_TIMEEDIT );
 
@@ -196,25 +199,25 @@ class EntriesScheduleWebsiteHandlerTest extends ScheduleWebsiteHandlerTest
         $this->typesScheduleWebsiteHandler->setTypeScheduleDao(
                 $this->getCampsuguideHandler()->getRoomScheduleDao() );
         $this->typesScheduleWebsiteHandler->handle( $website, new TestTypesScheduleUrlWebsiteHandler(),
-                TypeScheduleModel::TYPE_ROOM, TypesScheduleWebsiteHandler::MODE_FIRSTPAGE );
+                TypeScheduleModel::TYPE_ROOM );
 
         // Faculties
         $this->typesScheduleWebsiteHandler->setTypeScheduleDao(
                 $this->getCampsuguideHandler()->getFacultyScheduleDao() );
         $this->typesScheduleWebsiteHandler->handle( $website, new TestTypesScheduleUrlWebsiteHandler(),
-                TypeScheduleModel::TYPE_FACULTY, TypesScheduleWebsiteHandler::MODE_FIRSTPAGE );
+                TypeScheduleModel::TYPE_FACULTY );
 
         // Groups
         $this->typesScheduleWebsiteHandler->setTypeScheduleDao(
                 $this->getCampsuguideHandler()->getGroupScheduleDao() );
         $this->typesScheduleWebsiteHandler->handle( $website, new TestTypesScheduleUrlWebsiteHandler(),
-                TypeScheduleModel::TYPE_GROUP, TypesScheduleWebsiteHandler::MODE_FIRSTPAGE );
+                TypeScheduleModel::TYPE_GROUP );
 
         // Program
         $this->typesScheduleWebsiteHandler->setTypeScheduleDao(
                 $this->getCampsuguideHandler()->getProgramScheduleDao() );
         $this->typesScheduleWebsiteHandler->handle( $website, new TestTypesScheduleUrlWebsiteHandler(),
-                TypeScheduleModel::TYPE_PROGRAM, TypesScheduleWebsiteHandler::MODE_FIRSTPAGE );
+                TypeScheduleModel::TYPE_PROGRAM );
 
         $rooms = $this->getCampsuguideHandler()->getRoomScheduleDao()->getAll();
         $facilities = $this->getCampsuguideHandler()->getFacultyScheduleDao()->getAll();
@@ -229,11 +232,21 @@ class EntriesScheduleWebsiteHandlerTest extends ScheduleWebsiteHandlerTest
         $groupsNew = $this->getCampsuguideHandler()->getGroupTypeElementBuildingDao()->getAll();
         $programNew = $this->getCampsuguideHandler()->getProgramScheduleDao()->getAll();
 
-        $this->assertEqual($rooms->size(), $roomsNew->size());
-        $this->assertEqual($facilities->size(), $facilitiesNew->size());
-        $this->assertEqual($groups->size(), $groupsNew->size());
-        $this->assertEqual($program->size(), $programNew->size());
+        $this->assertEqual( $rooms->size(), $roomsNew->size() );
+        $this->assertEqual( $facilities->size(), $facilitiesNew->size() );
+        $this->assertEqual( $groups->size(), $groupsNew->size() );
+        $this->assertEqual( $program->size(), $programNew->size() );
 
+    }
+
+    public function _testEntriesShouldHandleTooManyWeeks()
+    {
+        $website = $this->generateWebsite( self::$PATH_ENTRIES_TOOMANYWEEKS, WebsiteScheduleModel::TYPE_TIMEEDIT );
+
+        $result = $this->entriesScheduleWebsiteHandler->handle( $website, new TestEntriesScheduleUrlWebsiteHandler(),
+                new RoomScheduleListModel(), null, null );
+
+        $this->assertEqual( EntriesScheduleResultWebsiteHandler::CODE_TOOMANYWEEKS, $result->getCode() );
     }
 
     // /FUNCTIONS

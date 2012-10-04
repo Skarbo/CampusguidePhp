@@ -13,6 +13,8 @@ class QueueDbResource
     private $fieldPriority = "queue_priority";
     private $fieldArguments = "queue_arguments";
     private $fieldBuildingId = "building_id";
+    private $fieldWebsiteId = "website_id";
+    private $fieldScheduleType = "schedule_type";
     private $fieldOccurence = "queue_occurence";
     private $fieldError = "queue_error";
     private $fieldUpdated = "queue_updated";
@@ -81,6 +83,16 @@ class QueueDbResource
     public function getFieldUpdated()
     {
         return $this->fieldUpdated;
+    }
+
+    public function getFieldWebsiteId()
+    {
+        return $this->fieldWebsiteId;
+    }
+
+    public function getFieldScheduleType()
+    {
+        return $this->fieldScheduleType;
     }
 
 }

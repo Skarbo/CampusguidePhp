@@ -9,11 +9,12 @@ class TypesTimeeditScheduleWebsiteAlgorithmParser extends TimeeditWebsiteAlgorit
     //*[@id="contenttd"]/form/table[2]/tbody/tr[1]/td[1]/table/tbody/tr[1]/td[3]/table/tbody/tr/td[1]/select
 
 
-    private static $TYPES = array ( TypeScheduleModel::TYPE_FACULTY => 6, TypeScheduleModel::TYPE_GROUP => 5,
+    public static $TYPES = array ( TypeScheduleModel::TYPE_FACULTY => 6, TypeScheduleModel::TYPE_GROUP => 5,
             TypeScheduleModel::TYPE_PROGRAM => 4, TypeScheduleModel::TYPE_ROOM => 7 );
     private static $TIMEEDIT_VERSION = "1.4.8";
     private static $REGEX_SEARCH_RESULT = '/.+: (\d+)-(\d+) \w+ (\d+)/s';
     private static $REGEX_VERSION = '/([\d.]+)/s';
+    private static $REGEX_ILLEGAL_NAME = '/^[_-].*/';
 
     private $type;
 
@@ -33,19 +34,19 @@ class TypesTimeeditScheduleWebsiteAlgorithmParser extends TimeeditWebsiteAlgorit
         $version = $this->getVersion( $html );
         if ( $version != self::$TIMEEDIT_VERSION )
         {
-            throw new Exception(
+            throw new ParserException(
                     sprintf( "Website version is \"%s\", algorithm is written for version \"%s\"", $version,
-                            self::$TIMEEDIT_VERSION ) );
+                            self::$TIMEEDIT_VERSION ), self::PARSER_EXCEPTION_WRONGVERSION );
         }
 
         // Is correct choosen type
         $choosenType = $this->getChoosenType( $html );
         if ( $choosenType != Core::arrayAt( self::$TYPES, $this->type ) )
         {
-            throw new Exception(
+            throw new ParserException(
                     sprintf( "Choosen type \"%s\" does not match with given type \"%s\" (%s)", $choosenType,
-                            Core::arrayAt( self::$TYPES, $this->type ),
-                            $this->type ) );
+                            Core::arrayAt( self::$TYPES, $this->type ), $this->type ),
+                    self::PARSER_EXCEPTION_INCORRECTPATH );
         }
 
         // Get search result
@@ -78,7 +79,7 @@ class TypesTimeeditScheduleWebsiteAlgorithmParser extends TimeeditWebsiteAlgorit
         }
         catch ( Exception $e )
         {
-            throw new Exception( "Incorrect type list path", 0, $e );
+            throw new ParserException( "Incorrect type list path", self::PARSER_EXCEPTION_INCORRECTPATH, $e );
         }
 
         $typeList = self::generateTypeList( $this->type );
@@ -106,8 +107,11 @@ class TypesTimeeditScheduleWebsiteAlgorithmParser extends TimeeditWebsiteAlgorit
             // Room name short
             $nameShort = self::parseDom( $row->children( 2 ), "plaintext" );
 
+            // Create Type
             $typeModel = self::generateTypeModel( $this->type, $code, $name, $nameShort );
-            $typeList->add( $typeModel );
+
+            if ( self::isValidType( $typeModel ) )
+                $typeList->add( $typeModel );
         }
 
         $result->setTypes( $typeList );
@@ -197,7 +201,7 @@ class TypesTimeeditScheduleWebsiteAlgorithmParser extends TimeeditWebsiteAlgorit
         }
         catch ( Exception $e )
         {
-            throw new Exception( "Incorrect search result path", 0, $e );
+            throw new ParserException( "Incorrect search result path", self::PARSER_EXCEPTION_INCORRECTPATH, $e );
         }
     }
 
@@ -264,6 +268,12 @@ class TypesTimeeditScheduleWebsiteAlgorithmParser extends TimeeditWebsiteAlgorit
                 break;
         }
         return null;
+    }
+
+    private static function isValidType( TypeScheduleModel $type )
+    {
+        return !preg_match( self::$REGEX_ILLEGAL_NAME, $type->getName() ) && !preg_match( self::$REGEX_ILLEGAL_NAME,
+                $type->getNameShort() );
     }
 
 }

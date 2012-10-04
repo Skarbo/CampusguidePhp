@@ -49,17 +49,18 @@ class AllTests extends TestSuite
 
 
         //$this->add( new DbbackupHandlerTest() );
-        //         $this->add(new QueueHandlerTest() );
+//                 $this->add(new QueueHandlerTest() );
 
 
         //$this->add(new BuildingCampusguideCommandControllerTest());
+        $this->add(new QueueCampusguideCommandControllerTest());
 
 
 //                 $this->add( new TypesTimeeditScheduleWebsiteParserTest() );
 //         $this->add( new TypesScheduleWebsiteHandlerTest() );
 //         $this->add( new EntriesTimeeditScheduleWebsiteParserTest() );
 // $this->add( new EntriesScheduleWebsiteHandlerTest() );
-        $this->add(new RoomScheduleDaoTest());
+//         $this->add(new RoomScheduleDaoTest());
 
     }
 

@@ -6,6 +6,8 @@ class EntriesScheduleWebsiteHandler extends Handler
     // VARIABLES
 
 
+    private static $MAX_COUNT = 5;
+
     /**
      * @var WebsiteParser
      */
@@ -92,6 +94,15 @@ class EntriesScheduleWebsiteHandler extends Handler
     // ... /GETTERS/SETTERS
 
 
+    /**
+     * @param WebsiteScheduleModel $website
+     * @param EntriesScheduleUrlWebsiteHandler $entriesUrlHandler
+     * @param TypeScheduleListModel $types
+     * @param integer $startWeek
+     * @param integer $endWeek
+     * @throws HandlerException
+     * @return EntriesScheduleResultWebsiteHandler
+     */
     public function handle( WebsiteScheduleModel $website, EntriesScheduleUrlWebsiteHandler $entriesUrlHandler, TypeScheduleListModel $types, $startWeek, $endWeek )
     {
         // Algorithm
@@ -104,14 +115,44 @@ class EntriesScheduleWebsiteHandler extends Handler
                     HandlerException::ALGORITHM_NOT_GIVEN );
         }
 
-        // Parse website
-        $entries = EntryScheduleListModel::get_(
-                $this->getWebsiteParser()->parse(
-                        $entriesUrlHandler->getEntriesUrl( $website->getUrl(), $types, $startWeek, $endWeek ),
-                        $algorithm ) );
+        $count = 0;
+        do
+        {
+            $loop = false;
+            try
+            {
+                $typesSliced = $types->slice( $count );
+
+                // Parse website
+                $entries = EntryScheduleListModel::get_(
+                        $this->getWebsiteParser()->parse(
+                                $entriesUrlHandler->getEntriesUrl( $website->getUrl(), $typesSliced, $startWeek,
+                                        $endWeek ), $algorithm ) );
+            }
+            catch ( ParserException $e )
+            {
+                switch ( $e->getCustomCode() )
+                {
+                    case EntriesTimeeditScheduleWebsiteAlgorithmParser::PARSER_EXCEPTION_TOOMANYWEEKS :
+                        $loop = true;
+                        $count++;
+                        if ( $count >= self::$MAX_COUNT )
+                            return new EntriesScheduleResultWebsiteHandler( $typesSliced->size(),
+                                    EntriesScheduleResultWebsiteHandler::CODE_EXCEEDING );
+                        break;
+
+                    default :
+                        throw $e;
+                        break;
+                }
+            }
+        } while ( $loop && $count <= self::$MAX_COUNT );
 
         // Handle Entries
         $this->getEntriesHandler()->handle( $website->getId(), $entries );
+
+        return new EntriesScheduleResultWebsiteHandler( $types->size() - $count,
+                EntriesScheduleResultWebsiteHandler::CODE_FINISHED );
     }
 
     /**
@@ -124,6 +165,7 @@ class EntriesScheduleWebsiteHandler extends Handler
         switch ( $websiteType )
         {
             case WebsiteScheduleModel::TYPE_TIMEEDIT :
+            case WebsiteScheduleModel::TYPE_TIMEEDIT_TEST :
                 return new EntriesTimeeditScheduleWebsiteAlgorithmParser();
                 break;
         }

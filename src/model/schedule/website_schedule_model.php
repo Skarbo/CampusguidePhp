@@ -6,6 +6,7 @@ class WebsiteScheduleModel extends Model implements StandardModel
     // VARIABLES
 
     const TYPE_TIMEEDIT = "timeedit";
+    const TYPE_TIMEEDIT_TEST = "timeedit_test";
 
     private $id;
     private $url;

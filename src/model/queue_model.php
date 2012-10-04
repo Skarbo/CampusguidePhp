@@ -7,8 +7,15 @@ class QueueModel extends Model
 
 
     const TYPE_IMAGE_BUILDING = "building";
+    const TYPE_SCHEDULE_TYPES = "schedule_types";
+    const TYPE_SCHEDULE_ENTRIES = "schedule_entries";
 
-    public static $TYPES = array ( self::TYPE_IMAGE_BUILDING );
+    public static $TYPES = array ( self::TYPE_IMAGE_BUILDING, self::TYPE_SCHEDULE_TYPES, self::TYPE_SCHEDULE_ENTRIES );
+
+    public static $ARGUMENT_SCHEDULE_TYPE_PAGE = "pages";
+    public static $ARGUMENT_SCHEDULE_TYPE_IDS = "types";
+    public static $ARGUMENT_SCHEDULE_TYPE_WEEKS = "weeks";
+    public static $ARGUMENT_SCHEDULE_TYPE_CODES_PR = "codes_pr";
 
     const PRIORITY_LOW = 0;
     const PRIORITY_MEDIUM = 1;
@@ -19,6 +26,8 @@ class QueueModel extends Model
     public $priority;
     public $arguments;
     public $buildingId;
+    public $websiteId;
+    public $scheduleType;
     private $occurence;
     private $error;
     private $updated;
@@ -138,11 +147,31 @@ class QueueModel extends Model
     {
         return $this->updated;
     }
-	public function setUpdated( $updated )
+
+    public function setUpdated( $updated )
     {
         $this->updated = $updated;
     }
 
+    public function getWebsiteId()
+    {
+        return $this->websiteId;
+    }
+
+    public function setWebsiteId( $websiteId )
+    {
+        $this->websiteId = $websiteId;
+    }
+
+    public function getScheduleType()
+    {
+        return $this->scheduleType;
+    }
+
+    public function setScheduleType( $scheduleType )
+    {
+        $this->scheduleType = $scheduleType;
+    }
 
 }
 

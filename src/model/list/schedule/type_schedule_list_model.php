@@ -19,6 +19,20 @@ abstract class TypeScheduleListModel extends StandardListModel
 
 
     /**
+     * @return array Array( code, ... )
+     */
+    public function getCodes()
+    {
+        $codes = array ();
+        for ( $this->rewind(); $this->valid(); $this->next() )
+        {
+            $type = $this->current();
+            $codes[] = $type->getCode();
+        }
+        return $codes;
+    }
+
+    /**
      * @see StandardListModel::current()
      * @return TypeScheduleModel
      */

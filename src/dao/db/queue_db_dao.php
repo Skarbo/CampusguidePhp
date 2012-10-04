@@ -38,6 +38,8 @@ class QueueDbDao extends QueueDao
         $queue->setOccurence( intval( Core::arrayAt( $queueArray, Resource::db()->queue()->getFieldOccurence() ) ) );
         $queue->setError( intval( Core::arrayAt( $queueArray, Resource::db()->queue()->getFieldError() ) ) );
         $queue->setBuildingId( intval( Core::arrayAt( $queueArray, Resource::db()->queue()->getFieldBuildingId() ) ) );
+        $queue->setWebsiteId( intval( Core::arrayAt( $queueArray, Resource::db()->queue()->getFieldWebsiteId() ) ) );
+        $queue->setScheduleType( Core::arrayAt( $queueArray, Resource::db()->queue()->getFieldScheduleType() ) );
 
         $queue->setUpdated(
                 Core::parseTimestamp( Core::arrayAt( $queueArray, Resource::db()->queue()->getFieldUpdated() ) ) );
@@ -130,6 +132,26 @@ class QueueDbDao extends QueueDao
             $fields[ Resource::db()->queue()->getFieldBuildingId() ] = SB::$NULL;
         }
 
+        if ( $queue->getWebsiteId() )
+        {
+            $fields[ Resource::db()->queue()->getFieldWebsiteId() ] = ":websiteId";
+            $binds[ "websiteId" ] = $queue->getWebsiteId();
+        }
+        else
+        {
+            $fields[ Resource::db()->queue()->getFieldWebsiteId() ] = SB::$NULL;
+        }
+
+        if ( $queue->getScheduleType() )
+        {
+            $fields[ Resource::db()->queue()->getFieldScheduleType() ] = ":scheduleType";
+            $binds[ "scheduleType" ] = $queue->getScheduleType();
+        }
+        else
+        {
+            $fields[ Resource::db()->queue()->getFieldScheduleType() ] = SB::$NULL;
+        }
+
         if ( !$isInsert )
         {
             $fields[ Resource::db()->queue()->getFieldUpdated() ] = SB::$CURRENT_TIMESTAMP;
@@ -189,6 +211,18 @@ class QueueDbDao extends QueueDao
             $select_build->addWhere( SB::equ( Resource::db()->queue()->getFieldBuildingId(), ":buildingId" ) );
             $binds[ "buildingId" ] = $queue->getBuildingId();
         }
+        // ... ... Website
+        if ( $queue->getWebsiteId() )
+        {
+            $select_build->addWhere( SB::equ( Resource::db()->queue()->getFieldWebsiteId(), ":websiteId" ) );
+            $binds[ "websiteId" ] = $queue->getWebsiteId();
+        }
+        // ... ... Schedule type
+        if ( $queue->getScheduleType() )
+        {
+            $select_build->addWhere( SB::equ( Resource::db()->queue()->getFieldScheduleType(), ":scheduleType" ) );
+            $binds[ "scheduleType" ] = $queue->getScheduleType();
+        }
 
         $select_query->setQuery( $select_build );
 
@@ -221,11 +255,10 @@ class QueueDbDao extends QueueDao
         $select_build->setExpression( "*" );
         $select_build->setFrom( Resource::db()->queue()->getTable() );
         $select_build->setOrderBy(
-                        array (
-                                array ( Resource::db()->queue()->getFieldError(), SB::$ASC ),
-                                array ( Resource::db()->queue()->getFieldPriority(), SB::$DESC ),
-                                array ( Resource::db()->queue()->getFieldRegistered(), SB::$ASC ),
-                                array ( Resource::db()->queue()->getFieldId(), SB::$ASC ) ) );
+                array ( array ( Resource::db()->queue()->getFieldError(), SB::$ASC ),
+                        array ( Resource::db()->queue()->getFieldPriority(), SB::$DESC ),
+                        array ( Resource::db()->queue()->getFieldRegistered(), SB::$ASC ),
+                        array ( Resource::db()->queue()->getFieldId(), SB::$ASC ) ) );
 
         // ... ... Types
         if ( !empty( $queueTypes ) )

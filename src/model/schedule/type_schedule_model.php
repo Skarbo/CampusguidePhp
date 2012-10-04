@@ -8,6 +8,8 @@ abstract class TypeScheduleModel extends AbstractWebsiteScheduleModel
 
     const TYPE_ROOM = "room", TYPE_FACULTY = "faculty", TYPE_GROUP = "group", TYPE_PROGRAM = "program";
 
+    public static $TYPES = array ( self::TYPE_ROOM, self::TYPE_FACULTY, self::TYPE_GROUP, self::TYPE_PROGRAM );
+
     private $code;
     private $name;
     private $nameShort;

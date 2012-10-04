@@ -31,7 +31,7 @@ class ElementBuildingDbDao extends StandardDbDao implements ElementBuildingDao
                 Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldCoordinates() ),
                 Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldSectionId() ),
                 Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldType() ),
-                Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldType ),
+                Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldTypeGroup() ),
                 Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldDeleted() ) );
 
         $elementBuilding->setId(
@@ -95,7 +95,7 @@ class ElementBuildingDbDao extends StandardDbDao implements ElementBuildingDao
         if ( !is_null( $model->getCoordinates() ) )
         {
             $fields[ Resource::db()->elementBuilding()->getFieldCoordinates() ] = ":coordinates";
-            $binds[ "coordinates" ] = $model->getCoordinates();
+            $binds[ "coordinates" ] = Resource::generateCoordinatesToString( $model->getCoordinates() );
         }
 
         $fields[ Resource::db()->elementBuilding()->getFieldSectionId() ] = $model->getSectionId() ? ":sectionId" : SB::$NULL;

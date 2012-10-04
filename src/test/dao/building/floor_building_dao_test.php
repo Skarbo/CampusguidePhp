@@ -28,7 +28,7 @@ class FloorBuildingDaoTest extends StandardDaoTest
      */
     protected function getStandardDao()
     {
-        return $this->floorBuildingDao;
+        return $this->getCampusguideHandlerTest()->getfloorBuildingDao();
     }
 
     /**
@@ -51,13 +51,13 @@ class FloorBuildingDaoTest extends StandardDaoTest
     protected function createModelTest()
     {
         // Add Facility
-        $facility = $this->addFacility();
+        $facility = $this->getCampusguideHandlerTest()->addFacility();
 
         // Add Building
-        $building = $this->addBuilding( $facility->getId() );
+        $building = $this->getCampusguideHandlerTest()->addBuilding( $facility->getId() );
 
         // Create Floor Building
-        return self::createFloorBuildingTest( $building->getId() );
+        return CampusguideHandlerTest::createFloorBuildingTest( $building->getId() );
     }
 
     /**
@@ -87,7 +87,7 @@ class FloorBuildingDaoTest extends StandardDaoTest
 
         $model = FloorBuildingModel::get_( $model );
 
-        self::assertNotNullFunction( $model->getIdURI(), "Floor Building id", $this );
+        self::assertNotNullFunction( $model->getId(), "Floor Building id", $this );
         self::assertNotNullFunction( $model->getBuildingId(), "Floor Building building id", $this );
         self::assertNotNullFunction( $model->getName(), "Floor Building name", $this );
         self::assertNotNullFunction( $model->getOrder(), "Floor Building order", $this );

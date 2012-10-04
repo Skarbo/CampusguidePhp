@@ -40,24 +40,6 @@ class DbResource extends ClassCore
     }
 
     /**
-     * @return TypeElementBuildingDbResource
-     */
-    public static function typeElementBuilding()
-    {
-        self::$TYPEELEMENTBUILDING = self::$TYPEELEMENTBUILDING ? self::$TYPEELEMENTBUILDING : new TypeElementBuildingDbResource();
-        return self::$TYPEELEMENTBUILDING;
-    }
-
-    /**
-     * @return GroupTypeElementBuildingDbResource
-     */
-    public static function groupTypeElementBuilding()
-    {
-        self::$GROUPTYPEELEMENTBUILDING = self::$GROUPTYPEELEMENTBUILDING ? self::$GROUPTYPEELEMENTBUILDING : new GroupTypeElementBuildingDbResource();
-        return self::$GROUPTYPEELEMENTBUILDING;
-    }
-
-    /**
      * @return FloorBuildingDbResource
      */
     public static function floorBuilding()

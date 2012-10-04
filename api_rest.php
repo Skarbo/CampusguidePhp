@@ -35,10 +35,6 @@ $mapping[ FloorsBuildingCampusguideRestController::$CONTROLLER_NAME ][ Campusgui
 $mapping[ FloorsBuildingCampusguideRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = FloorsBuildingCampusguideRestView::class_();
 $mapping[ ElementsBuildingCampusguideRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = ElementsBuildingCampusguideRestController::class_();
 $mapping[ ElementsBuildingCampusguideRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = ElementsBuildingCampusguideRestView::class_();
-$mapping[ TypesElementBuildingCampusguideRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = TypesElementBuildingCampusguideRestController::class_();
-$mapping[ TypesElementBuildingCampusguideRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = TypesElementBuildingCampusguideRestView::class_();
-$mapping[ GroupsTypeElementBuildingCampusguideRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = GroupsTypeElementBuildingCampusguideRestController::class_();
-$mapping[ GroupsTypeElementBuildingCampusguideRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = GroupsTypeElementBuildingCampusguideRestView::class_();
 $mapping[ SectionsBuildingCampusguideRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = SectionsBuildingCampusguideRestController::class_();
 $mapping[ SectionsBuildingCampusguideRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = SectionsBuildingCampusguideRestView::class_();
 

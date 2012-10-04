@@ -28,7 +28,7 @@ class SectionBuildingDaoTest extends StandardDaoTest
      */
     protected function getStandardDao()
     {
-        return $this->sectionBuildingDao;
+        return $this->getCampusguideHandlerTest()->getsectionBuildingDao();
     }
 
     /**
@@ -40,7 +40,7 @@ class SectionBuildingDaoTest extends StandardDaoTest
         $modelEdited = SectionBuildingModel::get_( $model );
 
         $modelEdited->setName( "Updated Section" );
-        $modelEdited->setCoordinates( array ( array ( 500, 600 ), array ( 700, 800 ) ) );
+        $modelEdited->setCoordinates( array ( array ( array ( 500, 600 ), array ( 700, 800 ) ) ) );
 
         return $modelEdited;
 
@@ -53,13 +53,13 @@ class SectionBuildingDaoTest extends StandardDaoTest
     {
 
         // Add Facility
-        $facility = $this->addFacility();
+        $facility = $this->getCampusguideHandlerTest()->addFacility();
 
         // Add Building
-        $building = $this->addBuilding( $facility->getId() );
+        $building = $this->getCampusguideHandlerTest()->addBuilding( $facility->getId() );
 
         // Create Section Building
-        return self::createSectionBuildingTest( $building->getId() );
+        return CampusguideHandlerTest::createSectionBuildingTest( $building->getId() );
 
     }
 
@@ -77,7 +77,6 @@ class SectionBuildingDaoTest extends StandardDaoTest
         self::assertEqualsFunction( $modelOne->getName(), $modelTwo->getName(), "Section Building name", $this );
         self::assertEqualsFunction( $modelOne->getCoordinates(), $modelTwo->getCoordinates(),
                 "Section Building coordinates", $this );
-
     }
 
     /**
@@ -88,7 +87,7 @@ class SectionBuildingDaoTest extends StandardDaoTest
 
         $model = SectionBuildingModel::get_( $model );
 
-        self::assertNotNullFunction( $model->getIdURI(), "Section Building id", $this );
+        self::assertNotNullFunction( $model->getId(), "Section Building id", $this );
         self::assertNotNullFunction( $model->getBuildingId(), "Section Building building id", $this );
         self::assertNotNullFunction( $model->getName(), "Section Building name", $this );
         self::assertNotNullFunction( $model->getCoordinates(), "Section Building coordinates", $this );

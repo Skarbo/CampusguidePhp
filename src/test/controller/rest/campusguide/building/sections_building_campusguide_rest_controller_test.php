@@ -56,7 +56,7 @@ class SectionsBuildingCampusguideRestControllerTest extends StandardCampusguideR
         $modelEdited = SectionBuildingModel::get_( $model );
 
         $modelEdited->setName( "Edited Section" );
-        $modelEdited->setCoordinates( array ( array ( 500, 600 ), array ( 700, 800 ) ) );
+        $modelEdited->setCoordinates( array( array ( array ( 500, 600 ), array ( 700, 800 ) ) ) );
 
         return $modelEdited;
 
@@ -67,7 +67,7 @@ class SectionsBuildingCampusguideRestControllerTest extends StandardCampusguideR
      */
     protected function getStandardDao()
     {
-        return $this->sectionBuildingDao;
+        return $this->getCampusguideHandlerTest()->getsectionBuildingDao();
     }
 
     /**
@@ -96,7 +96,7 @@ class SectionsBuildingCampusguideRestControllerTest extends StandardCampusguideR
 
         $model = FloorBuildingModel::get_( $model );
 
-        SectionBuildingDaoTest::assertNotNullFunction( $model->getIdURI(), "Section Building id", $testCase );
+        SectionBuildingDaoTest::assertNotNullFunction( $model->getId(), "Section Building id", $testCase );
         SectionBuildingDaoTest::assertNotNullFunction( $model->getBuildingId(), "Section Building building id",
                 $testCase );
         SectionBuildingDaoTest::assertNotNullFunction( $model->getName(), "Section Building name", $testCase );
@@ -112,13 +112,13 @@ class SectionsBuildingCampusguideRestControllerTest extends StandardCampusguideR
     {
 
         // Add Facility
-        $facility = $this->addFacility();
+        $facility = $this->getCampusguideHandlerTest()->addFacility();
 
         // Add Building
-        $building = $this->addBuilding( $facility->getId() );
+        $building = $this->getCampusguideHandlerTest()->addBuilding( $facility->getId() );
 
         // Create Sections
-        return SectionBuildingDaoTest::createSectionBuildingTest( $building->getId() );
+        return CampusguideHandlerTest::createSectionBuildingTest( $building->getId() );
 
     }
 /**

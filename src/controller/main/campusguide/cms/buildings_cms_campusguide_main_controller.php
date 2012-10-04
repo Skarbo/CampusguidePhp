@@ -76,7 +76,7 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
         $this->setBuildingValidator( new BuildingValidator( $this->getLocale() ) );
         $this->setFloorBuildingValidator( new FloorBuildingValidator( $this->getLocale() ) );
 
-        $this->setBuilding( BuildingFactoryModel::createBuilding( "", 0, array () ) );
+        $this->setBuilding( BuildingFactoryModel::createBuilding( "", 0 ) );
         $this->setBuildingFloors( FloorBuildingFactoryModel::createFloorBuilding( 0, "", 0, array () ) );
         $this->setBuildingElements( new ElementBuildingListModel() );
 
@@ -487,7 +487,6 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
                 BuildingFactoryModel::createBuilding(
                         Core::arrayAt( self::getPost(), Resource::db()->building()->getFieldName() ),
                         Core::arrayAt( self::getPost(), Resource::db()->building()->getFieldFacilityId() ),
-                        "0,164|127,143|168,308|202,391|400,239|370,13|468,0|502,296|251,496|305,589|211,642|169,574|139,556|51,370",
                         Core::arrayAt( self::getPost(), Resource::db()->building()->getFieldAddress() ),
                         Core::arrayAt( self::getPost(), Resource::db()->building()->getFieldPosition() ),
                         Core::arrayAt( self::getPost(), Resource::db()->building()->getFieldLocation() ) ) );
@@ -515,7 +514,7 @@ class BuildingsCmsCampusguideMainController extends CmsCampusguideMainController
     {
 
         // Set empty Building as admin Building
-        $this->setBuildingAdmin( BuildingFactoryModel::createBuilding( "", 0, array () ) );
+        $this->setBuildingAdmin( BuildingFactoryModel::createBuilding( "", 0 ) );
 
         // Set all Facilities
         $this->setFacilities( $this->getFacilityDao()->getAll() );

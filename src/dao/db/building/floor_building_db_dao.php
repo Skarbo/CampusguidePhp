@@ -90,7 +90,7 @@ class FloorBuildingDbDao extends StandardDbDao implements FloorBuildingDao
         $fields[ Resource::db()->floorBuilding()->getFieldBuildingId() ] = ":buildingId";
         $binds[ ":buildingId" ] = $foreignId;
 
-        if ( !is_null( $model->getName() ) && !$isInsert )
+        if ( !is_null( $model->getName() ) )
         {
             $fields[ Resource::db()->floorBuilding()->getFieldName() ] = ":name";
             $binds[ ":name" ] = Core::decodeUtf8( $model->getName() );

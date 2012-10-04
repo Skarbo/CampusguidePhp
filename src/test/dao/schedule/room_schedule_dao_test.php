@@ -25,22 +25,22 @@ class RoomScheduleDaoTest extends CampusguideDaoTest
 
     public function testRoomElementMerge()
     {
-        $facility = $this->addFacility();
-        $building = $this->addBuilding( $facility->getId() );
-        $floor = $this->addFloor( $building->getId() );
-        $element = $this->addElement( $floor->getId(), null, "", "test" );
-        $element2 = $this->addElement( $floor->getId(), null, "", ElementBuildingModel::TYPE_GROUP_ROOM );
+        $facility = $this->getCampusguideHandlerTest()->addFacility();
+        $building = $this->getCampusguideHandlerTest()->addBuilding( $facility->getId() );
+        $floor = $this->getCampusguideHandlerTest()->addFloor( $building->getId() );
+        $element = $this->getCampusguideHandlerTest()->addElement( $floor->getId(), null, "", "test" );
+        $element2 = $this->getCampusguideHandlerTest()->addElement( $floor->getId(), null, "", ElementBuildingModel::TYPE_GROUP_ROOM );
 
-        $website = $this->addWebsiteSchedule();
-        $this->addWesiteBuildingSchedule( $website->getId(), $building->getId() );
-        $room = $this->addRoomSchedule( $website->getId(), $element2->getName() );
-        $room2 = $this->addRoomSchedule( $website->getId(), "Test Room2" );
+        $website = $this->getCampusguideHandlerTest()->addWebsiteSchedule();
+        $this->getCampusguideHandlerTest()->addWesiteBuildingSchedule( $website->getId(), $building->getId() );
+        $room = $this->getCampusguideHandlerTest()->addRoomSchedule( $website->getId(), $element2->getName() );
+        $room2 = $this->getCampusguideHandlerTest()->addRoomSchedule( $website->getId(), "Test Room2" );
 
-        $this->getCampusguideHandler()->getRoomScheduleDao()->mergeElements();
+        $this->getCampusguideHandlerTest()->getRoomScheduleDao()->mergeElements();
 
-        $room = RoomScheduleModel::get_( $this->getCampusguideHandler()->getRoomScheduleDao()->get( $room->getId() ) );
+        $room = RoomScheduleModel::get_( $this->getCampusguideHandlerTest()->getRoomScheduleDao()->get( $room->getId() ) );
         $this->assertEqual( $element2->getId(), $room->getElementId() );
-        $room = RoomScheduleModel::get_( $this->getCampusguideHandler()->getRoomScheduleDao()->get( $room2->getId() ) );
+        $room = RoomScheduleModel::get_( $this->getCampusguideHandlerTest()->getRoomScheduleDao()->get( $room2->getId() ) );
         $this->assertEqual( $room2->getElementId(), 0 );
     }
 

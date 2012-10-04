@@ -64,7 +64,7 @@ class FacilitiesCampusguideRestControllerTest extends StandardCampusguideRestCon
      */
     protected function getStandardDao()
     {
-        return $this->facilityDao;
+        return $this->getCampusguideHandlerTest()->getfacilityDao();
     }
 
     /**
@@ -85,7 +85,7 @@ class FacilitiesCampusguideRestControllerTest extends StandardCampusguideRestCon
     {
         $model = FacilityModel::get_( $model );
 
-        StandardDaoTest::assertNotNullFunction( $model->getIdURI(), "Facility id", $testCase );
+        StandardDaoTest::assertNotNullFunction( $model->getId(), "Facility id", $testCase );
         StandardDaoTest::assertNotNullFunction( $model->getName(), "Facility name", $testCase );
     }
 
@@ -94,7 +94,7 @@ class FacilitiesCampusguideRestControllerTest extends StandardCampusguideRestCon
      */
     protected function createModelTest()
     {
-        return FacilityDaoTest::createFacilityTest();
+        return CampusguideHandlerTest::createFacilityTest();
     }
 
     /**

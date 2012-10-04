@@ -448,3 +448,4 @@ Tue, 02 Oct 2012 08:18:39 GMT - localhost - campusguide_dev, campusguide_test, c
 Wed, 03 Oct 2012 12:10:01 GMT - localhost - campusguide_dev, campusguide_test, campusguide_prod
 Wed, 03 Oct 2012 14:14:24 GMT - localhost - campusguide_dev, campusguide_test, campusguide_prod
 Wed, 03 Oct 2012 17:03:22 GMT - localhost - campusguide_dev, campusguide_test, campusguide_prod
+Thu, 04 Oct 2012 11:05:06 GMT - localhost - campusguide_dev, campusguide_test, campusguide_prod

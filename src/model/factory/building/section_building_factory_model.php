@@ -32,7 +32,7 @@ class SectionBuildingFactoryModel extends ClassCore
 
         $sectionBuilding->setBuildingId( intval( $buildingId ) );
         $sectionBuilding->setName( Core::utf8Encode( $name ) );
-        $sectionBuilding->setCoordinates( Resource::generateCoordinatesToString( $coordinates ) );
+        $sectionBuilding->setCoordinates( Resource::generateCoordinatesToArray( $coordinates ) );
 
         // Return model
         return $sectionBuilding;

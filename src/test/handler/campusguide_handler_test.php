@@ -20,12 +20,10 @@ class CampusguideHandlerTest extends CampusguideHandler
 
     public function removeAll()
     {
-        $this->facilityDao->removeAll();
-        $this->buildingDao->removeAll();
-        $this->sectionBuildingDao->removeAll();
-        $this->elementBuildingDao->removeAll();
-        $this->typeElementBuildingDao->removeAll();
-        $this->groupTypeElementBuildingDao->removeAll();
+        $this->getFacilityDao()->removeAll();
+        $this->getBuildingDao()->removeAll();
+        $this->getSectionBuildingDao()->removeAll();
+        $this->getElementBuildingDao()->removeAll();
         $this->getFloorBuildingDao()->removeAll();
         $this->getQueueDao()->removeAll();
 
@@ -55,7 +53,7 @@ class CampusguideHandlerTest extends CampusguideHandler
     public static function createBuildingTest( $facilityId )
     {
         $building = BuildingFactoryModel::createBuilding( "Test Building", $facilityId,
-                array ( array ( 100, 200 ), array ( 300, 400 ) ) );
+                array ( "streetname", "city", "postal", "country" ), array( array( "30.1", "40.1" ), array( "50.1", "60.1" ), array( "70.1", "80.1" ) ), array( "10.1", "20.1" ) );
         return $building;
     }
 
@@ -80,32 +78,12 @@ class CampusguideHandlerTest extends CampusguideHandler
     }
 
     /**
-     * @return TypeElementBuildingModel
-     */
-    public static function createTypeElementBuildingTest( $groupId )
-    {
-        $typeElementBuilding = TypeElementBuildingFactoryModel::createTypeElementBuilding( $groupId,
-                "Test Element Building", "icon1" );
-        return $typeElementBuilding;
-    }
-
-    /**
-     * @return GroupTypeElementBuildingModel
-     */
-    public static function createGroupTypeElementBuildingTest()
-    {
-        $groupTypeElementBuilding = GroupTypeElementBuildingFactoryModel::createGroupTypeElementBuilding(
-                "Test Group Type Element Building" );
-        return $groupTypeElementBuilding;
-    }
-
-    /**
      * @return SectionBuildingModel
      */
     public static function createSectionBuildingTest( $buildingId )
     {
         $sectionBuilding = SectionBuildingFactoryModel::createSectionBuilding( $buildingId, "Section Test",
-                array ( array ( 100, 200 ), array ( 300, 400 ) ) );
+                array ( array ( array ( 100, 200 ), array ( 300, 400 ) ) ) );
         return $sectionBuilding;
     }
 
@@ -149,7 +127,7 @@ class CampusguideHandlerTest extends CampusguideHandler
      */
     public function addFacility()
     {
-        $facility = self::createFacilityTest();
+        $facility = CampusguideHandlerTest::createFacilityTest();
         $facility->setId( $this->facilityDao->add( $facility, null ) );
         return $facility;
     }
@@ -159,7 +137,7 @@ class CampusguideHandlerTest extends CampusguideHandler
      */
     public function addBuilding( $facilityId )
     {
-        $building = self::createBuildingTest( $facilityId );
+        $building = CampusguideHandlerTest::createBuildingTest( $facilityId );
         $building->setId( $this->buildingDao->add( $building, $facilityId ) );
         return $building;
     }
@@ -169,7 +147,7 @@ class CampusguideHandlerTest extends CampusguideHandler
      */
     public function addSection( $buildingId )
     {
-        $section = self::createSectionBuildingTest( $buildingId );
+        $section = CampusguideHandlerTest::createSectionBuildingTest( $buildingId );
         $section->setId( $this->sectionBuildingDao->add( $section, $buildingId ) );
         return $section;
     }
@@ -179,29 +157,9 @@ class CampusguideHandlerTest extends CampusguideHandler
      */
     public function addElement( $floorId, ElementBuildingModel $element )
     {
-        $element = $element ? $element : self::createElementBuildingTest( $floorId );
+        $element = $element ? $element : CampusguideHandlerTest::createElementBuildingTest( $floorId );
         $element->setId( $this->elementBuildingDao->add( $element, $floorId ) );
         return $element;
-    }
-
-    /**
-     * @return TypeElementBuildingModel
-     */
-    public function addTypeElement( $elementTypeGroupId )
-    {
-        $typeElement = self::createTypeElementBuildingTest( $elementTypeGroupId );
-        $typeElement->setId( $this->typeElementBuildingDao->add( $typeElement, $elementTypeGroupId ) );
-        return $typeElement;
-    }
-
-    /**
-     * @return GroupTypeElementBuildingModel
-     */
-    public function addGroupTypeElement()
-    {
-        $groupTypeElement = self::createGroupTypeElementBuildingTest();
-        $groupTypeElement->setId( $this->groupTypeElementBuildingDao->add( $groupTypeElement, null ) );
-        return $groupTypeElement;
     }
 
     /**
@@ -209,7 +167,7 @@ class CampusguideHandlerTest extends CampusguideHandler
      */
     public function addFloor( $buildingId )
     {
-        $floor = self::createFloorBuildingTest( $buildingId );
+        $floor = CampusguideHandlerTest::createFloorBuildingTest( $buildingId );
         $floor->setId( $this->getFloorBuildingDao()->add( $floor, $buildingId ) );
         return $floor;
     }
@@ -219,7 +177,7 @@ class CampusguideHandlerTest extends CampusguideHandler
      */
     public function addQueue( QueueModel $queue = null )
     {
-        $queue = $queue ? $queue : self::createQueueTest();
+        $queue = $queue ? $queue : CampusguideHandlerTest::createQueueTest();
         $queue->setId( $this->getQueueDao()->add( $queue ) );
         return $queue;
     }
@@ -232,7 +190,7 @@ class CampusguideHandlerTest extends CampusguideHandler
      */
     public function addWebsiteSchedule( WebsiteScheduleModel $website = null )
     {
-        $website = $website ? $website : self::createWebsiteScheduleTest();
+        $website = $website ? $website : CampusguideHandlerTest::createWebsiteScheduleTest();
         $website->setId( $this->websiteScheduleDao->add( $website, null ) );
         return $website;
     }
@@ -250,7 +208,7 @@ class CampusguideHandlerTest extends CampusguideHandler
      */
     public function addRoomSchedule( $websiteId, RoomScheduleModel $room = null )
     {
-        $room = $room ? $room : self::createRoomScheduleTest();
+        $room = $room ? $room : CampusguideHandlerTest::createRoomScheduleTest();
         $room->setId( $this->roomScheduleDao->add( $room, $websiteId ) );
         return $room;
     }

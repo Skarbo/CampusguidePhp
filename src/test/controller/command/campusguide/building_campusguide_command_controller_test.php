@@ -39,10 +39,10 @@ class BuildingCampusguideCommandControllerTest extends CampusguideControllerTest
     {
 
         // Create test Facility
-        $facility = $this->addFacility();
+        $facility = $this->getCampusguideHandlerTest()->addFacility();
 
         // Create test Building
-        $building = $this->addBuilding( $facility->getId() );
+        $building = $this->getCampusguideHandlerTest()->addBuilding( $facility->getId() );
 
         // Create image path
         $buildingImagePath = Resource::image()->campusguide()->building()->getBuildingOverview(

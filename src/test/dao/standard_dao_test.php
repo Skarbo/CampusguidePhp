@@ -56,13 +56,12 @@ abstract class StandardDaoTest extends CampusguideDaoTest
 
     public static function assertEqualsFunction( $resultOne, $resultTwo, $desc, SimpleTestCase $testCase )
     {
-        $testCase->assertEqual( $resultOne, $resultTwo,
-                sprintf( "%s should be \"%s\" but is \"%s\"", $desc, $resultOne, $resultTwo ) );
+        return $testCase->assertEqual( $resultOne, $resultTwo, sprintf( "%s - %%s", $desc ) );
     }
 
     public static function assertNotNullFunction( $result, $desc, SimpleTestCase $testCase )
     {
-        $testCase->assertFalse( is_null( $result ), sprintf( "%s should not be null", $desc ) );
+        return $testCase->assertFalse( is_null( $result ), sprintf( "%s - %%s", $desc ) );
     }
 
     protected abstract function assertModelEquals( Model $modelOne, Model $modelTwo, SimpleTestCase $testCase );

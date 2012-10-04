@@ -29,7 +29,6 @@ class ElementsBuildingCampusguideRestController extends StandardCampusguideRestC
         $this->setElementBuildingHandler(
                 new ElementBuildingHandler( $this->getCampusguideHandler()->getElementBuildingDao(),
                         $this->getCampusguideHandler()->getSectionBuildingDao(),
-                        $this->getCampusguideHandler()->getTypeElementBuildingDao(),
                         new ElementBuildingValidator( $this->getLocale() ) ) );
     }
 

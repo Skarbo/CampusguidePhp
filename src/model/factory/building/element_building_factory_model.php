@@ -21,7 +21,7 @@ class ElementBuildingFactoryModel extends ClassCore
     /**
      * @return ElementBuildingModel
      */
-    public static function createElementBuilding( $floorId, $name, $coordinates, $sectionId, $type = "", $typeGroup = "", $deleted = false )
+    public static function createElementBuilding( $floorId, $name, $coordinates, $sectionId = null, $type = "", $typeGroup = "", $deleted = false )
     {
 
         // Initiate model
@@ -29,7 +29,7 @@ class ElementBuildingFactoryModel extends ClassCore
 
         $elementBuilding->setFloorId( intval( $floorId ) );
         $elementBuilding->setName( Core::utf8Encode( $name ) );
-        $elementBuilding->setCoordinates( Resource::generateCoordinatesToString( $coordinates ) );
+        $elementBuilding->setCoordinates( Resource::generateCoordinatesToArray( $coordinates ) );
         $elementBuilding->setType( $type );
         $elementBuilding->setTypeGroup( $typeGroup );
         $elementBuilding->setSectionId( intval( $sectionId ) );

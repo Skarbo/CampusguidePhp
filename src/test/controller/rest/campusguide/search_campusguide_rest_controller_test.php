@@ -47,13 +47,13 @@ class SearchCampusguideRestControllerTest extends CampusguideControllerTest
     {
 
         // Add Facility
-        $facility = $this->addFacility();
+        $facility = $this->getCampusguideHandlerTest()->addFacility();
 
         // Add Buildings
         $buildings = new BuildingListModel();
-        $buildings->add($this->addBuilding($facility->getId()));
-        $buildings->add($this->addBuilding($facility->getId()));
-        $buildings->add($this->addBuilding($facility->getId()));
+        $buildings->add($this->getCampusguideHandlerTest()->addBuilding($facility->getId()));
+        $buildings->add($this->getCampusguideHandlerTest()->addBuilding($facility->getId()));
+        $buildings->add($this->getCampusguideHandlerTest()->addBuilding($facility->getId()));
 
         // Get Website
         $searchString = "Test";

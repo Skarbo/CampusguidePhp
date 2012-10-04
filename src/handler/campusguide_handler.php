@@ -23,14 +23,6 @@ class CampusguideHandler extends Handler
      */
     protected $elementBuildingDao;
     /**
-     * @var TypeElementBuildingDao
-     */
-    protected $typeElementBuildingDao;
-    /**
-     * @var GroupTypeElementBuildingDao
-     */
-    protected $groupTypeElementBuildingDao;
-    /**
      * @var FloorBuildingDao
      */
     protected $floorBuildingDao;
@@ -47,6 +39,10 @@ class CampusguideHandler extends Handler
      * @var FacultyScheduleDao
      */
     protected $facultyScheduleDao;
+    /**
+     * @var GroupScheduleDao
+     */
+    protected $groupScheduleDao;
     /**
      * @var ProgramScheduleDao
      */
@@ -72,8 +68,6 @@ class CampusguideHandler extends Handler
         $this->setBuildingDao( new BuildingDbDao( $dbApi ) );
         $this->setSectionBuildingDao( new SectionBuildingDbDao( $dbApi ) );
         $this->setElementBuildingDao( new ElementBuildingDbDao( $dbApi ) );
-        $this->setTypeElementBuildingDao( new TypeElementBuildingDbDao( $dbApi ) );
-        $this->setGroupTypeElementBuildingDao( new GroupTypeElementBuildingDbDao( $dbApi ) );
         $this->setFloorBuildingDao( new FloorBuildingDbDao( $dbApi ) );
         $this->setQueueDao( new QueueDbDao( $dbApi ) );
 
@@ -156,38 +150,6 @@ class CampusguideHandler extends Handler
     }
 
     /**
-     * @return TypeElementBuildingDao
-     */
-    public function getTypeElementBuildingDao()
-    {
-        return $this->typeElementBuildingDao;
-    }
-
-    /**
-     * @param TypeElementBuildingDao $elementBuildingDao
-     */
-    public function setTypeElementBuildingDao( TypeElementBuildingDao $elementBuildingDao )
-    {
-        $this->typeElementBuildingDao = $elementBuildingDao;
-    }
-
-    /**
-     * @return GroupTypeElementBuildingDao
-     */
-    public function getGroupTypeElementBuildingDao()
-    {
-        return $this->groupTypeElementBuildingDao;
-    }
-
-    /**
-     * @param GroupTypeElementBuildingDao $groupTypeElementBuildingDao
-     */
-    public function setGroupTypeElementBuildingDao( GroupTypeElementBuildingDao $groupTypeElementBuildingDao )
-    {
-        $this->groupTypeElementBuildingDao = $groupTypeElementBuildingDao;
-    }
-
-    /**
      * @return FloorBuildingDao
      */
     public function getFloorBuildingDao()
@@ -259,15 +221,15 @@ class CampusguideHandler extends Handler
      */
     public function getGroupScheduleDao()
     {
-        return $this->groupTypeElementBuildingDao;
+        return $this->groupScheduleDao;
     }
 
     /**
-     * @param GroupScheduleDao $groupTypeElementBuildingDao
+     * @param GroupScheduleDao $groupScheduleDao
      */
-    public function setGroupScheduleDao( GroupScheduleDao $groupTypeElementBuildingDao )
+    public function setGroupScheduleDao( GroupScheduleDao $groupScheduleDao )
     {
-        $this->groupTypeElementBuildingDao = $groupTypeElementBuildingDao;
+        $this->groupScheduleDao = $groupScheduleDao;
     }
 
     /**

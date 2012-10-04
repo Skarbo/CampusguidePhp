@@ -35,16 +35,17 @@ class FloorBuildingHandlerTest extends CampusguideDaoTest
     {
 
         // Add Facility
-        $facility = $this->addFacility();
+        $facility = $this->getCampusguideHandlerTest()->addFacility();
 
         // Add Building
-        $building = $this->addBuilding( $facility->getId() );
+        $building = $this->getCampusguideHandlerTest()->addBuilding( $facility->getId() );
 
         // Add Floor
-        $floor = $this->addFloor( $building->getId() );
+        $floor = $this->getCampusguideHandlerTest()->addFloor( $building->getId() );
 
         // Create Floor
-        $floorSecond = FloorBuildingFactoryModel::createFloorBuilding( $building->getId(), "Second Floor", 2,  array ( array ( 100, 200 ), array ( 300, 400 ) ) );
+        $floorSecond = FloorBuildingFactoryModel::createFloorBuilding( $building->getId(), "Second Floor", 2,
+                array ( array ( 100, 200 ), array ( 300, 400 ) ) );
 
         // Handle add Floor
         $floorHandled = $this->floorBuildingHandler->handleAddFloor( $building->getId(), $floorSecond );
@@ -63,19 +64,28 @@ class FloorBuildingHandlerTest extends CampusguideDaoTest
     {
 
         // Add Facility
-        $facility = $this->addFacility();
+        $facility = $this->getCampusguideHandlerTest()->addFacility();
 
         // Add Building
-        $building = $this->addBuilding( $facility->getId() );
+        $building = $this->getCampusguideHandlerTest()->addBuilding( $facility->getId() );
 
         // Add Floors
-        $floorOne = FloorBuildingFactoryModel::createFloorBuilding( $building->getId(), "First Floor", 0,  array ( array ( 100, 200 ), array ( 300, 400 ) ) );
-        $floorTwo = FloorBuildingFactoryModel::createFloorBuilding( $building->getId(), "Second Floor", 1,  array ( array ( 100, 200 ), array ( 300, 400 ) ) );
-        $floorThree = FloorBuildingFactoryModel::createFloorBuilding( $building->getId(), "Third Floor", 2,  array ( array ( 100, 200 ), array ( 300, 400 ) ) );
+        $floorOne = FloorBuildingFactoryModel::createFloorBuilding( $building->getId(), "First Floor", 0,
+                array ( array ( 100, 200 ), array ( 300, 400 ) ) );
+        $floorTwo = FloorBuildingFactoryModel::createFloorBuilding( $building->getId(), "Second Floor", 1,
+                array ( array ( 100, 200 ), array ( 300, 400 ) ) );
+        $floorThree = FloorBuildingFactoryModel::createFloorBuilding( $building->getId(), "Third Floor", 2,
+                array ( array ( 100, 200 ), array ( 300, 400 ) ) );
 
-        $floorOne->setId( $this->floorBuildingDao->addFloorBuilding( $building->getId(), $floorOne ) );
-        $floorTwo->setId( $this->floorBuildingDao->addFloorBuilding( $building->getId(), $floorTwo ) );
-        $floorThree->setId( $this->floorBuildingDao->addFloorBuilding( $building->getId(), $floorThree ) );
+        $floorOne->setId(
+                $this->getCampusguideHandlerTest()->getfloorBuildingDao()->addFloorBuilding( $building->getId(),
+                        $floorOne ) );
+        $floorTwo->setId(
+                $this->getCampusguideHandlerTest()->getfloorBuildingDao()->addFloorBuilding( $building->getId(),
+                        $floorTwo ) );
+        $floorThree->setId(
+                $this->getCampusguideHandlerTest()->getfloorBuildingDao()->addFloorBuilding( $building->getId(),
+                        $floorThree ) );
 
         // Edit Floors
         $floorOne->setName( "Floor First Updated" );
@@ -96,7 +106,7 @@ class FloorBuildingHandlerTest extends CampusguideDaoTest
             for ( $i = 0; $i < count( $floorsEditedArray ); $i++ )
             {
                 $floorEdited = FloorBuildingModel::get_( $floorsEditedArray[ $i ] );
-                $floorHandled = $floorsHandled->getId( $floorEdited->getIdURI() );
+                $floorHandled = $floorsHandled->getId( $floorEdited->getId() );
 
                 if ( $this->assertNotNull( $floorHandled,
                         sprintf( "Handled floor (index #%d) should not be null", $i ) ) )

@@ -221,7 +221,7 @@ class EntriesScheduleWebsiteHandlerTest extends ScheduleWebsiteHandlerTest
 
         $rooms = $this->getCampsuguideHandler()->getRoomScheduleDao()->getAll();
         $facilities = $this->getCampsuguideHandler()->getFacultyScheduleDao()->getAll();
-        $groups = $this->getCampsuguideHandler()->getGroupTypeElementBuildingDao()->getAll();
+        $groups = $this->getCampsuguideHandler()->getGroupScheduleDao()->getAll();
         $program = $this->getCampsuguideHandler()->getProgramScheduleDao()->getAll();
 
         $this->entriesScheduleWebsiteHandler->handle( $website, new Test2EntriesScheduleUrlWebsiteHandler(),
@@ -229,7 +229,7 @@ class EntriesScheduleWebsiteHandlerTest extends ScheduleWebsiteHandlerTest
 
         $roomsNew = $this->getCampsuguideHandler()->getRoomScheduleDao()->getAll();
         $facilitiesNew = $this->getCampsuguideHandler()->getFacultyScheduleDao()->getAll();
-        $groupsNew = $this->getCampsuguideHandler()->getGroupTypeElementBuildingDao()->getAll();
+        $groupsNew = $this->getCampsuguideHandler()->getGroupScheduleDao()->getAll();
         $programNew = $this->getCampsuguideHandler()->getProgramScheduleDao()->getAll();
 
         $this->assertEqual( $rooms->size(), $roomsNew->size() );

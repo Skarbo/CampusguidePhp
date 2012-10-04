@@ -31,7 +31,7 @@ class BuildingDaoTest extends StandardDaoTest
      */
     protected function getStandardDao()
     {
-        return $this->buildingDao;
+        return $this->getCampusguideHandlerTest()->getbuildingDao();
     }
 
     /**
@@ -39,13 +39,11 @@ class BuildingDaoTest extends StandardDaoTest
      */
     protected function getEditedModel( StandardModel $model )
     {
-
         $modelEdited = BuildingModel::get_( $model );
         $modelEdited->setName( "Building Edited" );
-        $modelEdited->setCoordinates( array ( array ( 300, 400 ), array ( 500, 600 ) ) );
+        $modelEdited->setAddress( array ( "streetname2", "city2", "postal2", "country2" ) );
 
         return $modelEdited;
-
     }
 
     /**
@@ -54,9 +52,9 @@ class BuildingDaoTest extends StandardDaoTest
     protected function createModelTest()
     {
         // Add Facility
-        $facility = $this->addFacility();
+        $facility = $this->getCampusguideHandlerTest()->addFacility();
 
-        return self::createBuildingTest( $facility->getId() );
+        return CampusguideHandlerTest::createBuildingTest( $facility->getId() );
     }
 
     /**
@@ -81,10 +79,8 @@ class BuildingDaoTest extends StandardDaoTest
         $modelOne = BuildingModel::get_( $modelOne );
         $modelTwo = BuildingModel::get_( $modelTwo );
 
-        self::assertEqualsFunction( $modelOne->getIdURI(), $modelTwo->getIdURI(), "Building id", $testCase );
+        self::assertEqualsFunction( $modelOne->getId(), $modelTwo->getId(), "Building id", $testCase );
         self::assertEqualsFunction( $modelOne->getName(), $modelTwo->getName(), "Building name", $testCase );
-        self::assertEqualsFunction( $modelOne->getCoordinates(), $modelTwo->getCoordinates(), "Building coordinates",
-                $testCase );
     }
 
     /**
@@ -94,9 +90,8 @@ class BuildingDaoTest extends StandardDaoTest
     {
         $model = BuildingModel::get_( $model );
 
-        self::assertNotNullFunction( $model->getIdURI(), "Building id", $testCase );
+        self::assertNotNullFunction( $model->getId(), "Building id", $testCase );
         self::assertNotNullFunction( $model->getName(), "Building name", $testCase );
-        self::assertNotNullFunction( $model->getCoordinates(), "Building coordinates", $testCase );
     }
 
     // ... /ASSERT

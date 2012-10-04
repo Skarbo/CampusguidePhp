@@ -95,7 +95,7 @@ class Resource extends AbstractResource
     {
         if ( empty( $coordinates ) )
             return "";
-        if ( is_string($coordinates ) )
+        if ( is_string( $coordinates ) )
             return $coordinates;
         return implode( self::$COORDINATES_POLYGONS_SPLITTER,
                 array_map(
@@ -120,7 +120,7 @@ class Resource extends AbstractResource
                                                                             ( array ) $var );
                                                                 }, ( array ) $coordinate ) );
                                             }, ( array ) $polygon ) );
-                        }, $coordinates ) );
+                        }, ( array ) $coordinates ) );
     }
 
     /**

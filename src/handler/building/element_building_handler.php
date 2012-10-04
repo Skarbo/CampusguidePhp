@@ -7,17 +7,13 @@ class ElementBuildingHandler extends Handler
 
 
     /**
-     * @var TypeElementBuildingDao
+     * @var ElementBuildingDao
      */
     private $elementBuildingDao;
     /**
      * @var SectionBuildingDao
      */
     private $sectionBuildingDao;
-    /**
-     * @var TypeTypeElementBuildingDao
-     */
-    private $typeTypeElementBuildingDao;
     /**
      * @var ElementBuildingValidator
      */
@@ -29,11 +25,10 @@ class ElementBuildingHandler extends Handler
     // CONSTRUCTOR
 
 
-    public function __construct( ElementBuildingDao $elementBuildingDao, SectionBuildingDao $sectionBuildingDao, TypeElementBuildingDao $typeElementBuildingDao, ElementBuildingValidator $elementBuildingValidator )
+    public function __construct( ElementBuildingDao $elementBuildingDao, SectionBuildingDao $sectionBuildingDao, ElementBuildingValidator $elementBuildingValidator )
     {
         $this->setElementBuildingDao( $elementBuildingDao );
         $this->setSectionBuildingDao( $sectionBuildingDao );
-        $this->setTypeElementBuildingDao( $typeElementBuildingDao );
         $this->setElementBuildingValidator( $elementBuildingValidator );
     }
 
@@ -76,22 +71,6 @@ class ElementBuildingHandler extends Handler
     public function setSectionBuildingDao( SectionBuildingDao $sectionBuildingDao )
     {
         $this->sectionBuildingDao = $sectionBuildingDao;
-    }
-
-    /**
-     * @return TypeElementBuildingDao
-     */
-    public function getTypeElementBuildingDao()
-    {
-        return $this->typeTypeElementBuildingDao;
-    }
-
-    /**
-     * @param TypeElementBuildingDao $elementBuildingDao
-     */
-    public function setTypeElementBuildingDao( TypeElementBuildingDao $elementBuildingDao )
-    {
-        $this->typeTypeElementBuildingDao = $elementBuildingDao;
     }
 
     /**

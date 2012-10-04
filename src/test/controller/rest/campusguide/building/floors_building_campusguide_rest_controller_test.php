@@ -78,7 +78,7 @@ class FloorsBuildingCampusguideRestControllerTest extends StandardCampusguideRes
      */
     protected function getStandardDao()
     {
-        return $this->floorBuildingDao;
+        return $this->getCampusguideHandlerTest()->getfloorBuildingDao();
     }
 
     /**
@@ -108,7 +108,7 @@ class FloorsBuildingCampusguideRestControllerTest extends StandardCampusguideRes
     {
         $model = FloorBuildingModel::get_( $model );
 
-        FloorBuildingDaoTest::assertNotNullFunction( $model->getIdURI(), "Floor Building id", $testCase );
+        FloorBuildingDaoTest::assertNotNullFunction( $model->getId(), "Floor Building id", $testCase );
         FloorBuildingDaoTest::assertNotNullFunction( $model->getBuildingId(), "Floor Building building id", $testCase );
         FloorBuildingDaoTest::assertNotNullFunction( $model->getName(), "Floor Building name", $testCase );
         FloorBuildingDaoTest::assertNotNullFunction( $model->getOrder(), "Floor Building order", $testCase );
@@ -124,13 +124,13 @@ class FloorsBuildingCampusguideRestControllerTest extends StandardCampusguideRes
     {
 
         // Add Facility
-        $facility = $this->addFacility();
+        $facility = $this->getCampusguideHandlerTest()->addFacility();
 
         // Add Building
-        $building = $this->addBuilding( $facility->getId() );
+        $building = $this->getCampusguideHandlerTest()->addBuilding( $facility->getId() );
 
         // Create Floor Building
-        return FloorBuildingDaoTest::createFloorBuildingTest( $building->getId() );
+        return CampusguideHandlerTest::createFloorBuildingTest( $building->getId() );
 
     }
 
@@ -153,18 +153,18 @@ class FloorsBuildingCampusguideRestControllerTest extends StandardCampusguideRes
 
 
     //         // Add Facility
-    //         $facility = $this->addFacility();
+    //         $facility = $this->getCampusguideHandlerTest()->addFacility();
 
 
     //         // Add Building
-    //         $building = $this->addBuilding( $facility->getId() );
+    //         $building = $this->getCampusguideHandlerTest()->addBuilding( $facility->getId() );
 
 
     //         // Add floors
     //         $floors = new FloorBuildingListModel();
-    //         $floors->add( $this->addFloor( $building->getId() ) );
-    //         $floors->add( $this->addFloor( $building->getId() ) );
-    //         $floors->add( $this->addFloor( $building->getId() ) );
+    //         $floors->add( $this->getCampusguideHandlerTest()->addFloor( $building->getId() ) );
+    //         $floors->add( $this->getCampusguideHandlerTest()->addFloor( $building->getId() ) );
+    //         $floors->add( $this->getCampusguideHandlerTest()->addFloor( $building->getId() ) );
 
 
     //         // Edit Floors

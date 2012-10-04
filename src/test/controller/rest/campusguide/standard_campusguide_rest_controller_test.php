@@ -270,13 +270,12 @@ abstract class StandardCampusguideRestControllerTest extends CampusguideControll
         $data = $this->post( $url, $this->createPostModel( $model ) );
         $dataArray = json_decode( $data, true );
 
-        //                         $this->showHeaders();
-        //                         $this->showRequest();
-        //                         $this->showSource();
-
+//                                 $this->showHeaders();
+//                                 $this->showRequest();
+//                                 $this->showSource();
 
         // Assert response
-        if ( $this->assertResponse( Controller::STATUS_CREATED, "Should be correct response" ) )
+        if ( $this->assertResponse( Controller::STATUS_CREATED ) )
         {
 
             // Get REST Model

@@ -32,7 +32,6 @@ class BuildingDbDao extends StandardDbDao implements BuildingDao
         $building = BuildingFactoryModel::createBuilding(
                 Core::arrayAt( $modelArray, Resource::db()->building()->getFieldName() ),
                 Core::arrayAt( $modelArray, Resource::db()->building()->getFieldFacilityId() ),
-                Core::arrayAt( $modelArray, Resource::db()->building()->getFieldCoordinates() ),
                 Core::arrayAt( $modelArray, Resource::db()->building()->getFieldAddress() ),
                 Core::arrayAt( $modelArray, Resource::db()->building()->getFieldPosition() ),
                 Core::arrayAt( $modelArray, Resource::db()->building()->getFieldLocation() ) );
@@ -96,8 +95,6 @@ class BuildingDbDao extends StandardDbDao implements BuildingDao
         $binds[ "name" ] = Core::utf8Decode( $model->getName() );
         $fields[ Resource::db()->building()->getFieldFacilityId() ] = ":facilityId";
         $binds[ "facilityId" ] = $foreignId;
-        $fields[ Resource::db()->building()->getFieldCoordinates() ] = ":coordinates";
-        $binds[ "coordinates" ] = $model->getCoordinates();
         $fields[ Resource::db()->building()->getFieldLocation() ] = ":location";
         $binds[ "location" ] = BuildingUtil::generateLocationToString( $model->getLocation() );
         $fields[ Resource::db()->building()->getFieldAddress() ] = ":address";

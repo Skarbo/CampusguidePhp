@@ -7,37 +7,9 @@ abstract class CampusguideDaoTest extends DbTest
 
 
     /**
-     * @var FacilityDao
-     */
-    protected $facilityDao;
-    /**
-     * @var SectionBuildingDao
-     */
-    protected $sectionBuildingDao;
-    /**
-     * @var BuildingDao
-     */
-    protected $buildingDao;
-    /**
-     * @var ElementBuildingDao
-     */
-    protected $elementBuildingDao;
-    /**
-     * @var FloorBuildingDao
-     */
-    protected $floorBuildingDao;
-    /**
-     * @var TypeElementBuildingDao
-     */
-    protected $typeElementBuildingDao;
-    /**
-     * @var GroupTypeElementBuildingDao
-     */
-    protected $groupTypeElementBuildingDao;
-    /**
      * @var CampusguideHandler
      */
-    protected $campusguideHandler;
+    protected $campusguideHandlerTest;
 
     // /VARIABLES
 
@@ -49,15 +21,7 @@ abstract class CampusguideDaoTest extends DbTest
     {
         parent::__construct( $label );
 
-        $this->facilityDao = new FacilityDbDao( $this->getDbApi() );
-        $this->buildingDao = new BuildingDbDao( $this->getDbApi() );
-        $this->sectionBuildingDao = new SectionBuildingDbDao( $this->getDbApi() );
-        $this->elementBuildingDao = new ElementBuildingDbDao( $this->getDbApi() );
-        $this->typeElementBuildingDao = new TypeElementBuildingDbDao( $this->getDbApi() );
-        $this->groupTypeElementBuildingDao = new GroupTypeElementBuildingDbDao( $this->getDbApi() );
-        $this->floorBuildingDao = new FloorBuildingDbDao( $this->getDbApi() );
-
-        $this->campusguideHandler = new CampusguideHandler( $this->getDbApi() );
+        $this->campusguideHandlerTest = new CampusguideHandlerTest( $this->getDbApi() );
     }
 
     // /CONSTRUCTOR
@@ -70,258 +34,15 @@ abstract class CampusguideDaoTest extends DbTest
     {
         parent::setUp();
 
-        $this->facilityDao->removeAll();
-        $this->buildingDao->removeAll();
-        $this->sectionBuildingDao->removeAll();
-        $this->elementBuildingDao->removeAll();
-        $this->typeElementBuildingDao->removeAll();
-        $this->groupTypeElementBuildingDao->removeAll();
-        $this->floorBuildingDao->removeAll();
-
-        $this->getCampusguideHandler()->getWebsiteScheduleDao()->removeAll();
-        $this->getCampusguideHandler()->getRoomScheduleDao()->removeAll();
-        $this->getCampusguideHandler()->getFacultyScheduleDao()->removeAll();
-        $this->getCampusguideHandler()->getGroupScheduleDao()->removeAll();
-        $this->getCampusguideHandler()->getProgramScheduleDao()->removeAll();
-        $this->getCampusguideHandler()->getEntryScheduleDao()->removeAll();
-    }
-
-    // ... CREATE
-
-
-    /**
-     * @return FacilityModel
-     */
-    public static function createFacilityTest()
-    {
-        $facility = FacilityFactoryModel::createFacility( "Test Facility" );
-
-        return $facility;
+        $this->getCampusguideHandlerTest()->removeAll();
     }
 
     /**
-     * @return BuildingModel
+     * @return CampusguideHandlerTest
      */
-    public static function createBuildingTest( $facilityId )
+    protected function getCampusguideHandlerTest()
     {
-        $building = BuildingFactoryModel::createBuilding( "Test Building", $facilityId,
-                array ( array ( 100, 200 ), array ( 300, 400 ) ) );
-
-        return $building;
-    }
-
-    /**
-     * @return FloorBuildingModel
-     */
-    public static function createFloorBuildingTest( $buildingId )
-    {
-        $floorBuilding = FloorBuildingFactoryModel::createFloorBuilding( $buildingId, "Test Floor", 0,
-                array ( array ( array ( 100, 200, "L" ), array ( 300, 400, "L" ) ) ) );
-
-        return $floorBuilding;
-    }
-
-    /**
-     * @return ElementBuildingModel
-     */
-    public static function createElementBuildingTest( $floorId, $sectionId = null, $type = "", $typeGroup = "" )
-    {
-        $elementBuilding = ElementBuildingFactoryModel::createElementBuilding( $floorId, "Test Room",
-                array ( array ( array ( 100, 200, "L" ), array ( 300, 400, "L" ) ) ), $sectionId, $type, $typeGroup );
-
-        return $elementBuilding;
-    }
-
-    /**
-     * @return TypeElementBuildingModel
-     */
-    public static function createTypeElementBuildingTest( $groupId )
-    {
-        $typeElementBuilding = TypeElementBuildingFactoryModel::createTypeElementBuilding( $groupId,
-                "Test Element Building", "icon1" );
-
-        return $typeElementBuilding;
-    }
-
-    /**
-     * @return GroupTypeElementBuildingModel
-     */
-    public static function createGroupTypeElementBuildingTest()
-    {
-        $groupTypeElementBuilding = GroupTypeElementBuildingFactoryModel::createGroupTypeElementBuilding(
-                "Test Group Type Element Building" );
-
-        return $groupTypeElementBuilding;
-    }
-
-    /**
-     * @return SectionBuildingModel
-     */
-    public static function createSectionBuildingTest( $buildingId )
-    {
-        $sectionBuilding = SectionBuildingFactoryModel::createSectionBuilding( $buildingId, "Section Test",
-                array ( array ( 100, 200 ), array ( 300, 400 ) ) );
-
-        return $sectionBuilding;
-    }
-
-    // ... SCHEDULE
-
-
-    /**
-     * @return WebsiteScheduleModel
-     */
-    public static function createWebsiteTest()
-    {
-        $website = WebsiteScheduleFactoryModel::createWebsiteSchedule( "http://test.com", "test" );
-        return $website;
-    }
-
-    /**
-     * @return RoomScheduleModel
-     */
-    public static function createRoomSchedule( $roomNameShort, $elementId = null )
-    {
-        $room = RoomScheduleFactoryModel::createRoomSchedule( $elementId, null, null, $roomNameShort );
-        return $room;
-    }
-
-    // ... /SCHEDULE
-
-
-    // ... /CREATE
-
-
-    // ... ADD
-
-
-    /**
-     * @return FacilityModel
-     */
-    protected function addFacility()
-    {
-        $facility = self::createFacilityTest();
-
-        $facility->setId( $this->facilityDao->add( $facility, null ) );
-
-        return $facility;
-    }
-
-    /**
-     * @return BuildingModel
-     */
-    protected function addBuilding( $facilityId )
-    {
-        $building = self::createBuildingTest( $facilityId );
-
-        $building->setId( $this->buildingDao->add( $building, $facilityId ) );
-
-        return $building;
-    }
-
-    /**
-     * @return SectionBuildingModel
-     */
-    protected function addSection( $buildingId )
-    {
-        $section = self::createSectionBuildingTest( $buildingId );
-
-        $section->setId( $this->sectionBuildingDao->add( $section, $buildingId ) );
-
-        return $section;
-    }
-
-    /**
-     * @return RoomBuildingModel
-     */
-    protected function addElement( $floorId, $sectionId = null, $type = "", $typeGroup = "" )
-    {
-        $element = self::createElementBuildingTest( $floorId, $sectionId, $type, $typeGroup );
-
-        $element->setId( $this->elementBuildingDao->add( $element, $floorId ) );
-
-        return $element;
-    }
-
-    /**
-     * @return TypeElementBuildingModel
-     */
-    protected function addTypeElement( $elementTypeGroupId )
-    {
-        $typeElement = self::createTypeElementBuildingTest( $elementTypeGroupId );
-
-        $typeElement->setId( $this->typeElementBuildingDao->add( $typeElement, $elementTypeGroupId ) );
-
-        return $typeElement;
-    }
-
-    /**
-     * @return GroupTypeElementBuildingModel
-     */
-    protected function addGroupTypeElement()
-    {
-        $groupTypeElement = self::createGroupTypeElementBuildingTest();
-
-        $groupTypeElement->setId( $this->groupTypeElementBuildingDao->add( $groupTypeElement, null ) );
-
-        return $groupTypeElement;
-    }
-
-    /**
-     * @return FloorBuildingModel
-     */
-    protected function addFloor( $buildingId )
-    {
-        $floor = self::createFloorBuildingTest( $buildingId );
-
-        $floor->setId( $this->floorBuildingDao->add( $floor, $buildingId ) );
-
-        return $floor;
-    }
-
-    // ... SCHEDULE
-
-
-    /**
-     * @return WebsiteScheduleModel
-     */
-    protected function addWebsiteSchedule()
-    {
-        $website = self::createWebsiteTest();
-        $website->setId( $this->getCampusguideHandler()->getWebsiteScheduleDao()->add( $website, null ) );
-        return $website;
-    }
-
-    /**
-     * @return WebsiteScheduleModel
-     */
-    protected function addWesiteBuildingSchedule( $websiteId, $buildingId )
-    {
-        $this->getCampusguideHandler()->getWebsiteScheduleDao()->addBuilding( $websiteId, $buildingId );
-    }
-
-    /**
-     * @return RoomScheduleModel
-     */
-    protected function addRoomSchedule( $websiteId, $roomNameShort, $elementId = null )
-    {
-        $room = self::createRoomSchedule( $roomNameShort, $elementId );
-        $room->setId( $this->getCampusguideHandler()->getRoomScheduleDao()->add( $room, $websiteId ) );
-        return $room;
-    }
-
-    // ... /SCHEDULE
-
-
-    // ... /ADD
-
-
-    /**
-     * @return CampusguideHandler
-     */
-    protected function getCampusguideHandler()
-    {
-        return $this->campusguideHandler;
+        return $this->campusguideHandlerTest;
     }
 
     // /FUNCTIONS

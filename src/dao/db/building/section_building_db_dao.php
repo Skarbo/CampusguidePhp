@@ -84,7 +84,7 @@ class SectionBuildingDbDao extends StandardDbDao implements SectionBuildingDao
         $fields[ Resource::db()->sectionBuilding()->getFieldName() ] = ":name";
         $binds[ "name" ] = $model->getName();
         $fields[ Resource::db()->sectionBuilding()->getFieldCoordinates() ] = ":coordinates";
-        $binds[ "coordinates" ] = $model->getCoordinates();
+        $binds[ "coordinates" ] = Resource::generateCoordinatesToString( $model->getCoordinates() );
 
         if ( !$isInsert )
         {

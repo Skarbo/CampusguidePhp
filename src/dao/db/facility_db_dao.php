@@ -73,7 +73,7 @@ class FacilityDbDao extends StandardDbDao implements FacilityDao
      */
     protected function getForeignField()
     {
-        return null;
+        return Resource::db()->facility()->getFieldId();
     }
 
     /**
@@ -145,6 +145,11 @@ class FacilityDbDao extends StandardDbDao implements FacilityDao
 
     // ... /GET
 
+
+    public function getForeign( array $foreignIds )
+    {
+        return parent::getAll();
+    }
 
     // /FUNCTIONS
 

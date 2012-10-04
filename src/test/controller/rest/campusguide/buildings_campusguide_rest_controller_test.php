@@ -64,7 +64,7 @@ class BuildingsCampusguideRestControllerTest extends StandardCampusguideRestCont
      */
     protected function getStandardDao()
     {
-        return $this->buildingDao;
+        return $this->getCampusguideHandlerTest()->getbuildingDao();
     }
 
     /**
@@ -86,8 +86,6 @@ class BuildingsCampusguideRestControllerTest extends StandardCampusguideRestCont
         StandardDaoTest::assertEqualsFunction( $modelOne->getName(), $modelTwo->getName(), "Building name", $testCase );
         StandardDaoTest::assertEqualsFunction( $modelOne->getFacilityId(), $modelTwo->getFacilityId(),
                 "Building Facility id", $testCase );
-        StandardDaoTest::assertEqualsFunction( $modelOne->getCoordinates(), $modelTwo->getCoordinates(),
-                "Building coordinates", $testCase );
     }
 
     /**
@@ -97,10 +95,9 @@ class BuildingsCampusguideRestControllerTest extends StandardCampusguideRestCont
     {
         $model = BuildingModel::get_( $model );
 
-        StandardDaoTest::assertNotNullFunction( $model->getIdURI(), "Building id", $testCase );
+        StandardDaoTest::assertNotNullFunction( $model->getId(), "Building id", $testCase );
         StandardDaoTest::assertNotNullFunction( $model->getName(), "Building name", $testCase );
         StandardDaoTest::assertNotNullFunction( $model->getFacilityId(), "Building Facility id", $testCase );
-        StandardDaoTest::assertNotNullFunction( $model->getCoordinates(), "Building coordinates", $testCase );
     }
 
     /**
@@ -109,9 +106,9 @@ class BuildingsCampusguideRestControllerTest extends StandardCampusguideRestCont
     protected function createModelTest()
     {
         // Add Facility
-        $facility = $this->addFacility();
+        $facility = $this->getCampusguideHandlerTest()->addFacility();
 
-        return BuildingDaoTest::createBuildingTest( $facility->getId() );
+        return CampusguideHandlerTest::createBuildingTest( $facility->getId() );
     }
 
     // /FUNCTIONS

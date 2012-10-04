@@ -26,41 +26,37 @@ class AllTests extends TestSuite
 
         parent::TestSuite( "All tests" );
 
-        //$this->add( new FacilityDaoTest() );
-        //         $this->add( new BuildingDaoTest() );
-        //$this->add( new ElementBuildingDaoTest() );
-        //$this->add( new TypeElementBuildingDaoTest() );
-        //$this->add( new GroupTypeElementBuildingDaoTest() );
-        //$this->add( new SectionBuildingDaoTest() );
-        //$this->add( new FloorBuildingDaoTest() );
+            //         $this->add( new FacilityDaoTest() );
+            //         $this->add( new BuildingDaoTest() );
+            //         $this->add( new ElementBuildingDaoTest() );
+            //         $this->add( new SectionBuildingDaoTest() );
+            //         $this->add( new FloorBuildingDaoTest() );
 
 
         //         $this->add( new FloorBuildingHandlerTest() );
 
 
-        //$this->add( new FacilitiesCampusguideRestControllerTest() );
-        //         $this->add( new BuildingsCampusguideRestControllerTest() );
-        //$this->add( new FloorsBuildingCampusguideRestControllerTest() );
-        //$this->add( new ElementsBuildingCampusguideRestControllerTest() );
-        //$this->add( new TypesElementBuildingCampusguideRestControllerTest() );
-        //$this->add( new GroupsTypeElementBuildingCampusguideRestControllerTest() );
-        //         $this->add( new SectionsBuildingCampusguideRestControllerTest() );
-        //$this->add( new SearchCampusguideRestControllerTest() );
+//         $this->add( new FacilitiesCampusguideRestControllerTest() );
+//         $this->add( new BuildingsCampusguideRestControllerTest() );
+//         $this->add( new FloorsBuildingCampusguideRestControllerTest() );
+//         $this->add( new ElementsBuildingCampusguideRestControllerTest() );
+//         $this->add( new SectionsBuildingCampusguideRestControllerTest() );
+//         $this->add( new SearchCampusguideRestControllerTest() );
 
 
         //$this->add( new DbbackupHandlerTest() );
-//                 $this->add(new QueueHandlerTest() );
+        //                 $this->add(new QueueHandlerTest() );
 
 
         //$this->add(new BuildingCampusguideCommandControllerTest());
-        $this->add(new QueueCampusguideCommandControllerTest());
+//         $this->add( new QueueCampusguideCommandControllerTest() );
 
+        //                 $this->add( new TypesTimeeditScheduleWebsiteParserTest() );
+        //         $this->add( new TypesScheduleWebsiteHandlerTest() );
+        //         $this->add( new EntriesTimeeditScheduleWebsiteParserTest() );
+        // $this->add( new EntriesScheduleWebsiteHandlerTest() );
+        //         $this->add(new RoomScheduleDaoTest());
 
-//                 $this->add( new TypesTimeeditScheduleWebsiteParserTest() );
-//         $this->add( new TypesScheduleWebsiteHandlerTest() );
-//         $this->add( new EntriesTimeeditScheduleWebsiteParserTest() );
-// $this->add( new EntriesScheduleWebsiteHandlerTest() );
-//         $this->add(new RoomScheduleDaoTest());
 
     }
 

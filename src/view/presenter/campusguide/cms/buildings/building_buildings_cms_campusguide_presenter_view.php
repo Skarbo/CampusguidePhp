@@ -28,7 +28,7 @@ class BuildingBuildingsCmsCampusguidePresenterView extends PresenterView
     public function __construct( MainView $view )
     {
         parent::__construct( $view );
-        $this->setBuilding( BuildingFactoryModel::createBuilding( "", 0, array () ) );
+        $this->setBuilding( BuildingFactoryModel::createBuilding( "", 0 ) );
         $this->setFacility( FacilityFactoryModel::createFacility( "" ) );
     }
 

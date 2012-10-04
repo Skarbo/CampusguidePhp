@@ -31,7 +31,7 @@ class FacilityDaoTest extends StandardDaoTest
      */
     protected function getStandardDao()
     {
-        return $this->facilityDao;
+        return $this->getCampusguideHandlerTest()->getFacilityDao();
     }
 
     /**
@@ -52,7 +52,7 @@ class FacilityDaoTest extends StandardDaoTest
      */
     protected function createModelTest()
     {
-        return self::createFacilityTest();
+        return CampusguideHandlerTest::createFacilityTest();
     }
 
     /**
@@ -60,7 +60,7 @@ class FacilityDaoTest extends StandardDaoTest
      */
     protected function getSearchString( StandardModel $model )
     {
-        return FacilityModel::get_( $model );
+        return FacilityModel::get_( $model )->getName();
     }
 
     // ... /GET
@@ -74,7 +74,7 @@ class FacilityDaoTest extends StandardDaoTest
         $modelOne = FacilityModel::get_( $modelOne );
         $modelTwo = FacilityModel::get_( $modelTwo );
 
-        self::assertEqualsFunction( $modelOne->getIdURI(), $modelTwo->getIdURI(), "Facility id", $testCase );
+        self::assertEqualsFunction( $modelOne->getId(), $modelTwo->getId(), "Facility id", $testCase );
         self::assertEqualsFunction( $modelOne->getName(), $modelTwo->getName(), "Facility name", $testCase );
     }
 
@@ -82,7 +82,7 @@ class FacilityDaoTest extends StandardDaoTest
     {
         $model = FacilityModel::get_( $model );
 
-        self::assertNotNullFunction( $model->getIdURI(), "Facility id", $testCase );
+        self::assertNotNullFunction( $model->getId(), "Facility id", $testCase );
         self::assertNotNullFunction( $model->getName(), "Facility name", $testCase );
     }
 

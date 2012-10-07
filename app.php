@@ -1,7 +1,7 @@
 <?php
 
 include_once '../krisskarboapi/src/util/initialize_util.php';
-include_once '../krisskarboapi/src/api/api.php';
+include_once '../krisskarboapi/src/api/api/abstract_api.php';
 
 function __autoload( $class_name )
 {
@@ -27,13 +27,13 @@ $campusguide_api->setDebug(
 
 // Mapping
 $mapping = array ();
-$mapping[ MapAppCampusguideMainController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = MapAppCampusguideMainController::class_();
-$mapping[ MapAppCampusguideMainController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = MapAppCampusguideMainView::class_();
-$mapping[ BuildingAppCampusguideMainController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = BuildingAppCampusguideMainController::class_();
-$mapping[ BuildingAppCampusguideMainController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = BuildingAppCampusguideMainView::class_();
-$mapping[ ElementBuildingAppCampusguideMainController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = ElementBuildingAppCampusguideMainController::class_();
-$mapping[ ElementBuildingAppCampusguideMainController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = ElementBuildingAppCampusguideMainView::class_();
-$mapping[ "" ] = $mapping[ MapAppCampusguideMainController::$CONTROLLER_NAME ];
+$mapping[ MapAppMainController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = MapAppMainController::class_();
+$mapping[ MapAppMainController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = MapAppMainView::class_();
+$mapping[ BuildingAppMainController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = BuildingAppMainController::class_();
+$mapping[ BuildingAppMainController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = BuildingAppMainView::class_();
+$mapping[ ElementBuildingAppMainController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = ElementBuildingAppMainController::class_();
+$mapping[ ElementBuildingAppMainController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = ElementBuildingAppMainView::class_();
+$mapping[ "" ] = $mapping[ MapAppMainController::$CONTROLLER_NAME ];
 
 // Create KillHandler
 class AppKillHandler extends ClassCore implements KillHandler

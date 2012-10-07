@@ -13,9 +13,9 @@ class EntriesScheduleWebsiteHandler extends Handler
      */
     private $websiteParser;
     /**
-     * @var CampusguideHandler
+     * @var DaoContainer
      */
-    private $campusguideHandler;
+    private $daoContainer;
     /**
      * @var EntriesScheduleHandler
      */
@@ -27,11 +27,11 @@ class EntriesScheduleWebsiteHandler extends Handler
     // CONSTRUCTOR
 
 
-    public function __construct( CampusguideHandler $campusguideHandler )
+    public function __construct( DaoContainer $daoContainer )
     {
         $this->setWebsiteParser( new WebsiteParser() );
-        $this->setCampusguideHandler( $campusguideHandler );
-        $this->setEntriesHandler( new EntriesScheduleHandler( $campusguideHandler ) );
+        $this->setDaoContainer( $daoContainer );
+        $this->setEntriesHandler( new EntriesScheduleHandler( $daoContainer ) );
     }
 
     // /CONSTRUCTOR
@@ -60,19 +60,19 @@ class EntriesScheduleWebsiteHandler extends Handler
     }
 
     /**
-     * @return CampusguideHandler
+     * @return DaoContainer
      */
-    public function getCampusguideHandler()
+    public function getDaoContainer()
     {
-        return $this->campusguideHandler;
+        return $this->daoContainer;
     }
 
     /**
-     * @param CampusguideHandler $campusguideHandler
+     * @param DaoContainer $daoContainer
      */
-    public function setCampusguideHandler( CampusguideHandler $campusguideHandler )
+    public function setDaoContainer( DaoContainer $daoContainer )
     {
-        $this->campusguideHandler = $campusguideHandler;
+        $this->daoContainer = $daoContainer;
     }
 
     /**

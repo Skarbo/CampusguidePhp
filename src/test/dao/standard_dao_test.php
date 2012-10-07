@@ -1,6 +1,6 @@
 <?php
 
-abstract class StandardDaoTest extends CampusguideDaoTest
+abstract class StandardDaoTest extends DaoTest
 {
 
     // VARIABLES

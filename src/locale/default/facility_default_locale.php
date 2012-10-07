@@ -58,13 +58,13 @@ class FacilityDefaultLocale extends Locale
     {
         switch ( $success )
         {
-            case FacilitiesCmsCampusguideMainController::SUCCESS_FACILITY_DELETED :
+            case FacilitiesCmsMainController::SUCCESS_FACILITY_DELETED :
                 return $this->successDelete;
                 break;
-            case FacilitiesCmsCampusguideMainController::SUCCESS_FACILITY_ADDED :
+            case FacilitiesCmsMainController::SUCCESS_FACILITY_ADDED :
                 return $this->successAdded;
                 break;
-            case FacilitiesCmsCampusguideMainController::SUCCESS_FACILITY_EDITED :
+            case FacilitiesCmsMainController::SUCCESS_FACILITY_EDITED :
                 return $this->successEdited;
                 break;
         }

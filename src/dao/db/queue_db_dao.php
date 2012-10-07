@@ -91,6 +91,11 @@ class QueueDbDao extends QueueDao
         $select_build = new SelectSqlbuilderDbCore();
         $select_build->setExpression( "*" );
         $select_build->setFrom( Resource::db()->queue()->getTable() );
+        $select_build->setOrderBy(
+                array ( array ( Resource::db()->queue()->getFieldError(), SB::$ASC ),
+                        array ( Resource::db()->queue()->getFieldPriority(), SB::$DESC ),
+                        array ( Resource::db()->queue()->getFieldRegistered(), SB::$ASC ),
+                        array ( Resource::db()->queue()->getFieldId(), SB::$ASC ) ) );
 
         $select_query->setQuery( $select_build );
 
@@ -248,27 +253,15 @@ class QueueDbDao extends QueueDao
         $binds = array ();
 
         // Select query
-        $select_query = new SelectQueryDbCore();
-
-        // ... Build
-        $select_build = new SelectSqlbuilderDbCore();
-        $select_build->setExpression( "*" );
-        $select_build->setFrom( Resource::db()->queue()->getTable() );
-        $select_build->setOrderBy(
-                array ( array ( Resource::db()->queue()->getFieldError(), SB::$ASC ),
-                        array ( Resource::db()->queue()->getFieldPriority(), SB::$DESC ),
-                        array ( Resource::db()->queue()->getFieldRegistered(), SB::$ASC ),
-                        array ( Resource::db()->queue()->getFieldId(), SB::$ASC ) ) );
+        $select_query = $this->getSelectQuery();
 
         // ... ... Types
         if ( !empty( $queueTypes ) )
         {
             list ( $typeFields, $typeBinds ) = SB::createIn( Resource::db()->queue()->getFieldType(), $queueTypes );
-            $select_build->addWhere( SB::in( Resource::db()->queue()->getFieldType(), $typeFields ) );
+            $select_query->getQuery()->addWhere( SB::in( Resource::db()->queue()->getFieldType(), $typeFields ) );
             $binds += $typeBinds;
         }
-
-        $select_query->setQuery( $select_build );
 
         // ... Binds
         $select_query->setBinds( $binds );

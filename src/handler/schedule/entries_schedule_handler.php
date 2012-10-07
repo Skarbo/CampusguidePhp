@@ -7,9 +7,9 @@ class EntriesScheduleHandler extends Handler
 
 
     /**
-     * @var CampusguideHandler
+     * @var DaoContainer
      */
-    private $campusguideHandler;
+    private $daoContainer;
     /**
      * @return TypesScheduleHandler
      */
@@ -21,9 +21,9 @@ class EntriesScheduleHandler extends Handler
     // CONSTRUCTOR
 
 
-    public function __construct( CampusguideHandler $campusguideHandler )
+    public function __construct( DaoContainer $daoContainer )
     {
-        $this->setCampusguideHandler( $campusguideHandler );
+        $this->setDaoContainer( $daoContainer );
         $this->setTypesScheduleHandler( new TypesScheduleHandler( null ) );
     }
 
@@ -37,19 +37,19 @@ class EntriesScheduleHandler extends Handler
 
 
     /**
-    * @return CampusguideHandler
+    * @return DaoContainer
     */
-    public function getCampusguideHandler()
+    public function getDaoContainer()
     {
-        return $this->campusguideHandler;
+        return $this->daoContainer;
     }
 
     /**
-    * @param CampusguideHandler $campusguideHandler
+    * @param DaoContainer $daoContainer
     */
-    public function setCampusguideHandler( CampusguideHandler $campusguideHandler )
+    public function setDaoContainer( DaoContainer $daoContainer )
     {
-        $this->campusguideHandler = $campusguideHandler;
+        $this->daoContainer = $daoContainer;
     }
 
     /**
@@ -77,31 +77,31 @@ class EntriesScheduleHandler extends Handler
         {
             $entry = $entries->current();
 
-            $entry->setId( $this->getCampusguideHandler()->getEntryScheduleDao()->add( $entry, $websiteId ) );
+            $entry->setId( $this->getDaoContainer()->getEntryScheduleDao()->add( $entry, $websiteId ) );
 
             foreach ( $entry->getOccurences() as $occurence )
             {
-                $this->getCampusguideHandler()->getEntryScheduleDao()->addOccurence( $entry->getId(), $occurence );
+                $this->getDaoContainer()->getEntryScheduleDao()->addOccurence( $entry->getId(), $occurence );
             }
 
             // Group
             $this->getTypesScheduleHandler()->setTypeScheduleDao(
-                    $this->getCampusguideHandler()->getGroupScheduleDao() );
+                    $this->getDaoContainer()->getGroupScheduleDao() );
             $this->getTypesScheduleHandler()->handle( $websiteId, $entry->getGroups(), $entry->getId() );
 
             // Program
             $this->getTypesScheduleHandler()->setTypeScheduleDao(
-                    $this->getCampusguideHandler()->getProgramScheduleDao() );
+                    $this->getDaoContainer()->getProgramScheduleDao() );
             $this->getTypesScheduleHandler()->handle( $websiteId, $entry->getPrograms(), $entry->getId() );
 
             // Room
             $this->getTypesScheduleHandler()->setTypeScheduleDao(
-                    $this->getCampusguideHandler()->getRoomScheduleDao() );
+                    $this->getDaoContainer()->getRoomScheduleDao() );
             $this->getTypesScheduleHandler()->handle( $websiteId, $entry->getRooms(), $entry->getId() );
 
             // Faculty
             $this->getTypesScheduleHandler()->setTypeScheduleDao(
-                    $this->getCampusguideHandler()->getFacultyScheduleDao() );
+                    $this->getDaoContainer()->getFacultyScheduleDao() );
             $this->getTypesScheduleHandler()->handle( $websiteId, $entry->getFaculties(), $entry->getId() );
         }
 

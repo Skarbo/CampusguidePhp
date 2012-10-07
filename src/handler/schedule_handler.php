@@ -7,9 +7,9 @@ class ScheduleHandler extends Handler
 
 
     /**
-     * @var CampusguideHandler
+     * @var DaoContainer
      */
-    private $campusguideHandler;
+    private $daoContainer;
 
     // /VARIABLES
 
@@ -17,9 +17,9 @@ class ScheduleHandler extends Handler
     // CONSTRUCTOR
 
 
-    public function __construct( CampusguideHandler $campusguideHandler )
+    public function __construct( DaoContainer $daoContainer )
     {
-        $this->setCampusguideHandler( $campusguideHandler );
+        $this->setDaoContainer( $daoContainer );
     }
 
     // /CONSTRUCTOR
@@ -32,19 +32,19 @@ class ScheduleHandler extends Handler
 
 
     /**
-     * @return CampusguideHandler
+     * @return DaoContainer
      */
-    public function getCampusguideHandler()
+    public function getDaoContainer()
     {
-        return $this->campusguideHandler;
+        return $this->daoContainer;
     }
 
     /**
-     * @param CampusguideHandler $campusguideHandler
+     * @param DaoContainer $daoContainer
      */
-    public function setCampusguideHandler( CampusguideHandler $campusguideHandler )
+    public function setDaoContainer( DaoContainer $daoContainer )
     {
-        $this->campusguideHandler = $campusguideHandler;
+        $this->daoContainer = $daoContainer;
     }
 
     // ... /GETTERS/SETTERS
@@ -55,8 +55,8 @@ class ScheduleHandler extends Handler
 
 
 
-        $elements = $this->getCampusguideHandler()->getElementBuildingDao()->getAll();
-        $buildings = $this->getCampusguideHandler()->getBuildingDao()->getForeign($elements->getForeignIds());
+        $elements = $this->getDaoContainer()->getElementBuildingDao()->getAll();
+        $buildings = $this->getDaoContainer()->getBuildingDao()->getForeign($elements->getForeignIds());
 
     }
 

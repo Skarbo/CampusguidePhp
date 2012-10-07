@@ -1,12 +1,21 @@
 <?php
 
-abstract class ImageController extends Controller
+abstract class ImageController extends AbstractController implements InterfaceController
 {
 
     // VARIABLES
 
 
-    const QUERY_OPACITY = "opacity";
+    // ... DAO
+
+
+    /**
+     * @var DaoContainer
+     */
+    private $daoContainer;
+
+    // ... /DAO
+
 
     // /VARIABLES
 
@@ -14,19 +23,54 @@ abstract class ImageController extends Controller
     // CONSTRUCTOR
 
 
+    public function __construct( Api $api, View $view )
+    {
+        parent::__construct( $api, $view );
+
+        $this->setDaoContainer( new DaoContainer( $this->getDbApi() ) );
+    }
+
     // /CONSTRUCTOR
 
 
     // FUNCTIONS
 
 
+    // ... GETTERS/SETTERS
+
+
     /**
-     * @return int Opacity given in query, 0 if not given
+     * @see InterfaceController::getDaoContainer()
      */
-    public static function getOpacityQuery()
+    public function getDaoContainer()
     {
-        return intval( Core::arrayAt( self::getQuery(), self::QUERY_OPACITY, 0 ) );
+        return $this->daoContainer;
     }
+
+    /**
+     * @param DaoContainer $daoContainer
+     */
+    private function setDaoContainer( DaoContainer $daoContainer )
+    {
+        $this->daoContainer = $daoContainer;
+    }
+
+    // ... /GETTERS/SETTERS
+
+
+    // ... GET
+
+
+    /**
+     * @see AbstractController::getLastModified()
+     */
+    public function getLastModified()
+    {
+        return max( filemtime( __FILE__ ), parent::getLastModified() );
+    }
+
+    // ... /GET
+
 
     // /FUNCTIONS
 

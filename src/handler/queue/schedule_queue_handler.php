@@ -7,9 +7,9 @@ class ScheduleQueueHandler extends Handler
 
 
     /**
-     * @var CampusguideHandler
+     * @var DaoContainer
      */
-    private $campusguideHandler;
+    private $daoContainer;
     /**
      * @var TypesScheduleWebsiteHandler
      */
@@ -25,11 +25,11 @@ class ScheduleQueueHandler extends Handler
     // CONSTRUCTOR
 
 
-    public function __construct( CampusguideHandler $campusguideHandler )
+    public function __construct( DaoContainer $daoContainer )
     {
-        $this->setCampusguideHandler( $campusguideHandler );
+        $this->setDaoContainer( $daoContainer );
         $this->setTypesScheduleWebsiteHandler( new TypesScheduleWebsiteHandler( null ) );
-        $this->setEntriesScheduleWebsiteHandler( new EntriesScheduleWebsiteHandler( $this->getCampusguideHandler() ) );
+        $this->setEntriesScheduleWebsiteHandler( new EntriesScheduleWebsiteHandler( $this->getDaoContainer() ) );
     }
 
     // /CONSTRUCTOR
@@ -42,19 +42,19 @@ class ScheduleQueueHandler extends Handler
 
 
     /**
-     * @return CampusguideHandler
+     * @return DaoContainer
      */
-    public function getCampusguideHandler()
+    public function getDaoContainer()
     {
-        return $this->campusguideHandler;
+        return $this->daoContainer;
     }
 
     /**
-     * @param CampusguideHandler $campusguideHandler
+     * @param DaoContainer $daoContainer
      */
-    public function setCampusguideHandler( CampusguideHandler $campusguideHandler )
+    public function setDaoContainer( DaoContainer $daoContainer )
     {
-        $this->campusguideHandler = $campusguideHandler;
+        $this->daoContainer = $daoContainer;
     }
 
     /**
@@ -102,7 +102,7 @@ class ScheduleQueueHandler extends Handler
      */
     private function getWebsite( $websiteId )
     {
-        $website = $this->getCampusguideHandler()->getWebsiteScheduleDao()->get( $websiteId );
+        $website = $this->getDaoContainer()->getWebsiteScheduleDao()->get( $websiteId );
 
         if ( !$website )
             throw new Exception( sprintf( "Website \"%s\" does not exist", $websiteId ) );
@@ -208,7 +208,7 @@ class ScheduleQueueHandler extends Handler
 
         if ( empty( $scheduleTypeIds ) )
         {
-            $this->getCampusguideHandler()->getQueueDao()->remove( $queue->getId() );
+            $this->getDaoContainer()->getQueueDao()->remove( $queue->getId() );
             return true;
         }
 
@@ -216,16 +216,16 @@ class ScheduleQueueHandler extends Handler
         switch ( $scheduleType )
         {
             case TypeScheduleModel::TYPE_FACULTY :
-                $typeScheduelDao = $this->getCampusguideHandler()->getFacultyScheduleDao();
+                $typeScheduelDao = $this->getDaoContainer()->getFacultyScheduleDao();
                 break;
             case TypeScheduleModel::TYPE_GROUP :
-                $typeScheduelDao = $this->getCampusguideHandler()->getGroupScheduleDao();
+                $typeScheduelDao = $this->getDaoContainer()->getGroupScheduleDao();
                 break;
             case TypeScheduleModel::TYPE_PROGRAM :
-                $typeScheduelDao = $this->getCampusguideHandler()->getProgramScheduleDao();
+                $typeScheduelDao = $this->getDaoContainer()->getProgramScheduleDao();
                 break;
             case TypeScheduleModel::TYPE_ROOM :
-                $typeScheduelDao = $this->getCampusguideHandler()->getRoomScheduleDao();
+                $typeScheduelDao = $this->getDaoContainer()->getRoomScheduleDao();
                 break;
         }
         $scheduleTypes = TypeScheduleListModel::get_( $typeScheduelDao->getList( $scheduleTypeIds ) );
@@ -249,7 +249,7 @@ class ScheduleQueueHandler extends Handler
         {
             if ( $result->getCount() == $scheduleTypes->size() )
             {
-                $this->getCampusguideHandler()->getQueueDao()->remove( $queue->getId() );
+                $this->getDaoContainer()->getQueueDao()->remove( $queue->getId() );
                 return true;
             }
             else
@@ -261,7 +261,7 @@ class ScheduleQueueHandler extends Handler
                 $queue->setArguments( $arguments );
             }
         }
-        $this->getCampusguideHandler()->getQueueDao()->edit( $queue->getId(), $queue );
+        $this->getDaoContainer()->getQueueDao()->edit( $queue->getId(), $queue );
         return true;
     }
 
@@ -283,19 +283,19 @@ class ScheduleQueueHandler extends Handler
         {
             case TypeScheduleModel::TYPE_FACULTY :
                 $this->getTypesScheduleWebsiteHandler()->setTypeScheduleDao(
-                        $this->getCampusguideHandler()->getFacultyScheduleDao() );
+                        $this->getDaoContainer()->getFacultyScheduleDao() );
                 break;
             case TypeScheduleModel::TYPE_GROUP :
                 $this->getTypesScheduleWebsiteHandler()->setTypeScheduleDao(
-                        $this->getCampusguideHandler()->getGroupScheduleDao() );
+                        $this->getDaoContainer()->getGroupScheduleDao() );
                 break;
             case TypeScheduleModel::TYPE_PROGRAM :
                 $this->getTypesScheduleWebsiteHandler()->setTypeScheduleDao(
-                        $this->getCampusguideHandler()->getProgramScheduleDao() );
+                        $this->getDaoContainer()->getProgramScheduleDao() );
                 break;
             case TypeScheduleModel::TYPE_ROOM :
                 $this->getTypesScheduleWebsiteHandler()->setTypeScheduleDao(
-                        $this->getCampusguideHandler()->getRoomScheduleDao() );
+                        $this->getDaoContainer()->getRoomScheduleDao() );
                 break;
         }
         $return = $this->getTypesScheduleWebsiteHandler()->handle( $website, $typesUrlHandler, $scheduleType,
@@ -303,7 +303,7 @@ class ScheduleQueueHandler extends Handler
 
         if ( $return->isFinished() )
         {
-            $this->getCampusguideHandler()->getQueueDao()->remove( $queue->getId() );
+            $this->getDaoContainer()->getQueueDao()->remove( $queue->getId() );
             return true;
         }
         elseif ( $return->getCode() == TypesScheduleResultWebsiteHandler::CODE_EXCEEDPAGES )
@@ -315,7 +315,7 @@ class ScheduleQueueHandler extends Handler
         $arguments[ QueueModel::$ARGUMENT_SCHEDULE_TYPE_PAGE ] = $scheduleTypePage;
         $queue->setArguments( $arguments );
 
-        $this->getCampusguideHandler()->getQueueDao()->edit( $queue->getId(), $queue );
+        $this->getDaoContainer()->getQueueDao()->edit( $queue->getId(), $queue );
         return true;
     }
 

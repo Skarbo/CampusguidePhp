@@ -51,7 +51,7 @@ if ( $handle )
             $entryPath = sprintf( "%s%s%s", $svgFolder, DIRECTORY_SEPARATOR, $entry );
             $contents = file_get_contents( $entryPath );
             $lastModified = filemtime( $entryPath );
-            $modifiedSince = Controller::getIfModifiedSinceHeader();
+            $modifiedSince = AbstractController::getIfModifiedSinceHeader();
 
             if ( $lastModified )
                 @header( sprintf( "Last-Modified: %s GMT", gmdate( "D, d M Y H:i:s", $lastModified ) ) );

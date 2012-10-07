@@ -1,7 +1,7 @@
 <?php
 
 include_once '../krisskarboapi/src/util/initialize_util.php';
-include_once '../krisskarboapi/src/api/api.php';
+include_once '../krisskarboapi/src/api/api/abstract_api.php';
 
 function __autoload( $class_name )
 {
@@ -31,9 +31,9 @@ $campusguide_api->setDebug(
 // Mapping
 $mapping = array ();
 $mapping[ BuildingCampusguideCommandController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = BuildingCampusguideCommandController::class_();
-$mapping[ BuildingCampusguideCommandController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = CommandView::class_();
+$mapping[ BuildingCampusguideCommandController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = AbstractCommandView::class_();
 $mapping[ QueueCampusguideCommandController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = QueueCampusguideCommandController::class_();
-$mapping[ QueueCampusguideCommandController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = CommandView::class_();
+$mapping[ QueueCampusguideCommandController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = AbstractCommandView::class_();
 
 // Create KillHandler
 class CommandKillHandler extends ClassCore implements KillHandler
@@ -51,11 +51,11 @@ class CommandKillHandler extends ClassCore implements KillHandler
         {
 
             case BadrequestException::class_() :
-                $status_code = Controller::STATUS_BAD_REQUEST;
+                $status_code = AbstractController::STATUS_BAD_REQUEST;
                 break;
 
             default :
-                $status_code = Controller::STATUS_SERVER_ERROR;
+                $status_code = AbstractController::STATUS_SERVER_ERROR;
                 break;
 
         }

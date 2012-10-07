@@ -28,7 +28,7 @@ class ElementBuildingDaoTest extends StandardDaoTest
      */
     protected function getStandardDao()
     {
-        return $this->getCampusguideHandlerTest()->getelementBuildingDao();
+        return $this->getDaoContainerTest()->getelementBuildingDao();
     }
 
     /**
@@ -53,19 +53,19 @@ class ElementBuildingDaoTest extends StandardDaoTest
     {
 
         // Add Facility
-        $facility = $this->getCampusguideHandlerTest()->addFacility();
+        $facility = $this->getDaoContainerTest()->addFacility();
 
         // Add Building
-        $building = $this->getCampusguideHandlerTest()->addBuilding( $facility->getId() );
+        $building = $this->getDaoContainerTest()->addBuilding( $facility->getId() );
 
         // Add Floor
-        $floor = $this->getCampusguideHandlerTest()->addFloor( $building->getId() );
+        $floor = $this->getDaoContainerTest()->addFloor( $building->getId() );
 
         // Add Section
-        $section = $this->getCampusguideHandlerTest()->addSection( $building->getId() );
+        $section = $this->getDaoContainerTest()->addSection( $building->getId() );
 
         // Create Element
-        return CampusguideHandlerTest::createElementBuildingTest( $floor->getId(), $section->getId() );
+        return DaoContainerTest::createElementBuildingTest( $floor->getId(), $section->getId() );
     }
 
     /**
@@ -117,7 +117,7 @@ class ElementBuildingDaoTest extends StandardDaoTest
         // Create test model
         $model = ElementBuildingModel::get_( $this->createModelTest() );
 
-        $floor = $this->getCampusguideHandlerTest()->getfloorBuildingDao()->get( $model->getForeignId() );
+        $floor = $this->getDaoContainerTest()->getfloorBuildingDao()->get( $model->getForeignId() );
 
         // Add Models
         $this->getStandardDao()->add( $model, $model->getForeignId() );

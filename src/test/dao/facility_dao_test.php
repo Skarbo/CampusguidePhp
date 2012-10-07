@@ -31,7 +31,7 @@ class FacilityDaoTest extends StandardDaoTest
      */
     protected function getStandardDao()
     {
-        return $this->getCampusguideHandlerTest()->getFacilityDao();
+        return $this->getDaoContainerTest()->getFacilityDao();
     }
 
     /**
@@ -52,7 +52,7 @@ class FacilityDaoTest extends StandardDaoTest
      */
     protected function createModelTest()
     {
-        return CampusguideHandlerTest::createFacilityTest();
+        return DaoContainerTest::createFacilityTest();
     }
 
     /**

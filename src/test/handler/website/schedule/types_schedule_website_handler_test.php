@@ -100,9 +100,9 @@ class TypesScheduleWebsiteHandlerTest extends ScheduleWebsiteHandlerTest
     public function setUp()
     {
         parent::setUp();
-        $this->getCampusguideHandlerTest()->getwebsiteScheduleDao()->removeAll();
-        $this->getCampusguideHandlerTest()->getroomScheduleDao()->removeAll();
-        $this->getCampusguideHandlerTest()->getfacultyScheduleDao()->removeAll();
+        $this->getDaoContainerTest()->getwebsiteScheduleDao()->removeAll();
+        $this->getDaoContainerTest()->getroomScheduleDao()->removeAll();
+        $this->getDaoContainerTest()->getfacultyScheduleDao()->removeAll();
     }
 
     public static function getWebpage( $path )
@@ -113,7 +113,7 @@ class TypesScheduleWebsiteHandlerTest extends ScheduleWebsiteHandlerTest
     private function generateWebsite( $urlPath, $type )
     {
         $website = WebsiteScheduleFactoryModel::createWebsiteSchedule( self::getWebpage( $urlPath ), $type );
-        $website->setId( $this->getCampusguideHandlerTest()->getwebsiteScheduleDao()->add( $website, null ) );
+        $website->setId( $this->getDaoContainerTest()->getwebsiteScheduleDao()->add( $website, null ) );
         return $website;
     }
 
@@ -136,7 +136,7 @@ class TypesScheduleWebsiteHandlerTest extends ScheduleWebsiteHandlerTest
         $result = $this->typeScheduleWebsiteHandler->handle( $website, new TestRoomTypesScheduleUrlWebsiteHandler(),
                 TypeScheduleModel::TYPE_ROOM );
 
-        $rooms = $this->getCampusguideHandlerTest()->getroomScheduleDao()->getAll();
+        $rooms = $this->getDaoContainerTest()->getroomScheduleDao()->getAll();
 
         $this->assertEqual( self::$ROOMSEARCH_COUNT, $rooms->size() );
     }
@@ -156,7 +156,7 @@ class TypesScheduleWebsiteHandlerTest extends ScheduleWebsiteHandlerTest
         $result = $this->typeScheduleWebsiteHandler->handle( $website, new TestFacultyTypesScheduleUrlWebsiteHandler(),
                 TypeScheduleModel::TYPE_FACULTY, TypesScheduleWebsiteHandler::MODE_MULTIPLEPAGES );
 
-        $faculties = $this->getCampusguideHandlerTest()->getfacultyScheduleDao()->getAll();
+        $faculties = $this->getDaoContainerTest()->getfacultyScheduleDao()->getAll();
 
         $this->assertEqual( self::$FACULTYSEARCH_COUNT, $faculties->size() );
         $this->assertTrue( $result->isFinished() );

@@ -19,7 +19,7 @@ class CampusguideApi extends PasswordCampusguideApi
 
 
     /**
-     * @see Api::getLocale()
+     * @see AbstractApi::getLocale()
      * @return DefaultLocale
      */
     public function getLocale()
@@ -28,7 +28,7 @@ class CampusguideApi extends PasswordCampusguideApi
     }
 
     /**
-     * @see Api::getDbbackupHandler()
+     * @see AbstractApi::getDbbackupHandler()
      */
     protected function getDbbackupHandler()
     {

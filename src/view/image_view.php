@@ -1,6 +1,6 @@
 <?php
 
-abstract class ImageView extends View
+abstract class ImageView extends AbstractView
 {
 
     // VARIABLES
@@ -19,7 +19,7 @@ abstract class ImageView extends View
 
 
     /**
-     * @see View::getController()
+     * @see AbstractView::getController()
      * @return ImageController
      */
     public function getController()
@@ -33,7 +33,7 @@ abstract class ImageView extends View
     protected abstract function getImagePath();
 
     /**
-     * @see View::draw()
+     * @see AbstractView::draw()
      */
     public function draw( AbstractXhtml $root )
     {

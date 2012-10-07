@@ -28,7 +28,7 @@ class FloorBuildingDaoTest extends StandardDaoTest
      */
     protected function getStandardDao()
     {
-        return $this->getCampusguideHandlerTest()->getfloorBuildingDao();
+        return $this->getDaoContainerTest()->getfloorBuildingDao();
     }
 
     /**
@@ -51,13 +51,13 @@ class FloorBuildingDaoTest extends StandardDaoTest
     protected function createModelTest()
     {
         // Add Facility
-        $facility = $this->getCampusguideHandlerTest()->addFacility();
+        $facility = $this->getDaoContainerTest()->addFacility();
 
         // Add Building
-        $building = $this->getCampusguideHandlerTest()->addBuilding( $facility->getId() );
+        $building = $this->getDaoContainerTest()->addBuilding( $facility->getId() );
 
         // Create Floor Building
-        return CampusguideHandlerTest::createFloorBuildingTest( $building->getId() );
+        return DaoContainerTest::createFloorBuildingTest( $building->getId() );
     }
 
     /**

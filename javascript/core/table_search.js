@@ -81,7 +81,6 @@ TableSearch.createSearchRegexp = function(search, smart) {
 			var display = null, text = null, result = 0;
 			displayElement.each(function(i, element) {
 				display = $(element);
-
 				// Get text
 				text = display.find(data.options.search).text();
 

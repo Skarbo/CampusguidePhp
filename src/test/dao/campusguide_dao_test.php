@@ -1,15 +1,15 @@
 <?php
 
-abstract class CampusguideDaoTest extends DbTest
+abstract class DaoTest extends DbTest
 {
 
     // VARIABLES
 
 
     /**
-     * @var CampusguideHandler
+     * @var DaoContainer
      */
-    protected $campusguideHandlerTest;
+    protected $daoContainerTest;
 
     // /VARIABLES
 
@@ -21,7 +21,7 @@ abstract class CampusguideDaoTest extends DbTest
     {
         parent::__construct( $label );
 
-        $this->campusguideHandlerTest = new CampusguideHandlerTest( $this->getDbApi() );
+        $this->daoContainerTest = new DaoContainerTest( $this->getDbApi() );
     }
 
     // /CONSTRUCTOR
@@ -34,15 +34,15 @@ abstract class CampusguideDaoTest extends DbTest
     {
         parent::setUp();
 
-        $this->getCampusguideHandlerTest()->removeAll();
+        $this->getDaoContainerTest()->removeAll();
     }
 
     /**
-     * @return CampusguideHandlerTest
+     * @return DaoContainerTest
      */
-    protected function getCampusguideHandlerTest()
+    protected function getDaoContainerTest()
     {
-        return $this->campusguideHandlerTest;
+        return $this->daoContainerTest;
     }
 
     // /FUNCTIONS

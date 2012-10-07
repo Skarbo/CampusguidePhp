@@ -36,20 +36,20 @@ class AllTests extends TestSuite
         //         $this->add( new FloorBuildingHandlerTest() );
 
 
-//         $this->add( new FacilitiesCampusguideRestControllerTest() );
-//         $this->add( new BuildingsCampusguideRestControllerTest() );
-//         $this->add( new FloorsBuildingCampusguideRestControllerTest() );
-//         $this->add( new ElementsBuildingCampusguideRestControllerTest() );
-//         $this->add( new SectionsBuildingCampusguideRestControllerTest() );
-//         $this->add( new SearchCampusguideRestControllerTest() );
+//         $this->add( new FacilitiesRestControllerTest() );
+//         $this->add( new BuildingsRestControllerTest() );
+//         $this->add( new FloorsBuildingRestControllerTest() );
+//         $this->add( new ElementsBuildingRestControllerTest() );
+//         $this->add( new SectionsBuildingRestControllerTest() );
+//         $this->add( new SearchRestControllerTest() );
 
 
         //$this->add( new DbbackupHandlerTest() );
         //                 $this->add(new QueueHandlerTest() );
 
 
-        //$this->add(new BuildingCampusguideCommandControllerTest());
-//         $this->add( new QueueCampusguideCommandControllerTest() );
+        //$this->add(new BuildingCommandControllerTest());
+//         $this->add( new QueueCommandControllerTest() );
 
         //                 $this->add( new TypesTimeeditScheduleWebsiteParserTest() );
         //         $this->add( new TypesScheduleWebsiteHandlerTest() );

@@ -1,6 +1,6 @@
 <?php
 
-class FloorBuildingHandlerTest extends CampusguideDaoTest
+class FloorBuildingHandlerTest extends DaoTest
 {
 
     // VARIABLES
@@ -35,13 +35,13 @@ class FloorBuildingHandlerTest extends CampusguideDaoTest
     {
 
         // Add Facility
-        $facility = $this->getCampusguideHandlerTest()->addFacility();
+        $facility = $this->getDaoContainerTest()->addFacility();
 
         // Add Building
-        $building = $this->getCampusguideHandlerTest()->addBuilding( $facility->getId() );
+        $building = $this->getDaoContainerTest()->addBuilding( $facility->getId() );
 
         // Add Floor
-        $floor = $this->getCampusguideHandlerTest()->addFloor( $building->getId() );
+        $floor = $this->getDaoContainerTest()->addFloor( $building->getId() );
 
         // Create Floor
         $floorSecond = FloorBuildingFactoryModel::createFloorBuilding( $building->getId(), "Second Floor", 2,
@@ -64,10 +64,10 @@ class FloorBuildingHandlerTest extends CampusguideDaoTest
     {
 
         // Add Facility
-        $facility = $this->getCampusguideHandlerTest()->addFacility();
+        $facility = $this->getDaoContainerTest()->addFacility();
 
         // Add Building
-        $building = $this->getCampusguideHandlerTest()->addBuilding( $facility->getId() );
+        $building = $this->getDaoContainerTest()->addBuilding( $facility->getId() );
 
         // Add Floors
         $floorOne = FloorBuildingFactoryModel::createFloorBuilding( $building->getId(), "First Floor", 0,
@@ -78,13 +78,13 @@ class FloorBuildingHandlerTest extends CampusguideDaoTest
                 array ( array ( 100, 200 ), array ( 300, 400 ) ) );
 
         $floorOne->setId(
-                $this->getCampusguideHandlerTest()->getfloorBuildingDao()->addFloorBuilding( $building->getId(),
+                $this->getDaoContainerTest()->getfloorBuildingDao()->addFloorBuilding( $building->getId(),
                         $floorOne ) );
         $floorTwo->setId(
-                $this->getCampusguideHandlerTest()->getfloorBuildingDao()->addFloorBuilding( $building->getId(),
+                $this->getDaoContainerTest()->getfloorBuildingDao()->addFloorBuilding( $building->getId(),
                         $floorTwo ) );
         $floorThree->setId(
-                $this->getCampusguideHandlerTest()->getfloorBuildingDao()->addFloorBuilding( $building->getId(),
+                $this->getDaoContainerTest()->getfloorBuildingDao()->addFloorBuilding( $building->getId(),
                         $floorThree ) );
 
         // Edit Floors

@@ -7,7 +7,7 @@ class ScheduleWebsiteHandlerTest extends DbTest
 
 
     /**
-     * @var CampusguideHandler
+     * @var DaoContainer
      */
     private $campsuguideHandler;
 
@@ -20,7 +20,7 @@ class ScheduleWebsiteHandlerTest extends DbTest
     public function __construct()
     {
         parent::__construct( "ScheduleWebsiteParser test" );
-        $this->campsuguideHandler = new CampusguideHandler( $this->getDbApi() );
+        $this->campsuguideHandler = new DaoContainer( $this->getDbApi() );
     }
 
     // /CONSTRUCTOR
@@ -30,7 +30,7 @@ class ScheduleWebsiteHandlerTest extends DbTest
 
 
     /**
-     * @return CampusguideHandler
+     * @return DaoContainer
      */
     protected function getCampsuguideHandler()
     {

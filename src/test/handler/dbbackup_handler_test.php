@@ -1,6 +1,6 @@
 <?php
 
-class DbbackupHandlerTest extends CampusguideDaoTest
+class DbbackupHandlerTest extends DaoTest
 {
 
     // VARIABLES

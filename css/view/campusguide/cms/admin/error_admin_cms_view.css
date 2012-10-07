@@ -1,0 +1,106 @@
+#errors_page_wrapper {
+	
+}
+
+/* Errors table */
+#errors_page_wrapper table.errors {
+	font-size: 0.8em;
+}
+
+#errors_page_wrapper table.errors td.id,#errors_page_wrapper table.errors td.mode,#errors_page_wrapper table.errors td.occured
+	{
+	width: 1px;
+	text-align: center;
+}
+
+#errors_page_wrapper table.errors td.activity,#errors_page_wrapper table.errors td.exception
+	{
+	text-align: right;
+	white-space: nowrap;
+	width: 1px;
+}
+
+/* ... Head */
+#errors_page_wrapper table.errors thead {
+	font-weight: bold;
+}
+
+/* ... Body */
+#errors_page_wrapper table.errors tbody {
+	
+}
+
+#errors_page_wrapper table.errors tbody:nth-child(odd) tr {
+	background-color: #EDEDED;
+}
+
+#errors_page_wrapper table.errors tbody.highlight tr {
+	background-color: #DDD !important;
+}
+
+#errors_page_wrapper table.errors tbody td.id,#errors_page_wrapper table.errors tbody td.occured,#errors_page_wrapper table.errors tbody td.activity,#errors_page_wrapper table.errors tbody td.exception
+	{
+	font-size: 0.9em;
+	color: #666;
+}
+
+#errors_page_wrapper table.errors tbody:FIRST-CHILD td {
+	border: 0;
+}
+
+#errors_page_wrapper table.errors tbody td.id,#errors_page_wrapper table.errors tbody td.message,#errors_page_wrapper table.errors tbody td.occured,#errors_page_wrapper table.errors tbody td.activity
+	{
+	border-top: 1px solid #666;
+}
+
+#errors_page_wrapper table.errors tbody td.exception {
+	font-style: italic;
+}
+
+#errors_page_wrapper table.errors tbody td.message {
+	font-weight: bold;
+}
+
+#errors_page_wrapper table.errors tbody td {
+	border: 0;
+}
+
+#errors_page_wrapper table.errors tbody textarea {
+	width: 99%;
+	height: 10em;
+	overflow: auto;
+}
+
+#errors_page_wrapper table.errors tbody span {
+	font-weight: bold;
+}
+
+#errors_page_wrapper table.errors tbody tr.extra {
+	display: none;
+}
+
+#errors_page_wrapper table.errors tbody.highlight tr.extra {
+	display: table-row;
+}
+
+#errors_page_wrapper table.errors tbody .query div {
+	font-family: monospace;
+	white-space: pre;
+	font-size: 1.2em;
+	padding: 0.2em;
+	background-color: white;
+	color: black;
+}
+
+/* ... /Body */
+
+/* ... Foot */
+#errors_page_wrapper table.errors tfoot {
+	font-size: 1.2em;
+	font-weight: bold;
+	text-align: center;
+}
+
+/* ... /Foot */
+
+/* /Errors table */

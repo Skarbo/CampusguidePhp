@@ -6,7 +6,12 @@ class ImageResource extends ClassCore
     // VARIABLES
 
 
-    private static $CAMPUSGUIDE, $ICON;
+    private static $ICON, $BUILDING, $FACILITY;
+
+    public static $FOLDER_IMAGE = "image";
+    public static $SIZE_SPLITTER = "x";
+
+    private static $ROOT;
 
     // /VARIABLES
 
@@ -20,13 +25,33 @@ class ImageResource extends ClassCore
     // FUNCTIONS
 
 
-    /**
-     * @return CampusguideImageResource
-     */
-    public function campusguide()
+    public static function getFolder( $mode = null )
     {
-        self::$CAMPUSGUIDE = self::$CAMPUSGUIDE ? self::$CAMPUSGUIDE : new CampusguideImageResource();
-        return self::$CAMPUSGUIDE;
+        self::$ROOT = self::$ROOT ? self::$ROOT : realpath( sprintf( "%s/../../", dirname( __FILE__ ) ) );
+
+        if ( $mode )
+        {
+            return sprintf( "%s/%s/%s", self::$ROOT, ImageResource::$FOLDER_IMAGE, $mode );
+        }
+        return sprintf( "%s/%s", self::$ROOT, ImageResource::$FOLDER_IMAGE );
+    }
+
+    /**
+     * @return BuildingImageResource
+     */
+    public function building()
+    {
+        self::$BUILDING = self::$BUILDING ? self::$BUILDING : new BuildingImageResource();
+        return self::$BUILDING;
+    }
+
+    /**
+     * @return FacilityImageResource
+     */
+    public function facility()
+    {
+        self::$FACILITY = self::$FACILITY ? self::$FACILITY : new FacilityImageResource();
+        return self::$FACILITY;
     }
 
     /**

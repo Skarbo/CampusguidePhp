@@ -6,9 +6,9 @@ class JavascriptResource extends AbstractJavascriptResource
     // VARIABLES
 
 
-    private $javascriptFile = "campusguide.js.php?mode=%s";
-    private $javascriptAppFile = "campusguide_app.js.php?mode=%s";
-    private $javascriptCanvasFile = "campusguide_canvas.js.php?mode=%s";
+    private $javascriptFile = "javascript.js.php?mode=%s";
+    private $javascriptAppFile = "javascript_app.js.php?mode=%s";
+    private $javascriptCanvasFile = "javascript_canvas.js.php?mode=%s";
     private $googleMapsApiUrl = "http://maps.googleapis.com/maps/api/js?key=%s&sensor=%s&callback=%s";
     private $googleMapsApiFile = "google.maps.api.js";
 

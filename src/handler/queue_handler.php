@@ -7,9 +7,9 @@ class QueueHandler extends Handler
 
 
     /**
-     * @var CampusguideHandler
+     * @var DaoContainer
      */
-    private $campusguideHandler;
+    private $daoContainer;
     /**
      * @var QueueValidator
      */
@@ -21,9 +21,9 @@ class QueueHandler extends Handler
     // CONSTRUCTOR
 
 
-    public function __construct( CampusguideHandler $campusguideHandler, QueueValidator $queueValidator )
+    public function __construct( DaoContainer $daoContainer, QueueValidator $queueValidator )
     {
-        $this->setCampusguideHandler( $campusguideHandler );
+        $this->setDaoContainer( $daoContainer );
         $this->setQueueValidator( $queueValidator );
     }
 
@@ -37,19 +37,19 @@ class QueueHandler extends Handler
 
 
     /**
-     * @return CampusguideHandler
+     * @return DaoContainer
      */
-    public function getCampusguideHandler()
+    public function getDaoContainer()
     {
-        return $this->campusguideHandler;
+        return $this->daoContainer;
     }
 
     /**
-     * @param CampusguideHandler $campusguideHandler
+     * @param DaoContainer $daoContainer
      */
-    public function setCampusguideHandler( CampusguideHandler $campusguideHandler )
+    public function setDaoContainer( DaoContainer $daoContainer )
     {
-        $this->campusguideHandler = $campusguideHandler;
+        $this->daoContainer = $daoContainer;
     }
 
     /**
@@ -80,7 +80,7 @@ class QueueHandler extends Handler
     {
 
         // Get duplicate Queue
-        $queueDuplicated = $this->getCampusguideHandler()->getQueueDao()->getDuplicate( $queue );
+        $queueDuplicated = $this->getDaoContainer()->getQueueDao()->getDuplicate( $queue );
 
         // Is duplicated
         if ( $queueDuplicated )
@@ -100,11 +100,11 @@ class QueueHandler extends Handler
             $this->getQueueValidator()->doValidate( $queueDuplicated, "Queue is not valid" );
 
             // Edit Queue
-            $this->getCampusguideHandler()->getQueueDao()->edit( $queueDuplicated->getId(),
+            $this->getDaoContainer()->getQueueDao()->edit( $queueDuplicated->getId(),
                     $queueDuplicated );
 
             // Return edited Queue
-            return $this->getCampusguideHandler()->getQueueDao()->get( $queueDuplicated->getId() );
+            return $this->getDaoContainer()->getQueueDao()->get( $queueDuplicated->getId() );
 
         }
         // Not duplicated
@@ -115,10 +115,10 @@ class QueueHandler extends Handler
             $this->getQueueValidator()->doValidate( $queue, "Queue is not valid" );
 
             // Add Queue
-            $queueId = $this->getCampusguideHandler()->getQueueDao()->add( $queue );
+            $queueId = $this->getDaoContainer()->getQueueDao()->add( $queue );
 
             // Return added Queue
-            return $this->getCampusguideHandler()->getQueueDao()->get( $queueId );
+            return $this->getDaoContainer()->getQueueDao()->get( $queueId );
 
         }
 

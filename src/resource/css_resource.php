@@ -6,7 +6,7 @@ class CssResource extends AbstractCssResource
     // VARIABLES
 
 
-    private static $CAMPUSGUIDE;
+    private static $CAMPUSGUIDE, $APP, $CMS;
 
     private static $CSS_ROOT = "css";
 
@@ -48,12 +48,21 @@ class CssResource extends AbstractCssResource
     }
 
     /**
-     * @return CampusguideCssResource
+     * @return AppCssResource
      */
-    public function campusguide()
+    public function app()
     {
-        self::$CAMPUSGUIDE = self::$CAMPUSGUIDE ? self::$CAMPUSGUIDE : new CampusguideCssResource();
-        return self::$CAMPUSGUIDE;
+        self::$APP = self::$APP ? self::$APP : new AppCssResource();
+        return self::$APP;
+    }
+
+    /**
+     * @return CmsCssResource
+     */
+    public function cms()
+    {
+        self::$CMS = self::$CMS ? self::$CMS : new CmsCssResource();
+        return self::$CMS;
     }
 
     // /FUNCTIONS

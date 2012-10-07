@@ -1,7 +1,7 @@
 <?php
 
 include_once '../krisskarboapi/src/util/initialize_util.php';
-include_once '../krisskarboapi/src/api/api.php';
+include_once '../krisskarboapi/src/api/api/abstract_api.php';
 
 function __autoload( $class_name )
 {
@@ -30,11 +30,11 @@ $campusguide_api->setDebug(
 
 // Mapping
 $mapping = array ();
-$mapping[ FacilityCmsCampusguideImageController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = FacilityCmsCampusguideImageController::class_();
-$mapping[ FacilityCmsCampusguideImageController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = FacilityCmsCampusguideImageView::class_();
-$mapping[ BuildingCmsCampusguideImageController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = BuildingCmsCampusguideImageController::class_();
-$mapping[ BuildingCmsCampusguideImageController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = BuildingCmsCampusguideImageView::class_();
-$mapping[ "" ] = $mapping[ FacilityCmsCampusguideImageController::$CONTROLLER_NAME ];
+$mapping[ FacilityCmsImageController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = FacilityCmsImageController::class_();
+$mapping[ FacilityCmsImageController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = FacilityCmsImageView::class_();
+$mapping[ BuildingCmsImageController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = BuildingCmsImageController::class_();
+$mapping[ BuildingCmsImageController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = BuildingCmsImageView::class_();
+$mapping[ "" ] = $mapping[ FacilityCmsImageController::$CONTROLLER_NAME ];
 
 // Create KillHandler
 class ImageKillHandler extends ClassCore implements KillHandler

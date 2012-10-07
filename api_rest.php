@@ -1,7 +1,7 @@
 <?php
 
 include_once '../krisskarboapi/src/util/initialize_util.php';
-include_once '../krisskarboapi/src/api/api.php';
+include_once '../krisskarboapi/src/api/api/abstract_api.php';
 
 function __autoload( $class_name )
 {
@@ -27,21 +27,21 @@ $campusguide_api->setDebug(
 
 // Mapping
 $mapping = array ();
-$mapping[ FacilitiesCampusguideRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = FacilitiesCampusguideRestController::class_();
-$mapping[ FacilitiesCampusguideRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = FacilitiesCampusguideRestView::class_();
-$mapping[ BuildingsCampusguideRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = BuildingsCampusguideRestController::class_();
-$mapping[ BuildingsCampusguideRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = BuildingsCampusguideRestView::class_();
-$mapping[ FloorsBuildingCampusguideRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = FloorsBuildingCampusguideRestController::class_();
-$mapping[ FloorsBuildingCampusguideRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = FloorsBuildingCampusguideRestView::class_();
-$mapping[ ElementsBuildingCampusguideRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = ElementsBuildingCampusguideRestController::class_();
-$mapping[ ElementsBuildingCampusguideRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = ElementsBuildingCampusguideRestView::class_();
-$mapping[ SectionsBuildingCampusguideRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = SectionsBuildingCampusguideRestController::class_();
-$mapping[ SectionsBuildingCampusguideRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = SectionsBuildingCampusguideRestView::class_();
+$mapping[ FacilitiesRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = FacilitiesRestController::class_();
+$mapping[ FacilitiesRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = FacilitiesRestView::class_();
+$mapping[ BuildingsRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = BuildingsRestController::class_();
+$mapping[ BuildingsRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = BuildingsRestView::class_();
+$mapping[ FloorsBuildingRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = FloorsBuildingRestController::class_();
+$mapping[ FloorsBuildingRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = FloorsBuildingRestView::class_();
+$mapping[ ElementsBuildingRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = ElementsBuildingRestController::class_();
+$mapping[ ElementsBuildingRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = ElementsBuildingRestView::class_();
+$mapping[ SectionsBuildingRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = SectionsBuildingRestController::class_();
+$mapping[ SectionsBuildingRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = SectionsBuildingRestView::class_();
 
-$mapping[ SearchCampusguideRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = SearchCampusguideRestController::class_();
-$mapping[ SearchCampusguideRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = SearchCampusguideRestView::class_();
+$mapping[ SearchRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = SearchRestController::class_();
+$mapping[ SearchRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = SearchRestView::class_();
 
-$mapping[ "" ] = $mapping[ FacilitiesCampusguideRestController::$CONTROLLER_NAME ];
+$mapping[ "" ] = $mapping[ FacilitiesRestController::$CONTROLLER_NAME ];
 
 // Create KillHandler
 class ApirestKillHandler extends ClassCore implements KillHandler
@@ -91,7 +91,7 @@ class ApirestKillHandler extends ClassCore implements KillHandler
         @header( sprintf( "Content-type: %s;charset=%s", "application/json", "utf-8" ) );
 
         // Get JSON from data
-        $json = RestView::getJSON( $data );
+        $json = AbstractRestView::getJSON( $data );
 
         die( $json );
 

@@ -1,7 +1,7 @@
 <?php
 
 include_once '../krisskarboapi/src/util/initialize_util.php';
-include_once '../krisskarboapi/src/api/api.php';
+include_once '../krisskarboapi/src/api/api/abstract_api.php';
 
 function __autoload( $class_name )
 {
@@ -27,11 +27,13 @@ $campusguide_api->setDebug(
 
 // Mapping
 $mapping = array ();
-$mapping[ FacilitiesCmsCampusguideMainController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = FacilitiesCmsCampusguideMainController::class_();
-$mapping[ FacilitiesCmsCampusguideMainController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = FacilitiesCmsCampusguideMainView::class_();
-$mapping[ BuildingsCmsCampusguideMainController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = BuildingsCmsCampusguideMainController::class_();
-$mapping[ BuildingsCmsCampusguideMainController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = BuildingsCmsCampusguideMainView::class_();
-$mapping[ "" ] = $mapping[ FacilitiesCmsCampusguideMainController::$CONTROLLER_NAME ];
+$mapping[ FacilitiesCmsMainController::$CONTROLLER_NAME ][ AbstractApi::MAP_CONTROLLER ] = FacilitiesCmsMainController::class_();
+$mapping[ FacilitiesCmsMainController::$CONTROLLER_NAME ][ AbstractApi::MAP_VIEW ] = FacilitiesCmsMainView::class_();
+$mapping[ BuildingsCmsMainController::$CONTROLLER_NAME ][ AbstractApi::MAP_CONTROLLER ] = BuildingsCmsMainController::class_();
+$mapping[ BuildingsCmsMainController::$CONTROLLER_NAME ][ AbstractApi::MAP_VIEW ] = BuildingsCmsMainView::class_();
+$mapping[ AdminCmsMainController::$CONTROLLER_NAME ][ AbstractApi::MAP_CONTROLLER ] = AdminCmsMainController::class_();
+$mapping[ AdminCmsMainController::$CONTROLLER_NAME ][ AbstractApi::MAP_VIEW ] = AdminCmsMainView::class_();
+$mapping[ "" ] = $mapping[ FacilitiesCmsMainController::$CONTROLLER_NAME ];
 
 // Create KillHandler
 class ApirestKillHandler extends ClassCore implements KillHandler

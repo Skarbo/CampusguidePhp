@@ -150,14 +150,14 @@ class EntriesScheduleWebsiteHandlerTest extends ScheduleWebsiteHandlerTest
         $this->assertFalse( $room1->isEqual( $room2 ) );
     }
 
-    public function _testEntries()
+    public function testEntries()
     {
         $website = $this->generateEntryRoomWebsite();
 
         $result = $this->entriesScheduleWebsiteHandler->handle( $website, new TestEntriesScheduleUrlWebsiteHandler(),
                 new RoomScheduleListModel(), null, null );
 
-        $this->assertEqual(EntriesScheduleResultWebsiteHandler::CODE_FINISHED, $result->getCode());
+        $this->assertEqual( EntriesScheduleResultWebsiteHandler::CODE_FINISHED, $result->getCode() );
 
         $entries = EntryScheduleListModel::get_( $this->getCampsuguideHandler()->getEntryScheduleDao()->getAll() );
 

@@ -422,12 +422,12 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
         $buildingId = self::getId();
 
         // Set Building
-        $this->setBuilding( $this->getBuildingDao()->get( $buildingId ) );
+        $this->setBuilding( $this->getDaoContainer()->getBuildingDao()->get( $buildingId ) );
 
         // Set Facility
         if ( $this->getBuilding() )
         {
-            $this->setFacility( $this->getFacilityDao()->get( $this->getBuilding()->getFacilityId() ) );
+            $this->setFacility( $this->getDaoContainer()->getFacilityDao()->get( $this->getBuilding()->getFacilityId() ) );
         }
 
         // View action
@@ -480,7 +480,7 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
                         Core::arrayAt( self::getPost(), Resource::db()->building()->getFieldLocation() ) ) );
 
         // Validate Building Facility
-        $facility = $this->getFacilityDao()->get( $this->getBuildingAdmin()->getFacilityId() );
+        $facility = $this->getDaoContainer()->getFacilityDao()->get( $this->getBuildingAdmin()->getFacilityId() );
 
         // Facility must exist
         if ( !$facility )
@@ -505,7 +505,7 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
         $this->setBuildingAdmin( BuildingFactoryModel::createBuilding( "", 0 ) );
 
         // Set all Facilities
-        $this->setFacilities( $this->getFacilityDao()->getAll() );
+        $this->setFacilities( $this->getDaoContainer()->getFacilityDao()->getAll() );
 
         // Is POST
         if ( self::isPost() )
@@ -515,7 +515,7 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
             $this->doBuildingAdminAction();
 
             // Add Building
-            $buildingId = $this->getBuildingDao()->add( $this->getBuildingAdmin(),
+            $buildingId = $this->getDaoContainer()->getBuildingDao()->add( $this->getBuildingAdmin(),
                     $this->getBuildingAdmin()->getFacilityId() );
 
             // Redirect

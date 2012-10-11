@@ -34,6 +34,15 @@ interface ElementBuildingDao extends StandardDao
      */
     public function delete( $id );
 
+    /**
+     * Gets list of given types
+     *
+     * @param string $type
+     * @param string $typeGroup
+     * @return ElementBuildingListModel
+     */
+    public function getType( $type = null, $typeGroup = null );
+
     // /FUNCTIONS
 
 

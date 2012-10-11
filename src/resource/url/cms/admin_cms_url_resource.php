@@ -20,8 +20,7 @@ class AdminCmsUrlResource extends ClassCore
 
     private static function getPage( $page, $mode = null, $url = "" )
     {
-        return CmsUrlResource::getPage( AdminCmsMainController::$CONTROLLER_NAME, $page,
-                $mode, $url );
+        return CmsUrlResource::getPage( AdminCmsMainController::$CONTROLLER_NAME, $page, $mode, $url );
     }
 
     // ... CONTROLLER
@@ -42,6 +41,27 @@ class AdminCmsUrlResource extends ClassCore
     {
         return self::getPage( AdminCmsMainController::PAGE_ERRORS, $mode, $url );
     }
+
+    // ... ... QUEUE
+
+
+    public function getQueuePage( $mode = null, $url = "" )
+    {
+        return self::getPage( AdminCmsMainController::PAGE_QUEUE, $mode, $url );
+    }
+
+    public function getQueuePageNew( $mode = null, $url = "" )
+    {
+        return $this->getQueuePage( $mode, sprintf( "/%s%s", CmsMainController::ACTION_NEW, $url ) );
+    }
+
+    public function getQueuePageNewScheduleEntriesRoom( $mode = null, $url = "" )
+    {
+        return $this->getQueuePageNew($mode, sprintf("//%s%s", AdminCmsMainController::TYPE_SCHEDULEENTRIESROOM, $url));
+    }
+
+    // ... ... /QUEUE
+
 
     // /FUNCTIONS
 

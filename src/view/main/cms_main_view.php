@@ -159,6 +159,38 @@ abstract class CmsMainView extends AbstractMainView
         return true;
     }
 
+    /**
+     * @return boolean
+     */
+    public function isActionNew()
+    {
+        return $this->getController()->isActionNew();
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isActionEdit()
+    {
+        return $this->getController()->isActionEdit();
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isActionView()
+    {
+        return $this->getController()->isActionView();
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isActionDelete()
+    {
+        return $this->getController()->isActionDelete();
+    }
+
     // ... /IS
 
 
@@ -175,8 +207,7 @@ abstract class CmsMainView extends AbstractMainView
         // ... Queue
         if ( $this->getController()->getQueue() )
         {
-            $this->setQueuePresenter(
-                    new QueueCmsPresenterView( $this, $this->getController()->getQueue() ) );
+            $this->setQueuePresenter( new QueueCmsPresenterView( $this, $this->getController()->getQueue() ) );
         }
 
         // Do page menu
@@ -261,7 +292,7 @@ abstract class CmsMainView extends AbstractMainView
         // Draw page
         $pageWrapper = Xhtml::div()->id( AbstractPageMainView::$ID_PAGE_WRAPPER );
         $this->drawPage( $pageWrapper );
-        $mainWrapper->addContent($pageWrapper);
+        $mainWrapper->addContent( $pageWrapper );
 
         // Add main to wrapper
         $wrapper->addContent( Xhtml::div( $mainWrapper )->id( self::$ID_CMS_MAIN_WRAPPER ) );
@@ -313,7 +344,7 @@ abstract class CmsMainView extends AbstractMainView
         $table = Xhtml::div()->class_( Resource::css()->getTable() );
 
         // Create header
-        $header = Xhtml::h( 1, "" );
+        $header = Xhtml::h( 1, "Campusguide" );
         $headerUnder = Xhtml::div( "CMS" );
         $table->addContent( Xhtml::div( $header )->addContent( $headerUnder )->id( "header_wrapper" ) );
 

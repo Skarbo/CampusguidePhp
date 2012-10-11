@@ -1,0 +1,15 @@
+#queue_page_wrapper {
+	
+}
+
+/* Queues table */
+#queue_page_wrapper table.queues {
+	font-size: 0.8em;
+}
+
+#queue_page_wrapper table.queues tfoot {
+	font-weight: bold;
+	font-size: 1.2em;
+	text-align: center;
+}
+/* /Queues table */

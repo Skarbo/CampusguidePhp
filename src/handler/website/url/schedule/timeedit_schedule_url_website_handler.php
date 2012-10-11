@@ -32,6 +32,8 @@ class TimeeditScheduleUrlWebsiteHandler extends ClassCore
         $baseUrl = $matches[ 1 ][ 0 ];
         $institute = $matches[ 2 ][ 0 ];
         $language = $matches[ 3 ][ 0 ];
+
+        return array( $baseUrl, $institute, $language );
     }
 
     // /FUNCTIONS

@@ -8,9 +8,6 @@ class TypesTimeeditScheduleWebsiteAlgorithmParser extends TimeeditWebsiteAlgorit
     private static $SELECTOR_VERSION = "span#copyright";
     //*[@id="contenttd"]/form/table[2]/tbody/tr[1]/td[1]/table/tbody/tr[1]/td[3]/table/tbody/tr/td[1]/select
 
-
-    public static $TYPES = array ( TypeScheduleModel::TYPE_FACULTY => 6, TypeScheduleModel::TYPE_GROUP => 5,
-            TypeScheduleModel::TYPE_PROGRAM => 4, TypeScheduleModel::TYPE_ROOM => 7 );
     private static $TIMEEDIT_VERSION = "1.4.8";
     private static $REGEX_SEARCH_RESULT = '/.+: (\d+)-(\d+) \w+ (\d+)/s';
     private static $REGEX_VERSION = '/([\d.]+)/s';
@@ -101,13 +98,10 @@ class TypesTimeeditScheduleWebsiteAlgorithmParser extends TimeeditWebsiteAlgorit
                 }
             }
 
-            // Room name
             $name = self::parseDom( $row->children( 4 ), "plaintext" );
 
-            // Room name short
             $nameShort = self::parseDom( $row->children( 2 ), "plaintext" );
 
-            // Create Type
             $typeModel = self::generateTypeModel( $this->type, $code, $name, $nameShort );
 
             if ( self::isValidType( $typeModel ) )
@@ -214,6 +208,7 @@ class TypesTimeeditScheduleWebsiteAlgorithmParser extends TimeeditWebsiteAlgorit
     private function getVersion( simple_html_dom $dom )
     {
         $node = $dom->find( self::$SELECTOR_VERSION, 0 );
+
         if ( !$node )
             throw new Exception( "Incorrect version path" );
 

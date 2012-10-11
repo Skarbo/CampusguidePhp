@@ -29,8 +29,8 @@ class RoomScheduleFactoryModel extends ClassCore
 
         $roomSchedule->setElementId( intval( $elementId ) );
         $roomSchedule->setCode( intval( $code ) );
-        $roomSchedule->setName( Core::utf8Encode( $name ) );
-        $roomSchedule->setNameShort( Core::utf8Encode( $nameShort ) );
+        $roomSchedule->setName( Core::utf8Decode( $name ) );
+        $roomSchedule->setNameShort( Core::utf8Decode( $nameShort ) );
 
         // Return model
         return $roomSchedule;

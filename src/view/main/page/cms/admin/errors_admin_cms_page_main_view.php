@@ -67,6 +67,19 @@ class ErrorsAdminCmsPageMainView extends PageCmsPageMainView implements ErrorsAd
                                 substr( $message, 0, self::$MESSAGE_LENGTH ) ) : $message ) );
     }
 
+    /**
+     * @return AbstractXhtml
+     */
+    private function createActivity( $updated, $registered )
+    {
+        $activity = max( $updated, $registered );
+        return Xhtml::span(
+                sprintf( "%s\n%s",
+                        Core::ucfirst(
+                                $updated > $registered ? $this->getLocale()->getUpdated() : $this->getLocale()->getRegistered() ),
+                        $this->getLocale()->timeSince( $activity ) ) )->title( date( "H:i:s D d. M y", $activity ) );
+    }
+
     // ... /CREATE
 
 
@@ -108,8 +121,8 @@ class ErrorsAdminCmsPageMainView extends PageCmsPageMainView implements ErrorsAd
                 "placeholder", "Search" );
 
         // Reset button
-        $reset_button = Xhtml::a()->id( "errors_search_reset" )->title( "Reset" )->attr( "data-type",
-                "reset" )->attr( "data-icon", "cross" )->attr( "data-reset-id", "errors_search" )->addClass(
+        $reset_button = Xhtml::a()->id( "errors_search_reset" )->title( "Reset" )->attr( "data-type", "reset" )->attr(
+                "data-icon", "cross" )->attr( "data-reset-id", "errors_search" )->addClass(
                 Resource::css()->gui()->getComponent() );
 
         $search_gui->addContent( $search_input );
@@ -138,7 +151,6 @@ class ErrorsAdminCmsPageMainView extends PageCmsPageMainView implements ErrorsAd
         for ( $this->getErrors()->rewind(); $this->getErrors()->valid(); $this->getErrors()->next() )
         {
             $error = $this->getErrors()->current();
-            $date = max( $error->getRegistered(), $error->getUpdated() );
 
             $tbody = Xhtml::tbody()->class_( "error" );
 
@@ -149,18 +161,21 @@ class ErrorsAdminCmsPageMainView extends PageCmsPageMainView implements ErrorsAd
                             "message" ) );
             $tr->addContent( Xhtml::td( $error->getOccured() )->class_( "occured" ) );
             $tr->addContent(
-                    Xhtml::td( $this->getLocale()->timeSince( $date ) )->title( date( "H:m:i D d. M y", $date ) )->class_(
+                    Xhtml::td( $this->createActivity( $error->getUpdated(), $error->getRegistered() ) )->rowspan( 2 )->class_(
                             "activity" ) );
             $tbody->addContent( $tr );
 
             $tr = Xhtml::tr();
-            $tr->addContent( Xhtml::td( sprintf( "%s:%s", $error->getFile(), $error->getLine() ) )->class_( "file" ) );
-            $tr->addContent( Xhtml::td( $error->getException() )->rowspan( 2 )->colspan( 2 )->class_( "exception" ) );
+            $tr->addContent(
+                    Xhtml::td( sprintf( "%s:%s", $error->getFile(), $error->getLine() ) )->colspan( 2 )->class_(
+                            "file" ) );
             $tbody->addContent( $tr );
 
             $tr = Xhtml::tr();
             $tr->addContent(
-                    Xhtml::td( Xhtml::a( urldecode( $error->getUrl() ) )->href( $error->getUrl() ) )->class_( "url" ) );
+                    Xhtml::td( Xhtml::a( urldecode( $error->getUrl() ) )->href( $error->getUrl() ) )->colspan( 2 )->class_(
+                            "url" ) );
+            $tr->addContent( Xhtml::td( $error->getException() )->class_( "exception" ) );
             $tbody->addContent( $tr );
 
             $td = Xhtml::td()->colspan( 4 );
@@ -183,8 +198,9 @@ class ErrorsAdminCmsPageMainView extends PageCmsPageMainView implements ErrorsAd
             $table->addContent( $tbody );
         }
 
-        $tfoot = Xhtml::tfoot( Xhtml::tr(Xhtml::td( "No Errors" )->colspan(4)) )->id("errors_noerrors")->class_(Resource::css()->getHide());
-        $table->addContent($tfoot);
+        $tfoot = Xhtml::tfoot( Xhtml::tr( Xhtml::td( "No Errors" )->colspan( 4 ) ) )->id( "errors_noerrors" )->class_(
+                Resource::css()->getHide() );
+        $table->addContent( $tfoot );
 
         $root->addContent( $table );
     }

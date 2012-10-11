@@ -33,6 +33,8 @@ abstract class MainController extends AbstractMainController
         parent::__construct( $api, $view );
 
         $this->setDaoContainer( new DaoContainer( $this->getDbApi() ) );
+
+        //$this->getDaoContainer()->getRoomScheduleDao()->mergeElements();
     }
 
     // /CONSTRUCTOR

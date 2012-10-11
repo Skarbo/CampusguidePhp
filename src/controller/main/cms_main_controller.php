@@ -186,7 +186,7 @@ abstract class CmsMainController extends MainController
      */
     public function isActionView()
     {
-        return self::getAction() == self::ACTION_VIEW;
+        return self::getAction() == self::ACTION_VIEW || !self::getAction();
     }
 
     /**

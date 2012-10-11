@@ -19,6 +19,20 @@ class QueueListModel extends IteratorCore
 
 
     /**
+     * @return array Array( website id, ... )
+     */
+    public function getWebsiteIds()
+    {
+        $websiteIds = array ();
+        for ( $this->rewind(); $this->valid(); $this->next() )
+        {
+            $queue = $this->current();
+            $websiteIds[] = $queue->getWebsiteId();
+        }
+        return array_unique( array_filter( $websiteIds ) );
+    }
+
+    /**
      * @see IteratorCore::get()
      * @return QueueModel
      */
@@ -60,7 +74,7 @@ class QueueListModel extends IteratorCore
     // ... /STATIC
 
 
-// /FUNCTIONS
+    // /FUNCTIONS
 
 
 }

@@ -234,7 +234,7 @@ class ScheduleQueueHandler extends Handler
             $scheduleTypes = $scheduleTypes->limit( $scheduleTypeCodesPr );
 
         $weekStart = Core::parseTimestamp( Core::arrayAt( $scheduleTypeWeeks, 0, time() ) );
-        $weekEnd = Core::parseTimestamp( Core::arrayAt( $scheduleTypeWeeks, 1, strtotime( "next week" ) ) );
+        $weekEnd = Core::parseTimestamp( Core::arrayAt( $scheduleTypeWeeks, 1, strtotime( "next week", time() ) ) );
 
         $result = $this->getEntriesScheduleWebsiteHandler()->handle( $website, $entriesUrlHandler, $scheduleTypes,
                 $weekStart, $weekEnd );

@@ -47,6 +47,44 @@ abstract class PageCmsPageMainView extends AbstractPageMainView
     // ... /GET
 
 
+    // ... IS
+
+
+    /**
+     * @return boolean
+     */
+    public function isActionNew()
+    {
+        return $this->getView()->isActionNew();
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isActionEdit()
+    {
+        return $this->getView()->isActionEdit();
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isActionView()
+    {
+        return $this->getView()->isActionView();
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isActionDelete()
+    {
+        return $this->getView()->isActionDelete();
+    }
+
+    // ... /IS
+
+
     // ... DRAW
 
 
@@ -70,8 +108,7 @@ abstract class PageCmsPageMainView extends AbstractPageMainView
         $wrapper = Xhtml::div()->id( $this->getWrapperId() );
 
         // Create header
-        $headerWrapper = Xhtml::div()->class_(
-                Resource::css()->cms()->page()->getHeaderWrapper() );
+        $headerWrapper = Xhtml::div()->class_( Resource::css()->cms()->page()->getHeaderWrapper() );
         $this->drawHeader( $headerWrapper );
 
         // Add header to wrapper
@@ -85,7 +122,7 @@ abstract class PageCmsPageMainView extends AbstractPageMainView
         $wrapper->addContent( $errorWrapper );
 
         // Create body
-        $bodyWrapper = Xhtml::div()->class_( Resource::css()->cms()->page()->getTableWrapper() );
+        $bodyWrapper = Xhtml::div()->class_( Resource::css()->cms()->page()->getBodyWrapper() );
         $this->drawBody( $bodyWrapper );
 
         // Add body to wrapper

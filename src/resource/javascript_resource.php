@@ -62,6 +62,8 @@ class JavascriptResource extends AbstractJavascriptResource
         return sprintf( $this->javascriptCanvasFile, $mode );
     }
 
+
+
 }
 
 ?>

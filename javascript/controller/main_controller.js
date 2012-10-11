@@ -7,6 +7,7 @@ function MainController(eventHandler, mode, query) {
 	this.buildingDao = new BuildingStandardDao(mode);
 	this.elementBuildingDao = new ElementBuildingStandardDao(mode);
 	this.floorBuildingDao = new FloorBuildingStandardDao(mode);
+	this.daoContainer = new DaoContainer(mode);
 	this.searchHandler = new SearchHandler(eventHandler, mode, this.facilityDao, this.buildingDao, this.elementBuildingDao);
 }
 
@@ -53,6 +54,13 @@ MainController.prototype.getElementBuildingDao = function() {
  */
 MainController.prototype.getFloorBuildingDao = function() {
 	return this.floorBuildingDao;
+};
+
+/**
+ * @return {DaoContainer}
+ */
+MainController.prototype.getDaoContainer = function() {
+	return this.daoContainer;
 };
 
 /**

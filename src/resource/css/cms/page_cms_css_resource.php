@@ -9,7 +9,7 @@ class PageCmsCssResource extends ClassCore
     private $headerWrapper = "header_wrapper";
     private $headerTable = "header_table";
     private $headerTableCell = "header_table_cell";
-    private $tableWrapper = "table_wrapper";
+    private $bodyWrapper = "page_body_wrapper";
 
     // /VARIABLES
 
@@ -41,9 +41,9 @@ class PageCmsCssResource extends ClassCore
         return $this->headerTableCell;
     }
 
-    public function getTableWrapper()
+    public function getBodyWrapper()
     {
-        return $this->tableWrapper;
+        return $this->bodyWrapper;
     }
 
 }

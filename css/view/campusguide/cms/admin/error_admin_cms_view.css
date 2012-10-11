@@ -53,6 +53,16 @@
 	border-top: 1px solid #666;
 }
 
+#errors_page_wrapper table.errors tbody td.occured {
+	vertical-align: top;
+	font-weight: bold;
+}
+
+#errors_page_wrapper table.errors tbody td.activity {
+	vertical-align: top;
+	white-space: pre;
+}
+
 #errors_page_wrapper table.errors tbody td.exception {
 	font-style: italic;
 }
@@ -71,12 +81,12 @@
 	overflow: auto;
 }
 
-#errors_page_wrapper table.errors tbody span {
-	font-weight: bold;
-}
-
 #errors_page_wrapper table.errors tbody tr.extra {
 	display: none;
+}
+
+#errors_page_wrapper table.errors tbody tr.extra span {
+	font-weight: bold;
 }
 
 #errors_page_wrapper table.errors tbody.highlight tr.extra {

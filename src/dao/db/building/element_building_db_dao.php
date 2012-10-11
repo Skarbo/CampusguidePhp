@@ -208,6 +208,30 @@ class ElementBuildingDbDao extends StandardDbDao implements ElementBuildingDao
 
     }
 
+    /**
+     * @see ElementBuildingDao::getType()
+     */
+    public function getType( $type = null, $typeGroup = null )
+    {
+        $selectQuery = $this->getSelectQuery();
+
+        if ( $type )
+        {
+            $selectQuery->getQuery()->addWhere( SB::equ( Resource::db()->elementBuilding()->getFieldType(), ":type" ) );
+            $selectQuery->addBind( array ( "type" => $type ) );
+        }
+        if ( $typeGroup )
+        {
+            $selectQuery->getQuery()->addWhere(
+                    SB::equ( Resource::db()->elementBuilding()->getFieldTypeGroup(), ":typeGroup" ) );
+            $selectQuery->addBind( array ( "typeGroup" => $typeGroup ) );
+        }
+
+        $result = $this->getDbApi()->query( $selectQuery );
+
+        return $this->createList( $result->getRows() );
+    }
+
     // /FUNCTIONS
 
 

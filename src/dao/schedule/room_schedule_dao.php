@@ -24,6 +24,14 @@ interface RoomScheduleDao extends TypeScheduleDao
      */
     public function mergeElements();
 
+    /**
+     * Rooms for given floor
+     *
+     * @param integer $floorId
+     * @return RoomScheduleListModel
+     */
+    public function getFloor($floorId);
+
     // /FUNCTIONS
 
 

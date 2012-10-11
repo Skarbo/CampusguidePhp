@@ -233,7 +233,10 @@ class RoomScheduleDbDao extends TypeScheduleDbDao implements RoomScheduleDao
                                                 Resource::db()->elementBuilding()->getFieldFloorId() ) ),
                                 SB::equ(
                                         SB::pun( Resource::db()->elementBuilding()->getTable(),
-                                                Resource::db()->elementBuilding()->getFieldTypeGroup() ), ":typeGroup" ) ) ) );
+                                                Resource::db()->elementBuilding()->getFieldTypeGroup() ), ":typeGroup" ),
+                                SB::notequ(
+                                        SB::pun( Resource::db()->elementBuilding()->getTable(),
+                                                Resource::db()->elementBuilding()->getFieldName() ), SB::quote( "" ) ) ) ) );
         $selectElementBuilder->setWhere(
                 SB::and_(
                         SB::equ(
@@ -259,6 +262,36 @@ class RoomScheduleDbDao extends TypeScheduleDbDao implements RoomScheduleDao
         $result = $this->getDbApi()->query( $updateQuery );
 
         return $result->getAffectedRows();
+    }
+
+    /**
+     * @see RoomScheduleDao::getFloor()
+     */
+    public function getFloor( $floorId )
+    {
+        $selectQuery = $this->getSelectQuery();
+
+        $selectElementsQuery = new SelectSqlbuilderDbCore();
+        $selectElementsQuery->setExpression( Resource::db()->elementBuilding()->getFieldId() );
+        $selectElementsQuery->setFrom( Resource::db()->elementBuilding()->getTable() );
+        $selectElementsQuery->setWhere(
+                SB::equ(
+                        SB::pun( Resource::db()->elementBuilding()->getTable(),
+                                Resource::db()->elementBuilding()->getFieldId() ),
+                        SB::pun( Resource::db()->roomSchedule()->getTable(),
+                                Resource::db()->roomSchedule()->getFieldElementId() ) ) );
+        $selectElementsQuery->addWhere(
+                SB::equ(
+                        SB::pun( Resource::db()->elementBuilding()->getTable(),
+                                Resource::db()->elementBuilding()->getFieldFloorId() ), ":floorId" ) );
+
+        $selectQuery->getQuery()->addWhere(
+                SB::in( Resource::db()->roomSchedule()->getFieldElementId(), $selectElementsQuery->build() ) );
+        $selectQuery->addBind( array ( "floorId" => $floorId ) );
+
+        $result = $this->getDbApi()->query( $selectQuery );
+
+        return $this->createList( $result->getRows() );
     }
 
     // /FUNCTIONS

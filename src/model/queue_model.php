@@ -21,6 +21,8 @@ class QueueModel extends Model
     const PRIORITY_MEDIUM = 1;
     const PRIORITY_HIGH = 2;
 
+    public static $PRIORITIES = array ( self::PRIORITY_LOW, self::PRIORITY_MEDIUM, self::PRIORITY_HIGH );
+
     public $id;
     public $type;
     public $priority;

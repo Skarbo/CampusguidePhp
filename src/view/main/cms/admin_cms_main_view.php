@@ -1,6 +1,6 @@
 <?php
 
-class AdminCmsMainView extends CmsMainView implements ErrorsAdminCmsInterfaceView
+class AdminCmsMainView extends CmsMainView implements ErrorsAdminCmsInterfaceView, QueueAdminCmsInterfaceView
 {
 
     // VARIABLES
@@ -12,6 +12,10 @@ class AdminCmsMainView extends CmsMainView implements ErrorsAdminCmsInterfaceVie
      * @var ErrorsAdminCmsPageMainView
      */
     private $errorsPage;
+    /**
+     * @var QueueAdminCmsPageMainView
+     */
+    private $queuePage;
 
     // /VARIABLES
 
@@ -56,6 +60,14 @@ class AdminCmsMainView extends CmsMainView implements ErrorsAdminCmsInterfaceVie
     }
 
     /**
+     * @return QueueAdminCmsPageMainView
+     */
+    private function getQueuePage()
+    {
+        return $this->queuePage;
+    }
+
+    /**
      * @see ErrorsAdminCmsInterfaceView::getErrors()
      */
     public function getErrors()
@@ -63,7 +75,41 @@ class AdminCmsMainView extends CmsMainView implements ErrorsAdminCmsInterfaceVie
         return $this->getController()->getErrors();
     }
 
+    /**
+     * @see QueueAdminCmsInterfaceView::getQueues()
+     */
+    public function getQueues()
+    {
+        return $this->getController()->getQueues();
+    }
+
+    /**
+     * @see QueueAdminCmsInterfaceView::getWebsites()
+     */
+    public function getWebsites()
+    {
+        return $this->getController()->getWebsites();
+    }
+
+    /**
+     * @see QueueAdminCmsInterfaceView::getFacilities()
+     */
+    public function getFacilities()
+    {
+        return $this->getController()->getFacilities();
+    }
+
     // ... /GET
+
+
+    /**
+     * @see CmsMainView::before()
+     */
+    public function before()
+    {
+        parent::before();
+        $this->queuePage = new QueueAdminCmsPageMainView( $this );
+    }
 
     /**
      * @see CmsMainView::doPageMenu()
@@ -76,10 +122,22 @@ class AdminCmsMainView extends CmsMainView implements ErrorsAdminCmsInterfaceVie
                 Resource::url()->cms()->admin()->getOverviewPage( $this->getMode() ),
                 $this->getController()->isPageOverview() );
 
+        // Queues
+        $this->getPageMenuPresenter()->addItem( "Queue",
+                Resource::url()->cms()->admin()->getQueuePage( $this->getMode() ), $this->getController()->isPageQueue() );
+
         // Errors
         $this->getPageMenuPresenter()->addItem( "Errors",
                 Resource::url()->cms()->admin()->getErrorsPage( $this->getMode() ),
                 $this->getController()->isPageErrors() );
+
+        // New Queue
+        if ( $this->getController()->isPageQueue() )
+        {
+            $this->getPageMenuPresenter()->addItem( "New",
+                    Resource::url()->cms()->admin()->getQueuePageNew( $this->getMode() ),
+                    $this->getController()->isActionNew(), ItemPageMenuCmsPresenterView::ALIGN_RIGHT );
+        }
 
     }
 
@@ -88,12 +146,14 @@ class AdminCmsMainView extends CmsMainView implements ErrorsAdminCmsInterfaceVie
      */
     protected function drawPage( AbstractXhtml $root )
     {
-
         if ( $this->getController()->isPageErrors() )
         {
             $this->getErrorsPage()->draw( $root );
         }
-
+        elseif ( $this->getController()->isPageQueue() )
+        {
+            $this->getQueuePage()->draw( $root );
+        }
     }
 
     /**

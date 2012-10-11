@@ -25,7 +25,7 @@ class EntriesTimeeditScheduleUrlWebsiteHandlerTest extends ClassCore implements 
     /**
      * @see EntriesScheduleUrlWebsiteHandler::getEntriesUrl()
      */
-    public function getEntriesUrl( $url, TypeScheduleListModel $types, $startWeek, $endWeek )
+    public function getEntriesUrl( $url, $type, TypeScheduleListModel $types, $startWeek, $endWeek )
     {
         if ( $types->size() >= self::$MAX_TYPES )
             return sprintf( $url, self::$PATH_TIMEEDIT_TOOMANYWEEKS );

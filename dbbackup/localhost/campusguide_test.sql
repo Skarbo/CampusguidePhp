@@ -1,4 +1,4 @@
--- Sun, 07 Oct 2012 14:30:49 GMT
+-- Thu, 11 Oct 2012 18:20:19 GMT
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40014 SET FOREIGN_KEY_CHECKS=0 */;
 -- Dumping database structure for campusguide_test
@@ -115,23 +115,16 @@ CREATE TABLE `debug` (
   `debug_type` varchar(50) NOT NULL DEFAULT '' COMMENT 'Data type',
   `debug_registered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`debug_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1179 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1217 DEFAULT CHARSET=utf8;
 
 
--- Dumping data for table campusguide_test.debug: ~11 rows (approximately)
+-- Dumping data for table campusguide_test.debug: ~4 rows (approximately)
 /*!40000 ALTER TABLE `debug` DISABLE KEYS */;
 INSERT INTO `debug` (`debug_id`, `debug_session`, `debug_level`, `debug_data`, `debug_file`, `debug_line`, `debug_backtrack`, `debug_trace`, `debug_type`, `debug_registered`) VALUES 
-	(1168, 8, 1, 'Array\n(\n    [0] => Get image\n    [1] => C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide/image/3/building/596_overview_150x75.png\n)\n', '\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\image\\campusguide\\cms\\building_cms_campusguide_image_controller.php', 144, '#1 DebugException->__construct C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\exception\\debug_exception.php:18\n#2 BuildingCmsCampusguideImageController->getImage C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\image\\campusguide\\cms\\building_cms_campusguide_image_controller.php:144\n#3 BuildingCmsCampusguideImageController->getImageLastModified C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\image\\campusguide\\cms\\building_cms_campusguide_image_controller.php:170\n#4 BuildingCmsCampusguideImageController->getLastModified C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\image\\campusguide\\cms\\building_cms_campusguide_image_controller.php:116\n#5 BuildingCmsCampusguideImageView->getLastModified C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image\\campusguide\\cms\\building_cms_campusguide_image_view.php:38\n#6 View->draw C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\view\\view.php:103\n#7 ImageView->draw C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php:40\n#8 Controller->render C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\controller.php:351\n#9 Api->doControllerViewRender C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:586\n#10 Api->doRequest C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:540', '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\image\\campusguide\\cms\\building_cms_campusguide_image_controller.php(170): BuildingCmsCampusguideImageController->getImage()\n#1 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\image\\campusguide\\cms\\building_cms_campusguide_image_controller.php(116): BuildingCmsCampusguideImageController->getImageLastModified()\n#2 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image\\campusguide\\cms\\building_cms_campusguide_image_view.php(38): BuildingCmsCampusguideImageController->getLastModified()\n#3 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\view\\view.php(103): BuildingCmsCampusguideImageView->getLastModified()\n#4 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php(40): View->draw(Object(DivXhtml))\n#5 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\controller.php(351): ImageView->draw(Object(DivXhtml))\n#6 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(586): Controller->render(Object(DivXhtml))\n#7 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(540): Api->doControllerViewRender(Object(BuildingCmsCampusguideImageController))\n#8 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\image.php(140): Api->doRequest(Array)\n#9 {main}', 'string, string', '2012-10-07 11:10:13'),
-	(1169, 8, 1, 'Array\n(\n    [0] => Get image\n    [1] => C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide/image/3/building/596_overview_150x75.png\n)\n', '\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\image\\campusguide\\cms\\building_cms_campusguide_image_controller.php', 144, '#1 DebugException->__construct C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\exception\\debug_exception.php:18\n#2 BuildingCmsCampusguideImageController->getImage C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\image\\campusguide\\cms\\building_cms_campusguide_image_controller.php:144\n#3 BuildingCmsCampusguideImageView->getImagePath C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image\\campusguide\\cms\\building_cms_campusguide_image_view.php:49\n#4 ImageView->draw C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php:43\n#5 Controller->render C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\controller.php:351\n#6 Api->doControllerViewRender C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:586\n#7 Api->doRequest C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:540', '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image\\campusguide\\cms\\building_cms_campusguide_image_view.php(49): BuildingCmsCampusguideImageController->getImage()\n#1 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php(43): BuildingCmsCampusguideImageView->getImagePath()\n#2 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\controller.php(351): ImageView->draw(Object(DivXhtml))\n#3 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(586): Controller->render(Object(DivXhtml))\n#4 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(540): Api->doControllerViewRender(Object(BuildingCmsCampusguideImageController))\n#5 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\image.php(140): Api->doRequest(Array)\n#6 {main}', 'string, string', '2012-10-07 11:10:13'),
-	(1170, 8, 1, 'Array\n(\n    [0] => Image path\n    [1] => C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide/image/building/default_overview_150x75.png\n)\n', '\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php', 47, '#1 DebugException->__construct C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\exception\\debug_exception.php:18\n#2 ImageView->draw C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php:47\n#3 Controller->render C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\controller.php:351\n#4 Api->doControllerViewRender C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:586\n#5 Api->doRequest C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:540', '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\controller.php(351): ImageView->draw(Object(DivXhtml))\n#1 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(586): Controller->render(Object(DivXhtml))\n#2 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(540): Api->doControllerViewRender(Object(BuildingCmsCampusguideImageController))\n#3 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\image.php(140): Api->doRequest(Array)\n#4 {main}', 'string, string', '2012-10-07 11:10:13'),
-	(1171, 9, 1, 'Array\n(\n    [0] => Image path\n    [1] => C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide/image/3/facility/728_150x75.png\n)\n', '\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php', 47, '#1 DebugException->__construct C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\exception\\debug_exception.php:18\n#2 ImageView->draw C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php:47\n#3 Controller->render C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\controller.php:351\n#4 Api->doControllerViewRender C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:586\n#5 Api->doRequest C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:540', '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\controller.php(351): ImageView->draw(Object(DivXhtml))\n#1 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(586): Controller->render(Object(DivXhtml))\n#2 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(540): Api->doControllerViewRender(Object(FacilityCmsCampusguideImageController))\n#3 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\image.php(140): Api->doRequest(Array)\n#4 {main}', 'string, string', '2012-10-07 11:10:13'),
-	(1172, 9, 1, 'Array\n(\n    [0] => Get image\n    [1] => C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide/image/3/building/596_map_150x75.png\n)\n', '\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\image\\campusguide\\cms\\building_cms_campusguide_image_controller.php', 144, '#1 DebugException->__construct C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\exception\\debug_exception.php:18\n#2 BuildingCmsCampusguideImageController->getImage C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\image\\campusguide\\cms\\building_cms_campusguide_image_controller.php:144\n#3 BuildingCmsCampusguideImageController->getImageLastModified C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\image\\campusguide\\cms\\building_cms_campusguide_image_controller.php:170\n#4 BuildingCmsCampusguideImageController->getLastModified C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\image\\campusguide\\cms\\building_cms_campusguide_image_controller.php:116\n#5 BuildingCmsCampusguideImageView->getLastModified C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image\\campusguide\\cms\\building_cms_campusguide_image_view.php:38\n#6 View->draw C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\view\\view.php:103\n#7 ImageView->draw C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php:40\n#8 Controller->render C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\controller.php:351\n#9 Api->doControllerViewRender C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:586\n#10 Api->doRequest C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:540', '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\image\\campusguide\\cms\\building_cms_campusguide_image_controller.php(170): BuildingCmsCampusguideImageController->getImage()\n#1 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\image\\campusguide\\cms\\building_cms_campusguide_image_controller.php(116): BuildingCmsCampusguideImageController->getImageLastModified()\n#2 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image\\campusguide\\cms\\building_cms_campusguide_image_view.php(38): BuildingCmsCampusguideImageController->getLastModified()\n#3 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\view\\view.php(103): BuildingCmsCampusguideImageView->getLastModified()\n#4 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php(40): View->draw(Object(DivXhtml))\n#5 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\controller.php(351): ImageView->draw(Object(DivXhtml))\n#6 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(586): Controller->render(Object(DivXhtml))\n#7 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(540): Api->doControllerViewRender(Object(BuildingCmsCampusguideImageController))\n#8 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\image.php(140): Api->doRequest(Array)\n#9 {main}', 'string, string', '2012-10-07 11:10:13'),
-	(1173, 9, 1, 'Array\n(\n    [0] => Get image\n    [1] => C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide/image/3/building/596_map_150x75.png\n)\n', '\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\image\\campusguide\\cms\\building_cms_campusguide_image_controller.php', 144, '#1 DebugException->__construct C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\exception\\debug_exception.php:18\n#2 BuildingCmsCampusguideImageController->getImage C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\image\\campusguide\\cms\\building_cms_campusguide_image_controller.php:144\n#3 BuildingCmsCampusguideImageView->getImagePath C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image\\campusguide\\cms\\building_cms_campusguide_image_view.php:49\n#4 ImageView->draw C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php:43\n#5 Controller->render C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\controller.php:351\n#6 Api->doControllerViewRender C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:586\n#7 Api->doRequest C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:540', '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image\\campusguide\\cms\\building_cms_campusguide_image_view.php(49): BuildingCmsCampusguideImageController->getImage()\n#1 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php(43): BuildingCmsCampusguideImageView->getImagePath()\n#2 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\controller.php(351): ImageView->draw(Object(DivXhtml))\n#3 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(586): Controller->render(Object(DivXhtml))\n#4 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(540): Api->doControllerViewRender(Object(BuildingCmsCampusguideImageController))\n#5 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\image.php(140): Api->doRequest(Array)\n#6 {main}', 'string, string', '2012-10-07 11:10:13'),
-	(1174, 9, 1, 'Array\n(\n    [0] => Image path\n    [1] => C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide/image/3/building/596_map_150x75.png\n)\n', '\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php', 47, '#1 DebugException->__construct C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\exception\\debug_exception.php:18\n#2 ImageView->draw C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php:47\n#3 Controller->render C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\controller.php:351\n#4 Api->doControllerViewRender C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:586\n#5 Api->doRequest C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:540', '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\controller.php(351): ImageView->draw(Object(DivXhtml))\n#1 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(586): Controller->render(Object(DivXhtml))\n#2 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(540): Api->doControllerViewRender(Object(BuildingCmsCampusguideImageController))\n#3 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\image.php(140): Api->doRequest(Array)\n#4 {main}', 'string, string', '2012-10-07 11:10:13'),
-	(1175, 10, 1, 'Array\n(\n    [0] => Image path\n    [1] => C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide/image/3/facility/728_200x100.png\n)\n', '\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php', 47, '#1 DebugException->__construct C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\exception\\debug_exception.php:18\n#2 ImageView->draw C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php:47\n#3 AbstractController->render C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\abstract_controller.php:351\n#4 Api->doControllerViewRender C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:586\n#5 Api->doRequest C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:540', '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\abstract_controller.php(351): ImageView->draw(Object(DivXhtml))\n#1 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(586): AbstractController->render(Object(DivXhtml))\n#2 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(540): Api->doControllerViewRender(Object(FacilityCmsCampusguideImageController))\n#3 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\image.php(140): Api->doRequest(Array)\n#4 {main}', 'string, string', '2012-10-07 11:29:10'),
-	(1176, 11, 1, 'Array\n(\n    [0] => Get image\n    [1] => C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo/image/3/building/596_overview_150x75.png\n)\n', '\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\image\\cms\\building_cms_image_controller.php', 144, '#1 DebugException->__construct C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\exception\\debug_exception.php:18\n#2 BuildingCmsImageController->getImage C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\image\\cms\\building_cms_image_controller.php:144\n#3 BuildingCmsImageController->getImageLastModified C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\image\\cms\\building_cms_image_controller.php:170\n#4 BuildingCmsImageController->getLastModified C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\image\\cms\\building_cms_image_controller.php:116\n#5 BuildingCmsImageView->getLastModified C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image\\cms\\building_cms_image_view.php:38\n#6 AbstractView->draw C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\view\\abstract_view.php:103\n#7 ImageView->draw C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php:40\n#8 AbstractController->render C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\abstract_controller.php:351\n#9 AbstractApi->doControllerViewRender C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php:586\n#10 AbstractApi->doRequest C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php:540', '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\image\\cms\\building_cms_image_controller.php(170): BuildingCmsImageController->getImage()\n#1 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\image\\cms\\building_cms_image_controller.php(116): BuildingCmsImageController->getImageLastModified()\n#2 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image\\cms\\building_cms_image_view.php(38): BuildingCmsImageController->getLastModified()\n#3 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\view\\abstract_view.php(103): BuildingCmsImageView->getLastModified()\n#4 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php(40): AbstractView->draw(Object(DivXhtml))\n#5 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\abstract_controller.php(351): ImageView->draw(Object(DivXhtml))\n#6 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php(586): AbstractController->render(Object(DivXhtml))\n#7 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php(540): AbstractApi->doControllerViewRender(Object(BuildingCmsImageController))\n#8 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\image.php(140): AbstractApi->doRequest(Array)\n#9 {main}', 'string, string', '2012-10-07 16:16:50'),
-	(1177, 11, 1, 'Array\n(\n    [0] => Get image\n    [1] => C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo/image/3/building/596_overview_150x75.png\n)\n', '\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\image\\cms\\building_cms_image_controller.php', 144, '#1 DebugException->__construct C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\exception\\debug_exception.php:18\n#2 BuildingCmsImageController->getImage C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\controller\\image\\cms\\building_cms_image_controller.php:144\n#3 BuildingCmsImageView->getImagePath C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image\\cms\\building_cms_image_view.php:49\n#4 ImageView->draw C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php:43\n#5 AbstractController->render C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\abstract_controller.php:351\n#6 AbstractApi->doControllerViewRender C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php:586\n#7 AbstractApi->doRequest C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php:540', '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image\\cms\\building_cms_image_view.php(49): BuildingCmsImageController->getImage()\n#1 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php(43): BuildingCmsImageView->getImagePath()\n#2 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\abstract_controller.php(351): ImageView->draw(Object(DivXhtml))\n#3 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php(586): AbstractController->render(Object(DivXhtml))\n#4 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php(540): AbstractApi->doControllerViewRender(Object(BuildingCmsImageController))\n#5 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\image.php(140): AbstractApi->doRequest(Array)\n#6 {main}', 'string, string', '2012-10-07 16:16:50'),
-	(1178, 12, 1, 'Array\n(\n    [0] => Image path\n    [1] => C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide/image/3/facility/728_200x100.png\n)\n', '\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php', 47, '#1 DebugException->__construct C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\exception\\debug_exception.php:18\n#2 ImageView->draw C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php:47\n#3 AbstractController->render C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\abstract_controller.php:351\n#4 AbstractApi->doControllerViewRender C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php:586\n#5 AbstractApi->doRequest C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php:540', '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\abstract_controller.php(351): ImageView->draw(Object(DivXhtml))\n#1 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php(586): AbstractController->render(Object(DivXhtml))\n#2 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php(540): AbstractApi->doControllerViewRender(Object(FacilityCmsImageController))\n#3 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\image.php(140): AbstractApi->doRequest(Array)\n#4 {main}', 'string, string', '2012-10-07 16:30:49')
+	(1213, 33, 1, 'Array\n(\n    [0] => Image path\n    [1] => C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide/image/3/facility/728_200x100.png\n)\n', '\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php', 47, '#1 DebugException->__construct C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\exception\\debug_exception.php:18\n#2 ImageView->draw C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php:47\n#3 AbstractController->render C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\abstract_controller.php:351\n#4 AbstractApi->doControllerViewRender C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php:586\n#5 AbstractApi->doRequest C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php:540', '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\abstract_controller.php(351): ImageView->draw(Object(DivXhtml))\n#1 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php(586): AbstractController->render(Object(DivXhtml))\n#2 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php(540): AbstractApi->doControllerViewRender(Object(FacilityCmsImageController))\n#3 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\image.php(140): AbstractApi->doRequest(Array)\n#4 {main}', 'string, string', '2012-10-08 15:20:51'),
+	(1214, 34, 1, 'Array\n(\n    [0] => Image path\n    [1] => C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide/image/3/facility/728_200x100.png\n)\n', '\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php', 47, '#1 DebugException->__construct C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\exception\\debug_exception.php:18\n#2 ImageView->draw C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php:47\n#3 AbstractController->render C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\abstract_controller.php:351\n#4 AbstractApi->doControllerViewRender C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php:586\n#5 AbstractApi->doRequest C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php:540', '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\abstract_controller.php(351): ImageView->draw(Object(DivXhtml))\n#1 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php(586): AbstractController->render(Object(DivXhtml))\n#2 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php(540): AbstractApi->doControllerViewRender(Object(FacilityCmsImageController))\n#3 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\image.php(140): AbstractApi->doRequest(Array)\n#4 {main}', 'string, string', '2012-10-09 09:32:39'),
+	(1215, 35, 1, 'Array\n(\n    [0] => Image path\n    [1] => C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide/image/3/facility/728_200x100.png\n)\n', '\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php', 47, '#1 DebugException->__construct C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\exception\\debug_exception.php:18\n#2 ImageView->draw C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php:47\n#3 AbstractController->render C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\abstract_controller.php:351\n#4 AbstractApi->doControllerViewRender C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php:586\n#5 AbstractApi->doRequest C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php:540', '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\abstract_controller.php(351): ImageView->draw(Object(DivXhtml))\n#1 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php(586): AbstractController->render(Object(DivXhtml))\n#2 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php(540): AbstractApi->doControllerViewRender(Object(FacilityCmsImageController))\n#3 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\image.php(140): AbstractApi->doRequest(Array)\n#4 {main}', 'string, string', '2012-10-09 09:32:47'),
+	(1216, 36, 1, 'Array\n(\n    [0] => Image path\n    [1] => C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide/image/3/facility/728_200x100.png\n)\n', '\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php', 47, '#1 DebugException->__construct C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\exception\\debug_exception.php:18\n#2 ImageView->draw C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php:47\n#3 AbstractController->render C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\abstract_controller.php:351\n#4 AbstractApi->doControllerViewRender C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php:586\n#5 AbstractApi->doRequest C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php:540', '#0 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\abstract_controller.php(351): ImageView->draw(Object(DivXhtml))\n#1 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php(586): AbstractController->render(Object(DivXhtml))\n#2 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php(540): AbstractApi->doControllerViewRender(Object(FacilityCmsImageController))\n#3 C:\\Users\\Kris Laptop Windows\\Dropbox\\Scripting\\KrisSkarbo\\CampusGuide\\image.php(140): AbstractApi->doRequest(Array)\n#4 {main}', 'string, string', '2012-10-09 16:58:18')
 ;
 /*!40000 ALTER TABLE `debug` ENABLE KEYS */;
 
@@ -155,7 +148,7 @@ CREATE TABLE `error` (
   `error_registered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`error_id`),
   UNIQUE KEY `error_unique` (`error_file`,`error_line`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
 
 
 -- Dumping data for table campusguide_test.error: ~18 rows (approximately)
@@ -178,7 +171,7 @@ INSERT INTO `error` (`error_id`, `error_kill`, `error_code`, `error_message`, `e
 	(35, 0, 0, 'Unknown command \"edit\"', '\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\rest\\standard_rest_controller.php', 562, 4, 'api_rest.php?/buildings/edit/530&mode=3', '#1 BadrequestException->__construct \\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\exception\\badrequest_exception.php:11\n#2 StandardRestController->request \\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\rest\\standard_rest_controller.php:563\n#3 Api->doControllerViewRender \\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:571\n#4 Api->doRequest \\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php:540', '#0 \\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(571): StandardRestController->request()\n#1 \\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api.php(540): Api->doControllerViewRender(Object(BuildingsCampusguideRestController))\n#2 \\Scripting\\KrisSkarbo\\CampusGuide\\api_rest.php(138): Api->doRequest(Array)\n#3 {main}', NULL, 'BadrequestException', '2012-10-06 12:58:16', '2012-10-06 12:56:50'),
 	(38, 0, 0, 'Unknown command \"\"', '\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\rest\\standard\\abstract_standard_rest_controller.php', 562, 3, 'api_rest.php?', '#1 BadrequestException->__construct \\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\exception\\badrequest_exception.php:11\n#2 AbstractStandardRestController->request \\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\rest\\standard\\abstract_standard_rest_controller.php:563\n#3 AbstractApi->doControllerViewRender \\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php:571\n#4 AbstractApi->doRequest \\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php:540', '#0 \\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php(571): AbstractStandardRestController->request()\n#1 \\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php(540): AbstractApi->doControllerViewRender(Object(FacilitiesRestController))\n#2 \\Scripting\\KrisSkarbo\\CampusGuide\\api_rest.php(138): AbstractApi->doRequest(Array)\n#3 {main}', NULL, 'BadrequestException', '2012-10-07 16:19:08', '2012-10-07 11:42:42'),
 	(41, 0, 0, 'Image does not exist', '\\Scripting\\KrisSkarbo\\CampusGuide\\src\\view\\image_view.php', 46, 4, 'image.php?/facility/728/&mode=3', NULL, '#0 \\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\controller\\abstract_controller.php(351): ImageView->draw(Object(DivXhtml))\n#1 \\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php(586): AbstractController->render(Object(DivXhtml))\n#2 \\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php(540): AbstractApi->doControllerViewRender(Object(FacilityCmsImageController))\n#3 \\Scripting\\KrisSkarbo\\CampusGuide\\image.php(140): AbstractApi->doRequest(Array)\n#4 {main}', NULL, 'Exception', '2012-10-07 16:25:27', '2012-10-07 16:11:25'),
-	(45, 0, 0, 'Controller mapping \"building\" does not exist', '\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php', 504, 1, 'api_rest.php?/building/get', NULL, '#0 \\Scripting\\KrisSkarbo\\CampusGuide\\api_rest.php(138): AbstractApi->doRequest(Array)\n#1 {main}', NULL, 'Exception', NULL, '2012-10-07 16:19:18')
+	(45, 0, 0, 'Controller mapping \"\" does not exist', '\\Scripting\\KrisSkarbo\\KrisSkarboApi\\src\\api\\api\\abstract_api.php', 504, 3, 'command.php?', NULL, '#0 \\Scripting\\KrisSkarbo\\CampusGuide\\command.php(108): AbstractApi->doRequest(Array)\n#1 {main}', NULL, 'Exception', '2012-10-07 20:13:24', '2012-10-07 16:19:18')
 ;
 /*!40000 ALTER TABLE `error` ENABLE KEYS */;
 
@@ -241,10 +234,28 @@ CREATE TABLE `schedule_entry` (
   KEY `schedule_type` (`entry_type`),
   KEY `website_id` (`website_id`),
   CONSTRAINT `FK_SCHEDULE_ENTRY_WEBSITE` FOREIGN KEY (`website_id`) REFERENCES `schedule_website` (`website_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 
--- Dumping data for table campusguide_test.schedule_entry: ~0 rows (approximately)
+-- Dumping data for table campusguide_test.schedule_entry: ~14 rows (approximately)
+/*!40000 ALTER TABLE `schedule_entry` DISABLE KEYS */;
+INSERT INTO `schedule_entry` (`entry_id`, `website_id`, `entry_type`, `entry_time_start`, `entry_time_end`, `entry_updated`, `entry_registered`) VALUES 
+	(1, 2, 'Undervisning', '09:05:00', '11:45:00', NULL, '2012-10-09 20:27:22'),
+	(2, 2, 'Undervisning', '12:15:00', '13:55:00', NULL, '2012-10-09 20:27:22'),
+	(3, 2, 'Undervisning', '14:05:00', '15:45:00', NULL, '2012-10-09 20:27:22'),
+	(4, 2, 'Øvingstime', '08:15:00', '09:55:00', NULL, '2012-10-09 20:27:22'),
+	(5, 2, 'Undervisning', '10:05:00', '11:45:00', NULL, '2012-10-09 20:27:22'),
+	(6, 2, 'Laboratorium Undervisning', '12:15:00', '13:55:00', NULL, '2012-10-09 20:27:22'),
+	(7, 2, 'Laboratorium Undervisning', '14:05:00', '15:45:00', NULL, '2012-10-09 20:27:22'),
+	(8, 2, 'Undervisning', '08:15:00', '09:55:00', NULL, '2012-10-09 20:27:22'),
+	(9, 2, 'Undervisning', '14:05:00', '15:45:00', NULL, '2012-10-09 20:27:22'),
+	(10, 2, 'Undervisning', '10:05:00', '11:45:00', NULL, '2012-10-09 20:27:22'),
+	(11, 2, 'Undervisning', '12:15:00', '13:55:00', NULL, '2012-10-09 20:27:22'),
+	(12, 2, 'Gruppearbeid', '14:05:00', '15:45:00', NULL, '2012-10-09 20:27:22'),
+	(13, 2, 'Undervisning', '10:05:00', '11:45:00', NULL, '2012-10-09 20:27:22'),
+	(14, 2, 'Regneøvelse', '12:15:00', '13:50:00', NULL, '2012-10-09 20:27:22')
+;
+/*!40000 ALTER TABLE `schedule_entry` ENABLE KEYS */;
 
 
 -- Dumping structure for table campusguide_test.schedule_entry_faculty
@@ -261,7 +272,32 @@ CREATE TABLE `schedule_entry_faculty` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
--- Dumping data for table campusguide_test.schedule_entry_faculty: ~0 rows (approximately)
+-- Dumping data for table campusguide_test.schedule_entry_faculty: ~21 rows (approximately)
+/*!40000 ALTER TABLE `schedule_entry_faculty` DISABLE KEYS */;
+INSERT INTO `schedule_entry_faculty` (`entry_id`, `faculty_id`, `entry_faculty_updated`, `entry_faculty_registered`) VALUES 
+	(1, 1, NULL, '2012-10-09 20:27:22'),
+	(2, 2, NULL, '2012-10-09 20:27:22'),
+	(3, 3, NULL, '2012-10-09 20:27:22'),
+	(4, 4, NULL, '2012-10-09 20:27:22'),
+	(5, 3, NULL, '2012-10-09 20:27:22'),
+	(5, 5, NULL, '2012-10-09 20:27:22'),
+	(5, 6, NULL, '2012-10-09 20:27:22'),
+	(6, 7, NULL, '2012-10-09 20:27:22'),
+	(6, 8, NULL, '2012-10-09 20:27:22'),
+	(7, 7, NULL, '2012-10-09 20:27:22'),
+	(7, 8, NULL, '2012-10-09 20:27:22'),
+	(8, 9, NULL, '2012-10-09 20:27:22'),
+	(8, 10, NULL, '2012-10-09 20:27:22'),
+	(8, 11, NULL, '2012-10-09 20:27:22'),
+	(8, 12, NULL, '2012-10-09 20:27:22'),
+	(9, 2, NULL, '2012-10-09 20:27:22'),
+	(10, 13, NULL, '2012-10-09 20:27:22'),
+	(11, 13, NULL, '2012-10-09 20:27:22'),
+	(12, 13, NULL, '2012-10-09 20:27:22'),
+	(13, 14, NULL, '2012-10-09 20:27:22'),
+	(14, 3, NULL, '2012-10-09 20:27:22')
+;
+/*!40000 ALTER TABLE `schedule_entry_faculty` ENABLE KEYS */;
 
 
 -- Dumping structure for table campusguide_test.schedule_entry_group
@@ -278,7 +314,29 @@ CREATE TABLE `schedule_entry_group` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
--- Dumping data for table campusguide_test.schedule_entry_group: ~0 rows (approximately)
+-- Dumping data for table campusguide_test.schedule_entry_group: ~18 rows (approximately)
+/*!40000 ALTER TABLE `schedule_entry_group` DISABLE KEYS */;
+INSERT INTO `schedule_entry_group` (`entry_id`, `group_id`, `entry_group_updated`, `entry_group_registered`) VALUES 
+	(1, 1, NULL, '2012-10-09 20:27:22'),
+	(1, 2, NULL, '2012-10-09 20:27:22'),
+	(1, 3, NULL, '2012-10-09 20:27:22'),
+	(1, 4, NULL, '2012-10-09 20:27:22'),
+	(1, 5, NULL, '2012-10-09 20:27:22'),
+	(2, 1, '2012-10-09 20:27:22', '2012-10-09 20:27:22'),
+	(3, 1, NULL, '2012-10-09 20:27:22'),
+	(4, 1, NULL, '2012-10-09 20:27:22'),
+	(5, 1, NULL, '2012-10-09 20:27:22'),
+	(6, 1, NULL, '2012-10-09 20:27:22'),
+	(7, 1, NULL, '2012-10-09 20:27:22'),
+	(8, 1, '2012-10-09 20:27:22', '2012-10-09 20:27:22'),
+	(9, 1, '2012-10-09 20:27:22', '2012-10-09 20:27:22'),
+	(10, 1, NULL, '2012-10-09 20:27:22'),
+	(11, 1, NULL, '2012-10-09 20:27:22'),
+	(12, 1, NULL, '2012-10-09 20:27:22'),
+	(13, 1, NULL, '2012-10-09 20:27:22'),
+	(14, 1, NULL, '2012-10-09 20:27:22')
+;
+/*!40000 ALTER TABLE `schedule_entry_group` ENABLE KEYS */;
 
 
 -- Dumping structure for table campusguide_test.schedule_entry_occurence
@@ -293,7 +351,41 @@ CREATE TABLE `schedule_entry_occurence` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
--- Dumping data for table campusguide_test.schedule_entry_occurence: ~0 rows (approximately)
+-- Dumping data for table campusguide_test.schedule_entry_occurence: ~30 rows (approximately)
+/*!40000 ALTER TABLE `schedule_entry_occurence` DISABLE KEYS */;
+INSERT INTO `schedule_entry_occurence` (`entry_id`, `entry_occurence_date`, `entry_occurence_updated`, `entry_occurence_registered`) VALUES 
+	(1, '2012-09-24', NULL, '2012-10-09 20:27:22'),
+	(1, '2012-10-01', NULL, '2012-10-09 20:27:22'),
+	(2, '2012-09-24', NULL, '2012-10-09 20:27:22'),
+	(2, '2012-10-01', NULL, '2012-10-09 20:27:22'),
+	(3, '2012-09-24', NULL, '2012-10-09 20:27:22'),
+	(3, '2012-10-01', NULL, '2012-10-09 20:27:22'),
+	(4, '2012-09-25', NULL, '2012-10-09 20:27:22'),
+	(4, '2012-10-02', NULL, '2012-10-09 20:27:22'),
+	(5, '2012-09-25', NULL, '2012-10-09 20:27:22'),
+	(5, '2012-09-26', NULL, '2012-10-09 20:27:22'),
+	(5, '2012-10-02', NULL, '2012-10-09 20:27:22'),
+	(5, '2012-10-03', NULL, '2012-10-09 20:27:22'),
+	(6, '2012-09-25', NULL, '2012-10-09 20:27:22'),
+	(6, '2012-10-02', NULL, '2012-10-09 20:27:22'),
+	(7, '2012-09-25', NULL, '2012-10-09 20:27:22'),
+	(7, '2012-10-02', NULL, '2012-10-09 20:27:22'),
+	(8, '2012-09-26', NULL, '2012-10-09 20:27:22'),
+	(8, '2012-10-03', NULL, '2012-10-09 20:27:22'),
+	(9, '2012-09-26', NULL, '2012-10-09 20:27:22'),
+	(9, '2012-10-03', NULL, '2012-10-09 20:27:22'),
+	(10, '2012-09-27', NULL, '2012-10-09 20:27:22'),
+	(10, '2012-10-04', NULL, '2012-10-09 20:27:22'),
+	(11, '2012-09-27', NULL, '2012-10-09 20:27:22'),
+	(11, '2012-10-04', NULL, '2012-10-09 20:27:22'),
+	(12, '2012-09-27', NULL, '2012-10-09 20:27:22'),
+	(12, '2012-10-04', NULL, '2012-10-09 20:27:22'),
+	(13, '2012-09-28', NULL, '2012-10-09 20:27:22'),
+	(13, '2012-10-05', NULL, '2012-10-09 20:27:22'),
+	(14, '2012-09-28', NULL, '2012-10-09 20:27:22'),
+	(14, '2012-10-05', NULL, '2012-10-09 20:27:22')
+;
+/*!40000 ALTER TABLE `schedule_entry_occurence` ENABLE KEYS */;
 
 
 -- Dumping structure for table campusguide_test.schedule_entry_program
@@ -310,7 +402,26 @@ CREATE TABLE `schedule_entry_program` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
--- Dumping data for table campusguide_test.schedule_entry_program: ~0 rows (approximately)
+-- Dumping data for table campusguide_test.schedule_entry_program: ~15 rows (approximately)
+/*!40000 ALTER TABLE `schedule_entry_program` DISABLE KEYS */;
+INSERT INTO `schedule_entry_program` (`entry_id`, `program_id`, `entry_program_updated`, `entry_program_registered`) VALUES 
+	(1, 1, NULL, '2012-10-09 20:27:22'),
+	(2, 2, NULL, '2012-10-09 20:27:22'),
+	(3, 3, NULL, '2012-10-09 20:27:22'),
+	(4, 4, NULL, '2012-10-09 20:27:22'),
+	(5, 3, NULL, '2012-10-09 20:27:22'),
+	(6, 5, NULL, '2012-10-09 20:27:22'),
+	(7, 5, NULL, '2012-10-09 20:27:22'),
+	(8, 6, NULL, '2012-10-09 20:27:22'),
+	(8, 7, NULL, '2012-10-09 20:27:22'),
+	(9, 2, NULL, '2012-10-09 20:27:22'),
+	(10, 8, NULL, '2012-10-09 20:27:22'),
+	(11, 8, NULL, '2012-10-09 20:27:22'),
+	(12, 8, NULL, '2012-10-09 20:27:22'),
+	(13, 9, NULL, '2012-10-09 20:27:22'),
+	(14, 3, NULL, '2012-10-09 20:27:22')
+;
+/*!40000 ALTER TABLE `schedule_entry_program` ENABLE KEYS */;
 
 
 -- Dumping structure for table campusguide_test.schedule_entry_room
@@ -327,7 +438,29 @@ CREATE TABLE `schedule_entry_room` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
--- Dumping data for table campusguide_test.schedule_entry_room: ~0 rows (approximately)
+-- Dumping data for table campusguide_test.schedule_entry_room: ~18 rows (approximately)
+/*!40000 ALTER TABLE `schedule_entry_room` DISABLE KEYS */;
+INSERT INTO `schedule_entry_room` (`entry_id`, `room_id`, `entry_room_updated`, `entry_room_registered`) VALUES 
+	(1, 1, NULL, '2012-10-09 20:27:22'),
+	(2, 1, NULL, '2012-10-09 20:27:22'),
+	(3, 1, NULL, '2012-10-09 20:27:22'),
+	(3, 2, NULL, '2012-10-09 20:27:22'),
+	(4, 1, NULL, '2012-10-09 20:27:22'),
+	(5, 1, NULL, '2012-10-09 20:27:22'),
+	(5, 2, NULL, '2012-10-09 20:27:22'),
+	(6, 1, NULL, '2012-10-09 20:27:22'),
+	(6, 3, NULL, '2012-10-09 20:27:22'),
+	(7, 1, NULL, '2012-10-09 20:27:22'),
+	(7, 3, NULL, '2012-10-09 20:27:22'),
+	(8, 1, NULL, '2012-10-09 20:27:22'),
+	(9, 1, NULL, '2012-10-09 20:27:22'),
+	(10, 1, NULL, '2012-10-09 20:27:22'),
+	(11, 1, NULL, '2012-10-09 20:27:22'),
+	(12, 1, NULL, '2012-10-09 20:27:22'),
+	(13, 1, NULL, '2012-10-09 20:27:22'),
+	(14, 1, NULL, '2012-10-09 20:27:22')
+;
+/*!40000 ALTER TABLE `schedule_entry_room` ENABLE KEYS */;
 
 
 -- Dumping structure for table campusguide_test.schedule_faculty
@@ -350,10 +483,28 @@ CREATE TABLE `schedule_faculty` (
   KEY `website_id` (`website_id`),
   CONSTRAINT `FK_SCHEDULE_FACULTY_ROOM` FOREIGN KEY (`room_id`) REFERENCES `schedule_room` (`room_id`) ON DELETE SET NULL ON UPDATE SET NULL,
   CONSTRAINT `FK_SCHEDULE_FACULTY_WEBSITE` FOREIGN KEY (`website_id`) REFERENCES `schedule_website` (`website_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 
--- Dumping data for table campusguide_test.schedule_faculty: ~0 rows (approximately)
+-- Dumping data for table campusguide_test.schedule_faculty: ~14 rows (approximately)
+/*!40000 ALTER TABLE `schedule_faculty` DISABLE KEYS */;
+INSERT INTO `schedule_faculty` (`faculty_id`, `website_id`, `room_id`, `faculty_code`, `faculty_type`, `faculty_name`, `faculty_name_short`, `faculty_phone`, `faculty_email`, `faculty_updated`, `faculty_registered`) VALUES 
+	(1, 2, NULL, NULL, '', 'Heggholmen Kari', '', '', '', NULL, '2012-10-09 20:27:22'),
+	(2, 2, NULL, NULL, '', 'Dahle Torstein', '', '', '', NULL, '2012-10-09 20:27:22'),
+	(3, 2, NULL, NULL, '', 'Simonsen Terje', '', '', '', NULL, '2012-10-09 20:27:22'),
+	(4, 2, NULL, NULL, '', 'Student assistent', '', '', '', NULL, '2012-10-09 20:27:22'),
+	(5, 2, NULL, NULL, '', 'Erlend', '', '', '', NULL, '2012-10-09 20:27:22'),
+	(6, 2, NULL, NULL, '', 'Grong', '', '', '', NULL, '2012-10-09 20:27:22'),
+	(7, 2, NULL, NULL, '', 'Amland Øystein', '', '', '', NULL, '2012-10-09 20:27:22'),
+	(8, 2, NULL, NULL, '', 'Heggernes Tarjei', '', '', '', NULL, '2012-10-09 20:27:22'),
+	(9, 2, NULL, NULL, '', 'Hetland Kristin Fanebust', '', '', '', NULL, '2012-10-09 20:27:22'),
+	(10, 2, NULL, NULL, '', 'Høyland Sven-Olai', '', '', '', NULL, '2012-10-09 20:27:22'),
+	(11, 2, NULL, NULL, '', 'Simonsen Kent Inge', '', '', '', NULL, '2012-10-09 20:27:22'),
+	(12, 2, NULL, NULL, '', 'Wang YI', '', '', '', NULL, '2012-10-09 20:27:22'),
+	(13, 2, NULL, NULL, '', 'Stokke Leif', '', '', '', NULL, '2012-10-09 20:27:22'),
+	(14, 2, NULL, NULL, '', 'Førland Geir Martin', '', '', '', NULL, '2012-10-09 20:27:22')
+;
+/*!40000 ALTER TABLE `schedule_faculty` ENABLE KEYS */;
 
 
 -- Dumping structure for table campusguide_test.schedule_group
@@ -370,10 +521,19 @@ CREATE TABLE `schedule_group` (
   UNIQUE KEY `website_id_group_code` (`website_id`,`group_code`),
   KEY `website_id` (`website_id`),
   CONSTRAINT `FK_SCHEDULE_GROUP_WEBSITE` FOREIGN KEY (`website_id`) REFERENCES `schedule_website` (`website_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Class/group';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='Class/group';
 
 
--- Dumping data for table campusguide_test.schedule_group: ~0 rows (approximately)
+-- Dumping data for table campusguide_test.schedule_group: ~5 rows (approximately)
+/*!40000 ALTER TABLE `schedule_group` DISABLE KEYS */;
+INSERT INTO `schedule_group` (`group_id`, `website_id`, `group_code`, `group_name`, `group_name_short`, `group_updated`, `group_registered`) VALUES 
+	(1, 2, NULL, '', '10HADM', NULL, '2012-10-09 20:27:22'),
+	(2, 2, NULL, '', '10HLOG', NULL, '2012-10-09 20:27:22'),
+	(3, 2, NULL, '', '10HREGN', NULL, '2012-10-09 20:27:22'),
+	(4, 2, NULL, '', '10HSAMFØ', NULL, '2012-10-09 20:27:22'),
+	(5, 2, NULL, '', '11HØA3', NULL, '2012-10-09 20:27:22')
+;
+/*!40000 ALTER TABLE `schedule_group` ENABLE KEYS */;
 
 
 -- Dumping structure for table campusguide_test.schedule_program
@@ -390,10 +550,23 @@ CREATE TABLE `schedule_program` (
   UNIQUE KEY `program_code` (`program_code`,`website_id`),
   KEY `website_id` (`website_id`),
   CONSTRAINT `FK_SCHEDULE_PROGRAM_WEBSITE` FOREIGN KEY (`website_id`) REFERENCES `schedule_website` (`website_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Course';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='Course';
 
 
--- Dumping data for table campusguide_test.schedule_program: ~0 rows (approximately)
+-- Dumping data for table campusguide_test.schedule_program: ~9 rows (approximately)
+/*!40000 ALTER TABLE `schedule_program` DISABLE KEYS */;
+INSERT INTO `schedule_program` (`program_id`, `website_id`, `program_code`, `program_name`, `program_name_short`, `program_updated`, `program_registered`) VALUES 
+	(1, 2, NULL, '', 'FOA041', NULL, '2012-10-09 20:27:22'),
+	(2, 2, NULL, '', 'ØBR102', NULL, '2012-10-09 20:27:22'),
+	(3, 2, NULL, '', 'ØMO001', NULL, '2012-10-09 20:27:22'),
+	(4, 2, NULL, '', 'TOM033', NULL, '2012-10-09 20:27:22'),
+	(5, 2, NULL, '', 'ØMO004', NULL, '2012-10-09 20:27:22'),
+	(6, 2, NULL, '', 'TOD121', NULL, '2012-10-09 20:27:22'),
+	(7, 2, NULL, '', 'TOD142', NULL, '2012-10-09 20:27:22'),
+	(8, 2, NULL, '', 'TOM038', NULL, '2012-10-09 20:27:22'),
+	(9, 2, NULL, '', 'TOK005', NULL, '2012-10-09 20:27:22')
+;
+/*!40000 ALTER TABLE `schedule_program` ENABLE KEYS */;
 
 
 -- Dumping structure for table campusguide_test.schedule_room
@@ -413,10 +586,17 @@ CREATE TABLE `schedule_room` (
   KEY `website_id` (`website_id`),
   CONSTRAINT `FK_SCHEDULE_ROOM_ELEMENT` FOREIGN KEY (`element_id`) REFERENCES `building_element` (`element_id`) ON DELETE SET NULL ON UPDATE SET NULL,
   CONSTRAINT `FK_SCHEDULE_ROOM_WEBSITE` FOREIGN KEY (`website_id`) REFERENCES `schedule_website` (`website_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 
--- Dumping data for table campusguide_test.schedule_room: ~0 rows (approximately)
+-- Dumping data for table campusguide_test.schedule_room: ~3 rows (approximately)
+/*!40000 ALTER TABLE `schedule_room` DISABLE KEYS */;
+INSERT INTO `schedule_room` (`room_id`, `website_id`, `element_id`, `room_code`, `room_name`, `room_name_short`, `room_updated`, `room_registered`) VALUES 
+	(1, 2, NULL, NULL, '', 'A622', NULL, '2012-10-09 20:27:22'),
+	(2, 2, NULL, NULL, '', 'JacobEides', NULL, '2012-10-09 20:27:22'),
+	(3, 2, NULL, NULL, '', 'A726', NULL, '2012-10-09 20:27:22')
+;
+/*!40000 ALTER TABLE `schedule_room` ENABLE KEYS */;
 
 
 -- Dumping structure for table campusguide_test.schedule_website
@@ -428,10 +608,15 @@ CREATE TABLE `schedule_website` (
   `website_parsed` datetime DEFAULT NULL,
   `website_registered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`website_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 
--- Dumping data for table campusguide_test.schedule_website: ~0 rows (approximately)
+-- Dumping data for table campusguide_test.schedule_website: ~1 rows (approximately)
+/*!40000 ALTER TABLE `schedule_website` DISABLE KEYS */;
+INSERT INTO `schedule_website` (`website_id`, `website_url`, `website_type`, `website_parsed`, `website_registered`) VALUES 
+	(2, 'http://localhost:8008/KrisSkarbo/CampusGuide/example/timeedit/entries_room.htm', 'timeedit', NULL, '2012-10-09 20:27:22')
+;
+/*!40000 ALTER TABLE `schedule_website` ENABLE KEYS */;
 
 
 -- Dumping structure for table campusguide_test.schedule_website_building

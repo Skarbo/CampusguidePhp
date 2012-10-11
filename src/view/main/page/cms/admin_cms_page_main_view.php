@@ -18,20 +18,6 @@ abstract class AdminCmsPageMainView extends PageCmsPageMainView
     // FUNCTIONS
 
 
-    // ... IS
-
-
-    /**
-     * @return boolean True if action is edit
-     */
-    protected function isActionEdit()
-    {
-        return $this->getView()->getController()->isActionEdit();
-    }
-
-    // ... /IS
-
-
     // ... DRAW
 
 

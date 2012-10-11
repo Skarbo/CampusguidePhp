@@ -39,8 +39,8 @@ class EntriesTimeeditScheduleUrlWebsiteHandler extends TimeeditScheduleUrlWebsit
                     return sprintf( "wv_obj%s=%s", intval( $key ) + 1, $var );
                 }, $codes, array_keys( $codes ) );
 
-        return sprintf( self::$URL_ENTRIES, $baseUrl, $institute, $language, date( "Wy", $startWeek ),
-                date( "Wy", $startWeek ), implode( "&", $objects ) );
+        return sprintf( self::$URL_ENTRIES, $baseUrl, self::$PAGE_PRINT, $institute, $language, date( "yW", $startWeek ),
+                date( "yW", $endWeek ), implode( "&", $objects ) );
     }
 
     // /FUNCTIONS

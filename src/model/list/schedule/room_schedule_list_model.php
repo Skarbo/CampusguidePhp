@@ -18,6 +18,11 @@ class RoomScheduleListModel extends TypeScheduleListModel
     // FUNCTIONS
 
 
+    public function getType()
+    {
+        return FacultyScheduleModel::TYPE_ROOM;
+    }
+
     /**
      * @see IteratorCore::get()
      * @return RoomScheduleModel
@@ -60,7 +65,7 @@ class RoomScheduleListModel extends TypeScheduleListModel
     // ... /STATIC
 
 
-// /FUNCTIONS
+    // /FUNCTIONS
 
 
 }

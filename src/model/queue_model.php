@@ -12,7 +12,7 @@ class QueueModel extends Model
 
     public static $TYPES = array ( self::TYPE_IMAGE_BUILDING, self::TYPE_SCHEDULE_TYPES, self::TYPE_SCHEDULE_ENTRIES );
 
-    public static $ARGUMENT_SCHEDULE_TYPE_PAGE = "pages";
+    public static $ARGUMENT_SCHEDULE_TYPE_PAGE = "page";
     public static $ARGUMENT_SCHEDULE_TYPE_IDS = "types";
     public static $ARGUMENT_SCHEDULE_TYPE_WEEKS = "weeks";
     public static $ARGUMENT_SCHEDULE_TYPE_CODES_PR = "codes_pr";

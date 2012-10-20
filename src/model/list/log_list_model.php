@@ -1,6 +1,6 @@
 <?php
 
-class FacultyScheduleListModel extends TypeScheduleListModel
+class LogListModel extends StandardListModel
 {
 
     // VARIABLES
@@ -18,14 +18,9 @@ class FacultyScheduleListModel extends TypeScheduleListModel
     // FUNCTIONS
 
 
-    public function getType()
-    {
-        return FacultyScheduleModel::TYPE_FACULTY;
-    }
-
     /**
      * @see IteratorCore::get()
-     * @return FacultyScheduleModel
+     * @return LogModel
      */
     public function get( $i )
     {
@@ -34,7 +29,7 @@ class FacultyScheduleListModel extends TypeScheduleListModel
 
     /**
      * @see IteratorCore::add()
-     * @return FacultyScheduleModel
+     * @return LogModel
      */
     public function add( $add )
     {
@@ -43,7 +38,7 @@ class FacultyScheduleListModel extends TypeScheduleListModel
 
     /**
      * @see IteratorCore::current()
-     * @return FacultyScheduleModel
+     * @return LogModel
      */
     public function current()
     {
@@ -54,8 +49,8 @@ class FacultyScheduleListModel extends TypeScheduleListModel
 
 
     /**
-     * @param FacultyScheduleListModel $get
-     * @return FacultyScheduleListModel
+     * @param LogListModel $get
+     * @return LogListModel
      */
     public static function get_( $get )
     {
@@ -65,7 +60,7 @@ class FacultyScheduleListModel extends TypeScheduleListModel
     // ... /STATIC
 
 
-    // /FUNCTIONS
+// /FUNCTIONS
 
 
 }

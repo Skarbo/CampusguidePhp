@@ -6,7 +6,7 @@ class DefaultLocale extends AbstractDefaultLocale
     // VARIABLES
 
 
-    private static $_BUILDING, $_FACILITY;
+    private static $_BUILDING, $_FACILITY, $_SCHEDULE;
 
     // /VARIABLES
 
@@ -37,6 +37,16 @@ class DefaultLocale extends AbstractDefaultLocale
         self::$_FACILITY = self::$_FACILITY ? self::$_FACILITY : $this->getLocaleClass(
                 FacilityDefaultLocale::class_() );
         return self::$_FACILITY;
+    }
+
+    /**
+     * @return ScheduleDefaultLocale
+     */
+    public function schedule()
+    {
+        self::$_SCHEDULE = self::$_SCHEDULE ? self::$_SCHEDULE : $this->getLocaleClass(
+                ScheduleDefaultLocale::class_() );
+        return self::$_SCHEDULE;
     }
 
     // /FUNCTIONS

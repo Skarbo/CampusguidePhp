@@ -2,6 +2,33 @@
 	
 }
 
+/* Queue do */
+#queue_page_wrapper #queue_do {
+	font-size: 0.8em;
+}
+
+#queue_page_wrapper #queue_do_status {
+	font-size: 0.8em;
+	padding: 0 0.5em;
+}
+
+#queue_page_wrapper #queue_do_status > * {
+	display: none;
+}
+
+#queue_page_wrapper #queue_do_status .queue_executing {
+	font-style: italic;
+}
+
+#queue_page_wrapper #queue_do_status .queue_success {
+	color: green;
+}
+
+#queue_page_wrapper #queue_do_status .queue_error {
+	color: darkred;
+}
+/* /Queue do */
+
 /* Queues table */
 #queue_page_wrapper table.queues {
 	font-size: 0.8em;

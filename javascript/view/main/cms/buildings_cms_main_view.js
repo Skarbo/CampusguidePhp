@@ -14,6 +14,10 @@ function BuildingsCmsMainView(wrapperId) {
 	this.floorplannerPage = null;
 	this.buildingcreatorPage = null;
 	this.buildingPage = new BuildingCmsPageMainView(this);
+	if (typeof FloorplannerBuildingCmsPageMainView !== "undefined")
+		this.floorplannerPage = new FloorplannerBuildingCmsPageMainView(this);
+	if (typeof BuildingcreatorBuildingCmsPageMainView !== "undefined")
+		this.buildingcreatorPage = new BuildingcreatorBuildingCmsPageMainView(this);
 };
 
 // /CONSTRUCTOR
@@ -78,11 +82,6 @@ BuildingsCmsMainView.prototype.after = function() {
  */
 BuildingsCmsMainView.prototype.draw = function(controller) {
 	CmsMainView.prototype.draw.call(this, controller);
-
-	if (typeof FloorplannerBuildingCmsPageMainView !== "undefined")
-		this.floorplannerPage = new FloorplannerBuildingCmsPageMainView(this);
-	if (typeof BuildingcreatorBuildingCmsPageMainView !== "undefined")
-		this.buildingcreatorPage = new BuildingcreatorBuildingCmsPageMainView(this);
 
 	$(".gui").gui();
 

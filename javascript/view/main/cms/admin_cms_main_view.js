@@ -117,7 +117,7 @@ AdminCmsMainView.prototype.doBindEventHandler = function() {
 
 	if (this.getController().getQuery().page == "queue" && this.getController().getQuery().action == "new") {
 		var websiteSelect = this.getWrapperElement().find("select[name=select_website]");
-		
+
 		var facilityInput = this.getWrapperElement().find("input[name=select_facility]");
 		facilityInput.change(function(event) {
 			context.getController().doBuildingsRetrieve($(this).val());
@@ -128,7 +128,7 @@ AdminCmsMainView.prototype.doBindEventHandler = function() {
 			context.getController().doFloorsRetrieve($(this).val());
 		});
 
-		var addButton = this.getWrapperElement().find("#queue_schedule_add");
+		var addButton = this.getWrapperElement().find("#queue_schedule_entries_add");
 		var floorInput = this.getWrapperElement().find("select[name=select_floor]");
 		floorInput.change(function(event) {
 			if (!websiteSelect.val() || !facilityInput.val() || !buildingInput.val() || !$(this).val()) {
@@ -138,14 +138,30 @@ AdminCmsMainView.prototype.doBindEventHandler = function() {
 			}
 		});
 
-		websiteSelect.change(function(){
+		websiteSelect.change(function() {
 			floorInput.change();
 		});
-		
+
 		addButton.click(function() {
 			if (!$(this).isDisabled()) {
 				$(this).parents("form").submit();
 			}
+		});
+	} else if (this.getController().getQuery().page == "queue") {
+		var queueDoButton = this.getWrapperElement().find("#queue_do");
+		var queueDoStatus = this.getWrapperElement().find("#queue_do_status");
+
+		var queueDoUrl = Core.sprintf("command.php?/queue&mode=%s", this.getController().getMode());
+		queueDoButton.click(function() {
+			queueDoStatus.children().hide().filter(".queue_executing").show();
+			$.ajax({
+				url : queueDoUrl,
+				cache : false
+			}).done(function() {
+				window.location.href = window.location.href.replace(/&?success=([\w\d]+)/g, "") + "&success=queue_execute";
+			}).fail(function() {
+				queueDoStatus.children().hide().filter(".queue_error").show();
+			});
 		});
 	}
 

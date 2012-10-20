@@ -14,6 +14,7 @@ class AdminCmsMainController extends CmsMainController implements ErrorsAdminCms
     const PAGE_QUEUE = "queue";
 
     const TYPE_SCHEDULEENTRIESROOM = "scheduleentriesroom";
+    const TYPE_TYPE = "type";
 
     /**
      * @var ErrorListModel
@@ -75,6 +76,11 @@ class AdminCmsMainController extends CmsMainController implements ErrorsAdminCms
     public function isTypeScheduleEntriesRoom()
     {
         return $this->getTypeUri() == self::TYPE_SCHEDULEENTRIESROOM;
+    }
+
+    public function isTypeScheduleType()
+    {
+        return $this->getTypeUri() == self::TYPE_TYPE;
     }
 
     // ... /IS
@@ -182,6 +188,26 @@ class AdminCmsMainController extends CmsMainController implements ErrorsAdminCms
                     $rooms = $this->getDaoContainer()->getRoomScheduleDao()->getFloor( $floor->getId() );
                     $queue = QueueFactoryModel::createScheduleEntriesQueue( $website->getId(),
                             TypeScheduleModel::TYPE_ROOM, $rooms->getIds(), array( $weekStart, $weekEnd ) );
+                    $this->queueHandler->handle( $queue );
+                    self::redirect( Resource::url()->cms()->admin()->getQueuePage( $this->getMode() ) );
+                }
+                else
+                {
+                    var_dump( "Error", $_POST );
+                }
+            }
+
+            // Schedule Type
+            else if ( $this->isTypeScheduleType() )
+            {
+                $websiteId = Core::arrayAt( self::getPost(), "select_website" );
+                $typeId = Core::arrayAt( self::getPost(), "select_type" );
+
+                $website = $this->websites->getId( $websiteId );
+
+                if ( $website && in_array($typeId, TypeScheduleModel::$TYPES) )
+                {
+                    $queue = QueueFactoryModel::createScheduleTypesQueue( $website->getId(), $typeId, 1 );
                     $this->queueHandler->handle( $queue );
                     self::redirect( Resource::url()->cms()->admin()->getQueuePage( $this->getMode() ) );
                 }

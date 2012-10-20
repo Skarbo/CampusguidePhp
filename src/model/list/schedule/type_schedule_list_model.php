@@ -18,6 +18,17 @@ abstract class TypeScheduleListModel extends StandardListModel
     // FUNCTIONS
 
 
+    public abstract function getType();
+
+    /**
+     * @see IteratorCore::limit()
+     * @return TypeScheduleListModel
+     */
+    public function limit( $limit )
+    {
+        return parent::limit( $limit );
+    }
+
     /**
      * @return array Array( code, ... )
      */

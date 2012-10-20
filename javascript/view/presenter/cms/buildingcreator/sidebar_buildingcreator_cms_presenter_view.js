@@ -439,6 +439,7 @@ SidebarBuildingcreatorCmsPresenterView.prototype.handleFloorSelect = function(fl
 
 SidebarBuildingcreatorCmsPresenterView.prototype.handleMenu = function(menu, sidebar) {
 	sidebar = sidebar || null;
+	menu = menu || "floors";
 	var sidebarElements = this.getSidebarElement();
 	sidebarElements.hide();
 

@@ -156,6 +156,18 @@ CanvasPresenterView.prototype.setPolygons = function(type, floorId, group) {
 
 // ... /SET
 
+// ... CREATE
+
+/**
+ * @return {Polygon}
+ */
+CanvasPresenterView.prototype.createPolygon = function(attrs) {
+	attrs = attrs || {};
+	return new Polygon(attrs, this);
+};
+
+// ... /CREATE
+
 // ... DO
 
 CanvasPresenterView.prototype.doBindEventHandler = function() {
@@ -342,12 +354,13 @@ CanvasPresenterView.prototype.doSave = function() {
 CanvasPresenterView.prototype.doFloorSelect = function(floorId, types) {
 	if (!floorId)
 		return false;
-	types = types ? (jQuery.isArray( types ) ? types : [ types ]) : this.types;
-	
+	types = types ? (jQuery.isArray(types) ? types : [ types ]) : this.types;
+	console.log("Floor select", floorId, types);
 	// Show/hide Floors
 	var floors = this.getGroups(CanvasPresenterView.TYPE_FLOORS);
+
 	for (id in floors) {
-		if (jQuery.inArray(CanvasPresenterView.TYPE_FLOORS, types) !== false && id == floorId) {
+		if (jQuery.inArray(CanvasPresenterView.TYPE_FLOORS, types) > -1 && id == floorId) {
 			floors[id].show();
 		} else {
 			floors[id].hide();
@@ -357,7 +370,7 @@ CanvasPresenterView.prototype.doFloorSelect = function(floorId, types) {
 	// Show/hide Elements
 	var elements = this.getGroups(CanvasPresenterView.TYPE_ELEMENTS);
 	for (id in elements) {
-		if (jQuery.inArray(CanvasPresenterView.TYPE_ELEMENTS, types) !== false && id == floorId) {
+		if (jQuery.inArray(CanvasPresenterView.TYPE_ELEMENTS, types) > -1 && id == floorId) {
 			elements[id].show();
 		} else {
 			elements[id].hide();
@@ -443,11 +456,10 @@ CanvasPresenterView.prototype.doStageScale = function(scaleUp) {
 	this.setStageScale(Math.max(this.stageScale, 0));
 	this.stage.setScale(this.stageScale);
 
-	// this.stage.setPosition({ x: position.x, y : position.y });
+	// this.stage.setPosition({ x : position.x, y : position.y });
 
 	// Re-draw stage
 	this.stage.draw();
-
 };
 
 CanvasPresenterView.prototype.doStageDraggable = function(draggable) {
@@ -469,7 +481,7 @@ CanvasPresenterView.prototype.doPolygonDraw = function(type) {
 		return;
 
 	// Create polygon
-	var polygon = new Polygon({}, this);
+	var polygon = this.createPolygon({});
 	polygons.add(polygon);
 
 	// Create polygon with mouse
@@ -657,10 +669,10 @@ CanvasPresenterView.prototype.handleSelectedDelete = function() {
 };
 
 CanvasPresenterView.prototype.handleTypeSelect = function(types) {
-	types = jQuery.isArray( types ) ? types : [ types ];
-
-	if (this.floorSelected)
-		this.getEventHandler().handle(new FloorSelectEvent(this.floorSelected));
+	if (types)
+		this.types = jQuery.isArray(types) ? types : [ types ];
+	// if (this.floorSelected)
+	// this.getEventHandler().handle(new FloorSelectEvent(this.floorSelected));
 };
 
 // ... ... HISTORY
@@ -706,7 +718,8 @@ CanvasPresenterView.prototype.draw = function(root) {
 		stagePosition = stagePosition.split(",");
 		this.stagePosition = {
 			x : 0, // parseFloat(stagePosition[0]),
-			y : 0 // parseFloat(stagePosition[1])
+			y : 0
+		// parseFloat(stagePosition[1])
 		};
 	}
 
@@ -778,7 +791,7 @@ CanvasPresenterView.prototype.drawFloor = function(floor, width, height) {
 	if (floor.coordinates) {
 		var coordinates = floor.coordinates.split("$");
 		for (i in coordinates) {
-			var polygon = new Polygon({}, this);
+			var polygon = this.createPolygon({});
 			polygon.fromData(coordinates[i]);
 			polygons.add(polygon);
 		}
@@ -856,9 +869,9 @@ CanvasPresenterView.prototype.drawElement = function(element) {
 
 	// Create polygon
 	if (element.coordinates) {
-		var coordinates = element.coordinates.split("$");
+		var coordinates = jQuery.isArray(element.coordinates) ? element.coordinates : element.coordinates.split("$");
 		for (i in coordinates) {
-			var polygon = new Polygon({}, this);
+			var polygon = this.createPolygon({});
 			polygon.object = {
 				type : "element",
 				element : element

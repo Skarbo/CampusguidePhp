@@ -55,6 +55,19 @@ BuildingcreatorCmsCanvasPresenterView.prototype.getCanvasLoaderStatusElement = f
 
 // ... /GET
 
+// ... CREATE
+
+/**
+ * @return {Polygon}
+ */
+BuildingcreatorCmsCanvasPresenterView.prototype.createPolygon = function(attrs) {
+	var polygon = CanvasPresenterView.prototype.createPolygon.call(this, attrs);
+	polygon.mode = Polygon.MODE_EDIT;
+	return polygon;
+};
+
+// ... /CREATE
+
 // ... DO
 
 BuildingcreatorCmsCanvasPresenterView.prototype.doBindEventHandler = function() {
@@ -80,7 +93,7 @@ BuildingcreatorCmsCanvasPresenterView.prototype.doBindEventHandler = function() 
 	 *            event
 	 */
 	function(event) {
-		context.handleRetrieved(event.getRetrievedType());
+		context.handleRetrieved(event.getRetrievedType(), event.getRetrieved());
 	});
 
 	// Map floor event
@@ -174,19 +187,22 @@ BuildingcreatorCmsCanvasPresenterView.prototype.handleRetrieve = function(type) 
 	}
 };
 
-BuildingcreatorCmsCanvasPresenterView.prototype.handleRetrieved = function(type) {
+BuildingcreatorCmsCanvasPresenterView.prototype.handleRetrieved = function(type, retrieved) {
 	switch (type) {
 	case "building":
+		this.handleBuildingRetrieved(retrieved);
 		this.getCanvasLoaderStatusElement().find(".loading_building").hide();
 		this.retrieved++;
 		break;
 
 	case "building_floors":
+		this.handleFloorsRetrieved(retrieved);
 		this.getCanvasLoaderStatusElement().find(".loading_floors").hide();
 		this.retrieved++;
 		break;
 
 	case "building_elements":
+		this.handleElementsRetrieved(retrieved);
 		this.getCanvasLoaderStatusElement().find(".loading_elements").hide();
 		this.retrieved++;
 		break;
@@ -229,6 +245,9 @@ BuildingcreatorCmsCanvasPresenterView.prototype.handleMenuSelect = function(menu
 	}
 
 	this.handleTypeSelect([ type ]);
+
+	if (this.floorSelected)
+		this.doFloorSelect(this.floorSelected);
 };
 
 BuildingcreatorCmsCanvasPresenterView.prototype.handleSaving = function(type) {
@@ -241,6 +260,10 @@ BuildingcreatorCmsCanvasPresenterView.prototype.handleSaving = function(type) {
 // ... /HANDLE
 
 // ... DRAW
+
+BuildingcreatorCmsCanvasPresenterView.prototype.draw = function(root) {
+	CanvasPresenterView.prototype.draw.call(this, root);
+};
 
 BuildingcreatorCmsCanvasPresenterView.prototype.drawFloor = function(floor, width, height) {
 	var context = this;

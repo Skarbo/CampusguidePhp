@@ -6,11 +6,23 @@ class CampusguideApi extends PasswordCampusguideApi
     // VARIABLES
 
 
+    /**
+     * @var LogHandler
+     */
+    private $logHandler;
+
     // /VARIABLES
 
 
     // CONSTRUCTOR
 
+
+    public function __construct( $modeDefault = self::MODE_PROD )
+    {
+        parent::__construct( $modeDefault );
+
+        $this->logHandler = new LogHandler( new LogDbDao( $this->getDbApi() ) );
+    }
 
     // /CONSTRUCTOR
 

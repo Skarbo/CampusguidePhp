@@ -136,14 +136,16 @@ class EntriesScheduleWebsiteHandler extends Handler
                     case EntriesTimeeditScheduleWebsiteAlgorithmParser::PARSER_EXCEPTION_TOOMANYWEEKS :
                         $loop = true;
                         $count++;
+                        LogHandler::doLog(
+                                LogFactoryModel::createScheduleEntriesToomanyweeksLog( $website->getId(),
+                                        sprintf( "Parsing %d %s's from %s to %s", $typesSliced->size(),
+                                                $types->getType(), date( "\WW\Yy", $startWeek ),
+                                                date( "\WW\Yy", $endWeek ) ) ) );
                         if ( $count >= self::$MAX_COUNT )
                             return new EntriesScheduleResultWebsiteHandler( $typesSliced->size(),
                                     EntriesScheduleResultWebsiteHandler::CODE_EXCEEDING );
-                        break;
-
                     default :
                         throw $e;
-                        break;
                 }
             }
         } while ( $loop && $count <= self::$MAX_COUNT );

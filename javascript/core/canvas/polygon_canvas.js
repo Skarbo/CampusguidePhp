@@ -193,7 +193,7 @@ $(function() {
 		},
 		fromData : function(data) {
 			data = data || "";
-			var dataArray = data.split("%");
+			var dataArray = jQuery.isArray( data ) ? data : data.split("%");
 
 			this.positionControl();
 
@@ -310,7 +310,7 @@ $(function() {
 		},
 		fromData : function(data) {
 			data = data || "";
-			var dataArray = data.split(",");
+			var dataArray = jQuery.isArray( data ) ? data : data.split(",");
 
 			this.setX(parseFloat(dataArray[0]));
 			this.setY(parseFloat(dataArray[1]));
@@ -641,7 +641,8 @@ $(function() {
 		},
 		fromData : function(data) {
 			data = data || "";
-			var dataAnchor = data.split("|"), anchor;
+			var dataAnchor = jQuery.isArray( data ) ? data : data.split("|");
+			var anchor;
 			for (i in dataAnchor) {
 				anchor = new PolygonAnchor({}, this);
 				this.addAnchor(anchor);

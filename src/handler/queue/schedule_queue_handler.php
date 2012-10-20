@@ -236,24 +236,40 @@ class ScheduleQueueHandler extends Handler
         $weekStart = Core::parseTimestamp( Core::arrayAt( $scheduleTypeWeeks, 0, time() ) );
         $weekEnd = Core::parseTimestamp( Core::arrayAt( $scheduleTypeWeeks, 1, strtotime( "next week", time() ) ) );
 
-        $result = $this->getEntriesScheduleWebsiteHandler()->handle( $website, $entriesUrlHandler, $scheduleTypes,
-                $weekStart, $weekEnd );
+        // Handle
+        $result = $this->getEntriesScheduleWebsiteHandler()->handle( $website, $entriesUrlHandler,
+                $scheduleTypes, $weekStart, $weekEnd );
 
         if ( $result->getCode() == EntriesScheduleResultWebsiteHandler::CODE_EXCEEDING )
         {
             $arguments = $queue->getArguments();
             $arguments[ QueueModel::$ARGUMENT_SCHEDULE_TYPE_CODES_PR ] = $result->getCount();
             $queue->setArguments( $arguments );
+            LogHandler::doLog(
+                    LogFactoryModel::createScheduleEntriesLog( $website->getId(),
+                            sprintf( "Exceeded parsing %d of %d %s's from %s to %s", $result->getCount(),
+                                    count( $scheduleTypeIds ), $scheduleTypes->getType(), date( "\WW\Yy", $weekStart ),
+                                    date( "\WW\Yy", $weekEnd ) ) ) );
         }
         elseif ( $result->getCode() == EntriesScheduleResultWebsiteHandler::CODE_FINISHED )
         {
             if ( $result->getCount() == $scheduleTypes->size() )
             {
+                LogHandler::doLog(
+                        LogFactoryModel::createScheduleEntriesLog( $website->getId(),
+                                sprintf( "Finished parsing %d %s's from %s to %s", count( $scheduleTypeIds ),
+                                        $scheduleTypes->getType(), date( "\WW\Yy", $weekStart ),
+                                        date( "\WW\Yy", $weekEnd ) ) ) );
                 $this->getDaoContainer()->getQueueDao()->remove( $queue->getId() );
                 return true;
             }
             else
             {
+                LogHandler::doLog(
+                        LogFactoryModel::createScheduleEntriesLog( $website->getId(),
+                                sprintf( "Parsed %d of %d %s's from %s to %s", $result->getCount(),
+                                        count( $scheduleTypeIds ), $scheduleTypes->getType(),
+                                        date( "\WW\Yy", $weekStart ), date( "\WW\Yy", $weekEnd ) ) ) );
                 $scheduleTypesSliced = $scheduleTypes->slice( $result->getCount() );
                 $arguments = $queue->getArguments();
                 $arguments[ QueueModel::$ARGUMENT_SCHEDULE_TYPE_IDS ] = $scheduleTypesSliced->getIds();

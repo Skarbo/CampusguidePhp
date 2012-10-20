@@ -18,6 +18,11 @@ class ProgramScheduleListModel extends TypeScheduleListModel
     // FUNCTIONS
 
 
+    public function getType()
+    {
+        return FacultyScheduleModel::TYPE_PROGRAM;
+    }
+
     /**
      * @see IteratorCore::get()
      * @return ProgramScheduleModel
@@ -60,7 +65,7 @@ class ProgramScheduleListModel extends TypeScheduleListModel
     // ... /STATIC
 
 
-// /FUNCTIONS
+    // /FUNCTIONS
 
 
 }

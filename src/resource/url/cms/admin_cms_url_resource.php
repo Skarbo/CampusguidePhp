@@ -60,6 +60,11 @@ class AdminCmsUrlResource extends ClassCore
         return $this->getQueuePageNew($mode, sprintf("//%s%s", AdminCmsMainController::TYPE_SCHEDULEENTRIESROOM, $url));
     }
 
+    public function getQueuePageNewScheduleType( $mode = null, $url = "" )
+    {
+        return $this->getQueuePageNew($mode, sprintf("//%s%s", AdminCmsMainController::TYPE_TYPE, $url));
+    }
+
     // ... ... /QUEUE
 
 

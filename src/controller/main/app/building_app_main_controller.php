@@ -143,7 +143,7 @@ class BuildingAppMainController extends AppMainController implements BuildingApp
             {
 
                 // Set Building
-                $this->setBuilding( $this->getBuildingDao()->get( self::getId() ) );
+                $this->setBuilding( $this->getDaoContainer()->getBuildingDao()->get( self::getId() ) );
 
                 // Building must exist
                 if ( !$this->getBuilding() )

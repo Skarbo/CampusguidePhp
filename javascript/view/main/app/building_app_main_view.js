@@ -129,7 +129,7 @@ BuildingAppMainView.prototype.draw = function(controller) {
 BuildingAppMainView.prototype.handleSearch = function(search) {
 
 	// Search
-	this.getSearchHandler().search(search);
+	//this.getSearchHandler().search(search);
 
 };
 

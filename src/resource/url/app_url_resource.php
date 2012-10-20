@@ -35,7 +35,7 @@ class AppUrlResource extends ClassCore
         return self::$BUILDING;
     }
 
-    public function getMap( $mode, $url )
+    public function getMap( $mode, $url = "" )
     {
         return self::getController( MapAppMainController::$CONTROLLER_NAME, $mode, $url );
     }

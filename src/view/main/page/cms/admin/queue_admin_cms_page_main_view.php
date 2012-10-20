@@ -99,7 +99,22 @@ class QueueAdminCmsPageMainView extends PageCmsPageMainView implements QueueAdmi
         if ( $this->isActionNew() )
             $root->addContent( Xhtml::h( 2, "New Queue" ) );
         else
-            $root->addContent( Xhtml::h( 2, sprintf( "Queue (%d)", $this->getQueues()->size() ) ) );
+        {
+            $queueDo = Xhtml::div(
+                    Xhtml::div( "Execute Queue" )->id( "queue_do" )->class_( Resource::css()->gui()->getComponent() ) )->class_(
+                    Resource::css()->gui()->getGui(), "theme2" );
+
+            $root->addContent(
+                    Xhtml::div( Xhtml::div( Xhtml::h( 2, sprintf( "Queue (%d)", $this->getQueues()->size() ) ) ) )->addContent(
+                            Xhtml::div(
+                                    Xhtml::div( Xhtml::img( Resource::image()->icon()->getSpinnerCircle() ) )->class_(
+                                            "queue_executing" ) )->addContent(
+                                    Xhtml::div( "Success" )->class_( "queue_success" ) )->addContent(
+                                    Xhtml::div( "Error" )->class_( "queue_error" ) )->class_(
+                                    Resource::css()->getRight() )->id( "queue_do_status" ) )->addContent(
+                            Xhtml::div( $queueDo )->class_( Resource::css()->getRight() )->style( "width: 1px;" ) )->class_(
+                            Resource::css()->getTable() ) );
+        }
     }
 
     /**
@@ -107,6 +122,18 @@ class QueueAdminCmsPageMainView extends PageCmsPageMainView implements QueueAdmi
      */
     protected function drawBody( AbstractXhtml $root )
     {
+        if ( $this->getView()->getController()->getSuccess() )
+        {
+            switch ( $this->getView()->getController()->getSuccess() )
+            {
+                case "queue_execute" :
+                    $success = "Queue executed";
+                    break;
+            }
+            $root->addContent(
+                    Xhtml::div( $success )->class_( Resource::css()->cms()->getSuccess() ) );
+        }
+
         if ( $this->isActionNew() )
         {
             $this->drawNewQueue( $root );
@@ -122,6 +149,7 @@ class QueueAdminCmsPageMainView extends PageCmsPageMainView implements QueueAdmi
      */
     private function drawQueues( AbstractXhtml $root )
     {
+
         $table = Xhtml::table()->class_( "queues", "cms_table" );
 
         $thead = Xhtml::thead();
@@ -177,7 +205,75 @@ class QueueAdminCmsPageMainView extends PageCmsPageMainView implements QueueAdmi
      */
     private function drawNewQueue( AbstractXhtml $root )
     {
+        $this->drawNewQueueScheduleType( $root );
         $this->drawNewQueueScheduleEntriesRoom( $root );
+    }
+
+    /**
+     * @param AbstractXhtml $root
+     */
+    private function drawNewQueueScheduleType( AbstractXhtml $root )
+    {
+        $form = Xhtml::form()->action(
+                Resource::url()->cms()->admin()->getQueuePageNewScheduleType( $this->getMode() ) )->method(
+                FormXhtml::$METHOD_POST )->autocomplete( false );
+
+        $root->addContent( Xhtml::h( 3, "Schedule Type" ) );
+        $fields = Xhtml::div()->class_( Resource::css()->cms()->getFields() );
+
+        // WEBSITE
+
+
+        $field = Xhtml::div();
+        $field->addContent( Xhtml::div( "Website" ) );
+
+        $selectWebsite = Xhtml::select()->name( "select_website" );
+        for ( $this->getWebsites()->rewind(); $this->getWebsites()->valid(); $this->getWebsites()->next() )
+        {
+            $website = $this->getWebsites()->current();
+            $selectWebsite->addContent( Xhtml::option( $website->getUrl(), $website->getId() ) );
+        }
+        $field->addContent( Xhtml::div( $selectWebsite ) );
+        $fields->addContent( $field );
+
+        // /WEBSITE
+
+
+        // TYPES
+
+
+        $field = Xhtml::div();
+        $field->addContent( Xhtml::div( "Type" ) );
+
+        $selectType = Xhtml::select()->name( "select_type" );
+        foreach ( TypeScheduleModel::$TYPES as $type )
+        {
+            $selectType->addContent( Xhtml::option( $this->getLocale()->schedule()->getType( $type ), $type ) );
+        }
+        $field->addContent( Xhtml::div( $selectType ) );
+        $fields->addContent( $field );
+
+        // /TYPES
+
+
+        // ADD QUEUE
+
+
+        $field = Xhtml::div();
+        $field->addContent( Xhtml::div( Xhtml::$NBSP ) );
+        $field->addContent(
+                Xhtml::div(
+                        Xhtml::div(
+                                Xhtml::input( "Add Queue" )->type( InputXhtml::$TYPE_SUBMIT )->class_(
+                                        Resource::css()->gui()->getComponent() ) )->class_(
+                                Resource::css()->gui()->getGui(), "theme2" ) )->class_( Resource::css()->getRight() ) );
+        $fields->addContent( $field );
+
+        // /ADD QUEUE
+
+
+        $form->addContent( $fields );
+        $root->addContent( $form );
     }
 
     /**
@@ -268,25 +364,28 @@ class QueueAdminCmsPageMainView extends PageCmsPageMainView implements QueueAdmi
         $field = Xhtml::div();
         $field->addContent( Xhtml::div( "Weeks" )->class_( Resource::css()->cms()->getRequired() ) );
 
-        $weekStartSelect = Xhtml::select()->name("week_start_week");
+        $weekStartSelect = Xhtml::select()->name( "week_start_week" );
         $weekCurrent = intval( date( "W" ) );
         for ( $i = 1; $i < 53; $i++ )
         {
             $value = ( ( ( $i + $weekCurrent ) % 53 ) + 1 );
-            $weekStartSelect->addContent( Xhtml::option( $value )->value($value) );
+            $weekStartSelect->addContent( Xhtml::option( $value )->value( $value ) );
         }
-        $year = intval(date("Y"));
-        $weekYearStartSelect = Xhtml::select(Xhtml::option($year)->value($year))->name("week_start_year")->addContent(Xhtml::option($year)->value($year));
-        $field->addContent( "Start", $weekStartSelect, $weekYearStartSelect);
+        $year = intval( date( "Y" ) );
+        $weekYearStartSelect = Xhtml::select( Xhtml::option( $year )->value( $year ) )->name( "week_start_year" )->addContent(
+                Xhtml::option( $year )->value( $year ) );
+        $field->addContent( "Start", $weekStartSelect, $weekYearStartSelect );
 
-        $weekEndSelect = Xhtml::select()->name("week_end_week");;
+        $weekEndSelect = Xhtml::select()->name( "week_end_week" );
+        ;
         for ( $i = 1; $i < 53; $i++ )
         {
             $value = ( ( ( $i + $weekCurrent + 1 ) % 53 ) + 1 );
-            $weekEndSelect->addContent( Xhtml::option( $value )->value($value) );
+            $weekEndSelect->addContent( Xhtml::option( $value )->value( $value ) );
         }
-        $weekYearEndSelect = Xhtml::select(Xhtml::option($year)->value($year))->name("week_end_year")->addContent(Xhtml::option($year)->value($year));
-        $field->addContent("End", $weekEndSelect, $weekYearEndSelect);
+        $weekYearEndSelect = Xhtml::select( Xhtml::option( $year )->value( $year ) )->name( "week_end_year" )->addContent(
+                Xhtml::option( $year )->value( $year ) );
+        $field->addContent( "End", $weekEndSelect, $weekYearEndSelect );
 
         $fields->addContent( $field );
 
@@ -302,7 +401,7 @@ class QueueAdminCmsPageMainView extends PageCmsPageMainView implements QueueAdmi
                 Xhtml::div(
                         Xhtml::div(
                                 Xhtml::div( "Add Queue" )->class_( Resource::css()->gui()->getComponent() )->attr(
-                                        "data-disabled", "true" )->id( "queue_schedule_add" ) )->class_(
+                                        "data-disabled", "true" )->id( "queue_schedule_entries_add" ) )->class_(
                                 Resource::css()->gui()->getGui(), "theme2" ) )->class_( Resource::css()->getRight() ) );
         $fields->addContent( $field );
 

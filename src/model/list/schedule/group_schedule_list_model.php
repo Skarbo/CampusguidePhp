@@ -18,6 +18,11 @@ class GroupScheduleListModel extends TypeScheduleListModel
     // FUNCTIONS
 
 
+    public function getType()
+    {
+        return FacultyScheduleModel::TYPE_GROUP;
+    }
+
     /**
      * @see IteratorCore::get()
      * @return GroupScheduleModel
@@ -60,7 +65,7 @@ class GroupScheduleListModel extends TypeScheduleListModel
     // ... /STATIC
 
 
-// /FUNCTIONS
+    // /FUNCTIONS
 
 
 }

@@ -17,6 +17,8 @@ abstract class CmsMainController extends MainController
 
     const PAGE_OVERVIEW = "overview";
 
+    const QUERY_SUCCESS = "success";
+
     public static $ID_SPLITTER = "_";
 
     private static $QUEUE_TYPES = array ( QueueModel::TYPE_IMAGE_BUILDING );
@@ -161,6 +163,11 @@ abstract class CmsMainController extends MainController
     protected function getViewWrapperId()
     {
         return CmsMainView::$ID_CMS_WRAPPER;
+    }
+
+    public static function getSuccess()
+    {
+        return Core::arrayAt( self::getQuery(), self::QUERY_SUCCESS );
     }
 
     // ... /GET

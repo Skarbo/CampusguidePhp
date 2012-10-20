@@ -6,7 +6,7 @@ class DbResource extends ClassCore
     // VARIABLES
 
 
-    private static $BUILDING, $ELEMENTBUILDING, $TYPEELEMENTBUILDING, $GROUPTYPEELEMENTBUILDING, $FLOORBUILDING, $SECTIONBUILDING, $FACILITY, $QUEUE;
+    private static $BUILDING, $ELEMENTBUILDING, $TYPEELEMENTBUILDING, $GROUPTYPEELEMENTBUILDING, $FLOORBUILDING, $SECTIONBUILDING, $FACILITY, $QUEUE, $LOG;
     private static $ENTRYSCHEDULE, $OCCURENCEENTRYSCHEDULE, $FACULTYSCHEDULE, $GROUPSCHEDULE, $PROGRAMSCHEDULE, $ROOMSCHEDULE, $WEBSITESCHEDULE;
 
     // /VARIABLES
@@ -127,6 +127,15 @@ class DbResource extends ClassCore
     {
         self::$WEBSITESCHEDULE = self::$WEBSITESCHEDULE ? self::$WEBSITESCHEDULE : new WebsiteScheduleDbResource();
         return self::$WEBSITESCHEDULE;
+    }
+
+    /**
+     * @return LogDbResource
+     */
+    public static function log()
+    {
+        self::$LOG = self::$LOG ? self::$LOG : new LogDbResource();
+        return self::$LOG;
     }
 
     // /FUNCTIONS

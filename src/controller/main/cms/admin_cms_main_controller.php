@@ -100,7 +100,7 @@ class AdminCmsMainController extends CmsMainController implements ErrorsAdminCms
     /**
      * @see CmsMainController::getJavascriptController()
      */
-    protected function getJavascriptController()
+    public function getJavascriptController()
     {
         return "AdminCmsMainController";
     }
@@ -108,7 +108,7 @@ class AdminCmsMainController extends CmsMainController implements ErrorsAdminCms
     /**
      * @see CmsMainController::getJavascriptView()
      */
-    protected function getJavascriptView()
+    public function getJavascriptView()
     {
         return "AdminCmsMainView";
     }

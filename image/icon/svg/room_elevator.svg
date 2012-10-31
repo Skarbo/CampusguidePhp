@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   width="500"
+   height="500"
+   id="svg3844">
+  <defs
+     id="defs3846" />
+  <metadata
+     id="metadata3849">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(0,-552.36218)"
+     id="layer1">
+    <rect
+       width="480"
+       height="480"
+       ry="80"
+       x="10"
+       y="10"
+       transform="translate(0,552.36218)"
+       id="rect3856"
+       style="fill:none;stroke:#000000;stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    <rect
+       width="100"
+       height="279"
+       ry="14.684212"
+       x="100"
+       y="703.36218"
+       id="rect3858"
+       style="fill:#000000;fill-opacity:1;stroke:none" />
+    <path
+       d="m 300.49753,109.15476 -100.99506,0 L 250,21.690479 z"
+       transform="matrix(1.7822655,0,0,1.3376889,-295.56639,593.34707)"
+       id="path5808"
+       style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+    <rect
+       width="100"
+       height="279"
+       ry="14.684212"
+       x="300"
+       y="-901.36218"
+       transform="scale(1,-1)"
+       id="rect5831"
+       style="fill:#000000;fill-opacity:1;stroke:none" />
+    <path
+       d="m 300.49753,109.15476 -100.99506,0 L 250,21.690479 z"
+       transform="matrix(1.7822655,0,0,-1.3376889,-95.56639,1011.3772)"
+       id="path5833"
+       style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+  </g>
+</svg>

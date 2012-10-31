@@ -64,13 +64,6 @@ SidebarBuildingcreatorCmsPresenterView.prototype.getSidebarFloorsErrorElement = 
 	return this.getSidebarFloorsElement().find("#floors_error");
 };
 
-/**
- * @return {Object}
- */
-SidebarBuildingcreatorCmsPresenterView.prototype.getSidebarFloorsErrorElement = function() {
-	return this.getSidebarFloorsElement().find("#show_map");
-};
-
 // ... ... /FLOORS
 
 // ... ... ELEMENTS
@@ -183,8 +176,7 @@ SidebarBuildingcreatorCmsPresenterView.prototype.doBindEventHandler = function()
 	// FLOORS
 
 	var floorsTable = this.getSidebarFloorsTableElement();
-	var floorsTableRow = floorsTable.find("tbody.show tr.floor");
-	var floorsTableEditRow = floorsTable.find("tbody.edit tr.floor");
+	var floorsTableRow = floorsTable.find("tbody");
 	var floorsButtons = this.getSidebarFloorsButtonsElement();
 
 	// Edit Floor
@@ -209,12 +201,13 @@ SidebarBuildingcreatorCmsPresenterView.prototype.doBindEventHandler = function()
 	});
 
 	// Order Floor
-	floorsTableEditRow.find(".order_edit .up, .order_edit .down").click(function(event) {
+	floorsTableRow.find(".order .up, .order .down").click(function(event) {
 		context.doFloorsOrder($(this).closest(".floor"), $(this).hasClass("up"));
 	});
 
 	// Select Floor
-	floorsTableRow.click(function(event) {
+	floorsTableRow.find(".floor").click(function(event) {
+		console.log("click", event);
 		// Get Floor id
 		var floorId = $(this).attr("data-floor");
 
@@ -267,9 +260,6 @@ SidebarBuildingcreatorCmsPresenterView.prototype.doBindEventHandler = function()
 				context.doElementEdit(true, next);
 			}
 		}
-	}).focusout(function(event) {
-		// Cancel
-		context.doElementEdit(false, $(this));
 	});
 
 	// /ELEMENTS
@@ -283,18 +273,20 @@ SidebarBuildingcreatorCmsPresenterView.prototype.doFloorsEdit = function(edit) {
 	var floorsError = this.getSidebarFloorsErrorElement();
 
 	if (edit) {
-		floorsTable.addClass("edit");
-		floorsButtons.enable();
+		floorsTable.find(".edit").removeClass("hide");
+		floorsTable.find(".show").addClass("hide");
+		floorsButtons.enable().removeClass("hide");
 	} else {
-		floorsTable.removeClass("edit");
-		floorsButtons.disable();
+		floorsTable.find(".edit").addClass("hide");
+		floorsTable.find(".show").removeClass("hide");
+		floorsButtons.disable().addClass("hide");
 		floorsError.hide();
 	}
 };
 
 SidebarBuildingcreatorCmsPresenterView.prototype.doFloorsOrder = function(row, up) {
 	// Get floor order
-	var orderInput = row.find(".order_edit input");
+	var orderInput = row.find(".order input");
 	var order = orderInput.val();
 
 	// Get move row
@@ -302,7 +294,7 @@ SidebarBuildingcreatorCmsPresenterView.prototype.doFloorsOrder = function(row, u
 
 	// Move row
 	if (varMove.length > 0) {
-		var orderNewInput = varMove.find(".order_edit input");
+		var orderNewInput = varMove.find(".order input");
 		orderInput.val(orderNewInput.val());
 		orderNewInput.val(order);
 		if (up) {
@@ -323,21 +315,19 @@ SidebarBuildingcreatorCmsPresenterView.prototype.doFloorsSave = function() {
 	floorsError.hide();
 
 	// For each floor
-	var floor, floorName, floorMap, floorOrder, floorMain, error = "";
-	floorsTable.find(".floor.edit, .floor.new").each(function(i, element) {
+	var floor, floorName, floorMap, error = "";
+	floorsTable.find(".floor").each(function(i, element) {
 		floor = $(element);
 
 		floorId = floor.attr("data-floor");
-		floorName = floor.find(".name_edit input").val();
-		floorMap = floor.find(".map_edit input").val();
-		floorOrder = floor.find(".order_edit input").val();
-		floorMain = floor.find(".main_edit input").is(":checked");
-
+		floorName = floor.find(".name input").val();
+		floorMap = floor.find(".map input").val();
 		if (floorId == "new" ? (floorMap && !floorName) : !floorName) {
 			error = "Floor name must be given";
 		} else if (floorId == "new" ? (floorName ? !floorMap : floorMap) : false) {
 			error = "Floor map must be given to new floor";
 		}
+
 		if (error) {
 			return false;
 		}
@@ -360,30 +350,47 @@ SidebarBuildingcreatorCmsPresenterView.prototype.doElementEdit = function(edit, 
 		return;
 
 	if (edit) {
+		element.addClass("edit");
 		element.find(".show").addClass("hide");
 		element.find(".edit").removeClass("hide").find("input").select();
+
+		var context = this;
+		$(document).bind("click.elementedit", {
+			context : element
+		}, function(event) {
+			if (event.data.context.has($(event.target)).length == 0) {
+				context.doElementEdit(false, event.data.context);
+				$(this).unbind(event);
+			}
+		});
 	} else {
+		element.removeClass("edit");
 		element.find(".show").removeClass("hide");
 		element.find(".edit").addClass("hide");
 		var input = element.find(".edit input");
-		if (input)
+		var select = element.find(".edit select");
+		if (input.length > 0)
 			input.val(input.attr("data-value") || "");
+		if (select.length > 0)
+			select.val(select.attr("data-value") || "");
 	}
 };
 
 SidebarBuildingcreatorCmsPresenterView.prototype.doElementSave = function(elementElement) {
 	var elementId = elementElement.attr("data-element");
 	var input = elementElement.find(".edit input");
+	var select = elementElement.find(".edit select");
 
-	if (!input)
+	if (!input.length > 0 || !select.length > 0)
 		return;
 
-	if (input.val() == (input.attr("data-value") || ""))
+	if (input.val() == (input.attr("data-value") || "") && select.val() == select.attr("data-value"))
 		return;
 
 	this.getEventHandler().handle(new EditEvent("element", {
 		id : elementId,
-		name : input.val()
+		name : input.val(),
+		type : select.val()
 	}));
 };
 
@@ -393,7 +400,12 @@ SidebarBuildingcreatorCmsPresenterView.prototype.doElementSaved = function(eleme
 
 	var elementElement = this.getSidebarElementsFloorsElement().find(".element[data-element=" + element.id + "]");
 	elementElement.find(".name.show").text(element.name);
-	elementElement.find(".name.edit input").attr("data-name", element.name).val(element.name);
+	if (BuildingsCmsMainView.ELEMENT_TYPE_ROOMS[element.type])
+		elementElement.find(".type.show img").attr("src", BuildingsCmsMainView.ELEMENT_TYPE_ROOMS[element.type]).attr("alt", element.type);
+	else
+		elementElement.find(".type.show img").attr("src", BuildingsCmsMainView.ELEMENT_TYPE_ROOMS["empty"]).attr("alt", element.type);
+	elementElement.find(".name.edit input").attr("data-value", element.name).val(element.name);
+	elementElement.find(".type.edit select").attr("data-value", element.type).val(element.type);
 };
 
 // ... ... /ELEMENTS
@@ -425,7 +437,7 @@ SidebarBuildingcreatorCmsPresenterView.prototype.handleFloorSelect = function(fl
 		return false;
 
 	// Select Floor
-	var floorRows = this.getSidebarFloorsTableElement().find("tbody.show tr");
+	var floorRows = this.getSidebarFloorsTableElement().find("tbody tr");
 	floorRows.removeClass("selected");
 	floorRows.filter("[data-floor=" + floorId + "]").addClass("selected");
 
@@ -478,6 +490,7 @@ SidebarBuildingcreatorCmsPresenterView.prototype.draw = function(root) {
 	PresenterView.prototype.draw.call(this, root);
 
 	this.handleMenu(this.getController().getHash().menu);
+	// this.getRoot().find(".element_type_dropdown").dropdownSelect();
 };
 
 // /FUNCTIONS

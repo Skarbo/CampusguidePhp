@@ -2,9 +2,8 @@
 <html>
 <head>
 <script type="text/javascript" src="javascript/api/jquery-1.7.1.min.js"></script>
-<script type="text/javascript"
-    src="../KrisSkarboApi/javascript/gui/gui.js"></script>
-<script type="text/javascript" src="javascript/gui/gui.js"></script>
+<!-- <script type="text/javascript" src="../KrisSkarboApi/javascript/gui/gui.js"></script> -->
+<!-- <script type="text/javascript" src="javascript/gui/gui.js"></script> -->
 <link href="css/campusguide.css.php" type="text/css" rel="stylesheet" />
 <script type="text/javascript">
 
@@ -15,48 +14,35 @@ $(document).ready(function() {
 
 </script>
 <style type="text/css">
-body {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 100%;
-	color: #333333;
+
+.dropdown_wrapper
+{
+
 }
 
-input {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+.dropdown_value
+{
+    display: block;
+}
+
+.dropdown_contents
+{
+	display: none;
+    position: absolute;
+	list-style: none;
 	padding: 0;
 	margin: 0;
 }
 
-a {
-	outline: medium none;
-	-webkit-tap-highlight-color: RGBA(0, 0, 0, 0);
-}
-
-.menu
-{
-display: inline-block;
-}
-
-.menu .title
-{
-
-}
-
-.menu .sub
-{
-	display: none;
-	position: absolute;
-}
-
-.menu:HOVER .sub
+.dropdown_wrapper:HOVER .dropdown_contents
 {
 	display: block;
 }
 
-.menu .sub .item
+.dropdown_content
 {
-    background-color: white;
-	border: 1px solid black;
+    padding: 0;
+	margin: 0;
 }
 
 </style>
@@ -65,16 +51,16 @@ display: inline-block;
 
     <div id="test">
 
-        <div style="display: inline;">Test menu: </div>
-
-        <div class="menu">
-            <div class="title">Menu title</div>
-            <div class="sub">
-                <div class="item">Menu sub</div>
-                <div class="item">Menu sub</div>
-            </div>
+        <div>Value above</div>
+        <div class="dropdown_wrapper">
+            <div class="dropdown_value">Dropdown value</div>
+            <ul class="dropdown_contents">
+                <li class="dropdown_content">Test 1</li>
+                <li class="dropdown_content">Test 2</li>
+                <li class="dropdown_content">Test 3</li>
+            </ul>
         </div>
-        <div>Test second line</div>
+        <div>Value below</div>
 
     </div>
 

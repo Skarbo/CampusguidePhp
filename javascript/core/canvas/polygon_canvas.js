@@ -193,7 +193,7 @@ $(function() {
 		},
 		fromData : function(data) {
 			data = data || "";
-			var dataArray = jQuery.isArray( data ) ? data : data.split("%");
+			var dataArray = jQuery.isArray(data) ? data : data.split("%");
 
 			this.positionControl();
 
@@ -232,6 +232,22 @@ $(function() {
 			this.control = null;
 			this.isSelected = false;
 
+			this.on("dragmove", function(event) {
+				if (this.polygon.mode == Polygon.MODE_EDIT) {
+					if (this.prev) {
+						if (Math.abs(this.attrs.x - this.prev.attrs.x) < 5)
+							this.attrs.x = this.prev.attrs.x;
+						if (Math.abs(this.attrs.y - this.prev.attrs.y) < 5)
+							this.attrs.y = this.prev.attrs.y;
+					}
+					if (this.next) {
+						if (Math.abs(this.attrs.x - this.next.attrs.x) < 5)
+							this.attrs.x = this.next.attrs.x;
+						if (Math.abs(this.attrs.y - this.next.attrs.y) < 5)
+							this.attrs.y = this.next.attrs.y;
+					}
+				}
+			});
 			this.on("click", function(event) {
 				if (this.polygon.mode == Polygon.MODE_EDIT) {
 					event.cancelBubble = true;
@@ -310,7 +326,7 @@ $(function() {
 		},
 		fromData : function(data) {
 			data = data || "";
-			var dataArray = jQuery.isArray( data ) ? data : data.split(",");
+			var dataArray = jQuery.isArray(data) ? data : data.split(",");
 
 			this.setX(parseFloat(dataArray[0]));
 			this.setY(parseFloat(dataArray[1]));
@@ -641,7 +657,7 @@ $(function() {
 		},
 		fromData : function(data) {
 			data = data || "";
-			var dataAnchor = jQuery.isArray( data ) ? data : data.split("|");
+			var dataAnchor = jQuery.isArray(data) ? data : data.split("|");
 			var anchor;
 			for (i in dataAnchor) {
 				anchor = new PolygonAnchor({}, this);

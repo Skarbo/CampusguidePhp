@@ -14,7 +14,7 @@ function ToolbarBuildingcreatorCmsPresenterView(view) {
 // ... GET
 
 // ... ... TOOLTIP
-
+	
 /**
  * @returns {Object}
  */

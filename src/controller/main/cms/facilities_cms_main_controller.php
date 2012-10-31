@@ -165,7 +165,7 @@ class FacilitiesCmsMainController extends CmsMainController
     /**
      * @see CmsMainController::getJavascriptController()
      */
-    protected function getJavascriptController()
+    public function getJavascriptController()
     {
         return "FacilitiesCmsMainController";
     }
@@ -173,7 +173,7 @@ class FacilitiesCmsMainController extends CmsMainController
     /**
      * @see CmsMainController::getJavascriptView()
      */
-    protected function getJavascriptView()
+    public function getJavascriptView()
     {
         return "FacilitiesCmsMainView";
     }

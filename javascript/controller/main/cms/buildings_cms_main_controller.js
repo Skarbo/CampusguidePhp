@@ -198,9 +198,9 @@ BuildingsCmsMainController.prototype.doSave = function(save) {
 							continue;
 
 						this.saveCount++;
-						this.elementBuildingDao.add(id, {
+						this.elementBuildingDao.add({
 							coordinates : coordinates
-						}, function(element, elements) {
+						}, id, function(element, elements) {
 							context.getEventHandler().handle(new EditedEvent("elements", elements));
 						});
 					}

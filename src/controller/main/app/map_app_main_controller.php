@@ -26,7 +26,7 @@ class MapAppMainController extends AppMainController
     /**
      * @see AppMainController::getJavascriptController()
      */
-    protected function getJavascriptController()
+    public function getJavascriptController()
     {
         return "MapAppMainController";
     }
@@ -34,7 +34,7 @@ class MapAppMainController extends AppMainController
     /**
      * @see AppMainController::getJavascriptView()
      */
-    protected function getJavascriptView()
+    public function getJavascriptView()
     {
         return "MapAppMainView";
     }

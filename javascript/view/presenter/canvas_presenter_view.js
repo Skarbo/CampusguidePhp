@@ -391,7 +391,9 @@ CanvasPresenterView.prototype.doFloorSelect = function(floorId, types) {
 // ... ... STAGE
 
 CanvasPresenterView.prototype.doFitToScale = function(type) {
-	if (!this.floorSelected || !type)
+	if (!type && this.types.length > 0)
+		type = this.types[0];	
+	if (!this.floorSelected)
 		return false;
 
 	var polygons = this.getPolygons(type, this.floorSelected).getChildren();
@@ -403,7 +405,6 @@ CanvasPresenterView.prototype.doFitToScale = function(type) {
 	};
 
 	if (polygons.length > 0) {
-
 		var coordinates = [];
 		for (i in polygons) {
 			coordinates = coordinates.concat(polygons[i].getCoordinates());
@@ -418,9 +419,7 @@ CanvasPresenterView.prototype.doFitToScale = function(type) {
 
 		positionNew.x = ((stageX - boundsNewX) / 2) - (coordinatesMaxBounds[0] * scaleNew);
 		positionNew.y = ((stageY - boundsNewY) / 2) - (coordinatesMaxBounds[1] * scaleNew);
-
 	} else {
-
 		// TODO Fit to scale floors map
 		var layer = this.getLayer("floors_map", this.floorSelected);
 
@@ -433,7 +432,6 @@ CanvasPresenterView.prototype.doFitToScale = function(type) {
 			positionNew.x = (stageX - boundsNewX) / 2;
 			positionNew.y = (stageY - boundsNewY) / 2;
 		}
-
 	}
 	this.setStageScale(scaleNew);
 	this.setStagePosition(positionNew);
@@ -473,6 +471,8 @@ CanvasPresenterView.prototype.doStageDraggable = function(draggable) {
 // ... ... POLYGON
 
 CanvasPresenterView.prototype.doPolygonDraw = function(type) {
+	if (!type && this.types.length > 0)
+		type = this.types[0];
 	if (!this.floorSelected || !type)
 		return;
 
@@ -495,7 +495,7 @@ CanvasPresenterView.prototype.doPolygonLine = function(polygonAnchor, type) {
 		return;
 	}
 	var oldType = polygonAnchor.type;
-
+console.log("Polygon line", polygonAnchor, type);
 	switch (type) {
 	case Polygon.LINE_TYPE_STRAIGHT:
 	case Polygon.LINE_TYPE_QUAD:
@@ -623,10 +623,10 @@ CanvasPresenterView.prototype.handleSelectedCopy = function() {
 	// PASTE
 
 	if (!this.selected.element) {
-		if (this.selectedCopy.type != "polygon")
+		if (this.selectedCopy.type != "polygon" || !this.selectedCopy.element)
 			return;
 
-		var polygons = this.selectedCopy.polygon.parent();
+		var polygons = this.selectedCopy.element.getParent();
 		if (polygons) {
 			var polygon = this.selectedCopy.element.copy(this);
 			polygons.add(polygon);

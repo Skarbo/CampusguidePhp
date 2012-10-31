@@ -30,12 +30,12 @@
      id="layer1"
      style="display:inline">
     <rect
-       width="492.56476"
+       width="488.97974"
        height="299.30966"
-       x="4.0199146"
+       x="6.0199146"
        y="601.99719"
        id="rect3024"
-       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:6.99924755;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:9.96354198;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
     <rect
        width="40.042408"
        height="286.94794"
@@ -73,7 +73,7 @@
        y="452.83035"
        transform="matrix(0.69446823,0.71952337,-0.70795709,0.70625544,0,0)"
        id="rect3819"
-       style="fill:#000000;fill-opacity:1;stroke:none" />
+       style="fill:none;stroke:#000000;stroke-width:15.00102234;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
   </g>
   <g
      id="layer2"

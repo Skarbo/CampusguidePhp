@@ -278,7 +278,7 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
     /**
      * @see CmsMainController::getJavascriptController()
      */
-    protected function getJavascriptController()
+    public function getJavascriptController()
     {
         return "BuildingsCmsMainController";
     }
@@ -286,7 +286,7 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
     /**
      * @see CmsMainController::getJavascriptView()
      */
-    protected function getJavascriptView()
+    public function getJavascriptView()
     {
         return "BuildingsCmsMainView";
     }

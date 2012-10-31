@@ -1,0 +1,141 @@
+#buildingcreator_planner_sidebar_floors .floors {
+    border: 1px solid gray;
+    border-radius: 0.2em;
+    font-size: 0.8em;
+    width: 100%;
+}
+
+/* No floors */
+#buildingcreator_planner_sidebar_floors .floors .floors_none td {
+    font-style: italic;
+    padding: 0.2em 0.4em;
+    cursor: pointer;
+    /* no_select */
+}
+
+/* Floor */
+#buildingcreator_planner_sidebar_floors .floors .floor > * {
+    white-space: nowrap;
+    padding: 0 0.2em;
+    cursor: pointer;
+    /* no_select */
+}
+
+#buildingcreator_planner_sidebar_floors .floors .floor > *, #buildingcreator_planner_sidebar_floors .floors .floor[data-floor=new] > * {
+    border-top: 1px solid #DDD;
+}
+
+#buildingcreator_planner_sidebar_floors .floors tbody .floor:FIRST-CHILD > * {
+    border: 0;
+}
+
+#buildingcreator_planner_sidebar_floors .floors .floor.selected > * {
+    background-color: rgb(201, 218, 248);
+}
+
+/* ... Delete */
+
+#buildingcreator_planner_sidebar_floors .floors .floor > .delete {
+    width: 1%;
+    color: gray;
+}
+
+#buildingcreator_planner_sidebar_floors .floors .floor > .delete .gui .guiComp.checked {
+    color: darkRed;
+}
+
+/* ... /Delete */
+
+/* ... Name */
+#buildingcreator_planner_sidebar_floors .floors .floor > .name {
+    padding: 0.2em;
+    font-weight: bold;
+    width: 50%;
+}
+
+#buildingcreator_planner_sidebar_floors .floors .floor > .name input {
+    padding: 0;
+    margin: 0;
+    width: 6em;
+    font-size: 1em;
+    border-radius: 0.2em;
+    border-color: #999;
+}
+/* ... /Name */
+
+/* ... Map */
+#buildingcreator_planner_sidebar_floors .floors .floor > .map {
+    text-align: center;
+}
+
+#buildingcreator_planner_sidebar_floors .floors .floor > .map .gui .guiComp {
+    color: gray;
+}
+
+#buildingcreator_planner_sidebar_floors .floors .floor > .map .gui .guiComp:HOVER {
+    color: inherit;
+}
+
+#buildingcreator_planner_sidebar_floors .floors .floor > .map .gui .guiComp.checked {
+    color: inherit;
+}
+/* ... /Map */
+
+/* ... Order */
+#buildingcreator_planner_sidebar_floors .floors .floor > .order {
+    width: 20%;
+    text-align: center;
+}
+
+#buildingcreator_planner_sidebar_floors .floors .floor > .order div.edit > div {
+    display: inline;
+    cursor: pointer;
+}
+
+#buildingcreator_planner_sidebar_floors .floors .floor > .order input {
+    display: none;
+}
+/* ... /Order */
+
+/* ... Main */
+#buildingcreator_planner_sidebar_floors .floors .floor > .main {
+    padding: 0 0.4em;
+    width: 5%;
+    text-align: right;
+}
+
+#buildingcreator_planner_sidebar_floors .floors .floor > .main {
+    color: rgb(224, 102, 102);
+}
+
+#buildingcreator_planner_sidebar_floors .floors .floor > .main .gui .guiComp {
+    color: grey;
+}
+
+#buildingcreator_planner_sidebar_floors .floors .floor > .main .gui .guiComp.checked {
+    color: rgb(224, 102, 102);
+}
+
+#buildingcreator_planner_sidebar_floors .floors .floor > .main .gui .guiComp:HOVER {
+    background: none;
+    color: inherit;
+}
+/* ... /Main */
+
+/* /Floor */
+
+/* Floors error */
+#buildingcreator_planner_sidebar_floors #floors_error {
+    color: darkRed;
+    padding: 0.2em;
+    display: none;
+    font-weight: bold;
+    font-size: 0.8em;
+}
+
+/* Floor buttons */
+#buildingcreator_planner_sidebar_floors .floor_buttons {
+    width: 100%;
+    margin-top: 0.2em;
+    font-size: 0.8em;
+}

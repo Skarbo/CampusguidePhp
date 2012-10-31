@@ -20,29 +20,46 @@
 <!-- <script type="text/javascript" src="../KrisSkarboApi/javascript/api/jquery.hammer.js"></script> -->
 <!-- <script type="text/javascript" src="../KrisSkarboApi/javascript/api/jquery.touchy.min.js"></script> -->
 <style type="text/css">
-#test {
-	width: 100px;
+.dropdown {
+	display: inline-block;
 }
 
-#contents {
-	display: table;
+.dropdown .dropdown_selected {
+    display: inline-block;
 }
 
-#contents>* {
-	display: table-cell;
-	white-space: nowrap;
+.dropdown .dropdown_value {
+
+}
+
+.dropdown .dropdown_contents {
+    position: absolute;
+    display: none;
+    background-color: white;
+}
+
+.dropdown:HOVER .dropdown_contents
+{
+	display: block;
+}
+
+.dropdown .dropdown_contents .dropdown_content {
+    cursor: pointer;
+}
+
+.dropdown .dropdown_contents .dropdown_content[data-selected] {
+    font-weight: bold;
 }
 </style>
 <script type="text/javascript">
 
-$(document).ready(function() {
-	$("#contents").slider();
-
-	$("#button").click(function(){
-		$("#test").css("width", 150);
-		$("#contents > *:nth-child(1)").remove();
-		$("#contents").slider();
+$(function() {
+	$("#dropdown_test").dropdownSelect({
+	    callback : function(value){
+		    console.log("Callback", value);
+		    }
 		});
+	$("#dropdown_test").dropdownSelect();
 });
 
 </script>
@@ -50,17 +67,11 @@ $(document).ready(function() {
 <body>
 
     <div id="test">
-        <div>
-            <div id="contents" data-width-parent="#test">
-                <div>Content 1</div>
-                <div>Content 2</div>
-                <div>Content 3</div>
-                <div>Content 4</div>
-                <div>Content 5</div>
-                <div>Content 6</div>
-            </div>
+        <div data-name="content" id="dropdown_test">
+            <div data-value="content_1">Content 1</div>
+            <div data-value="content_2">Content 2</div>
+            <div data-value="content_3">Content 3</div>
         </div>
-        <button id="button">Click</button>
     </div>
 
 </body>

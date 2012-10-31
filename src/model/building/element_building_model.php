@@ -6,6 +6,16 @@ class ElementBuildingModel extends Model implements StandardModel
     // VARIABLES
 
 
+    const TYPE_ROOM_CLASS = "class";
+    const TYPE_ROOM_AUDITORIUM = "auditorium";
+    const TYPE_ROOM_STAIRS = "stairs";
+    const TYPE_ROOM_WC = "wc";
+    const TYPE_ROOM_CAFETERIA = "cafeteria";
+    const TYPE_ROOM_TERRACE = "terrace";
+    const TYPE_ROOM_ELEVATOR = "elevator";
+    public static $TYPES_ROOM = array ( self::TYPE_ROOM_CLASS, self::TYPE_ROOM_AUDITORIUM, self::TYPE_ROOM_STAIRS,
+            self::TYPE_ROOM_WC, self::TYPE_ROOM_CAFETERIA, self::TYPE_ROOM_TERRACE, self::TYPE_ROOM_ELEVATOR );
+
     const TYPE_GROUP_ROOM = "room";
 
     public $id;

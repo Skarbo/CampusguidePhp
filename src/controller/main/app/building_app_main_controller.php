@@ -87,7 +87,7 @@ class BuildingAppMainController extends AppMainController implements BuildingApp
     /**
      * @see AppMainController::getJavascriptController()
      */
-    protected function getJavascriptController()
+    public function getJavascriptController()
     {
         return "BuildingAppMainController";
     }
@@ -95,7 +95,7 @@ class BuildingAppMainController extends AppMainController implements BuildingApp
     /**
      * @see AppMainController::getJavascriptView()
      */
-    protected function getJavascriptView()
+    public function getJavascriptView()
     {
         return "BuildingAppMainView";
     }

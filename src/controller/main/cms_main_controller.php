@@ -144,7 +144,7 @@ abstract class CmsMainController extends MainController
     /**
      * @return string Javascript controller
      */
-    protected function getJavascriptController()
+    public function getJavascriptController()
     {
         return "CmsMainController";
     }
@@ -152,7 +152,7 @@ abstract class CmsMainController extends MainController
     /**
      * @return string Javascript view
      */
-    protected function getJavascriptView()
+    public function getJavascriptView()
     {
         return "CmsMainView";
     }

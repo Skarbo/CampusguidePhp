@@ -113,7 +113,7 @@ class ElementBuildingAppMainController extends AppMainController implements Elem
     /**
      * @see AppMainController::getJavascriptController()
      */
-    protected function getJavascriptController()
+    public function getJavascriptController()
     {
         return "ElementBuildingAppMainController";
     }
@@ -121,7 +121,7 @@ class ElementBuildingAppMainController extends AppMainController implements Elem
     /**
      * @see AppMainController::getJavascriptView()
      */
-    protected function getJavascriptView()
+    public function getJavascriptView()
     {
         return "ElementBuildingAppMainView";
     }

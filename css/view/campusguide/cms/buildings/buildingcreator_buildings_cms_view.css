@@ -110,155 +110,6 @@
     padding: 0 0.2em 0.2em 0;
 }
 
-/* ... ... Content */
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors {
-    border: 1px solid gray;
-    border-radius: 0.2em;
-    font-size: 0.8em;
-}
-
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors.edit .floor.edit, #buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors:NOT(.edit) .floor {
-    display: table-row;
-}
-
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors:NOT(.edit) .floor.edit, #buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors.edit .floor:NOT(.edit) {
-    display: none;
-}
-
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors .floor > * {
-    white-space: nowrap;
-    padding: 0 0.2em;
-    cursor: pointer;
-    /* no_select */
-}
-
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors.edit .floor > * {
-    cursor: default;
-}
-
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors .floor > * {
-    border-top: 1px solid #DDD;
-}
-
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors .floor:FIRST-CHILD > * {
-    border: 0;
-}
-
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors .floor.new {
-    display: none;
-}
-
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors.edit .floor.new {
-    display: table-row;
-}
-
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors .show .floor.selected > * {
-    background-color: rgb(201, 218, 248);
-}
-
-/* ... ... ... Delete */
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors .floor > .delete_edit {
-    width: 1%;
-    color: gray;
-}
-
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors .floor > .delete_edit .gui .guiComp.checked {
-    color: darkRed;
-}
-
-/* ... ... ... Name */
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors .floor > .name {
-    padding: 0.2em;
-    font-weight: bold;
-    width: 50%;
-}
-
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors .floor > .name_edit {
-    padding: 0.2em;
-    width: 50%;
-}
-
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors .floor > .name_edit input {
-    padding: 0;
-    margin: 0;
-    width: 6em;
-    font-size: 1em;
-    border-radius: 0.2em;
-    border-color: #999;
-}
-
-/* ... ... ... Map */
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors .floor > .map_edit {
-    text-align: center;
-}
-
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors .floor > .map_edit .gui .guiComp {
-    color: gray;
-}
-
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors .floor > .map_edit .gui .guiComp:HOVER {
-    color: inherit;
-}
-
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors .floor > .map_edit .gui .guiComp.checked {
-    color: inherit;
-}
-
-/* ... ... ... Order */
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors .floor > .order_edit {
-    width: 20%;
-    text-align: center;
-}
-
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors .floor > .order_edit > div {
-    display: inline;
-    cursor: pointer;
-}
-
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors .floor > .order_edit input {
-    display: none;
-}
-
-/* ... ... ... Main */
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors .floor > .main, #buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors .floor > .main_edit {
-    padding: 0 0.4em;
-    width: 5%;
-    text-align: right;
-}
-
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors .floor > .main {
-    color: rgb(224, 102, 102);
-}
-
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors .floor > .main_edit .gui .guiComp {
-    color: grey;
-}
-
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors .floor > .main_edit .gui .guiComp.checked {
-    color: rgb(224, 102, 102);
-}
-
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floors .floor > .main_edit .gui .guiComp:HOVER {
-    background: none;
-    color: inherit;
-}
-
-/* ... ... Floors error */
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content #floors_error {
-    color: darkRed;
-    padding: 0.2em;
-    display: none;
-    font-weight: bold;
-    font-size: 0.8em;
-}
-
-/* ... ... Floor buttons */
-#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar .content .floor_buttons {
-    width: 100%;
-    margin-top: 0.2em;
-    font-size: 0.8em;
-}
-
 /* ... ... Elements */
 
 #buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements {
@@ -303,6 +154,8 @@
     color: #888888;
 }
 
+/* ... ... ... Name */
+
 #buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements .name {
 
 }
@@ -313,8 +166,10 @@
 
 #buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements .name.edit input {
     padding: 0 0.2em;
-    width: 9em;
+    width: 5em;
 }
+
+/* ... ... ... /Name */
 
 #buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements .delete.edit {
     width: 1px;
@@ -329,6 +184,45 @@
 #buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements .delete.edit .guiComp:FOCUS, #buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements .delete.edit .guiComp:HOVER {
     color: darkRed;
 }
+
+/* ... ... ... Type */
+#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements .type {
+	text-align: right;
+}
+
+#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements .type select {
+	width: 3em;
+}
+
+#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements .type img {
+	height: 1em;
+}
+
+/* ... ... ... ... Contents */
+#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements .element .type .dropdown .dropdown_contents img {
+	height: 3em;
+}
+
+#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements .element .type .dropdown .dropdown_contents {
+    background-color: white;
+    border: 1px solid black;
+    z-index: 1000;
+}
+
+#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements .element:NOT(.edit) .type .dropdown .dropdown_contents {
+	display: none;
+}
+
+#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements .element.edit .type .dropdown .dropdown_contents {
+	display: block;
+}
+
+#buildingcreator_page_wrapper #buildingcreator_planner_wrapper #buildingcreator_planner_sidebar_wrapper .sidebar.elements .elements .element .type .dropdown .dropdown_contents .dropdown_content {
+	display: inline;
+}
+/* ... ... ... ... /Contents */
+
+/* ... ... ... /Type */
 
 /* ... ... /Elements */
 

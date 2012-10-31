@@ -131,14 +131,12 @@ class FloorBuildingDbDao extends StandardDbDao implements FloorBuildingDao
 
     protected function getSelectQuery()
     {
-
         $selectQuery = parent::getSelectQuery();
 
         $selectQuery->getQuery()->setOrderBy(
                 array ( array ( Resource::db()->floorBuilding()->getFieldOrder(), SB::$ASC ) ) );
 
         return $selectQuery;
-
     }
 
     /**

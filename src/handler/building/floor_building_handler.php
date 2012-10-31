@@ -77,8 +77,7 @@ class FloorBuildingHandler extends Handler
     /**
      * @param int $buildingId
      * @param FloorBuildingModel $floor
-     * @return FloorBuildingModel Added floor
-     * @throws ValidatorException
+     * @return StandardModel
      */
     public function handleAddFloor( $buildingId, FloorBuildingModel $floor )
     {
@@ -87,15 +86,15 @@ class FloorBuildingHandler extends Handler
         $floors = $this->getFloorBuildingDao()->getForeign( array ( $buildingId ) );
 
         // Get last Building Floor
-        $floorLast = 0;
+        $floorLastOrder = -1;
         for ( $floors->rewind(); $floors->valid(); $floors->next() )
         {
             $floorTemp = $floors->current();
-            $floorLast = $floorTemp->getOrder() >= $floorLast ? $floorTemp->getOrder() + 1 : $floorLast;
+            $floorLastOrder = $floorTemp->getOrder() >= $floorLastOrder || $floorLastOrder == -1 ? $floorTemp->getOrder() : $floorLastOrder;
         }
 
         // Set floor
-        $floor->setOrder( $floorLast );
+        $floor->setOrder( $floorLastOrder + 1 );
 
         // Set building id
         $floor->setBuildingId( $buildingId );

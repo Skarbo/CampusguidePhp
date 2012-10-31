@@ -1,6 +1,6 @@
 <?php
 
-class ImageResource extends ClassCore
+class ImageResource extends AbstractImageResource
 {
 
     // VARIABLES

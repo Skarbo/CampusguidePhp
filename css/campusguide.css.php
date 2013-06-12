@@ -1,6 +1,6 @@
 <?php
 
-include_once '../../KrisSkarboApi/css/css.css.php';
+include_once '../../krisskarboapi/css/css.css.php';
 
 // Css files
 $restrict = array ( "ignore" => array ( "folders" => array ( '^app$', '^images$' ) ) );

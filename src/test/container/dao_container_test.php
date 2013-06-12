@@ -1,6 +1,6 @@
 <?php
 
-class DaoContainerTest extends Handler
+class DaoContainerTest extends DaoContainer
 {
 
     // VARIABLES
@@ -25,6 +25,8 @@ class DaoContainerTest extends Handler
         $this->getSectionBuildingDao()->removeAll();
         $this->getElementBuildingDao()->removeAll();
         $this->getFloorBuildingDao()->removeAll();
+        $this->getNodeNavigationBuildingDao()->removeAll();
+
         $this->getQueueDao()->removeAll();
 
         $this->getWebsiteScheduleDao()->removeAll();
@@ -47,13 +49,18 @@ class DaoContainerTest extends Handler
         return $facility;
     }
 
+    // ... ... BUILDING
+
+
     /**
      * @return BuildingModel
      */
     public static function createBuildingTest( $facilityId )
     {
         $building = BuildingFactoryModel::createBuilding( "Test Building", $facilityId,
-                array ( "streetname", "city", "postal", "country" ), array( array( "30.1", "40.1" ), array( "50.1", "60.1" ), array( "70.1", "80.1" ) ), array( "10.1", "20.1" ) );
+                array ( "streetname", "city", "postal", "country" ),
+                array ( array ( "30.1", "40.1" ), array ( "50.1", "60.1" ), array ( "70.1", "80.1" ) ),
+                array ( "10.1", "20.1" ) );
         return $building;
     }
 
@@ -87,12 +94,25 @@ class DaoContainerTest extends Handler
         return $sectionBuilding;
     }
 
+    /**
+     * @return NodeNavigationBuildingModel
+     */
+    public function createNodeNavigationBuilding( $floorId, $coordinate = array(), $element = null, $edges = array() )
+    {
+        $coordinate = $coordinate ? $coordinate : array ( "x" => 100, "y" => 200 );
+        $nodeNavigation = NodeNavigationBuildingFactoryModel::createNodeNavigationBuilding( $floorId, $coordinate );
+        return $nodeNavigation;
+    }
+
+    // ... ... /BUILDING
+
+
     public static function createQueueTest()
     {
         return QueueFactoryModel::createQueue( "test", QueueModel::PRIORITY_LOW );
     }
 
-    // ... SCHEDULE
+    // ... ... SCHEDULE
 
 
     /**
@@ -113,7 +133,7 @@ class DaoContainerTest extends Handler
         return $room;
     }
 
-    // ... /SCHEDULE
+    // ... ... /SCHEDULE
 
 
     // ... /CREATE
@@ -131,6 +151,9 @@ class DaoContainerTest extends Handler
         $facility->setId( $this->facilityDao->add( $facility, null ) );
         return $facility;
     }
+
+    // ... ... BUILDING
+
 
     /**
      * @return BuildingModel
@@ -171,6 +194,19 @@ class DaoContainerTest extends Handler
         $floor->setId( $this->getFloorBuildingDao()->add( $floor, $buildingId ) );
         return $floor;
     }
+
+    /**
+     * @return NodeNavigationBuildingModel
+     */
+    public function addNodeNavigation( $floorId, NodeNavigationBuildingModel $node = null )
+    {
+        $node = $node ? $node : $this->createNodeNavigationBuilding( $floorId );
+        $node->setId( $this->getNodeNavigationBuildingDao()->add( $node, $floorId ) );
+        return $node;
+    }
+
+    // ... ... /BUILDING
+
 
     /**
      * @return FloorBuildingModel

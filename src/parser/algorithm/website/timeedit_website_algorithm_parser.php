@@ -11,6 +11,14 @@ abstract class TimeeditWebsiteAlgorithmParser extends WebsiteAlgorithmParser
     public static $TYPES = array ( TypeScheduleModel::TYPE_FACULTY => 6, TypeScheduleModel::TYPE_GROUP => 5,
             TypeScheduleModel::TYPE_PROGRAM => 4, TypeScheduleModel::TYPE_ROOM => 7 );
 
+    /**
+     * @see WebsiteAlgorithmParser::getParseType()
+     */
+    public function getParseType()
+    {
+        return self::PARSER_TYPE_HTML;
+    }
+
 }
 
 ?>

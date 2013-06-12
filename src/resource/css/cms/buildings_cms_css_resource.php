@@ -1,10 +1,13 @@
 <?php
 
-class BuildingCmsCssResource extends ClassCore
+class BuildingsCmsCssResource extends ClassCore
 {
 
     // VARIABLES
 
+
+    private static $OVERVIEW;
+    private static $BUILDING;
 
     private $buildings = "buildings";
     private $buildingsTableBody = "buildings_table_body";
@@ -13,6 +16,8 @@ class BuildingCmsCssResource extends ClassCore
     private $buildingBuildings = "building_buildings";
     private $buildingBuildingsWrapper = "building_buildings_wrapper";
     private $buildingBuildingsTable = "building_buildings_table";
+    private $buildingBuildingsTableBody = "building_buildings_table_body";
+    private $buildingBuildingsFloorsTableRow = "building_buildings_floors_table_row";
     private $buildingBuildingsBuildingWrapper = "building_buildings_building_wrapper";
     private $buildingBuildingsBuildingTable = "building_buildings_building_table";
     private $buildingBuildingsBuildingContent = "building_buildings_building_content";
@@ -40,6 +45,24 @@ class BuildingCmsCssResource extends ClassCore
 
     // /FUNCTIONS
 
+
+    /**
+     * @return OverviewBuildingsCmsCssResource
+     */
+    public function overview()
+    {
+        self::$OVERVIEW = self::$OVERVIEW ? self::$OVERVIEW : new OverviewBuildingsCmsCssResource();
+        return self::$OVERVIEW;
+    }
+
+    /**
+     * @return BuildingBuildingsCmsCssResource
+     */
+    public function building()
+    {
+        self::$BUILDING = self::$BUILDING ? self::$BUILDING : new BuildingBuildingsCmsCssResource();
+        return self::$BUILDING;
+    }
 
     public function getBuilding()
     {
@@ -84,6 +107,16 @@ class BuildingCmsCssResource extends ClassCore
     public function getBuildingBuildingAddress()
     {
         return $this->buildingBuildingAddress;
+    }
+
+    public function getBuildingBuildingsTableBody()
+    {
+        return $this->buildingBuildingsTableBody;
+    }
+
+    public function getBuildingBuildingsFloorsTableRow()
+    {
+        return $this->buildingBuildingsFloorsTableRow;
     }
 
 }

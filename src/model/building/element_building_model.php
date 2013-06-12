@@ -6,6 +6,10 @@ class ElementBuildingModel extends Model implements StandardModel
     // VARIABLES
 
 
+    const TYPE_GROUP_ROOM = "room";
+    const TYPE_GROUP_DEVICE = "device";
+    public static $TYPE_GROUPS = array ( self::TYPE_GROUP_ROOM, self::TYPE_GROUP_DEVICE );
+
     const TYPE_ROOM_CLASS = "class";
     const TYPE_ROOM_AUDITORIUM = "auditorium";
     const TYPE_ROOM_STAIRS = "stairs";
@@ -13,10 +17,15 @@ class ElementBuildingModel extends Model implements StandardModel
     const TYPE_ROOM_CAFETERIA = "cafeteria";
     const TYPE_ROOM_TERRACE = "terrace";
     const TYPE_ROOM_ELEVATOR = "elevator";
+
+    const TYPE_DEVICE_ROUTER = "router";
+
     public static $TYPES_ROOM = array ( self::TYPE_ROOM_CLASS, self::TYPE_ROOM_AUDITORIUM, self::TYPE_ROOM_STAIRS,
             self::TYPE_ROOM_WC, self::TYPE_ROOM_CAFETERIA, self::TYPE_ROOM_TERRACE, self::TYPE_ROOM_ELEVATOR );
+    public static $TYPES_DEVICE = array ( self::TYPE_DEVICE_ROUTER );
 
-    const TYPE_GROUP_ROOM = "room";
+    public static $TYPES = array (); // Late bind
+
 
     public $id;
     public $sectionId;
@@ -26,6 +35,7 @@ class ElementBuildingModel extends Model implements StandardModel
     public $floorId;
     public $name;
     public $coordinates;
+    public $data;
     public $deleted;
     public $updated;
     public $registered;
@@ -186,6 +196,25 @@ class ElementBuildingModel extends Model implements StandardModel
         $this->typeGroup = $typeGroup;
     }
 
+    /**
+     * @return the $data
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
+     * @param field_type $data
+     */
+    public function setData( $data )
+    {
+        $this->data = $data;
+    }
+
 }
+
+ElementBuildingModel::$TYPES = array ( ElementBuildingModel::TYPE_GROUP_ROOM => ElementBuildingModel::$TYPES_ROOM,
+        ElementBuildingModel::TYPE_GROUP_DEVICE => ElementBuildingModel::$TYPES_DEVICE );
 
 ?>

@@ -1,8 +1,8 @@
 // CONSTRUCTOR
-QueueCmsPageMainView.prototype = new PageMainView();
+QueueCmsPageMainView.prototype = new AbstractPageMainView();
 
 function QueueCmsPageMainView(view, queue) {
-	PageMainView.apply(this, arguments);
+	AbstractPageMainView.apply(this, arguments);
 	this.queue = queue;
 	this.building = null;
 	this.floors = {};
@@ -24,7 +24,7 @@ function QueueCmsPageMainView(view, queue) {
  * @return {CmsMainView}
  */
 QueueCmsPageMainView.prototype.getView = function() {
-	return PageMainView.prototype.getView.call(this);
+	return AbstractPageMainView.prototype.getView.call(this);
 };
 
 /**
@@ -89,7 +89,7 @@ QueueCmsPageMainView.prototype.doBindEventHandler = function() {
  *            root
  */
 QueueCmsPageMainView.prototype.draw = function(root) {
-	PageMainView.prototype.draw.call(this, root);
+	AbstractPageMainView.prototype.draw.call(this, root);
 
 	// Set canvas wrapper width and height
 	this.getRoot().width(this.queue.arguments.size[0]).height(this.queue.arguments.size[1]);

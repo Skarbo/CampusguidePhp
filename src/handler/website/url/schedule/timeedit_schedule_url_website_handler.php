@@ -7,6 +7,7 @@ class TimeeditScheduleUrlWebsiteHandler extends ClassCore
 
 
     protected static $REGEX_URL_SEARCH = '%(.+)/4DACTION/\w+/(\d+)/(\d+)%';
+    protected static $REGEX_URL_NEW = '/timeedit.net/';
 
     // /VARIABLES
 
@@ -21,6 +22,15 @@ class TimeeditScheduleUrlWebsiteHandler extends ClassCore
 
 
     /**
+     * @param string $url
+     * @return True if URL is the new Timeedit
+     */
+    protected function isNewTimeeditVersion( $url )
+    {
+        return preg_match( self::$REGEX_URL_NEW, $url );
+    }
+
+    /**
      * @return array Array( base url, institute, language )
      */
     protected function getUrlParts( $url )
@@ -33,7 +43,7 @@ class TimeeditScheduleUrlWebsiteHandler extends ClassCore
         $institute = $matches[ 2 ][ 0 ];
         $language = $matches[ 3 ][ 0 ];
 
-        return array( $baseUrl, $institute, $language );
+        return array ( $baseUrl, $institute, $language );
     }
 
     // /FUNCTIONS

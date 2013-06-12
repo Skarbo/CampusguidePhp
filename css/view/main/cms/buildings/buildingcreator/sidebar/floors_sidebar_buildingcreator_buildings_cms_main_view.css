@@ -16,7 +16,7 @@
 /* Floor */
 #buildingcreator_planner_sidebar_floors .floors .floor > * {
     white-space: nowrap;
-    padding: 0 0.2em;
+    padding: 0.5em 0.2em;
     cursor: pointer;
     /* no_select */
 }
@@ -48,18 +48,18 @@
 
 /* ... Name */
 #buildingcreator_planner_sidebar_floors .floors .floor > .name {
-    padding: 0.2em;
-    font-weight: bold;
-    width: 50%;
+    /*padding: 0.2em;
+    font-weight: bold;*/
+    width: 99%;
 }
 
 #buildingcreator_planner_sidebar_floors .floors .floor > .name input {
-    padding: 0;
+    /*padding: 0;
     margin: 0;
     width: 6em;
     font-size: 1em;
     border-radius: 0.2em;
-    border-color: #999;
+    border-color: #999;*/
 }
 /* ... /Name */
 

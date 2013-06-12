@@ -22,6 +22,10 @@ class BuildingAppMainController extends AppMainController implements BuildingApp
      * @var FloorBuildingListModel
      */
     private $floors;
+    /**
+     * @var ElementBuildingListModel
+     */
+    private $elements;
 
     // /VARIABLES
 
@@ -35,6 +39,7 @@ class BuildingAppMainController extends AppMainController implements BuildingApp
 
         $this->setFloors( new FloorBuildingListModel() );
         $this->facility = FacilityFactoryModel::createFacility( "" );
+        $this->elements = new ElementBuildingListModel();
     }
 
     // /CONSTRUCTOR
@@ -121,9 +126,20 @@ class BuildingAppMainController extends AppMainController implements BuildingApp
         return sprintf( "%s - %s - %s", $this->getBuilding()->getName(), "Building", parent::getTitle() );
     }
 
+    /**
+     * @see BuildingAppInterfaceView::getFacility()
+     */
     public function getFacility()
     {
         return $this->facility;
+    }
+
+    /**
+     * @return ElementBuildingListModel
+     */
+    public function getElements()
+    {
+        return $this->elements;
     }
 
     // ... /GET
@@ -159,6 +175,9 @@ class BuildingAppMainController extends AppMainController implements BuildingApp
                 $this->setFloors(
                         $this->getDaoContainer()->getFloorBuildingDao()->getForeign(
                                 array ( $this->getBuilding()->getId() ) ) );
+
+                // Set Elements
+                $this->elements = $this->getDaoContainer()->getElementBuildingDao()->getBuilding($this->getBuilding()->getId());
 
             }
             // Id must be given

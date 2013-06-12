@@ -284,7 +284,7 @@ AppMainView.prototype.handleOverlayClose = function(overlayId) {
 AppMainView.prototype.handleSearch = function(search, options) {
 
 	// Show search spinner
-	this.getSearchOverlayElement().find("#search_spinner").removeClass("hide");
+	this.getSearchOverlayElement().find("#search_spinner").removeClass("hide");	
 
 };
 
@@ -373,7 +373,10 @@ AppMainView.prototype.handleSearchResult = function(results) {
 		searchResultBody.find(".search_result_title").text(element.name);
 
 		// Building address
-		searchResultBody.find(".search_result_description").html("&nbsp;");
+		searchResultBody.find(".search_result_description").text(element.type);
+		if (searchResultBody.find(".search_result_description").text() == "") {
+			searchResultBody.find(".search_result_description").html("&nbsp;");
+		}
 
 		// Bind body
 		searchResultBody.click(function(event) {
@@ -424,6 +427,18 @@ AppMainView.prototype.handleSearchSelect = function(type, id) {
 
 // ... ... /SEARCH
 
+AppMainView.prototype.handleToast = function(message, length) {
+	MainView.prototype.handleToast.call(this, message, length);
+
+	this.getToastOverlayElement().offset(
+			{
+				top : this.getWrapperElement().find("#page_wrapper").position().top + this.getWrapperElement().find("#page_wrapper").height()
+						- this.getToastOverlayElement().height(),
+				left : this.getWrapperElement().find("#page_wrapper").position().left + (this.getWrapperElement().find("#page_wrapper").width() / 2)
+						- (this.getToastOverlayElement().width() / 2)
+			});
+};
+
 // ... /HANDLE
 
 // ... DRAW
@@ -448,6 +463,8 @@ AppMainView.prototype.draw = function(controller) {
 	});
 
 	// /HOVER
+
+	this.toastOverlay.draw(this.getToastOverlayElement());
 
 };
 

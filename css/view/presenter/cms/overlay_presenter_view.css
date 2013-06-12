@@ -1,0 +1,54 @@
+/**
+ * Overlay
+ */
+#cms_wrapper .overlay_wrapper {
+    /*background: none repeat scroll 0 0 rgba(0, 0, 0, 0.5);
+    display: table;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    text-align: center;*/
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.5);
+    display: table;
+    position: absolute;
+    z-index: 1000;
+    width: 100%;
+}
+
+#cms_wrapper .overlay_wrapper[data-background=false] {
+    background: none;
+}
+
+#cms_wrapper .overlay_wrapper[data-bottom=true] {
+    bottom: 0;
+    position: fixed;
+}
+
+#cms_wrapper .overlay_wrapper > * {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+#cms_wrapper .overlay_wrapper .overlay {
+    display: inline-block;
+    min-width: 500px;
+    background-color: white;
+    text-align: left;
+    border: 1px solid #333;
+}
+
+#cms_wrapper .overlay_wrapper .overlay > .title {
+    border-bottom: 1px solid #999999;
+    padding: 0 0.5em;
+}
+
+#cms_wrapper .overlay_wrapper .overlay > .body {
+    padding: 0.5em 1em;
+}
+
+#cms_wrapper .overlay_wrapper .overlay > .buttons {
+    padding: 0.5em 1em;
+}

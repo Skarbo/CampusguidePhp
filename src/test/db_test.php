@@ -1,33 +1,19 @@
 <?php
 
-abstract class DbTest extends UnitTestCase
+abstract class DbTest extends AbstractDbTest
 {
 
     // VARIABLES
 
 
-//     protected static $DB_CONFIG_LOCALHOST_TEST = array ( "host" => "kris-server",
-//             "db" => "campusguide_test", "user" => "kris-win", "pass" => "kris1234" );
-    public static $DB_CONFIG_LOCALHOST_TEST = array ( "host" => "localhost",
-            "db" => "campusguide_test", "user" => "root", "pass" => "" );
-
-    private $db_api;
+    public static $DB_CONFIG_LOCALHOST_TEST = array ( "host" => "localhost", "db" => "campusguide_test",
+            "user" => "root", "pass" => "" );
 
     // /VARIABLES
 
 
     // CONSTRUCTOR
 
-
-    public function __construct( $label )
-    {
-        parent::__construct( $label );
-
-        $this->db_api = new PdoDbApi( self::$DB_CONFIG_LOCALHOST_TEST[ "host" ],
-                self::$DB_CONFIG_LOCALHOST_TEST[ "db" ],
-                self::$DB_CONFIG_LOCALHOST_TEST[ "user" ],
-                self::$DB_CONFIG_LOCALHOST_TEST[ "pass" ] );
-    }
 
     // /CONSTRUCTOR
 
@@ -38,29 +24,15 @@ abstract class DbTest extends UnitTestCase
     // ... GET
 
 
-    /**
-     * @return DbApi
-     */
-    protected function getDbApi()
+    public function getDatabaseConfig()
     {
-        return $this->db_api;
+        return self::$DB_CONFIG_LOCALHOST_TEST;
     }
 
     // ... /GET
 
 
-    // ... BEFORE/AFTER
-
-
-    public function setUp()
-    {
-        $this->getDbApi()->connect();
-    }
-
-    // ... /BEFORE/AFTER
-
-
-// /FUNCTIONS
+    // /FUNCTIONS
 
 
 }

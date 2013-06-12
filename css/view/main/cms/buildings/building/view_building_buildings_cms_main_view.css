@@ -1,0 +1,84 @@
+#view_building_buildings_wrapper {
+
+}
+
+/* Building Canvas */
+
+#view_building_buildings_wrapper #canvas_wrapper {
+    border: 2px solid #999999;
+    height: 500px;
+}
+
+#view_building_buildings_wrapper #canvas_wrapper #canvas_content_wrapper {    
+    display: none;
+    height: 100%;
+    width: 100%;
+}
+
+#view_building_buildings_wrapper #canvas_wrapper #canvas_loader_wrapper {
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+    width: 100%;
+}
+
+#view_building_buildings_wrapper #canvas_wrapper #canvas_loader_wrapper #canvas_loader_status_wrapper {
+
+}
+
+/* ... Floor picker */
+
+#view_building_buildings_wrapper #canvas_wrapper #floor_picker_wrapper
+{
+    position: absolute;
+    z-index: 1000;
+}
+
+#view_building_buildings_wrapper #canvas_wrapper #floor_picker_wrapper #floor_picker_content 
+{
+    background-color: white;
+    border-radius: 0.2em 0.2em 0.2em 0.2em;
+    margin-left: 0.5em;
+    position: absolute;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid gray;
+    /* box_shadow:0 0 10px #666: */
+}
+
+#view_building_buildings_wrapper #canvas_wrapper #floor_picker_wrapper #floor_picker_content > * 
+{
+    font-weight: bold;
+    padding: 0.5em 1em;
+    /* no_select */
+}
+
+#view_building_buildings_wrapper #canvas_wrapper #floor_picker_wrapper #floor_picker_content > *:FOCUS, #view_building_buildings_wrapper #canvas_wrapper #floor_picker_wrapper #floor_picker_content > *:HOVER
+{
+    background-color: #E6E6E6;
+}
+
+#view_building_buildings_wrapper #canvas_wrapper #floor_picker_wrapper #floor_picker_content > *.selected
+    {
+    background-color: rgb(201, 218, 248);
+}
+
+#view_building_buildings_wrapper #canvas_wrapper #floor_picker_wrapper #floor_picker_content >*+*
+    {
+    border-top: 1px solid gray;
+}
+
+#view_building_buildings_wrapper #canvas_wrapper #floor_picker_wrapper #floor_picker_content >[data-floor-main="1"]
+    {
+    color: darkRed;
+}
+
+/* ... /Floor picker */
+
+/* /Building Canvas */
+
+#view_building_buildings_wrapper #toolbar_wrapper {
+    font-size: 0.7em;
+    padding: 0.5em 0;
+    white-space: nowrap;
+}

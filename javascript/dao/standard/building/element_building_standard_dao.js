@@ -28,7 +28,7 @@ ElementBuildingStandardDao.CONTROLLER_NAME = "buildingelements";
 ElementBuildingStandardDao.prototype.getBuilding = function(buildingId, callback) {
 	var context = this;
 	this.ajax.query(Core.sprintf("%s/%s", "building", buildingId), function(single, list) {
-		context.addListToList(list);
+		context.getListAdapter().addAll(list);
 		callback(single, list);
 	});
 };

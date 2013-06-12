@@ -103,8 +103,8 @@ class AdminBuildingBuildingsCmsPageMainView extends AdminCmsPageMainView
 
     private function getFormAction()
     {
-        return $this->isActionEdit() ? Resource::url()->cms()->building()->getEditBuildingPage(
-                $this->getBuilding()->getId(), $this->getView()->getController()->getMode() ) : Resource::url()->cms()->building()->getNewBuildingPage(
+        return $this->isActionEdit() ? Resource::url()->cms()->buildings()->getEditBuildingPage(
+                $this->getBuilding()->getId(), $this->getView()->getController()->getMode() ) : Resource::url()->cms()->buildings()->getNewBuildingPage(
                 $this->getView()->getController()->getMode() );
     }
 
@@ -165,7 +165,8 @@ class AdminBuildingBuildingsCmsPageMainView extends AdminCmsPageMainView
         $root->addContent( $wrapper );
 
         // Add map overlay to wrapper
-        $this->drawMapOverlay( $root );
+        //         $this->drawMapOverlay( $root );
+
 
     }
 
@@ -175,10 +176,19 @@ class AdminBuildingBuildingsCmsPageMainView extends AdminCmsPageMainView
     private function drawFields( AbstractXhtml $root )
     {
 
-        // Create table
-        $table = Xhtml::div()->class_( Resource::css()->cms()->getFields() );
+        // Create form
+        $form = Xhtml::form()->action( $this->getFormAction() )->method( FormXhtml::$METHOD_POST )->autocomplete(
+                false )->attr( "accept-charset", "utf-8" )->id( self::$ID_BUILDING_FORM );
 
-        // Create Building name field
+        // NAME/FACILITIES FIELDS
+
+
+        // Create fields
+        $fields = Xhtml::div()->class_( Resource::css()->cms()->getFields() );
+
+        // ... NAME
+
+
         $field = Xhtml::div();
 
         $field->addContent( Xhtml::div( "Name" )->class_( Resource::css()->cms()->getRequired() ) );
@@ -188,9 +198,14 @@ class AdminBuildingBuildingsCmsPageMainView extends AdminCmsPageMainView
                         Xhtml::input( $this->getBuildingAdmin()->getName(), Resource::db()->building()->getFieldName() )->id(
                                 Resource::db()->building()->getFieldName() ) ) );
 
-        $table->addContent( $field );
+        $fields->addContent( $field );
 
-        // Create Building Facility field
+        // ... /NAME
+
+
+        // ... FACILITY
+
+
         $field = Xhtml::div();
 
         $field->addContent( Xhtml::div( "Facility" )->class_( Resource::css()->cms()->getRequired() ) );
@@ -199,9 +214,29 @@ class AdminBuildingBuildingsCmsPageMainView extends AdminCmsPageMainView
         $this->drawFieldsFacilities( $fieldFacilities );
         $field->addContent( $fieldFacilities );
 
-        $table->addContent( $field );
+        $fields->addContent( $field );
 
-        // Create Building address field
+        // ... /FACILITY
+
+
+        // /NAME/FACILITIES FIELDS
+
+
+        // Add fields to form
+        $form->addContent( $fields );
+
+        // Create building map wrapper
+        $buildingMapWrapper = Xhtml::div()->id( "buildings_map_wrapper" )->class_( Resource::css()->getTable() );
+        $buildingWrapper = Xhtml::div();
+        $mapWrapper = Xhtml::div()->id( "map_wrapper" );
+
+        // BUILDING FIELDS
+
+
+        // Create fields
+        $fields = Xhtml::div()->class_( Resource::css()->cms()->getFields() );
+
+        // ... ADDRESS
         $field = Xhtml::div();
 
         $field->addContent( Xhtml::div( "Address" ) );
@@ -210,20 +245,56 @@ class AdminBuildingBuildingsCmsPageMainView extends AdminCmsPageMainView
         $this->drawFieldsAddress( $fieldAddress );
         $field->addContent( $fieldAddress );
 
-        $table->addContent( $field );
+        $fields->addContent( $field );
 
-        // Create Building location field
-        $field = Xhtml::div();
+        // ... /ADDRESS
 
-        $field->addContent( Xhtml::div( "Position" ) );
 
-        $fieldPosition = Xhtml::div()->class_( "position" );
-        $this->drawFieldsPosition( $fieldPosition );
-        $field->addContent( $fieldPosition );
+        // Overlay
+        $fields->addContent(
+                Xhtml::div(
+                        Xhtml::textarea( json_encode( $this->getBuildingAdmin()->getOverlay() ) )->name(
+                                Resource::db()->building()->getFieldOverlay() )->id(
+                                Resource::db()->building()->getFieldOverlay() ) ) );
 
-        $table->addContent( $field );
+        // /BUILDING FIELDS
 
-        // Create cancel/save field
+
+        $buildingWrapper->addContent( $fields );
+
+        // MAP
+
+
+        $mapLoading = Xhtml::div(
+                Xhtml::div( Xhtml::img( Resource::image()->icon()->getSpinnerBar(), "Loading map" ) )->addContent(
+                        Xhtml::div( "Loading map..." ) ) )->id( "map_loading" )->class_( Resource::css()->getTable() );
+        $mapCanvas = Xhtml::div( $mapLoading )->id( "map_canvas" );
+
+        $mapPlaceAddressButton = Xhtml::div( "Place Address" )->class_( Resource::css()->cms()->getButton() )->id(
+                "address_place" );
+        $mapPlacePositionButton = Xhtml::div( "Place Position" )->class_( Resource::css()->cms()->getButton() )->id(
+                "position_place" );
+        $mapClearOverlayButton = Xhtml::div( "Clear Overlay" )->class_( Resource::css()->cms()->getButton() )->id(
+                "overlay_clear" );
+
+        $mapWrapper->addContent( $mapPlaceAddressButton, $mapPlacePositionButton, $mapClearOverlayButton );
+        $mapWrapper->addContent( $mapCanvas );
+        $mapWrapper->addContent(
+                Xhtml::div( "Right click on overlay anchor to remove it" )->class_( Resource::css()->cms()->getHint(),
+                        Resource::css()->getRight() ) );
+
+        // /MAP
+
+
+        $buildingMapWrapper->addContent( $buildingWrapper, $mapWrapper );
+        $form->addContent( $buildingMapWrapper );
+
+        // Create fields
+        $fields = Xhtml::div()->class_( Resource::css()->cms()->getFields() );
+
+        // CANCEL/SAVE FIELD
+
+
         $buttons = Xhtml::div()->class_( Resource::css()->gui()->getGui(), "theme2" );
         $buttons->addContent(
                 Xhtml::a( "Cancel" )->href( "javascript:history.back(-1)" )->class_(
@@ -232,25 +303,20 @@ class AdminBuildingBuildingsCmsPageMainView extends AdminCmsPageMainView
         $buttons->addContent(
                 Xhtml::button( "Save" )->type( ButtonXhtml::$TYPE_SUBMIT )->id( "facility_save" )->class_(
                         Resource::css()->gui()->getButton(), Resource::css()->gui()->getComponent() )->attr( "data-type",
-                        "button_icon" )->attr( "data-icon", "check" )->attr( "data-icon-placing", "right" )->onclick(
-                        sprintf( "javascript: Core.removeDefaultText($('#%s')).submit();", self::$ID_BUILDING_FORM ) ) );
+                        "button_icon" )->attr( "data-icon", "check" )->attr( "data-icon-placing", "right" ) );
 
         $field = Xhtml::div();
-
         $field->addContent( Xhtml::div( Xhtml::$NBSP ) );
-
         $field->addContent( Xhtml::div( $buttons )->class_( Resource::css()->getRight() ) );
+        $fields->addContent( $field );
 
-        $table->addContent( $field );
+        // /CANCEL/SAVE FIELD
 
-        // Create form
-        $form = Xhtml::form()->action( $this->getFormAction() )->method( FormXhtml::$METHOD_POST )->attr(
-                "accept-charset", "utf-8" )->id( self::$ID_BUILDING_FORM );
 
-        // Add table to form
-        $form->addContent( $table );
+        // Add fields to form
+        $form->addContent( $fields );
 
-        // Add form to table
+        // Add form to root
         $root->addContent( $form );
 
     }
@@ -261,13 +327,8 @@ class AdminBuildingBuildingsCmsPageMainView extends AdminCmsPageMainView
     private function drawFieldsAddress( AbstractXhtml $root )
     {
 
-        $table = Xhtml::table();
-
-        // Create row
-        $row = Xhtml::tr();
-
-        // Create cell
-        $cell = Xhtml::td();
+        $table = Xhtml::div()->class_( Resource::css()->getTable() );
+        $cell = Xhtml::div();
 
         // Street name
         $addressName = sprintf( "%s[]", Resource::db()->building()->getFieldAddress() );
@@ -290,35 +351,28 @@ class AdminBuildingBuildingsCmsPageMainView extends AdminCmsPageMainView
                 Xhtml::input( Core::arrayAt( $this->getBuildingAdmin()->getAddress(), 3 ), $addressName )->placeholder(
                         "Country" )->id( "address_country" )->title( "Country" ) );
 
-        $row->addContent( $cell );
+        $table->addContent( $cell );
+        $cell = Xhtml::div();
 
-        // Create cell
-        $cell = Xhtml::td();
-
-        // Map button
+        // Search map button
         $cell->addContent(
-                Xhtml::a( "Map" )->class_( Resource::css()->cms()->getButton() )->id( "address_map" )->href(
-                        "#map:address" ) );
+                Xhtml::div( "Search" )->class_( Resource::css()->cms()->getButton() )->id( "address_search" ) );
 
-        $row->addContent( $cell );
-        $table->addContent( $row );
+        $table->addContent( $cell );
 
-        // Create row
-        $row = Xhtml::div();
-
-        // Create cell
-        $cell = Xhtml::td();
-
-        // Location
-        $cell->addContent(
+        // Location/position
+        $locationPositionWrapper = Xhtml::div();
+        $locationPositionWrapper->addContent(
                 Xhtml::input( implode( BuildingUtil::$SPLITTER_LOCATION, $this->getBuildingAdmin()->getLocation() ),
                         Resource::db()->building()->getFieldLocation() )->readonly( true )->placeholder( "Location" )->id(
                         Resource::db()->building()->getFieldLocation() )->title( "Location" ) );
-
-        $row->addContent( $cell );
-        $table->addContent( $row );
+        $locationPositionWrapper->addContent(
+                Xhtml::input( implode( BuildingUtil::$SPLITTER_POSITION, $this->getBuildingAdmin()->getPosition() ),
+                        Resource::db()->building()->getFieldPosition() )->readonly( true )->placeholder( "Position" )->id(
+                        Resource::db()->building()->getFieldPosition() )->title( "Position" ) );
 
         $root->addContent( $table );
+        $root->addContent( $locationPositionWrapper );
 
     }
 
@@ -399,8 +453,8 @@ class AdminBuildingBuildingsCmsPageMainView extends AdminCmsPageMainView
 
             $div = Xhtml::div()->style(
                     sprintf( "background-image: url('%s');",
-                            Resource::url()->cms()->facility()->getFacilityImage( $facility->getId(),
-                                    null, null, $this->getView()->getController()->getMode() ) ) )->class_( "image",
+                            Resource::url()->cms()->facility()->getFacilityImage( $facility->getId(), null, null,
+                                    $this->getView()->getController()->getMode() ) ) )->class_( "image",
                     Resource::css()->getTable() )->title( $facility->getName() );
 
             $link = Xhtml::a( $facility->getName() )->href(
@@ -410,8 +464,8 @@ class AdminBuildingBuildingsCmsPageMainView extends AdminCmsPageMainView
 
             // Create image
             $image = Xhtml::img(
-                    Resource::url()->cms()->facility()->getFacilityImage( $facility->getId(), null,
-                            null, $this->getView()->getController()->getMode() ), $facility->getName() )->class_( "image" );
+                    Resource::url()->cms()->facility()->getFacilityImage( $facility->getId(), null, null,
+                            $this->getView()->getController()->getMode() ), $facility->getName() )->class_( "image" );
 
             // Create name
             $name = Xhtml::div( $facility->getName() )->class_( "name" );

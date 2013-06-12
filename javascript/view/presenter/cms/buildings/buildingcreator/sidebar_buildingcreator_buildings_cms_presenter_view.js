@@ -1,8 +1,13 @@
 // CONSTRUCTOR
-SidebarBuildingcreatorCmsPresenterView.prototype = new PresenterView();
+SidebarBuildingcreatorBuildingsCmsPresenterView.prototype = new AbstractPresenterView();
 
-function SidebarBuildingcreatorCmsPresenterView(view) {
-	PresenterView.apply(this, arguments);
+function SidebarBuildingcreatorBuildingsCmsPresenterView(view) {
+	AbstractPresenterView.apply(this, arguments);
+	// this.roomsElementsPresenter = new
+	// RoomsElementsSidebarBuildingcreatorBuildingsCmsPresenterView(this);
+	// this.devicesElementsPresenter = new
+	// DevicesElementsSidebarBuildingcreatorBuildingsCmsPresenterView(this);
+	this.elementsPresenter = new ElementsSidebarBuildingcreatorBuildingsCmsPresenterView(this);
 };
 
 // VARIABLES
@@ -16,14 +21,21 @@ function SidebarBuildingcreatorCmsPresenterView(view) {
 /**
  * @return {Object}
  */
-SidebarBuildingcreatorCmsPresenterView.prototype.getSidebarElement = function() {
+SidebarBuildingcreatorBuildingsCmsPresenterView.prototype.getSidebarsWrapperElement = function() {
+	return this.getRoot().find("#sidebars");
+};
+
+/**
+ * @return {Object}
+ */
+SidebarBuildingcreatorBuildingsCmsPresenterView.prototype.getSidebarElement = function() {
 	return this.getRoot().find(".sidebar");
 };
 
 /**
  * @return {Object}
  */
-SidebarBuildingcreatorCmsPresenterView.prototype.getSidebarHeaderElement = function() {
+SidebarBuildingcreatorBuildingsCmsPresenterView.prototype.getSidebarHeaderElement = function() {
 	return this.getSidebarElement().find(".sidebar_header_wrapper");
 };
 
@@ -32,35 +44,35 @@ SidebarBuildingcreatorCmsPresenterView.prototype.getSidebarHeaderElement = funct
 /**
  * @return {Object}
  */
-SidebarBuildingcreatorCmsPresenterView.prototype.getSidebarFloorsElement = function() {
+SidebarBuildingcreatorBuildingsCmsPresenterView.prototype.getSidebarFloorsElement = function() {
 	return this.getSidebarElement().filter("[data-sidebar=floors]");
 };
 
 /**
  * @return {Object}
  */
-SidebarBuildingcreatorCmsPresenterView.prototype.getSidebarFloorsTableElement = function() {
+SidebarBuildingcreatorBuildingsCmsPresenterView.prototype.getSidebarFloorsTableElement = function() {
 	return this.getSidebarFloorsElement().find("table.floors");
 };
 
 /**
  * @return {Object}
  */
-SidebarBuildingcreatorCmsPresenterView.prototype.getSidebarFloorsButtonsElement = function() {
+SidebarBuildingcreatorBuildingsCmsPresenterView.prototype.getSidebarFloorsButtonsElement = function() {
 	return this.getSidebarFloorsElement().find(".floor_buttons");
 };
 
 /**
  * @return {Object}
  */
-SidebarBuildingcreatorCmsPresenterView.prototype.getSidebarFloorsFormElement = function() {
+SidebarBuildingcreatorBuildingsCmsPresenterView.prototype.getSidebarFloorsFormElement = function() {
 	return this.getSidebarFloorsElement().find("form#floors_form");
 };
 
 /**
  * @return {Object}
  */
-SidebarBuildingcreatorCmsPresenterView.prototype.getSidebarFloorsErrorElement = function() {
+SidebarBuildingcreatorBuildingsCmsPresenterView.prototype.getSidebarFloorsErrorElement = function() {
 	return this.getSidebarFloorsElement().find("#floors_error");
 };
 
@@ -68,47 +80,68 @@ SidebarBuildingcreatorCmsPresenterView.prototype.getSidebarFloorsErrorElement = 
 
 // ... ... ELEMENTS
 
-/**
- * @return {Object}
- */
-SidebarBuildingcreatorCmsPresenterView.prototype.getSidebarElementsElement = function() {
-	return this.getSidebarElement().filter("[data-sidebar=elements]");
-};
+// /**
+// * @return {Object}
+// */
+// SidebarBuildingcreatorBuildingsCmsPresenterView.prototype.getRoomsElementsElement
+// = function() {
+// return this.getSidebarElement().filter("[data-sidebar=elements_rooms]");
+// };
+//
+// /**
+// * @return {Object}
+// */
+// SidebarBuildingcreatorBuildingsCmsPresenterView.prototype.getDevicesElementsElement
+// = function() {
+// return this.getSidebarElement().filter("[data-sidebar=elements_devices]");
+// };
 
 /**
  * @return {Object}
  */
-SidebarBuildingcreatorCmsPresenterView.prototype.getSidebarElementsFloorsElement = function() {
-	return this.getSidebarElementsElement().find("table.elements tbody[data-floor]");
+SidebarBuildingcreatorBuildingsCmsPresenterView.prototype.getElementsSidebarGroup = function() {
+	return this.getSidebarElement().filter("[data-sidebar-group=elements]");
 };
 
-/**
- * @return {Object}
- */
-SidebarBuildingcreatorCmsPresenterView.prototype.getSidebarElementsDeleteElement = function() {
-	return this.getSidebarElementsElement().find(".element .delete.edit .delete");
-};
 // ... ... /ELEMENTS
+
+// ... ... INFOPANEL
+
+/**
+ * @return {Object}
+ */
+SidebarBuildingcreatorBuildingsCmsPresenterView.prototype.getInfopanelWrapperElement = function() {
+	return this.getRoot().find("#infopanel");
+};
+
+/**
+ * @return {Object}
+ */
+SidebarBuildingcreatorBuildingsCmsPresenterView.prototype.getInfopanelHeaderWrapperElement = function() {
+	return this.getInfopanelWrapperElement().find("#infopanel_header_wrapper");
+};
+
+// ... ... /INFOPANEL
 
 // ... /GET
 
 // ... DO
 
-SidebarBuildingcreatorCmsPresenterView.prototype.doBindEventHandler = function() {
+SidebarBuildingcreatorBuildingsCmsPresenterView.prototype.doBindEventHandler = function() {
 	var context = this;
 
 	// EVENTS
 
-	// Handle "SelectEvent" event
-	this.getView().getController().getEventHandler().registerListener(SelectEvent.TYPE,
-	/**
-	 * @param {SelectEvent}
-	 *            event
-	 */
-	function(event) {
-		context.handleSelect(event.getSelectType(), event.getElement());
-	});
-
+	// // Handle "SelectEvent" event
+	// this.getView().getController().getEventHandler().registerListener(SelectCanvasEvent.TYPE,
+	// /**
+	// * @param {SelectCanvasEvent}
+	// * event
+	// */
+	// function(event) {
+	// context.handleSelect(event.getSelectType(), event.getElement());
+	// });
+	//
 	// Handle "Menu" event
 	this.getEventHandler().registerListener(MenuEvent.TYPE,
 	/**
@@ -128,40 +161,40 @@ SidebarBuildingcreatorCmsPresenterView.prototype.doBindEventHandler = function()
 	function(event) {
 		context.handleFloorSelect(event.getFloorId());
 	});
-
-	// Edited event
-	this.getEventHandler().registerListener(EditedEvent.TYPE,
-	/**
-	 * @param {EditedEvent}
-	 *            event
-	 */
-	function(event) {
-		switch (event.getEditType()) {
-		case "element":
-			context.doElementSaved(event.getEdit());
-			break;
-		}
-	});
-
-	// Deleted event
-	this.getEventHandler().registerListener(DeletedEvent.TYPE,
-	/**
-	 * @param {DeletedEvent}
-	 *            event
-	 */
-	function(event) {
-		context.handleDeleted(event.getDeleteType(), event.getDeleted());
-	});
-
-	// Undid history event
-	this.getEventHandler().registerListener(UndidHistoryEvent.TYPE,
-	/**
-	 * @param {UndidHistoryEvent}
-	 *            event
-	 */
-	function(event) {
-		context.handleHistoryUndid(event.getHistory());
-	});
+	//
+	// // Edited event
+	// this.getEventHandler().registerListener(EditedEvent.TYPE,
+	// /**
+	// * @param {EditedEvent}
+	// * event
+	// */
+	// function(event) {
+	// switch (event.getEditType()) {
+	// case "element":
+	// context.doElementSaved(event.getEdit());
+	// break;
+	// }
+	// });
+	//
+	// // Deleted event
+	// this.getEventHandler().registerListener(DeletedEvent.TYPE,
+	// /**
+	// * @param {DeletedEvent}
+	// * event
+	// */
+	// function(event) {
+	// context.handleDeleted(event.getDeleteType(), event.getDeleted());
+	// });
+	//
+	// // Undid history event
+	// this.getEventHandler().registerListener(UndidHistoryEvent.TYPE,
+	// /**
+	// * @param {UndidHistoryEvent}
+	// * event
+	// */
+	// function(event) {
+	// context.handleHistoryUndid(event.getHistory());
+	// });
 
 	// /EVENTS
 
@@ -207,7 +240,6 @@ SidebarBuildingcreatorCmsPresenterView.prototype.doBindEventHandler = function()
 
 	// Select Floor
 	floorsTableRow.find(".floor").click(function(event) {
-		console.log("click", event);
 		// Get Floor id
 		var floorId = $(this).attr("data-floor");
 
@@ -219,55 +251,59 @@ SidebarBuildingcreatorCmsPresenterView.prototype.doBindEventHandler = function()
 
 	// /FLOORS
 
-	// ELEMENTS
-
-	var elementsTableRows = this.getSidebarElementsFloorsElement().find(".element");
-
-	// Select element
-	elementsTableRows.click(function(event) {
-		// TODO Fix a way to access Canvas getElementPolygon
-		if (!this.polygon)
-			this.polygon = context.getView().canvasPresenter.getElementPolygon($(this).attr("data-element"), $(this).parent().attr("data-floor"));
-		if (this.polygon)
-			context.getEventHandler().handle(new SelectEvent("polygon", this.polygon));
-	});
-
-	// Edit element
-	elementsTableRows.dblclick(function(event) {
-		context.doElementEdit(true, $(this));
-	});
-
-	// Save/cancel element
-	elementsTableRows.keyup(function(event) {
-		// Save
-		if (event.keyCode == 13) {
-			context.doElementSave($(this));
-			context.doElementEdit(false, $(this));
-		}
-		// Cancel
-		if (event.keyCode == 27) {
-			context.doElementEdit(false, $(this));
-		}
-	}).keydown(function(event) {
-		// Next Element
-		if (event.which == 9) {
-			context.doElementSave($(this));
-			context.doElementEdit(false, $(this));
-			var next = $(this).next();
-			if (next) {
-				event.preventDefault();
-				next.click();
-				context.doElementEdit(true, next);
-			}
-		}
-	});
-
-	// /ELEMENTS
+	// // ELEMENTS
+	//
+	// var elementsTableRows =
+	// this.getSidebarElementsFloorsElement().find(".element");
+	//
+	// // Select element
+	// elementsTableRows.click(function(event) {
+	// // TODO Fix a way to access Canvas getElementPolygon
+	// if (!this.polygon)
+	// this.polygon =
+	// context.getView().canvasPresenter.getElementPolygon($(this).attr("data-element"),
+	// $(this).parent().attr("data-floor"));
+	// if (this.polygon)
+	// context.getEventHandler().handle(new SelectCanvasEvent("polygon",
+	// this.polygon));
+	// });
+	//
+	// // Edit element
+	// elementsTableRows.dblclick(function(event) {
+	// context.doElementEdit(true, $(this));
+	// });
+	//
+	// // Save/cancel element
+	// elementsTableRows.keyup(function(event) {
+	// // Save
+	// if (event.keyCode == 13) {
+	// context.doElementSave($(this));
+	// context.doElementEdit(false, $(this));
+	// }
+	// // Cancel
+	// if (event.keyCode == 27) {
+	// context.doElementEdit(false, $(this));
+	// }
+	// }).keydown(function(event) {
+	// // Next Element
+	// if (event.which == 9) {
+	// context.doElementSave($(this));
+	// context.doElementEdit(false, $(this));
+	// var next = $(this).next();
+	// if (next) {
+	// event.preventDefault();
+	// next.click();
+	// context.doElementEdit(true, next);
+	// }
+	// }
+	// });
+	//
+	// // /ELEMENTS
 };
 
 // ... ... FLOORS
 
-SidebarBuildingcreatorCmsPresenterView.prototype.doFloorsEdit = function(edit) {
+SidebarBuildingcreatorBuildingsCmsPresenterView.prototype.doFloorsEdit = function(edit) {
 	var floorsTable = this.getSidebarFloorsTableElement();
 	var floorsButtons = this.getSidebarFloorsButtonsElement();
 	var floorsError = this.getSidebarFloorsErrorElement();
@@ -284,7 +320,7 @@ SidebarBuildingcreatorCmsPresenterView.prototype.doFloorsEdit = function(edit) {
 	}
 };
 
-SidebarBuildingcreatorCmsPresenterView.prototype.doFloorsOrder = function(row, up) {
+SidebarBuildingcreatorBuildingsCmsPresenterView.prototype.doFloorsOrder = function(row, up) {
 	// Get floor order
 	var orderInput = row.find(".order input");
 	var order = orderInput.val();
@@ -306,7 +342,7 @@ SidebarBuildingcreatorCmsPresenterView.prototype.doFloorsOrder = function(row, u
 
 };
 
-SidebarBuildingcreatorCmsPresenterView.prototype.doFloorsSave = function() {
+SidebarBuildingcreatorBuildingsCmsPresenterView.prototype.doFloorsSave = function() {
 	var floorsTable = this.getSidebarFloorsTableElement();
 	var floorsForm = this.getSidebarFloorsFormElement();
 	var floorsError = this.getSidebarFloorsErrorElement();
@@ -343,78 +379,78 @@ SidebarBuildingcreatorCmsPresenterView.prototype.doFloorsSave = function() {
 
 // ... ... /FLOORS
 
-// ... ... ELEMENTS
+SidebarBuildingcreatorBuildingsCmsPresenterView.prototype.doInfopanelShow = function(element) {
+	if (typeof element != "object")
+		return console.error("SidebarBuildingcreatorBuildingsCmsPresenterView.doInfopanelShow: Element is not object", element);
+	
+	this.getInfopanelWrapperElement().find("#infopanel_header_wrapper .infopanel_header_name").html(element.name || $("<italic />", { text : "Element" }));
+	this.getInfopanelWrapperElement().find(".info_panel_content_wrapper").removeClass("selected").hide();
 
-SidebarBuildingcreatorCmsPresenterView.prototype.doElementEdit = function(edit, element) {
-	if (!element)
-		return;
+	this.getSidebarsWrapperElement().slideUp();
+	this.getInfopanelWrapperElement().slideDown();
+	
+	var infoPanelContents = this.getInfopanelWrapperElement().find(".info_panel_content_wrapper");
 
-	if (edit) {
-		element.addClass("edit");
-		element.find(".show").addClass("hide");
-		element.find(".edit").removeClass("hide").find("input").select();
+	infoPanelContents.find(".info_panel_content_content_wrapper").hide();
+	infoPanelContents.filter("[data-infopanel=element_name]").show();	
 
-		var context = this;
-		$(document).bind("click.elementedit", {
-			context : element
-		}, function(event) {
-			if (event.data.context.has($(event.target)).length == 0) {
-				context.doElementEdit(false, event.data.context);
-				$(this).unbind(event);
+	// ELEMENT NAME
+
+	infoPanelContents.filter("[data-infopanel=element_name]").find(".element_name_wrapper input[name=element_id]").val(element.id);
+	
+	// Element name
+	infoPanelContents.filter("[data-infopanel=element_name]").find(".info_panel_content_header_value").html("<h3>" + element.name + "</h3>");
+
+	var elementNameTable = infoPanelContents.filter("[data-infopanel=element_name]").find(".element_name_wrapper .element_name_table");
+	var elementNameInputWrapperTemplate = infoPanelContents.filter("[data-infopanel=element_name]").find(".element_name_wrapper .element_name_input_wrapper.template");
+	var elementNameInputWrappers = infoPanelContents.filter("[data-infopanel=element_name]").find(".element_name_wrapper .element_name_input_wrapper:NOT(.template)");
+	elementNameInputWrappers.remove();
+
+	var elementNameInputWrapper = elementNameInputWrapperTemplate.clone().removeClass("template");
+	elementNameTable.append(elementNameInputWrapper);
+	elementNameInputWrapper.find("input[name=element_name]").val(element.name);
+	if (element.data) {
+		for ( var i in element.data.names) {
+			elementNameInputWrapper = elementNameInputWrapperTemplate.clone().removeClass("template");
+			elementNameTable.append(elementNameInputWrapper);
+			elementNameInputWrapper.find("input[name=element_name]").val(element.data.names[i]);
+		}
+	}
+
+	var bindRoomNameRemoveButton = function() {
+		elementNameTable.unbind("click").click(function(event) {
+			event.preventDefault();
+			if (elementNameTable.find(".element_name_input_wrapper").length > 2) {
+				$(event.target).closest(".element_name_input_wrapper").remove();
+			} else {
+				$(event.target).closest(".element_name_input_wrapper").find("input[name=element_name]").val("").focus();
 			}
 		});
-	} else {
-		element.removeClass("edit");
-		element.find(".show").removeClass("hide");
-		element.find(".edit").addClass("hide");
-		var input = element.find(".edit input");
-		var select = element.find(".edit select");
-		if (input.length > 0)
-			input.val(input.attr("data-value") || "");
-		if (select.length > 0)
-			select.val(select.attr("data-value") || "");
-	}
+	};
+	bindRoomNameRemoveButton();
+
+	infoPanelContents.filter("[data-infopanel=element_name]").find(".element_name_wrapper a.element_name_add").unbind("click").click(function(event) {
+		event.preventDefault();
+		var elementNameRow = elementNameInputWrapperTemplate.clone().removeClass("template");
+		elementNameTable.append(elementNameRow);
+		elementNameRow.find("input[name=element_name]").focus();
+		bindRoomNameRemoveButton();
+	});
+
+	// /ELEMENT NAME
+	
 };
 
-SidebarBuildingcreatorCmsPresenterView.prototype.doElementSave = function(elementElement) {
-	var elementId = elementElement.attr("data-element");
-	var input = elementElement.find(".edit input");
-	var select = elementElement.find(".edit select");
-
-	if (!input.length > 0 || !select.length > 0)
-		return;
-
-	if (input.val() == (input.attr("data-value") || "") && select.val() == select.attr("data-value"))
-		return;
-
-	this.getEventHandler().handle(new EditEvent("element", {
-		id : elementId,
-		name : input.val(),
-		type : select.val()
-	}));
+SidebarBuildingcreatorBuildingsCmsPresenterView.prototype.doSidebarsShow = function() {
+	this.getSidebarsWrapperElement().slideDown();
+	this.getInfopanelWrapperElement().slideUp();
 };
-
-SidebarBuildingcreatorCmsPresenterView.prototype.doElementSaved = function(element) {
-	if (!element)
-		return;
-
-	var elementElement = this.getSidebarElementsFloorsElement().find(".element[data-element=" + element.id + "]");
-	elementElement.find(".name.show").text(element.name);
-	if (BuildingsCmsMainView.ELEMENT_TYPE_ROOMS[element.type])
-		elementElement.find(".type.show img").attr("src", BuildingsCmsMainView.ELEMENT_TYPE_ROOMS[element.type]).attr("alt", element.type);
-	else
-		elementElement.find(".type.show img").attr("src", BuildingsCmsMainView.ELEMENT_TYPE_ROOMS["empty"]).attr("alt", element.type);
-	elementElement.find(".name.edit input").attr("data-value", element.name).val(element.name);
-	elementElement.find(".type.edit select").attr("data-value", element.type).val(element.type);
-};
-
-// ... ... /ELEMENTS
 
 // ... /DO
 
 // ... HANDLE
 
-SidebarBuildingcreatorCmsPresenterView.prototype.handleSelect = function(type, element) {
+SidebarBuildingcreatorBuildingsCmsPresenterView.prototype.handleSelect = function(type, element) {
 	// De-select Element
 	this.getSidebarElementsFloorsElement().find(".selected[data-element]").removeClass("selected");
 
@@ -432,7 +468,7 @@ SidebarBuildingcreatorCmsPresenterView.prototype.handleSelect = function(type, e
 
 };
 
-SidebarBuildingcreatorCmsPresenterView.prototype.handleFloorSelect = function(floorId) {
+SidebarBuildingcreatorBuildingsCmsPresenterView.prototype.handleFloorSelect = function(floorId) {
 	if (!floorId)
 		return false;
 
@@ -440,16 +476,9 @@ SidebarBuildingcreatorCmsPresenterView.prototype.handleFloorSelect = function(fl
 	var floorRows = this.getSidebarFloorsTableElement().find("tbody tr");
 	floorRows.removeClass("selected");
 	floorRows.filter("[data-floor=" + floorId + "]").addClass("selected");
-
-	// Select Element
-	this.getSidebarElementsFloorsElement().addClass("hide");
-	var elementsVisible = this.getSidebarElementsFloorsElement().filter("[data-floor=" + floorId + "]").removeClass("hide");
-
-	// Update Elements counter
-	this.getSidebarElementsElement().find(".sidebar_header_wrapper span").text(elementsVisible.children().length);
 };
 
-SidebarBuildingcreatorCmsPresenterView.prototype.handleMenu = function(menu, sidebar) {
+SidebarBuildingcreatorBuildingsCmsPresenterView.prototype.handleMenu = function(menu, sidebar) {
 	sidebar = sidebar || null;
 	menu = menu || "floors";
 	var sidebarElements = this.getSidebarElement();
@@ -457,16 +486,20 @@ SidebarBuildingcreatorCmsPresenterView.prototype.handleMenu = function(menu, sid
 
 	var sidebarMenuElements = sidebarElements.filter("[data-sidebar-group~=" + menu + "]");
 	sidebarMenuElements.show();
-	sidebarMenuElements.find(".sidebar_header_wrapper.collapse").addClass("collapsed");
+	// sidebarMenuElements.find(".sidebar_header_wrapper.collapse").addClass("collapsed");
+	// sidebarMenuElements.filter(":NOT([data-sidebar=" + sidebar +
+	// "])").find(".sidebar_content:visible").slideUp();
 
 	var sidebarElement = sidebarMenuElements.filter("[data-sidebar=" + sidebar + "]");
 	if (sidebarElement.length == 0)
 		sidebarElement = sidebarMenuElements.filter("[data-sidebar]:first-child");
 	if (sidebarElement.length > 0)
-		sidebarElement.find(".sidebar_header_wrapper.collapse").removeClass("collapsed");
+		sidebarElement.find(".sidebar_content").slideDown();
+
+	sidebarMenuElements.filter(":NOT([data-sidebar=" + sidebarElement.attr("data-sidebar") + "])").find(".sidebar_content:visible").slideUp();
 };
 
-SidebarBuildingcreatorCmsPresenterView.prototype.handleDeleted = function(type, deleted) {
+SidebarBuildingcreatorBuildingsCmsPresenterView.prototype.handleDeleted = function(type, deleted) {
 	switch (type) {
 	case "element":
 		this.getSidebarElementsFloorsElement().find(".element[data-element=" + deleted + "]").addClass("deleted");
@@ -474,7 +507,7 @@ SidebarBuildingcreatorCmsPresenterView.prototype.handleDeleted = function(type, 
 	}
 };
 
-SidebarBuildingcreatorCmsPresenterView.prototype.handleHistoryUndid = function(history) {
+SidebarBuildingcreatorBuildingsCmsPresenterView.prototype.handleHistoryUndid = function(history) {
 	switch (history.type) {
 	case "selected_delete":
 		if (history.element.type == "polygon" && history.element.element.object.type == "element") {
@@ -486,11 +519,38 @@ SidebarBuildingcreatorCmsPresenterView.prototype.handleHistoryUndid = function(h
 
 // ... /HANDLE
 
-SidebarBuildingcreatorCmsPresenterView.prototype.draw = function(root) {
-	PresenterView.prototype.draw.call(this, root);
+SidebarBuildingcreatorBuildingsCmsPresenterView.prototype.draw = function(root) {
+	AbstractPresenterView.prototype.draw.call(this, root);
+	var context = this;
 
-	this.handleMenu(this.getController().getHash().menu);
+	if (!this.getController().getHash().menu)
+		this.handleMenu();
 	// this.getRoot().find(".element_type_dropdown").dropdownSelect();
+
+	// this.roomsElementsPresenter.draw(this.getRoomsElementsElement());
+	// this.devicesElementsPresenter.draw(this.getDevicesElementsElement());
+	this.elementsPresenter.draw(this.getElementsSidebarGroup());
+
+	// INFO PANEL
+
+	this.getInfopanelHeaderWrapperElement().find("#infopanel_header_buttons_cancel").button().click(function(event) {
+		event.preventDefault();
+		context.doSidebarsShow();
+	});
+	this.getInfopanelHeaderWrapperElement().find("#infopanel_header_buttons_save").button();
+	this.getInfopanelHeaderWrapperElement().find("#infopanel_header_buttons_save_next").button({
+		text : false,
+		icons : {
+			primary : "ui-icon-triangle-1-e"
+		}
+	});
+
+	this.getInfopanelWrapperElement().find(".info_panel_content_header_wrapper").click(function(event) {
+		$(event.target).closest(".info_panel_content_wrapper").toggleClass("selected").find(".info_panel_content_content_wrapper").slideToggle();
+	});
+
+	// /INFO PANEL
+
 };
 
 // /FUNCTIONS

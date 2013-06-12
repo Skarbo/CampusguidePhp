@@ -7,6 +7,7 @@ class CmsCssResource extends ClassCore
 
 
     private static $BUILDING, $FACILITY, $MENU, $PAGE;
+    private static $WIDGET;
 
     private $error = "error";
     private $success = "success";
@@ -16,6 +17,7 @@ class CmsCssResource extends ClassCore
     private $light = "light";
     private $hide = "hide";
     private $inactive = "inactive";
+    private $hint = "hint";
 
     private $overlayWrapper = "overlay_wrapper";
     private $overlay = "overlay";
@@ -40,11 +42,11 @@ class CmsCssResource extends ClassCore
 
 
     /**
-     * @return BuildingCmsCssResource
+     * @return BuildingsCmsCssResource
      */
-    public function building()
+    public function buildings()
     {
-        self::$BUILDING = self::$BUILDING ? self::$BUILDING : new BuildingCmsCssResource();
+        self::$BUILDING = self::$BUILDING ? self::$BUILDING : new BuildingsCmsCssResource();
         return self::$BUILDING;
     }
 
@@ -73,6 +75,15 @@ class CmsCssResource extends ClassCore
     {
         self::$PAGE = self::$PAGE ? self::$PAGE : new PageCmsCssResource();
         return self::$PAGE;
+    }
+
+    /**
+     * @return WidgetCmsCssResource
+     */
+    public function widget()
+    {
+        self::$WIDGET = self::$WIDGET ? self::$WIDGET : new WidgetCmsCssResource();
+        return self::$WIDGET;
     }
 
     // /FUNCTIONS
@@ -156,6 +167,14 @@ class CmsCssResource extends ClassCore
     public function getButton()
     {
         return $this->button;
+    }
+
+    /**
+     * @return the $hint
+     */
+    public function getHint()
+    {
+        return $this->hint;
     }
 
 }

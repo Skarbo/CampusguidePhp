@@ -101,7 +101,7 @@ function initMap()
 EOD;
 
         $this->addJavascriptCode(
-                sprintf( $code, Resource::javascript()->getGoogleMapsApiUrl( Resource::getGoogleApiKey(), "initMap" ) ) );
+                sprintf( $code, Resource::javascript()->getGoogleMapsApiUrl( Resource::getGoogleApiKey(), "initMap", "drawing,geometry" ) ) );
 
     }
 

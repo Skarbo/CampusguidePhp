@@ -6,16 +6,19 @@ class BuildingModel extends Model implements StandardModel
     // VARIABLES
 
 
+    public static $OVERLAY_SPLITTER = ",";
+
     public $id;
     public $facilityId;
     public $name;
     public $address = array ();
     public $location = array ();
     public $position = array ();
+    public $overlay = array ();
     public $updated;
     public $registered;
 
-    public $floors;
+    public $floors = array ();
 
     // /VARIABLES
 
@@ -120,9 +123,9 @@ class BuildingModel extends Model implements StandardModel
         return $this->address;
     }
 
-    public function setPosition( $location )
+    public function setPosition( $position )
     {
-        $this->position = $location;
+        $this->position = $position;
     }
 
     public function setAddress( array $address )
@@ -148,6 +151,16 @@ class BuildingModel extends Model implements StandardModel
     public function setLocation( $location )
     {
         $this->location = $location;
+    }
+
+    public function getOverlay()
+    {
+        return $this->overlay;
+    }
+
+    public function setOverlay( array $overlay )
+    {
+        $this->overlay = $overlay;
     }
 
 }

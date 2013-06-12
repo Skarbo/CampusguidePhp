@@ -1,15 +1,15 @@
 // CONSTRUCTOR
-MenuBuildingcreatorCmsPresenterView.prototype = new PresenterView();
+MenuBuildingcreatorBuildingsCmsPresenterView.prototype = new AbstractPresenterView();
 
-function MenuBuildingcreatorCmsPresenterView(view) {
-	PresenterView.apply(this, arguments);
+function MenuBuildingcreatorBuildingsCmsPresenterView(view) {
+	AbstractPresenterView.apply(this, arguments);
 };
 
 // VARIABLES
 
-MenuBuildingcreatorCmsPresenterView.TYPE_FLOORS = "floors";
-MenuBuildingcreatorCmsPresenterView.TYPE_ELEMENTS = "elements";
-MenuBuildingcreatorCmsPresenterView.TYPE_NAVIGATION = "navigation";
+MenuBuildingcreatorBuildingsCmsPresenterView.TYPE_FLOORS = "floors";
+MenuBuildingcreatorBuildingsCmsPresenterView.TYPE_ELEMENTS = "elements";
+MenuBuildingcreatorBuildingsCmsPresenterView.TYPE_NAVIGATION = "navigation";
 
 // /VARIABLES
 
@@ -20,14 +20,14 @@ MenuBuildingcreatorCmsPresenterView.TYPE_NAVIGATION = "navigation";
 /**
  * @returns {Object}
  */
-MenuBuildingcreatorCmsPresenterView.prototype.getMenuSubElement = function() {
+MenuBuildingcreatorBuildingsCmsPresenterView.prototype.getMenuSubElement = function() {
 	return this.getRoot().find("[data-menu]");
 };
 
 /**
  * @returns {Object}
  */
-MenuBuildingcreatorCmsPresenterView.prototype.getMenuSaveElement = function() {
+MenuBuildingcreatorBuildingsCmsPresenterView.prototype.getMenuSaveElement = function() {
 	return this.getRoot().find("#save");
 };
 
@@ -35,7 +35,7 @@ MenuBuildingcreatorCmsPresenterView.prototype.getMenuSaveElement = function() {
 
 // ... DO
 
-MenuBuildingcreatorCmsPresenterView.prototype.doBindEventHandler = function() {
+MenuBuildingcreatorBuildingsCmsPresenterView.prototype.doBindEventHandler = function() {
 	var context = this;
 
 	// EVENTS
@@ -61,9 +61,9 @@ MenuBuildingcreatorCmsPresenterView.prototype.doBindEventHandler = function() {
 	});
 
 	// Undo history event
-	this.getView().getController().getEventHandler().registerListener(UndoHistoryEvent.TYPE,
+	this.getView().getController().getEventHandler().registerListener(UndidHistoryEvent.TYPE,
 	/**
-	 * @param {UndoHistoryEvent}
+	 * @param {UndidHistoryEvent}
 	 *            event
 	 */
 	function(event) {
@@ -96,19 +96,19 @@ MenuBuildingcreatorCmsPresenterView.prototype.doBindEventHandler = function() {
 
 // ... HANDLE
 
-MenuBuildingcreatorCmsPresenterView.prototype.handleMenuSelect = function(menu, sidebar) {
+MenuBuildingcreatorBuildingsCmsPresenterView.prototype.handleMenuSelect = function(menu, sidebar) {
 	var submenuElements = this.getMenuSubElement();
 
 	submenuElements.removeClass("highlight");
 
 	switch (menu) {
-	case MenuBuildingcreatorCmsPresenterView.TYPE_ELEMENTS:
-	case MenuBuildingcreatorCmsPresenterView.TYPE_NAVIGATION:
+	case MenuBuildingcreatorBuildingsCmsPresenterView.TYPE_ELEMENTS:
+	case MenuBuildingcreatorBuildingsCmsPresenterView.TYPE_NAVIGATION:
 		submenuElements.filter("[data-menu=" + menu + "]").addClass("highlight");
 		break;
 
 	default:
-		menu = MenuBuildingcreatorCmsPresenterView.TYPE_FLOORS;
+		menu = MenuBuildingcreatorBuildingsCmsPresenterView.TYPE_FLOORS;
 		submenuElements.filter("[data-menu=floors]").addClass("highlight");
 		break;
 	}
@@ -116,10 +116,10 @@ MenuBuildingcreatorCmsPresenterView.prototype.handleMenuSelect = function(menu, 
 
 };
 
-MenuBuildingcreatorCmsPresenterView.prototype.handleHistory = function() {
+MenuBuildingcreatorBuildingsCmsPresenterView.prototype.handleHistory = function() {
 	var context = this;
 	setTimeout(function() {
-		if (context.getView().canvasPresenter.history.length == 0)
+		if (context.getView().history.length == 0)
 			context.getMenuSaveElement().disable();
 		else
 			context.getMenuSaveElement().enable();
@@ -128,11 +128,12 @@ MenuBuildingcreatorCmsPresenterView.prototype.handleHistory = function() {
 
 // ... /HANDLE
 
-MenuBuildingcreatorCmsPresenterView.prototype.draw = function(root) {
-	PresenterView.prototype.draw.call(this, root);
+MenuBuildingcreatorBuildingsCmsPresenterView.prototype.draw = function(root) {
+	AbstractPresenterView.prototype.draw.call(this, root);
 
 	// Select menu
-	this.handleMenuSelect(this.getController().getHash().menu);
+	if (!this.getController().getHash().menu)
+		this.handleMenuSelect(this.getController().getHash().menu);
 };
 
 // /FUNCTIONS

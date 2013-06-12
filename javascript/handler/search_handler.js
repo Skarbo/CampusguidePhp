@@ -1,11 +1,9 @@
 // CONSTRUCTOR
 
-function SearchHandler(eventHandler, mode, facilityDao, buildingDao, elementBuildingDao) {
+function SearchHandler(eventHandler, mode, daoContainer) {
 	this.eventHandler = eventHandler;
 	this.mode = mode;
-	this.facilityDao = facilityDao;
-	this.buildingDao = buildingDao;
-	this.elementBuildingDao = elementBuildingDao;
+	this.daoContainer = daoContainer;
 }
 
 // /CONSTRUCTOR
@@ -21,48 +19,14 @@ SearchHandler.TYPE_BUILDING = "building";
 
 // FUNCTIONS
 
-// ... GETTERS/SETTERS
-
-/**
- * @param {FacilityStandardDao}
- *            facilityDao
- */
-SearchHandler.prototype.setFacilityDao = function(facilityDao) {
-	this.facilityDao = facilityDao;
-};
-
-/**
- * @returns {FacilityStandardDao}
- */
-SearchHandler.prototype.getFacilityDao = function() {
-	return this.facilityDao;
-};
-
-/**
- * @param {BuildingStandardDao}
- *            buildingDao
- */
-SearchHandler.prototype.setBuildingDao = function(buildingDao) {
-	this.buildingDao = buildingDao;
-};
-
-/**
- * @returns {BuildingStandardDao}
- */
-SearchHandler.prototype.getBuildingDao = function() {
-	return this.buildingDao;
-};
-
-/**
- * @returns {ElementBuildingStandardDao}
- */
-SearchHandler.prototype.getElementBuildingDao = function() {
-	return this.elementBuildingDao;
-};
-
-// ... /GETTERS/SETTERS
-
 // ... GET
+
+/**
+ * @return {DaoContainer}
+ */
+SearchHandler.prototype.getDaoContainer = function() {
+	return this.daoContainer;
+};
 
 /**
  * @return {Number}
@@ -107,8 +71,7 @@ SearchHandler.prototype.searchBuilding = function(search, buildingId, simple) {
 	var context = this;
 
 	// Generate url
-	var url = Core.sprintf(SearchHandler.URI_SEARCH_TYPE, encodeURI(search), SearchHandler.TYPE_BUILDING, buildingId, this.getMode(), simple ? "&simple=true"
-			: "");
+	var url = Core.sprintf(SearchHandler.URI_SEARCH_TYPE, encodeURI(search), SearchHandler.TYPE_BUILDING, buildingId, this.getMode(), simple ? "&simple=true" : "");
 
 	// Do ajax
 	$.ajax({
@@ -132,9 +95,9 @@ SearchHandler.prototype.handleSearchResult = function(data) {
 	var isSimple = data.info ? data.info.simple : false;
 
 	if (!isSimple) {
-		this.getFacilityDao().addListToList(facilities);
-		this.getBuildingDao().addListToList(buildings);
-		this.getElementBuildingDao().addListToList(elements);
+		this.getDaoContainer().getFacilityDao().addListToList(facilities);
+		this.getDaoContainer().getBuildingDao().addListToList(buildings);
+		this.getDaoContainer().getElementBuildingDao().addListToList(elements);
 
 		this.getEventHandler().handle(new ResultSearchEvent({
 			"facilities" : facilities,
@@ -143,11 +106,11 @@ SearchHandler.prototype.handleSearchResult = function(data) {
 		}));
 	} else {
 		// TODO Woha.. ugly
-		this.getFacilityDao().getList(facilities, function(list) {
+		this.getDaoContainer().getFacilityDao().getList(facilities, function(list) {
 			var facilitiesRetrieved = list;
-			context.getBuildingDao().getList(buildings, function(list) {
+			context.getDaoContainer().getBuildingDao().getList(buildings, function(list) {
 				var buildingsRetrieved = list;
-				context.getElementBuildingDao().getList(elements, function(list) {
+				context.getDaoContainer().getElementBuildingDao().getList(elements, function(list) {
 					var elementsRetrieved = list;
 					context.getEventHandler().handle(new ResultSearchEvent({
 						"facilities" : facilitiesRetrieved,

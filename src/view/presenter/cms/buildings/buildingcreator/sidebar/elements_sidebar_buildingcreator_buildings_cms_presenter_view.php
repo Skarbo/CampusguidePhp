@@ -1,6 +1,6 @@
 <?php
 
-class ElementsSidebarBuildingcreatorBuildingsCmsPresenterView extends SidebarBuildingcreatorBuildingsCmsPresenterView
+class ElementsSidebarBuildingcreatorBuildingsCmsPresenterView extends PresenterView
 {
 
     // VARIABLES
@@ -18,122 +18,119 @@ class ElementsSidebarBuildingcreatorBuildingsCmsPresenterView extends SidebarBui
     // FUNCTIONS
 
 
-    // ... GET
-
-
     /**
-     * @see SidebarBuildingcreatorBuildingsCmsPresenterView::getSidebarGroups()
+     * @see AbstractPresenterView::draw()
      */
-    protected function getSidebarGroups()
+    public function draw( AbstractXhtml $root )
     {
-        return "elements";
+
     }
 
-    /**
-     * @see SidebarBuildingcreatorBuildingsCmsPresenterView::getSidebarType()
-     */
-    protected function getSidebarType()
+    public static function drawElementType( AbstractXhtml $root, $elementType, $elementTypeGroup, FloorBuildingListModel $buildingFloors, ElementBuildingListModel $buildingElements )
     {
-        return "elements";
-    }
+        $wrapper = Xhtml::div()->class_( "element_group_wrapper", Resource::css()->getHide() )->attr(
+                "data-element-type", $elementType );
 
-    // ... /GET
+        // Room type header
+        $typeGroupHeader = Xhtml::div()->class_( "type_group_header_wrapper" );
+        $typeGroupHeader->addContent(
+                Xhtml::div(
+                        Xhtml::img(
+                                Resource::image()->building()->element()->getType( $elementType, "#333333", "#333333" ) ) ) );
+        $typeGroupHeader->addContent(
+                Xhtml::h( 2, DefaultLocale::instance()->building()->element()->getType( $elementType ) ) );
+        $wrapper->addContent( $typeGroupHeader );
 
-
-    /**
-     * @see SidebarBuildingcreatorBuildingsCmsPresenterView::drawHeader()
-     */
-    protected function drawHeader( AbstractXhtml $root )
-    {
-        $root->addContent( Xhtml::h( 1, "Elements" ) );
-        $root->addContent( Xhtml::span( $this->getBuildingElements()->size() ) );
-    }
-
-    /**
-     * @see SidebarBuildingcreatorBuildingsCmsPresenterView::drawContent()
-     */
-    protected function drawContent( AbstractXhtml $root )
-    {
-        $table = Xhtml::table()->class_( "elements" );
+        $table = Xhtml::table()->class_( "elements_table" );
 
         // Floors
-        for ( $this->getBuildingFloors()->rewind(); $this->getBuildingFloors()->valid(); $this->getBuildingFloors()->next() )
+        for ( $buildingFloors->rewind(); $buildingFloors->valid(); $buildingFloors->next() )
         {
-            $floor = $this->getBuildingFloors()->current();
-            $elements = $this->getBuildingElements()->getFloor( $floor->getId() );
+            $floor = $buildingFloors->current();
 
-            $tableBody = Xhtml::tbody()->attr( "data-floor", $floor->getId() )->class_( Resource::css()->getHide() );
-            for ( $elements->rewind(); $elements->valid(); $elements->next() )
-            {
-                $element = $elements->current();
+            $floorId = $floor->getId();
+            $elements = $buildingElements->filter(
+                    function ( ElementBuildingModel $element ) use($floorId, $elementType, $elementTypeGroup )
+                    {
+                        return $element->getFloorId() == $floorId && $element->getType() == $elementType && $element->getTypeGroup() == $elementTypeGroup;
+                    } );
 
-                $tableRow = Xhtml::tr()->attr( "data-element", $element->getId() )->class_( "element" );
-
-                // Element id
-                $tableRow->addContent(
-                        Xhtml::td( sprintf( "#%s", $element->getId() ) )->class_( "id" )->title(
-                                sprintf( "Id #%s", $element->getId() ) ) );
-
-                // Element name
-                $tableRow->addContent(
-                        Xhtml::td( $element->getName() ? $element->getName() : Xhtml::italic( "(Unnamed)" ) )->class_(
-                                "name", "show" )->title( "Name" ) );
-
-                // Element name edit
-                $tableRow->addContent(
-                        Xhtml::td(
-                                Xhtml::input( $element->getName(), "element_name" )->placeholder( "Name" )->attr(
-                                        "data-value", $element->getName() ) )->class_( "name", "edit",
-                                Resource::css()->getHide() )->title( "Name" ) );
-
-                // Element type
-                //                 $typesSelect = Xhtml::div()->class_("element_type_dropdown")->attr("data-name", "element_type");
-                //                 $typesSelect->addContent( Xhtml::div( Xhtml::img()->src(Resource::image()->icon()->getRoomClassSvg()) )->attr("data-value", "class") );
-                //                 $typesSelect->addContent( Xhtml::div( Xhtml::img()->src(Resource::image()->icon()->getRoomAuditoriumSvg()) )->attr("data-value", "auditorium") );
-                //                 $tableRow->addContent(Xhtml::td($typesSelect)->addClass("type"));
-                $tableRow->addContent(
-                        Xhtml::td(
-                                Xhtml::img(
-                                        $element->getType() ? Resource::image()->icon()->getRoomSvg(
-                                                $element->getType() ) : Resource::image()->getEmptyImage(),
-                                        $element->getType() )->title( $element->getType() ) )->addClass( "type", "show" ) );
-
-                $typeSelect = Xhtml::select()->name( "element_type" )->attr( "data-value", $element->getType() );
-                $typeSelect->addContent( Xhtml::option( "", "" ) );
-                foreach ( ElementBuildingModel::$TYPES_ROOM as $typeRoom )
-                {
-                    $typeSelect->addContent(
-                            Xhtml::option( $typeRoom, $typeRoom )->selected( $typeRoom == $element->getType() ) );
-                }
-                $tableRow->addContent(
-                        Xhtml::td( $typeSelect )->addClass( "type", "edit", Resource::css()->getHide() ) );
-
-                $tableBody->addContent( $tableRow );
-            }
-
-            if ( $elements->isEmpty() )
-            {
-                $tableBody->addContent( Xhtml::tr( Xhtml::td( Xhtml::italic( "No elements" ) )->colspan( 4 ) ) );
-            }
-
-            $table->addContent( $tableBody );
+            self::drawElementTypeFloor( $table, $floor, $elements );
         }
 
-        // Javascript element room type
-        $javascriptViewClass = $this->getController()->getJavascriptView();
-        $scriptElementTypeImgs = Xhtml::script( sprintf( "%s.ELEMENT_TYPE_ROOMS = {};\n", $javascriptViewClass ) )->addContent(
-                implode( "\n",
-                        array_map(
-                                function ( $type ) use($javascriptViewClass )
-                                {
-                                    return sprintf( "%s.ELEMENT_TYPE_ROOMS.%s = '%s';", $javascriptViewClass, $type,
-                                            Resource::image()->icon()->getRoomSvg( $type ) );
-                                }, array_merge( ElementBuildingModel::$TYPES_ROOM, array ( "empty" ) ) ) ) )->type(
-                ScriptXhtml::$TYPE_JAVASCRIPT );
+        $wrapper->addContent( $table );
+        $root->addContent( $wrapper );
+    }
 
-        $root->addContent( $scriptElementTypeImgs );
-        $root->addContent( $table );
-        // Test
+    private static function drawElementTypeFloor( AbstractXhtml $table, FloorBuildingModel $floor, ElementBuildingListModel $elements )
+    {
+        $tableBody = Xhtml::tbody()->attr( "data-floor", $floor->getId() )->class_( Resource::css()->getHide() );
+        for ( $elements->rewind(); $elements->valid(); $elements->next() )
+        {
+            $element = $elements->current();
+            self::drawElementTypeFloorElement( $tableBody, $element );
+        }
+
+        if ( $elements->isEmpty() )
+        {
+            $tableBody->addContent( Xhtml::tr( Xhtml::td( Xhtml::italic( "No elements" ) )->colspan( 4 ) ) );
+        }
+
+        $table->addContent( $tableBody );
+    }
+
+    private static function drawElementTypeFloorElement( AbstractXhtml $tableBody, ElementBuildingModel $element )
+    {
+        $tableRow = Xhtml::tr()->attr( "data-element", $element->getId() )->attr("data-element-type", $element->getType() )->attr("data-element-type-group", $element->getTypeGroup() )->attr("data-element-edit", "true")->class_( "element" );
+
+        // Element id
+        $tableRow->addContent(
+                Xhtml::td( sprintf( "#%s", $element->getId() ) )->class_( "id" )->title(
+                        sprintf( "Id #%s", $element->getId() ) ) );
+
+        // Element type
+        $elementTypeInput = Xhtml::input( $element->getType(), "element_type" )->type(
+                InputXhtml::$TYPE_HIDDEN )->attr( "data-value", $element->getType() );
+
+        // Element name
+        $elementNameDiv = Xhtml::div(
+                Xhtml::input( $element->getName(), "element_name" )->placeholder( "Name" )->readonly( true )->attr(
+                        "data-value", $element->getName() ) )->class_( "input_wrapper" );
+
+        // Element name edit
+        $tableRow->addContent(
+                Xhtml::td( $elementNameDiv )->addContent( $elementTypeInput )->class_( "name" )->title( "Name" ) );
+
+        // Element infopanel
+        $elementInforpanelDiv = Xhtml::div(
+                Xhtml::img( Resource::image()->icon()->getOptionsSvg( "#333333", "#333333" ) ) );
+        $tableRow->addContent( Xhtml::td( $elementInforpanelDiv )->class_( "infopanel" )->title( "Infopanel" ) );
+
+        // Element focus
+        $elementInforpanelDiv = Xhtml::div(
+                Xhtml::img( Resource::image()->icon()->getSearchSvg( "#333333", "#333333" ) ) );
+        $tableRow->addContent( Xhtml::td( $elementInforpanelDiv )->class_( "focus" )->title( "Focus" ) );
+
+        $tableBody->addContent( $tableRow );
+    }
+
+    public static function drawInfoPanelName()
+    {
+        $table = Xhtml::table()->class_( "element_name_table" );
+        $row = Xhtml::tr()->class_( "element_name_input_wrapper", "template" );
+        $row->addContent(
+                Xhtml::td(
+                        Xhtml::div( Xhtml::input( "", "element_name" )->placeholder( "Name" ) )->class_( "input_wrapper" ) ) );
+        $row->addContent( Xhtml::td( Xhtml::a( Xhtml::img(Resource::image()->icon()->getCrossSvg("#333333", "#333333"), "Remove"), "#" )->title("Remove")->class_( "element_name_remove" ) ) );
+        $table->addContent( $row );
+
+        $elementNameContent = Xhtml::div()->class_( "element_name_wrapper" );
+        $elementNameContent->addContent( $table );
+        $elementNameContent->addContent( Xhtml::a( "Add name", "#" )->class_( "element_name_add" ) );
+
+        $elementNameContent->addContent( Xhtml::input( "", "element_id" )->type( InputXhtml::$TYPE_HIDDEN ) );
+
+        return $elementNameContent;
     }
 
     // /FUNCTIONS

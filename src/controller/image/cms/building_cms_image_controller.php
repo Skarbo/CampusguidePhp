@@ -37,9 +37,7 @@ class BuildingCmsImageController extends CmsImageController
     public function __construct( Api $api, View $view )
     {
         parent::__construct( $api, $view );
-        $this->setQueueHandler(
-                new QueueHandler( $this->getDaoContainer(),
-                        new QueueValidator( $this->getLocale() ) ) );
+        $this->setQueueHandler( new QueueHandler( $this->getDaoContainer(), new QueueValidator( $this->getLocale() ) ) );
 
         $this->setFloors( new FloorBuildingListModel() );
     }
@@ -124,13 +122,13 @@ class BuildingCmsImageController extends CmsImageController
         switch ( self::getTypeURI() )
         {
             case self::$TYPE_MAP :
-                $imagePath = Resource::image()->building()->getBuildingMap(
-                        $this->getBuilding()->getId(), $this->getMode(), $width, $height );
+                $imagePath = Resource::image()->building()->getBuildingMap( $this->getBuilding()->getId(),
+                        $this->getMode(), $width, $height );
                 break;
 
             default :
-                $imagePath = Resource::image()->building()->getBuildingOverview(
-                        $this->getBuilding()->getId(), $this->getMode(), $width, $height );
+                $imagePath = Resource::image()->building()->getBuildingOverview( $this->getBuilding()->getId(),
+                        $this->getMode(), $width, $height );
                 break;
         }
 
@@ -141,7 +139,7 @@ class BuildingCmsImageController extends CmsImageController
     public function getImage()
     {
         $imagePath = $this->getImagePath();
-DebugHandler::doDebug( DebugHandler::LEVEL_LOW, new DebugException( "Get image", $imagePath ) );
+
         if ( file_exists( $imagePath ) )
         {
             return $imagePath;
@@ -182,8 +180,8 @@ DebugHandler::doDebug( DebugHandler::LEVEL_LOW, new DebugException( "Get image",
     {
         list ( $width, $height ) = self::getSizeWidthSize();
 
-        $buildingMapImage = Resource::image()->building()->getBuildingMap(
-                $this->getBuilding()->getId(), $this->getMode(), $width, $height );
+        $buildingMapImage = Resource::image()->building()->getBuildingMap( $this->getBuilding()->getId(),
+                $this->getMode(), $width, $height );
 
         if ( file_exists( $buildingMapImage ) )
         {
@@ -203,10 +201,10 @@ DebugHandler::doDebug( DebugHandler::LEVEL_LOW, new DebugException( "Get image",
      */
     private function isBuildingMapCache()
     {
-        // Don't cache if no Building location or position
+        // Don't cache if no Building location, position or overlay
         $location = $this->getBuilding()->getLocation();
         $position = Core::arrayAt( $this->getBuilding()->getPosition(), 3, array () );
-        if ( empty( $location ) && empty( $position ) )
+        if ( empty( $location ) && empty( $position ) && !$this->getBuilding()->getOverlay() )
         {
             return false;
         }
@@ -214,7 +212,7 @@ DebugHandler::doDebug( DebugHandler::LEVEL_LOW, new DebugException( "Get image",
         $buildingMapModified = $this->getBuildingMapModified();
 
         // Return true if modified or never cached
-        return !$buildingMapModified || $buildingMapModified < $this->getBuilding()->getLastModified();
+        return !$buildingMapModified || $buildingMapModified < $this->getLastModified(); //$this->getBuilding()->getLastModified();
     }
 
     // ... /IS
@@ -296,12 +294,21 @@ DebugHandler::doDebug( DebugHandler::LEVEL_LOW, new DebugException( "Get image",
         $positionCenter = Core::arrayAt( $this->getBuilding()->getPosition(), 3, array () );
         $coordinates = !empty( $positionCenter ) ? $positionCenter : $location;
 
-        if ( empty( $coordinates ) )
-            return null;
-
         list ( $width, $height ) = self::getSizeWidthSize();
 
-        return Resource::image()->building()->getBuildingMapUrl( $coordinates, $width, $height );
+        $buildingMapUrl = null;
+        if ( $this->getBuilding()->getOverlay() )
+        {
+            $buildingMapUrl = Resource::image()->building()->getBuildingMapOverlayUrl(
+                    explode( BuildingModel::$OVERLAY_SPLITTER, $this->getBuilding()->getOverlay() ), $width, $height );
+        }
+        else if ( !empty( $coordinates ) )
+        {
+            $buildingMapUrl = Resource::image()->building()->getBuildingMapUrl( $coordinates, $width, $height );
+        }
+        DebugHandler::doDebug( DebugHandler::LEVEL_LOW, new DebugException( "Building map url", $buildingMapUrl ) );
+        return $buildingMapUrl;
+
     }
 
     // ... /CREATE
@@ -324,8 +331,7 @@ DebugHandler::doDebug( DebugHandler::LEVEL_LOW, new DebugException( "Get image",
 
         // Set Floors
         $this->setFloors(
-                $this->getDaoContainer()->getFloorBuildingDao()->getForeign(
-                        array ( $this->getBuilding()->getId() ) ) );
+                $this->getDaoContainer()->getFloorBuildingDao()->getForeign( array ( $this->getBuilding()->getId() ) ) );
 
         // Set Building map url
         $this->buildingMapUrl = $this->createBuildingMapUrl();

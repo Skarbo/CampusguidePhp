@@ -1,7 +1,6 @@
 <?php
 
-class BuildingsCmsMainController extends CmsMainController implements BuildingsCmsInterfaceView, BuildingcreatorBuildingsCmsInterfaceView
-{
+class BuildingsCmsMainController extends CmsMainController implements BuildingsCmsInterfaceView, BuildingcreatorBuildingsCmsInterfaceView, BuildingBuildingsCmsInterfaceView, DeleteBuildingBuildingsCmsInterfaceView {
 
     // VARIABLES
 
@@ -13,7 +12,6 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
     const PAGE_MAP = "map";
     const PAGE_BUILDING = "building";
     const PAGE_BUILDINGCREATOR = "buildingcreator";
-    const PAGE_FLOORPLANNER = "floorplanner";
 
     const SUCCESS_BUILDING_ADDED = "building_added";
     const SUCCESS_BUILDING_EDITED = "building_edited";
@@ -27,7 +25,7 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
     private $building;
     /**
      * @var FloorBuildingListModel
-     */
+     *
     private $buildingFloors;
     /**
      * @var ElementBuildingListModel
@@ -68,16 +66,16 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
     // CONSTRUCTOR
 
 
-    public function __construct( Api $api, View $view )
-    {
+    public function __construct( Api $api, View $view ) {
         parent::__construct( $api, $view );
         $this->setFacilities( new FacilityListModel() );
         $this->setBuildingValidator( new BuildingValidator( $this->getLocale() ) );
         $this->setFloorBuildingValidator( new FloorBuildingValidator( $this->getLocale() ) );
 
-        $this->setBuilding( BuildingFactoryModel::createBuilding( "", 0 ) );
-        $this->setBuildingFloors( FloorBuildingFactoryModel::createFloorBuilding( 0, "", 0, array () ) );
+        //$this->setBuilding( BuildingFactoryModel::createBuilding( "", 0 ) );
+        $this->setBuildingFloors( new FloorBuildingListModel() );
         $this->setBuildingElements( new ElementBuildingListModel() );
+        $this->setBuildings( new BuildingListModel() );
 
         $this->setFloorBuildingHandler(
                 new FloorBuildingHandler( $this->getDaoContainer()->getFloorBuildingDao(),
@@ -96,160 +94,140 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
     /**
      * @return BuildingModel
      */
-    public function getBuilding()
-    {
+    public function getBuilding() {
         return $this->building;
     }
 
     /**
      * @param BuildingModel $building
      */
-    private function setBuilding( BuildingModel $building )
-    {
+    private function setBuilding( BuildingModel $building ) {
         $this->building = $building;
     }
 
     /**
      * @return FloorBuildingListModel
      */
-    public function getBuildingFloors()
-    {
+    public function getBuildingFloors() {
         return $this->buildingFloors;
     }
 
     /**
      * @param FloorBuildingListModel $buildingFloors
      */
-    private function setBuildingFloors( FloorBuildingListModel $buildingFloors )
-    {
+    private function setBuildingFloors( FloorBuildingListModel $buildingFloors ) {
         $this->buildingFloors = $buildingFloors;
     }
 
     /**
      * @return BuildingModel
      */
-    public function getBuildingAdmin()
-    {
+    public function getBuildingAdmin() {
         return $this->buildingAdmin;
     }
 
     /**
      * @param BuildingModel $buildingAdmin
      */
-    public function setBuildingAdmin( BuildingModel $buildingAdmin )
-    {
+    public function setBuildingAdmin( BuildingModel $buildingAdmin ) {
         $this->buildingAdmin = $buildingAdmin;
     }
 
     /**
      * @return BuildingListModel
      */
-    public function getBuildings()
-    {
+    public function getBuildings() {
         return $this->buildings;
     }
 
     /**
      * @param BuildingListModel $buildings
      */
-    public function setBuildings( BuildingListModel $buildings )
-    {
+    public function setBuildings( BuildingListModel $buildings ) {
         $this->buildings = $buildings;
     }
 
     /**
      * @see BuildingcreatorBuildingsCmsInterfaceView::getBuildingElements()
      */
-    public function getBuildingElements()
-    {
+    public function getBuildingElements() {
         return $this->buildingElements;
     }
 
     /**
      * @param ElementBuildingListModel $buildingElements
      */
-    public function setBuildingElements( ElementBuildingListModel $buildingElements )
-    {
+    public function setBuildingElements( ElementBuildingListModel $buildingElements ) {
         $this->buildingElements = $buildingElements;
     }
 
     /**
      * @return FacilityModel
      */
-    public function getFacility()
-    {
+    public function getFacility() {
         return $this->facility;
     }
 
     /**
      * @param FacilityModel $facility
      */
-    public function setFacility( FacilityModel $facility )
-    {
+    public function setFacility( FacilityModel $facility ) {
         $this->facility = $facility;
     }
 
     /**
      * @return FacilityListModel
      */
-    public function getFacilities()
-    {
+    public function getFacilities() {
         return $this->facilities;
     }
 
     /**
      * @param FacilityListModel $facilities
      */
-    public function setFacilities( FacilityListModel $facilities )
-    {
+    public function setFacilities( FacilityListModel $facilities ) {
         $this->facilities = $facilities;
     }
 
     /**
      * @return BuildingValidator
      */
-    public function getBuildingValidator()
-    {
+    public function getBuildingValidator() {
         return $this->buildingValidator;
     }
 
     /**
      * @param BuildingValidator $buildingValidator
      */
-    public function setBuildingValidator( BuildingValidator $buildingValidator )
-    {
+    public function setBuildingValidator( BuildingValidator $buildingValidator ) {
         $this->buildingValidator = $buildingValidator;
     }
 
     /**
      * @return FloorBuildingValidator
      */
-    public function getFloorBuildingValidator()
-    {
+    public function getFloorBuildingValidator() {
         return $this->floorBuildingValidator;
     }
 
     /**
      * @param FloorBuildingValidator $floorBuildingValidator
      */
-    public function setFloorBuildingValidator( FloorBuildingValidator $floorBuildingValidator )
-    {
+    public function setFloorBuildingValidator( FloorBuildingValidator $floorBuildingValidator ) {
         $this->floorBuildingValidator = $floorBuildingValidator;
     }
 
     /**
      * @return FloorBuildingHandler
      */
-    private function getFloorBuildingHandler()
-    {
+    private function getFloorBuildingHandler() {
         return $this->floorBuildingHandler;
     }
 
     /**
      * @param FloorBuildingHandler $buildingFloorsHandler
      */
-    private function setFloorBuildingHandler( FloorBuildingHandler $buildingFloorsHandler )
-    {
+    private function setFloorBuildingHandler( FloorBuildingHandler $buildingFloorsHandler ) {
         $this->floorBuildingHandler = $buildingFloorsHandler;
     }
 
@@ -262,48 +240,42 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
     /**
      * @see CmsMainController::getTitle()
      */
-    public function getTitle()
-    {
+    public function getTitle() {
         return sprintf( "%s - %s", "Buildings", parent::getTitle() );
     }
 
     /**
      * @see MainController::getControllerName()
      */
-    public function getControllerName()
-    {
+    public function getControllerName() {
         return self::$CONTROLLER_NAME;
     }
 
     /**
      * @see CmsMainController::getJavascriptController()
      */
-    public function getJavascriptController()
-    {
+    public function getJavascriptController() {
         return "BuildingsCmsMainController";
     }
 
     /**
      * @see CmsMainController::getJavascriptView()
      */
-    public function getJavascriptView()
-    {
+    public function getJavascriptView() {
         return "BuildingsCmsMainView";
     }
 
     /**
      * @see CmsMainController::getViewWrapperId()
      */
-    protected function getViewWrapperId()
-    {
+    protected function getViewWrapperId() {
         return BuildingsCmsMainView::$ID_CMS_BUILDINGS_WRAPPER;
     }
 
     /**
      * @return string Type given i URI, null if none given
      */
-    protected static function getType()
-    {
+    protected static function getType() {
         return self::getURI( self::URI_TYPE );
     }
 
@@ -312,35 +284,25 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
 
     // ... IS
 
+
     /**
      * @return boolean True if page is building
      */
-    public function isPageBuilding()
-    {
+    public function isPageBuilding() {
         return self::getPage() == self::PAGE_BUILDING;
     }
 
     /**
      * @return boolean True if page is buildingcreator
      */
-    public function isPageBuildingcreator()
-    {
+    public function isPageBuildingcreator() {
         return self::getPage() == self::PAGE_BUILDINGCREATOR;
-    }
-
-    /**
-     * @return boolean True if page is floorplanner
-     */
-    public function isPageFloorplanner()
-    {
-        return self::getPage() == self::PAGE_FLOORPLANNER;
     }
 
     /**
      * @return boolean True if type is floors
      */
-    public function isTypeFloors()
-    {
+    public function isTypeFloors() {
         return self::getType() == self::TYPE_FLOORS;
     }
 
@@ -355,8 +317,7 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
      *
      * @return FloorBuildingListModel
      */
-    private function createFloorsPost()
-    {
+    private function createFloorsPost() {
 
         $namePost = Core::arrayAt( self::getPost(), "floor_name", array () );
         $mapPost = Core::arrayAt( self::getPost(), "floor_map", array () );
@@ -366,10 +327,8 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
 
         $floors = new FloorBuildingListModel();
 
-        foreach ( $namePost as $id => $name )
-        {
-            if ( array_search( $id, $deletePost ) !== false )
-            {
+        foreach ( $namePost as $id => $name ) {
+            if ( array_search( $id, $deletePost ) !== false ) {
                 continue;
             }
 
@@ -377,8 +336,7 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
                     $orderPost[ $id ], array (), $mainPost == $id );
             $floor->setId( $id );
 
-            if ( $floor->getId() == "new" && !$floor->getName() )
-            {
+            if ( $floor->getId() == "new" && !$floor->getName() ) {
                 continue;
             }
 
@@ -398,25 +356,25 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
     /**
      * Do overview page
      */
-    private function doOverviewPage()
-    {
+    private function doOverviewPage() {
 
         // Set Buildings
         $this->setBuildings( $this->getDaoContainer()->getBuildingDao()->getAll() );
 
-        // Get Facilit ids
+        // Set Buildings Facilities
         $facilityIds = $this->getBuildings()->getForeignIds();
-
-        // Set Buildings' Facilities
         $this->setFacilities( $this->getDaoContainer()->getFacilityDao()->getList( $facilityIds ) );
+
+        // Set Buildings Floors
+        $buildingIds = $this->getBuildings()->getIds();
+        $this->setBuildingFloors( $this->getDaoContainer()->getFloorBuildingDao()->getForeign( $buildingIds ) );
 
     }
 
     /**
      * Do Building page
      */
-    private function doBuildingPage()
-    {
+    private function doBuildingPage() {
 
         // Get Building id
         $buildingId = self::getId();
@@ -425,25 +383,26 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
         $this->setBuilding( $this->getDaoContainer()->getBuildingDao()->get( $buildingId ) );
 
         // Set Facility
-        if ( $this->getBuilding() )
-        {
-            $this->setFacility( $this->getDaoContainer()->getFacilityDao()->get( $this->getBuilding()->getFacilityId() ) );
+        if ( $this->getBuilding() ) {
+            $this->setFacility(
+                    $this->getDaoContainer()->getFacilityDao()->get( $this->getBuilding()->getFacilityId() ) );
         }
 
         // View action
-        if ( $this->isActionView() )
-        {
+        if ( $this->isActionView() ) {
             $this->doBuildingViewAction();
         }
         // New action
-        else if ( $this->isActionNew() )
-        {
+        else if ( $this->isActionNew() ) {
             $this->doBuildingNewAction();
         }
         // Edit action
-        else if ( $this->isActionEdit() )
-        {
+        else if ( $this->isActionEdit() ) {
             $this->doBuildingEditAction();
+        }
+        // Delete action
+        else if ( $this->isActionDelete() ) {
+            $this->doBuildingDeleteAction();
         }
 
     }
@@ -456,8 +415,11 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
      *
      * @throws BadrequestException
      */
-    private function doBuildingViewAction()
-    {
+    private function doBuildingViewAction() {
+
+        // Set Building Floors
+        $this->setBuildingFloors(
+                $this->getDaoContainer()->getFloorBuildingDao()->getForeign( array ( $this->getBuilding()->getId() ) ) );
 
     }
 
@@ -466,10 +428,8 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
      *
      * @throws ValidatorException
      */
-    private function doBuildingAdminAction()
-    {
+    private function doBuildingAdminAction() {
 
-        // TODO: Remove Building coordinates
         // Create Building admin from POSt
         $this->setBuildingAdmin(
                 BuildingFactoryModel::createBuilding(
@@ -477,14 +437,15 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
                         Core::arrayAt( self::getPost(), Resource::db()->building()->getFieldFacilityId() ),
                         Core::arrayAt( self::getPost(), Resource::db()->building()->getFieldAddress() ),
                         Core::arrayAt( self::getPost(), Resource::db()->building()->getFieldPosition() ),
-                        Core::arrayAt( self::getPost(), Resource::db()->building()->getFieldLocation() ) ) );
+                        Core::arrayAt( self::getPost(), Resource::db()->building()->getFieldLocation() ),
+                        Core::arrayAt( self::getPost(), Resource::db()->building()->getFieldOverlay() ) ) );
 
         // Validate Building Facility
-        $facility = $this->getDaoContainer()->getFacilityDao()->get( $this->getBuildingAdmin()->getFacilityId() );
+        $facility = $this->getDaoContainer()->getFacilityDao()->get(
+                $this->getBuildingAdmin()->getFacilityId() );
 
         // Facility must exist
-        if ( !$facility )
-        {
+        if ( !$facility ) {
             $this->getBuildingAdmin()->setFacilityId( null );
         }
 
@@ -498,8 +459,7 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
      *
      * @throws BadrequestException
      */
-    private function doBuildingNewAction()
-    {
+    private function doBuildingNewAction() {
 
         // Set empty Building as admin Building
         $this->setBuildingAdmin( BuildingFactoryModel::createBuilding( "", 0 ) );
@@ -508,8 +468,7 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
         $this->setFacilities( $this->getDaoContainer()->getFacilityDao()->getAll() );
 
         // Is POST
-        if ( self::isPost() )
-        {
+        if ( self::isPost() ) {
 
             // Do Building admin action
             $this->doBuildingAdminAction();
@@ -520,8 +479,7 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
 
             // Redirect
             self::redirect(
-                    Resource::url()->cms()->building()->getViewBuildingPage( $buildingId,
-                            $this->getMode(),
+                    Resource::url()->cms()->buildings()->getViewBuildingPage( $buildingId, $this->getMode(),
                             Resource::url()->cms()->getSuccessQuery( self::SUCCESS_BUILDING_ADDED ) ) );
 
         }
@@ -533,12 +491,10 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
      *
      * @throws BadrequestException
      */
-    private function doBuildingEditAction()
-    {
+    private function doBuildingEditAction() {
 
         // Building must exist
-        if ( !$this->getBuilding() )
-        {
+        if ( !$this->getBuilding() ) {
             throw new BadrequestException( sprintf( "Building \"%d\" does not exist", self::getId() ) );
         }
 
@@ -546,53 +502,62 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
         $this->setBuildingAdmin( $this->getBuilding() );
 
         // Set all Facilities
-        $this->setFacilities( $this->getFacilityDao()->getAll() );
+        $this->setFacilities( $this->getDaoContainer()->getFacilityDao()->getAll() );
 
         // Is POST
-        if ( self::isPost() )
-        {
+        if ( self::isPost() ) {
 
             // Do Building admin action
             $this->doBuildingAdminAction();
 
             // Edit Building
-            $this->getBuildingDao()->edit( $this->getBuilding()->getId(), $this->getBuildingAdmin(),
-                    $this->getBuildingAdmin()->getForeignId() );
+            $this->getDaoContainer()->getBuildingDao()->edit( $this->getBuilding()->getId(),
+                    $this->getBuildingAdmin(), $this->getBuildingAdmin()->getForeignId() );
 
             // Redirect
             self::redirect(
-                    Resource::url()->cms()->building()->getViewBuildingPage(
-                            $this->getBuilding()->getId(), $this->getMode(),
-                            Resource::url()->cms()->getSuccessQuery( self::SUCCESS_BUILDING_EDITED ) ) );
+                    Resource::url()->cms()->buildings()->getViewBuildingPage( $this->getBuilding()->getId(),
+                            $this->getMode(), Resource::url()->cms()->getSuccessQuery( self::SUCCESS_BUILDING_EDITED ) ) );
+
+        }
+
+    }
+
+    /**
+     * Do Building delete action
+     *
+     * @throws BadrequestException
+     */
+    private function doBuildingDeleteAction() {
+
+        // Id's must be given
+        if ( !self::getIds() ) {
+            throw new BadrequestException( "Building id's not given" );
+        }
+
+        // Set Buildings
+        $this->setBuildings( $this->getDaoContainer()->getBuildingDao()->getList( self::getIds() ) );
+
+        // Is POST
+        if ( self::isPost() ) {
+
+            // Delete Buildings
+            for ( $this->getBuildings()->rewind(); $this->getBuildings()->valid(); $this->getBuildings()->next() ) {
+                $building = $this->getBuildings()->current();
+
+                $this->getDaoContainer()->getBuildingDao()->remove( $building->getId() );
+            }
+
+            // Redirect
+            AbstractController::redirect(
+                    Resource::url()->cms()->buildings()->getOverviewPage( $this->getMode(),
+                            Resource::url()->cms()->getSuccessQuery( self::SUCCESS_BUILDING_DELETED ) ) );
 
         }
 
     }
 
     // ... ... /BUILDING
-
-
-    // ... ... FLOORPLANNER
-
-
-    /**
-     * Do Floorplanner page
-     */
-    private function doFloorplannerPage()
-    {
-
-        // Get Building
-        $this->setBuilding( $this->getBuildingDao()->get( self::getId() ) );
-
-        // Building must exist
-        if ( !$this->getBuilding() )
-        {
-            throw new BadrequestException( "Building does not exist" );
-        }
-
-    }
-
-    // ... ... /FLOORPLANNER
 
 
     // ... ... BUILDINGCREATOR
@@ -603,22 +568,23 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
      *
      * @throws BadrequestException
      */
-    private function doBuildingcreatorPage()
-    {
+    private function doBuildingcreatorPage() {
 
         // Get Building
         $this->setBuilding( $this->getDaoContainer()->getBuildingDao()->get( self::getId() ) );
 
         // Building must exist
-        if ( !$this->getBuilding() )
-        {
+        if ( !$this->getBuilding() ) {
             throw new BadrequestException( "Building does not exist" );
         }
 
+        // Get Facility
+        $this->setFacility(
+                $this->getDaoContainer()->getFacilityDao()->get( $this->getBuilding()->getFacilityId() ) );
+
         // Get floors
         $this->setBuildingFloors(
-                $this->getDaoContainer()->getFloorBuildingDao()->getForeign(
-                        array ( $this->getBuilding()->getId() ) ) );
+                $this->getDaoContainer()->getFloorBuildingDao()->getForeign( array ( $this->getBuilding()->getId() ) ) );
 
         // Get Elements
         $this->setBuildingElements(
@@ -628,9 +594,7 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
 
 
         // Edit Floors
-        if ( self::isPost() && self::isActionEdit() && self::isTypeFloors() )
-        {
-
+        if ( self::isPost() && self::isActionEdit() ) {
             // Get created Floors from post
             $floors = $this->createFloorsPost();
 
@@ -643,8 +607,7 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
             // Delete floors
             $floorsDelete = Core::arrayAt( self::getPost(), "floor_delete", array () );
 
-            foreach ( $floorsDelete as $floorId )
-            {
+            foreach ( $floorsDelete as $floorId ) {
                 $this->getDaoContainer()->getFloorBuildingDao()->remove( $floorId );
             }
 
@@ -653,8 +616,7 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
                     $floors );
 
             // New floor
-            if ( $floorNew )
-            {
+            if ( $floorNew ) {
                 $floorNew = $this->getFloorBuildingHandler()->handleAddFloor( $this->getBuilding()->getId(), $floorNew );
             }
 
@@ -663,16 +625,13 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
 
             $floorsMaps = Core::arrayAt( self::getFiles(), "floor_map" );
             DebugHandler::doDebug( DebugHandler::LEVEL_LOW, new DebugException( "Floors maps", $floorsMaps ) );
-            if ( key_exists( "new", $floorsMaps ) )
-            {
+            if ( key_exists( "new", $floorsMaps ) ) {
                 $this->doMapFloor( $floorNew, $floorsMaps[ "new" ] );
             }
 
-            for ( $floors->rewind(); $floors->valid(); $floors->next() )
-            {
+            for ( $floors->rewind(); $floors->valid(); $floors->next() ) {
                 $floor = $floors->current();
-                if ( key_exists( $floor->getId(), $floorsMaps ) )
-                {
+                if ( key_exists( $floor->getId(), $floorsMaps ) ) {
                     $this->doMapFloor( $floor, $floorsMaps[ $floor->getId() ] );
                 }
             }
@@ -682,7 +641,7 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
 
             // Redirect
             self::redirect(
-                    Resource::url()->cms()->building()->getBuildingcreatorViewPage(
+                    Resource::url()->cms()->buildings()->buildingcreator()->getViewAction(
                             $this->getBuilding()->getId(), $this->getMode( true ) ) );
 
         }
@@ -692,24 +651,20 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
 
     }
 
-    private function doMapFloor( FloorBuildingModel $floor, array $floorFile )
-    {
-        if ( !$floorFile[ "name" ] )
-        {
+    private function doMapFloor( FloorBuildingModel $floor, array $floorFile ) {
+        if ( !$floorFile[ "name" ] ) {
             return false;
         }
 
-        if ( $floorFile[ "error" ] == UPLOAD_ERR_OK )
-        {
-            $floorMapPath = Resource::image()->building()->getBuildingFloorMap(
-                    $this->getBuilding()->getId(), $floor->getId(), $this->getMode() );
+        if ( $floorFile[ "error" ] == UPLOAD_ERR_OK ) {
+            $floorMapPath = Resource::image()->building()->getBuildingFloorMap( $this->getBuilding()->getId(),
+                    $floor->getId(), $this->getMode() );
 
             Core::createFolders( $floorMapPath );
 
             $moved = move_uploaded_file( $floorFile[ "tmp_name" ], $floorMapPath );
         }
-        else if ( $floorFile[ "error" ] != UPLOAD_ERR_NO_FILE )
-        {
+        else if ( $floorFile[ "error" ] != UPLOAD_ERR_NO_FILE ) {
             DebugHandler::doDebug( DebugHandler::LEVEL_HIGH,
                     new DebugException( "Floor error", $floor, $floorFile[ "error" ] ) );
         }
@@ -725,20 +680,17 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
     /**
      * @see CmsMainController::after()
      */
-    public function after()
-    {
+    public function after() {
         parent::after();
 
         // Add Google maps on building page, edit/new action
-        if ( $this->isPageBuilding() && ( $this->isActionNew() || $this->isActionEdit() ) )
-        {
+        if ( $this->isPageBuilding() && ( $this->isActionNew() || $this->isActionEdit() ) ) {
             $this->addJavascriptMap();
             $this->addJavascriptFile( Resource::javascript()->getJqueryHistoryApiFile() );
         }
 
         // Add Kinectic api, canvas
-        if ( ( $this->isPageFloorplanner() || $this->isPageBuildingcreator() ) && self::getId() )
-        {
+        if ( $this->isPageBuildingcreator() || $this->isPageBuilding() ) {
             $this->addJavascriptFile( Resource::javascript()->getKineticApiFile() );
             $this->addJavascriptFile( Resource::javascript()->getJavascriptCanvasFile( $this->getMode() ) );
         }
@@ -748,46 +700,33 @@ class BuildingsCmsMainController extends CmsMainController implements BuildingsC
     /**
      * @see AbstractController::request()
      */
-    public function request()
-    {
+    public function request() {
         parent::request();
 
-        try
-        {
+        try {
 
             // Page overview
-            if ( $this->isPageOverview() )
-            {
+            if ( $this->isPageOverview() ) {
                 $this->doOverviewPage();
             }
             // Page Building
-            else if ( $this->isPageBuilding() )
-            {
+            else if ( $this->isPageBuilding() ) {
                 $this->doBuildingPage();
             }
             // Building creator
-            else if ( $this->isPageBuildingcreator() )
-            {
+            else if ( $this->isPageBuildingcreator() ) {
                 $this->doBuildingcreatorPage();
             }
-            // Floor planner
-            else if ( $this->isPageFloorplanner() )
-            {
-                $this->doFloorplannerPage();
-            }
             // Bad request
-            else
-            {
+            else {
                 throw new BadrequestException( sprintf( "Page \"%s\" does not exist", self::getPage() ) );
             }
 
         }
-        catch ( BadrequestException $e )
-        {
+        catch ( BadrequestException $e ) {
             $this->addError( $e );
         }
-        catch ( ValidatorException $e )
-        {
+        catch ( ValidatorException $e ) {
             $this->addError( $e );
         }
 

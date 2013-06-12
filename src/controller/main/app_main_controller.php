@@ -117,27 +117,27 @@ abstract class AppMainController extends MainController
     // ... ADD
 
 
-    protected function addJavascriptMap()
-    {
+//     protected function addJavascriptMap()
+//     {
 
-        $code = <<<EOD
-$(document).ready(function() {
-	var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src = "%s";
-    document.body.appendChild(script);
-} );
+//         $code = <<<EOD
+// $(document).ready(function() {
+// 	var script = document.createElement("script");
+//     script.type = "text/javascript";
+//     script.src = "%s";
+//     document.body.appendChild(script);
+// } );
 
-function initMap()
-{
-    eventHandler.handle(new MapinitEvent());
-}
-EOD;
+// function initMap()
+// {
+//     eventHandler.handle(new MapinitEvent());
+// }
+// EOD;
 
-        $this->addJavascriptCode(
-                sprintf( $code, Resource::javascript()->getGoogleMapsApiUrl( Resource::getGoogleApiKey(), "initMap" ) ) );
+//         $this->addJavascriptCode(
+//                 sprintf( $code, Resource::javascript()->getGoogleMapsApiUrl( Resource::getGoogleApiKey(), "initMap" ) ) );
 
-    }
+//     }
 
     // ... /ADD
 
@@ -154,6 +154,7 @@ EOD;
         //$this->addJavascriptFile( Resource::javascript()->getJqueryDragApiFile() );
         $this->addJavascriptFile( Resource::javascript()->getJqueryHistoryApiFile() );
         $this->addJavascriptFile( Resource::javascript()->getJavascriptAppFile( $this->getMode() ) );
+        $this->addJavascriptFile( Resource::javascript()->getKineticApiFile() );
 
         // Add CSS files
         $this->addCssFile( Resource::css()->getCssAppFile() );

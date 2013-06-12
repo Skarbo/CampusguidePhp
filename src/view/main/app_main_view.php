@@ -18,6 +18,7 @@ abstract class AppMainView extends AbstractMainView
     public static $ID_MOBILE_BOTTOM_WRAPPER = "mobile_bottom_wrapper";
 
     private static $ID_SEARCH_OVERLAY = "search_overlay";
+    public static $ID_OVERLAY_TOAST = "overlay_toast";
 
     /**
      * @var ErrorAppPresenterView
@@ -31,6 +32,10 @@ abstract class AppMainView extends AbstractMainView
      * @var ActionbarAppPresenterView
      */
     private $actionbarPresenter;
+    /**
+     * @var OverlayAppPresenterView
+     */
+    private $toastOverlayPresenter;
 
     // /VARIABLES
 
@@ -79,6 +84,19 @@ abstract class AppMainView extends AbstractMainView
         $this->searchOverlayPresenter = $searchOverlayPresenter;
     }
 
+    /**
+     * @return OverlayAppPresenterView
+     */
+    public function getToastOverlayPresenter()
+    {
+        return $this->toastOverlayPresenter;
+    }
+
+    public function setToastOverlayPresenter( OverlayAppPresenterView $toastOverlayPresenter )
+    {
+        $this->toastOverlayPresenter = $toastOverlayPresenter;
+    }
+
     // ... /GETTERS/SETTERS
 
 
@@ -92,6 +110,15 @@ abstract class AppMainView extends AbstractMainView
     public function getController()
     {
         return parent::getController();
+    }
+
+    /**
+     * @see AbstractView::getLocale()
+     * @return DefaultLocale
+     */
+    public function getLocale()
+    {
+        return parent::getLocale();
     }
 
     /**
@@ -124,6 +151,7 @@ abstract class AppMainView extends AbstractMainView
         $this->setErrorPresenter( new ErrorAppPresenterView( $this ) );
         $this->setSearchOverlayPresenter( new OverlayAppPresenterView( $this ) );
         $this->actionbarPresenter = new ActionbarAppPresenterView( $this );
+        $this->setToastOverlayPresenter( new OverlayAppPresenterView( $this ) );
     }
 
     // ... DRAW
@@ -243,6 +271,14 @@ abstract class AppMainView extends AbstractMainView
 
         // Draw search overlay
         $this->drawOverlaySearch( $pageWrapper );
+
+        // Draw toast overlay
+        $this->getToastOverlayPresenter()->setId( self::$ID_OVERLAY_TOAST );
+        $this->getToastOverlayPresenter()->setTitle( "Toast title" );
+        $this->getToastOverlayPresenter()->setBody( "Toast body" );
+        $this->getToastOverlayPresenter()->setBackground( false );
+        $this->getToastOverlayPresenter()->setBottom( true );
+        $this->getToastOverlayPresenter()->draw( $pageWrapper );
 
         // Draw page
         if ( $this->getController()->getErrors() )
@@ -420,7 +456,9 @@ abstract class AppMainView extends AbstractMainView
         // ... Icon
         $searchResultTableCellIcon = Xhtml::td()->class_( "search_result_icon" );
         //$searchResultTableCellIcon->addContent( Xhtml::div()->attr( "data-icon", "home" ) );
-        $searchResultTableCellIcon->addContent( Xhtml::img(Resource::image()->icon()->getRoomAuditoriumSvg("#333333"))->style("height: 1.5em;") );
+        $elementType = Resource::image()->building()->element()->getType( "#333333" );
+		$searchResultTableCellIcon->addContent(
+                Xhtml::img( $elementType ? $elementType : Resource::image()->getEmptyImage() )->style( "height: 1.5em;" ) );
 
         // ... Title
         $searchResultTableCellTitle = Xhtml::td( "Element" )->class_( "search_result_title" );

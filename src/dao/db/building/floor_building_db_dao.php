@@ -109,7 +109,7 @@ class FloorBuildingDbDao extends StandardDbDao implements FloorBuildingDao
         if ( !Core::isEmpty( $model->getCoordinates() ) )
         {
             $fields[ Resource::db()->floorBuilding()->getFieldCoordinates() ] = ":coordinates";
-            $binds[ ":coordinates" ] = $model->getCoordinates();
+            $binds[ ":coordinates" ] = Resource::generateCoordinatesToString( $model->getCoordinates() );
         }
 
         if ( !$isInsert )
@@ -181,6 +181,27 @@ class FloorBuildingDbDao extends StandardDbDao implements FloorBuildingDao
         // Return executed
         return $result->isExecute();
 
+    }
+
+    /**
+     * @see FloorBuildingDao::getMainFloors()
+     */
+    public function getMainFloors( array $buildingIds )
+    {
+        list ( $fields, $values ) = SB::createIn( Resource::db()->floorBuilding()->getFieldBuildingId(), $buildingIds );
+
+        $selectQuery = $this->getSelectQuery();
+        $selectQuery->getQuery()->addWhere( SB::equ( Resource::db()->floorBuilding()->getFieldMain(), 1 ) );
+        $selectQuery->getQuery()->addWhere( SB::in( Resource::db()->floorBuilding()->getFieldBuildingId(), $fields ) );
+        $selectQuery->getQuery()->setGroupBy( Resource::db()->floorBuilding()->getFieldBuildingId() );
+        $selectQuery->getQuery()->setOrderBy(
+                array ( array ( Resource::db()->floorBuilding()->getFieldOrder(), SB::$ASC ) ) );
+
+        $selectQuery->addBind( $values );
+
+        $result = $this->getDbApi()->query( $selectQuery );
+
+        return $this->createList( $result->getRows() );
     }
 
     // /FUNCTIONS

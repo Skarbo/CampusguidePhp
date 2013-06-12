@@ -17,6 +17,7 @@ interface FloorBuildingDao extends StandardDao
 
     // FUNCTIONS
 
+
     /**
      * Set given Floor as main floor. Null if sets first Floor as main.
      *
@@ -26,6 +27,14 @@ interface FloorBuildingDao extends StandardDao
      * @throws DbException
      */
     public function setMainFloor( $buildingId, $id );
+
+    /**
+     * Main floors for given Buildings
+     *
+     * @param array $buildingIds
+     * @return FloorBuildingListModel
+     */
+    public function getMainFloors( array $buildingIds );
 
     // /FUNCTIONS
 

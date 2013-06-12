@@ -1,58 +1,36 @@
 // CONSTRUCTOR
-CanvasPresenterView.prototype = new PresenterView();
+CanvasPresenterView.prototype = new AbstractPresenterView();
 
 function CanvasPresenterView(view) {
-	PresenterView.apply(this, arguments);
-
-	this.building = null;
-	this.floors = {};
-	this.elements = {};
+	AbstractPresenterView.apply(this, arguments);
 
 	this.stage = null;
-	this.stageScale = 1.0;
-	this.stagePosition = {
-		x : 0,
-		y : 0
-	};
 
-	this.layers = {
-		floors : {},
-		elements : {}
+	this.bound = {
+		height : 0,
+		width : 0
 	};
-	this.groups = {
-		floors : {},
-		elements : {}
-	};
-	this.polygons = {
-		floors : {},
-		elements : {}
-	};
+	this.bounds = [];
 
-	this.selected = {
-		type : null,
-		element : null
-	};
-	this.selectedCopy = this.selected;
-	this.history = [];
+	this.layers = {};
+	this.groups = {};
+	this.elements = {};
 
 	this.mode = CanvasPresenterView.MODE_SHOW;
-	this.type = CanvasPresenterView.TYPE_FLOORS;
-	this.types = [ CanvasPresenterView.TYPE_FLOORS ];
-	this.floorSelected = false;
-	this.stageIsDragging = false;
-	this.polygonsIsDraggable = false;
+	this.levelSelected = null;
+	this.levelAnimate = false;
 };
 
 // VARIABLES
 
 CanvasPresenterView.SCALE_SIZE = 0.05;
 
-CanvasPresenterView.TYPE_FLOORS = "floors";
-CanvasPresenterView.TYPE_ELEMENTS = "elements";
-CanvasPresenterView.TYPE_NAVIGATION = "navigation";
-
 CanvasPresenterView.MODE_SHOW = "show";
 CanvasPresenterView.MODE_EDIT = "edit";
+
+CanvasPresenterView.Z_INDEX_BOUND = 0;
+
+CanvasPresenterView.LOCAL_VARIABLE_STAGE_SETTINGS = "stageSettings";
 
 // /VARIABLES
 
@@ -64,44 +42,38 @@ CanvasPresenterView.MODE_EDIT = "edit";
  * @return {Object}
  */
 CanvasPresenterView.prototype.getCanvasContentElement = function() {
-	throw new "Get canvas content element must be overwritten";
+	throw new Error("Get canvas content element must be overwritten");
 };
 
-CanvasPresenterView.prototype.getElementPolygon = function(elementId, floorId) {
-	var elementPolygons = this.getPolygons(CanvasPresenterView.TYPE_ELEMENTS, floorId);
-
-	if (!elementPolygons)
-		return null;
-
-	for ( var i = 0; i < elementPolygons.children.length; i++) {
-		if (elementPolygons.children[i].object.type == "element" && elementPolygons.children[i].object.element.id == elementId)
-			return elementPolygons.children[i];
-	}
-
-	return null;
+CanvasPresenterView.prototype.getStageSettingsLocalVariable = function() {
+	return CanvasPresenterView.LOCAL_VARIABLE_STAGE_SETTINGS;
 };
 
-// ... ... STAGE
-
-CanvasPresenterView.prototype.setStageScale = function(scale) {
-	this.stageScale = scale;
-	this.getController().setLocalStorageVariable("scale", this.stageScale);
+CanvasPresenterView.prototype.getStageSettings = function() {
+	var settings = this.getController().getLocalStorageVariable(this.getStageSettingsLocalVariable());
+	if (typeof JSON == "object" && settings)
+		return JSON.parse(settings);
+	return {};
 };
 
-CanvasPresenterView.prototype.setStagePosition = function(position) {
-	this.stagePosition = position;
-	this.getController().setLocalStorageVariable("stagePosition", position.x + "," + position.y);
+/**
+ * @param levelFrom
+ * @param levelTo
+ * @returns {Number} 1 if direction is down, -1 up
+ */
+CanvasPresenterView.prototype.getLevelSwitchDirection = function(levelFrom, levelTo) {
+	return 1;
 };
-
-// ... ... /STAGE
 
 // ... ... KINETIC
 
 /**
  * @returns {Kinetic.Layer}
  */
-CanvasPresenterView.prototype.getLayer = function(type, floorId) {
-	return this.layers[type][floorId];
+CanvasPresenterView.prototype.getLayer = function(type, levelId) {
+	if (!this.layers[type])
+		return null;
+	return this.layers[type][levelId];
 };
 
 /**
@@ -112,10 +84,25 @@ CanvasPresenterView.prototype.getLayers = function(type) {
 };
 
 /**
+ * @param levelId
+ * @returns {Object}
+ */
+CanvasPresenterView.prototype.getLayersAtLevel = function(levelId) {
+	var layersForLevel = {};
+	for ( var type in this.layers) {
+		if (this.layers[type][levelId])
+			layersForLevel[type] = this.layers[type][levelId];
+	}
+	return layersForLevel;
+};
+
+/**
  * @returns {Kinetic.Group}
  */
-CanvasPresenterView.prototype.getGroup = function(type, floorId) {
-	return this.groups[type][floorId];
+CanvasPresenterView.prototype.getGroup = function(type, levelId) {
+	if (!this.groups[type])
+		return null;
+	return this.groups[type][levelId];
 };
 
 /**
@@ -128,8 +115,23 @@ CanvasPresenterView.prototype.getGroups = function(type) {
 /**
  * @returns {Kinetic.Group}
  */
-CanvasPresenterView.prototype.getPolygons = function(type, floorId) {
-	return this.polygons[type][floorId];
+CanvasPresenterView.prototype.getElements = function(type, levelId) {
+	if (!this.elements[type])
+		return null;
+	return this.elements[type][levelId];
+};
+
+/**
+ * @param levelId
+ * @returns {Object}
+ */
+CanvasPresenterView.prototype.getElementsAtLevel = function(levelId) {
+	var elementsForLevel = {};
+	for ( var type in this.elements) {
+		if (this.elements[type][levelId])
+			elementsForLevel[type] = this.elements[type][levelId];
+	}
+	return elementsForLevel;
 };
 
 // ... ... /KINETIC
@@ -140,30 +142,97 @@ CanvasPresenterView.prototype.getPolygons = function(type, floorId) {
 
 // ... ... KINETIC
 
-CanvasPresenterView.prototype.setLayer = function(type, floorId, layer) {
-	this.layers[type][floorId] = layer;
+CanvasPresenterView.prototype.setLayer = function(type, levelId, layer) {
+	if (!this.layers[type])
+		this.layers[type] = {};
+	this.layers[type][levelId] = layer;
 };
 
-CanvasPresenterView.prototype.setGroup = function(type, floorId, group) {
-	this.groups[type][floorId] = group;
+CanvasPresenterView.prototype.setGroup = function(type, levelId, group) {
+	if (!this.groups[type])
+		this.groups[type] = {};
+	this.groups[type][levelId] = group;
 };
 
-CanvasPresenterView.prototype.setPolygons = function(type, floorId, group) {
-	this.polygons[type][floorId] = group;
+CanvasPresenterView.prototype.setElements = function(type, levelId, elements) {
+	if (!this.elements[type])
+		this.elements[type] = {};
+	this.elements[type][levelId] = elements;
+};
+
+CanvasPresenterView.prototype.setBound = function(container, width, height) {
+	if (!container)
+		return console.error("CanvasPresenterView.setBound: Container is null", container, width, height);
+
+	this.bound = {
+		height : this.bound.height < height ? height : this.bound.height,
+		width : this.bound.width < width ? width : this.bound.width
+	};
+
+	var rectBound = container.get(".rectBound");
+	rectBound = rectBound.length > 0 ? rectBound[0] : null;
+
+	if (!rectBound) {
+		rectBound = new Kinetic.Rect({
+			name : "rectBound",
+			forContainer : container.attrs.name,
+			x : 0,
+			y : 0,
+			width : this.bound.width,
+			height : this.bound.height
+		});
+		container.add(rectBound);
+		this.bounds.push(rectBound);
+	}
+
+	for ( var i in this.bounds) {
+		this.bounds[i].setSize(this.bound.width, this.bound.height);
+		this.bounds[i].moveToBottom();
+	}
 };
 
 // ... ... /KINETIC
+
+CanvasPresenterView.prototype.setStageSettings = function() {
+	if (typeof JSON == "object") {
+		var settings = {
+			position : this.stage.getPosition(),
+			scale : this.stage.getScale(),
+			offset : this.stage.getOffset()
+		};
+		this.getController().setLocalStorageVariable(this.getStageSettingsLocalVariable(), JSON.stringify(settings));
+	}
+};
 
 // ... /SET
 
 // ... CREATE
 
 /**
- * @return {Polygon}
+ * @return {Kineticj.Rect}
  */
-CanvasPresenterView.prototype.createPolygon = function(attrs) {
-	attrs = attrs || {};
-	return new Polygon(attrs, this);
+CanvasPresenterView.prototype.createBoundRect = function(container, width, height) {
+	this.bound = {
+		height : this.bound.height < height ? height : this.bound.height,
+		width : this.bound.width < width ? width : this.bound.width
+	};
+
+	var roundRect = container.get(".rectBound");
+	rectBound = rectBound.length > 0 ? rectBound[0] : null;
+
+	if (!roundRect) {
+		roundRect = new Kinetic.Rect({
+			"name" : "rectBound",
+			"x" : 0,
+			"y" : 0,
+			"width" : this.bound.width,
+			"height" : this.bound.height
+		});
+		container.add(roundRect);
+		this.roundRects.push(roundRect);
+	}
+
+	return roundRect;
 };
 
 // ... /CREATE
@@ -171,46 +240,12 @@ CanvasPresenterView.prototype.createPolygon = function(attrs) {
 // ... DO
 
 CanvasPresenterView.prototype.doBindEventHandler = function() {
-	PresenterView.prototype.doBindEventHandler.call(this);
+	AbstractPresenterView.prototype.doBindEventHandler.call(this);
 	var context = this;
 
 	// EVENTS
 
-	// Handle save event
-	this.getEventHandler().registerListener(SaveEvent.TYPE,
-	/**
-	 * @param {SaveEvent}
-	 *            event
-	 */
-	function(event) {
-		switch (event.getSaveType()) {
-		case "building":
-			context.doSave();
-			break;
-		}
-	});
-
 	// ... CANVAS
-
-	// Floor select event
-	this.getView().getController().getEventHandler().registerListener(FloorSelectEvent.TYPE,
-	/**
-	 * @param {FloorSelectEvent}
-	 *            event
-	 */
-	function(event) {
-		context.doFloorSelect(event.getFloorId(), context.types);
-	});
-
-	// Select event
-	this.getView().getController().getEventHandler().registerListener(SelectEvent.TYPE,
-	/**
-	 * @param {SelectEvent}
-	 *            event
-	 */
-	function(event) {
-		context.handleSelect(event.getSelectType(), event.getElement());
-	});
 
 	// Scale event
 	this.getView().getController().getEventHandler().registerListener(ScaleEvent.TYPE,
@@ -218,6 +253,7 @@ CanvasPresenterView.prototype.doBindEventHandler = function() {
 	 * @param {ScaleEvent}
 	 *            event
 	 */
+
 	function(event) {
 		context.handleScale(event);
 	});
@@ -228,69 +264,9 @@ CanvasPresenterView.prototype.doBindEventHandler = function() {
 	 * @param {FitToScaleEvent}
 	 *            event
 	 */
-	function(event) {
-		context.doFitToScale();
-	});
 
-	// Polygon event
-	this.getEventHandler().registerListener(PolygonEvent.TYPE,
-	/**
-	 * @param {PolygonEvent}
-	 *            event
-	 */
 	function(event) {
-		context.doPolygonDraw();
-	});
-
-	// Polygon line event
-	this.getEventHandler().registerListener(PolygonLineEvent.TYPE,
-	/**
-	 * @param {PolygonLineEvent}
-	 *            event
-	 */
-	function(event) {
-		if (context.selected && context.selected.type == "polygon_anchor")
-			context.doPolygonLine(context.selected.element, event.getLineType());
-	});
-
-	// Copy event
-	this.getEventHandler().registerListener(CopyEvent.TYPE,
-	/**
-	 * @param {CopyEvent}
-	 *            event
-	 */
-	function(event) {
-		context.handleSelectedCopy();
-	});
-
-	// Delete event
-	this.getView().getController().getEventHandler().registerListener(DeleteEvent.TYPE,
-	/**
-	 * @param {DeleteEvent}
-	 *            event
-	 */
-	function(event) {
-		context.handleSelectedDelete();
-	});
-
-	// Add history event
-	this.getView().getController().getEventHandler().registerListener(AddHistoryEvent.TYPE,
-	/**
-	 * @param {AddHistoryEvent}
-	 *            event
-	 */
-	function(event) {
-		context.handleHistoryAdd(event.getHistory());
-	});
-
-	// Undo history event
-	this.getView().getController().getEventHandler().registerListener(UndoHistoryEvent.TYPE,
-	/**
-	 * @param {UndoHistoryEvent}
-	 *            event
-	 */
-	function(event) {
-		context.handleHistoryUndo();
+		context.doFitToStage();
 	});
 
 	// ... /CANVAS
@@ -298,26 +274,6 @@ CanvasPresenterView.prototype.doBindEventHandler = function() {
 	// /EVENTS
 
 	// CANVAS
-
-	$(window).keydown(function(event) {
-		// Bind ctrl
-		if (event.which == 17) {
-			context.doStageDraggable(true);
-		}
-		// Bind shift
-		if (event.which == 16) {
-			context.polygonsIsDraggable = true;
-		}
-	}).keyup(function(event) {
-		// Bind ctrl
-		if (event.which == 17) {
-			context.doStageDraggable(false);
-		}
-		// Bind shift
-		if (event.which == 16) {
-			context.polygonsIsDraggable = false;
-		}
-	});
 
 	this.getCanvasContentElement().bind("contextmenu", function(e) {
 		return false;
@@ -347,63 +303,192 @@ CanvasPresenterView.prototype.doBindEventHandler = function() {
 
 };
 
-CanvasPresenterView.prototype.doSave = function() {
-	this.getEventHandler().handle(new EditEvent("building", this.polygons));
-};
+CanvasPresenterView.prototype.doLevelSelect = function(levelId) {
+	if (!levelId)
+		return console.error("CanvasPresenterView.doLevelSelect: Level id is null", levelId);
 
-CanvasPresenterView.prototype.doFloorSelect = function(floorId, types) {
-	if (!floorId)
-		return false;
-	types = types ? (jQuery.isArray(types) ? types : [ types ]) : this.types;
-	console.log("Floor select", floorId, types);
-	// Show/hide Floors
-	var floors = this.getGroups(CanvasPresenterView.TYPE_FLOORS);
+	if (this.levelAnimate) {
+		var layersCurrent = this.getLayersAtLevel(this.levelSelected);
+		var layersSelect = this.getLayersAtLevel(levelId);
+		var switchDirection = this.getLevelSwitchDirection(this.levelSelected, levelId);
+		var duration = 1;
 
-	for (id in floors) {
-		if (jQuery.inArray(CanvasPresenterView.TYPE_FLOORS, types) > -1 && id == floorId) {
-			floors[id].show();
-		} else {
-			floors[id].hide();
+		for ( var type in layersCurrent) {
+			var layer = layersCurrent[type];
+			// layer.transitionTo({
+			// y : 100 * switchDirection,
+			// duration : duration,
+			// easing : 'strong-ease-out',
+			// layer : layer,
+			// opacity : 0,
+			// callback : function() {
+			// this.hide();
+			// this.setY(0);
+			// }
+			// });
+
+			var tween = new Kinetic.Tween({
+				node : layer,
+				duration : duration,
+				y : 100 * switchDirection,
+				opacity : 0,
+				easing : Kinetic.Easings.StrongEaseOut,
+				onFinish : function() {
+					// console.log("On finish", this, event);
+					this.node.hide();
+					this.node.setY(0);
+				}
+
+			// y : 100 * switchDirection,
+			// duration : duration,
+			// easing : 'strong-ease-out',
+			// opacity : 0,
+			// onFinish : function() {
+			// console.log("On finish", this, event);
+			// // this.hide();
+			// // this.setY(0);
+			// }
+
+			// node: rect,
+			// duration: 1,
+			// x: 400,
+			// y: 30,
+			// rotation: Math.PI * 2,
+			// opacity: 1,
+			// strokeWidth: 6,
+			// scaleX: 1.5
+			});
+			tween.play();
+		}
+
+		for ( var type in layersSelect) {
+			var layer = layersSelect[type];
+			// layer.setY(-100 * switchDirection);
+			// layer.show();
+			// layer.setOpacity(0);
+			// layer.transitionTo({
+			// y : 0,
+			// duration : duration,
+			// easing : 'strong-ease-out',
+			// layer : layer,
+			// opacity : 1,
+			// callback : function(event) {
+			// this.setY(0);
+			// }
+			// });
+
+			var tween = new Kinetic.Tween({
+				node : layer,
+				y : 0,
+				duration : duration,
+				easing : Kinetic.Easings.StrongEaseOut,
+				opacity : 1,
+				onFinish : function(event) {
+					// console.log("On finish", this, event);
+					this.node.setY(0);
+				}
+
+			// node : layer,
+			// y : 0,
+			// duration : duration,
+			// easing : 'strong-ease-out',
+			// opacity : 1,
+			// onFinish : function(event) {
+			// console.log("On finish", this, event);
+			// //this.setY(0);
+			// }
+			});
+			tween.play();
+		}
+	} else {
+		// Show/hide layers
+		for ( var type in this.layers) {
+			for (id in this.layers[type]) {
+				if (id == levelId) {
+					this.layers[type][id].show();
+				} else {
+					this.layers[type][id].hide();
+				}
+				// if (this.layers[type][id].attrs.zindex) {
+				// this.layers[type][id].setZIndex(this.layers[type][id].attrs.zindex);
+				// }
+			}
 		}
 	}
 
-	// Show/hide Elements
-	var elements = this.getGroups(CanvasPresenterView.TYPE_ELEMENTS);
-	for (id in elements) {
-		if (jQuery.inArray(CanvasPresenterView.TYPE_ELEMENTS, types) > -1 && id == floorId) {
-			elements[id].show();
-		} else {
-			elements[id].hide();
-		}
-	}
-
-	this.floorSelected = floorId;
-	this.types = types;
-
-	// De-select
-	this.getEventHandler().handle(new SelectEvent());
-
-	// Re-draw stage
+	this.levelSelected = levelId;
 	this.stage.draw();
 
+	var stageSettings = this.getStageSettings();
+	if (!stageSettings || Core.countObject(stageSettings) == 0)
+		this.doFitToStage();
 };
 
 // ... ... STAGE
 
-CanvasPresenterView.prototype.doFitToScale = function(type) {
-	if (!type && this.types.length > 0)
-		type = this.types[0];	
-	if (!this.floorSelected)
-		return false;
+CanvasPresenterView.prototype.doFitToStage = function(type, coordinates) {
+	coordinates = coordinates || [];
 
-	var polygons = this.getPolygons(type, this.floorSelected).getChildren();
+	if (!this.levelSelected)
+		return console.error("CanvasPresenterView.doFitToStage: Level is not selected");
 
-	var scaleNew = 1.0;
-	var positionNew = {
-		x : 0,
-		y : 0
-	};
+	// COORDINATES
 
+	if (coordinates.length == 0) {
+		// Get Elements
+		var elements = {};
+		if (type) {
+			elements[this.levelSelected] = this.getElements(type, this.levelSelected);
+		} else {
+			elements = this.getElementsAtLevel(this.levelSelected);
+		}
+
+		// Foreach Elements
+		var element = null, children = [];
+		for ( var levelId in elements) {
+			element = elements[levelId];
+			children = element.getChildren();
+			// Foreach element children
+			for ( var i = 0; i < children.length; i++) {
+				console.log(children[i], typeof children[i]);
+				coordinates = coordinates.concat(children[i].getCoordinates());
+			}
+		}
+
+		// No coordinates, fit to bound
+		if (coordinates.length == 0) {
+			coordinates.push([ 0, 0 ]);
+			coordinates.push([ 0, this.bound.y ]);
+			coordinates.push([ this.bound.x, 0 ]);
+			coordinates.push([ this.bound.x, this.bound.y ]);
+		}
+	}
+
+	// /COORDINATES
+
+	var positionNew = this.stage.getPosition();
+	var scaleNew = this.stage.getScale().x;
+
+	// Fit to coordinates
+	var coordinatesMaxBounds = CanvasUtil.getMaxBounds(coordinates);
+	var boundX = coordinatesMaxBounds[2] - coordinatesMaxBounds[0], boundY = coordinatesMaxBounds[3] - coordinatesMaxBounds[1];
+
+	var stageX = this.stage.getWidth(), stageY = this.stage.getHeight();
+	scaleNew = Core.roundNumber(Core.closestNumber(Math.min(stageX / boundX, stageY / boundY), CanvasPresenterView.SCALE_SIZE), 4);
+	scaleNew -= CanvasPresenterView.SCALE_SIZE;
+	var boundsNewX = boundX * scaleNew, boundsNewY = boundY * scaleNew;
+
+	positionNew.x = ((stageX - boundsNewX) / 2) - (coordinatesMaxBounds[0] * scaleNew);
+	positionNew.y = ((stageY - boundsNewY) / 2) - (coordinatesMaxBounds[1] * scaleNew);
+
+	// Set stage settings
+	this.stage.setOffset(0, 0);
+	this.stage.setScale(scaleNew);
+	this.stage.setPosition(positionNew);
+	this.setStageSettings();
+	this.stage.draw();
+
+	return;
 	if (polygons.length > 0) {
 		var coordinates = [];
 		for (i in polygons) {
@@ -419,7 +504,7 @@ CanvasPresenterView.prototype.doFitToScale = function(type) {
 
 		positionNew.x = ((stageX - boundsNewX) / 2) - (coordinatesMaxBounds[0] * scaleNew);
 		positionNew.y = ((stageY - boundsNewY) / 2) - (coordinatesMaxBounds[1] * scaleNew);
-	} else {
+	} else if (false) {
 		// TODO Fit to scale floors map
 		var layer = this.getLayer("floors_map", this.floorSelected);
 
@@ -433,119 +518,93 @@ CanvasPresenterView.prototype.doFitToScale = function(type) {
 			positionNew.y = (stageY - boundsNewY) / 2;
 		}
 	}
-	this.setStageScale(scaleNew);
-	this.setStagePosition(positionNew);
-	this.stage.setScale(this.stageScale);
-	this.stage.setX(this.stagePosition.x);
-	this.stage.setY(this.stagePosition.y);
+	// this.setStageScale(scaleNew);
+	// this.setStagePosition(positionNew);
+	// this.stage.setScale(this.stageScale);
+	// this.stage.setX(this.stagePosition.x);
+	// this.stage.setY(this.stagePosition.y);
+	this.setStageSettings();
 	this.stage.draw();
 
 };
 
-CanvasPresenterView.prototype.doStageScale = function(scaleUp) {
-	var userPosition = this.stage.getUserPosition();
+CanvasPresenterView.prototype.doPanStageTo = function(centerPoint) {
+	// var viewport = KineticjsUtil.getViewport(this.stage);
+	// var centerRelative = KineticjsUtil.getPointRelative(this.stage,
+	// viewport.center);
+	// console.log("CanvasPresenterView.doPanStageTo", centerPoint, viewport);
+	// this.stage.setOffset(0, 0);
+	// this.stage.setPosition({ x : centerRelative.x, y : centerRelative.y });
+	// this.stage.draw();
+};
+
+CanvasPresenterView.prototype.doStageScale = function(scaleUp, isAnimate) {
+	isAnimate = isAnimate || false;
+	var userPosition = this.stage.getPointerPosition();
+	if (!userPosition)
+		userPosition = {
+			x : this.stage.getWidth() / 2,
+			y : this.stage.getHeight() / 2
+		};
 	var position = this.stage.getPosition();
 
-	// this.stage.setX(-userPosition.x * this.stage.attrs.scale.x);
-	// this.stage.setY(-userPosition.y * this.stage.attrs.scale.x);
+	var scale = this.stage.getScale().x;
+	var mx = userPosition.x - position.x, my = userPosition.y - position.y;
+	var zoom = (1.1 - (!scaleUp ? 0.2 : 0));
+	var newscale = scale * zoom;
+	var offset = this.stage.getOffset();
+	var origin = {
+		x : offset.x,
+		y : offset.y
+	};
+	var newOffset = {
+		x : mx / scale + origin.x - mx / newscale,
+		y : my / scale + origin.y - my / newscale
+	};
 
-	// Set scale
-	this.stageScale += CanvasPresenterView.SCALE_SIZE * (scaleUp ? 1 : -1);
-	this.setStageScale(Math.max(this.stageScale, 0));
-	this.stage.setScale(this.stageScale);
+	if (!isAnimate) {
+		this.stage.setOffset(newOffset);
+		this.stage.setScale(newscale);
+		this.stage.draw();
+		this.setStageSettings();
+	} else {
+//		this.stage.transitionTo({
+//			scale : {
+//				x : newscale,
+//				y : newscale
+//			},
+//			offset : newOffset,
+//			duration : 0.2
+//		});
 
-	// this.stage.setPosition({ x : position.x, y : position.y });
+		var tween = new Kinetic.Tween({
+			node : this.stage,
+			scale : {
+				x : newscale,
+				y : newscale
+			},
+			offset : newOffset,
+			duration : 0.2
+		});
+		tween.play();
+	}
 
-	// Re-draw stage
-	this.stage.draw();
-};
-
-CanvasPresenterView.prototype.doStageDraggable = function(draggable) {
-	this.stage.setDraggable(draggable);
-	this.stageIsDragging = draggable;
-	this.getCanvasContentElement().css("cursor", draggable ? "move" : "default");
 };
 
 // ... ... /STAGE
-
-// ... ... POLYGON
-
-CanvasPresenterView.prototype.doPolygonDraw = function(type) {
-	if (!type && this.types.length > 0)
-		type = this.types[0];
-	if (!this.floorSelected || !type)
-		return;
-
-	var polygons = this.getPolygons(type, this.floorSelected);
-	if (!polygons)
-		return;
-
-	// Create polygon
-	var polygon = this.createPolygon({});
-	polygons.add(polygon);
-
-	// Create polygon with mouse
-	polygon.createPolygon();
-
-	polygon.getLayer().draw();
-};
-
-CanvasPresenterView.prototype.doPolygonLine = function(polygonAnchor, type) {
-	if (!polygonAnchor || !type) {
-		return;
-	}
-	var oldType = polygonAnchor.type;
-console.log("Polygon line", polygonAnchor, type);
-	switch (type) {
-	case Polygon.LINE_TYPE_STRAIGHT:
-	case Polygon.LINE_TYPE_QUAD:
-	case Polygon.LINE_TYPE_BEZIER:
-		polygonAnchor.type = type;
-		break;
-	}
-
-	if (polygonAnchor.type != oldType) {
-		polygonAnchor.select();
-		polygonAnchor.getLayer().draw();
-	}
-};
-
-// ... ... /POLYGON
 
 // ... /DO
 
 // ... HANDLE
 
-// ... ... RETRIEVED
-
-CanvasPresenterView.prototype.handleBuildingRetrieved = function(building) {
-	this.building = building;
-};
-
-CanvasPresenterView.prototype.handleFloorsRetrieved = function(floors) {
-	this.floors = floors;
-
-	// Draw Floors
-	for (floorId in floors) {
-		this.drawFloor(floors[floorId]);
-	}
-};
-
-CanvasPresenterView.prototype.handleElementsRetrieved = function(elements) {
-	this.elements = elements;
-
-	// Draw Elements
-	for (elementId in elements) {
-		if (!elements[elementId].deleted)
-			this.drawElement(elements[elementId]);
-	}
-};
-
-// ... ... /RETRIEVED
-
+/**
+ * @param {ScaleCanvasEvent}
+ *            event
+ */
 CanvasPresenterView.prototype.handleScale = function(event) {
-	this.doStageScale(event.isScaleUp());
-	this.getEventHandler().handle(new ScaledEvent(this.stageScale));
+	this.doStageScale(event.isScaleUp(), event.isAnimate());
+	var scale = this.stage.getScale();
+	this.getEventHandler().handle(new ScaledEvent(scale.x));
 };
 
 CanvasPresenterView.prototype.handleScroll = function(event) {
@@ -558,7 +617,6 @@ CanvasPresenterView.prototype.handleScroll = function(event) {
 	if (event.wheelDelta) {
 		// IE and Opera
 		delta = event.wheelDelta / 60;
-
 	} else if (event.detail) {
 		// W3C
 		delta = -event.detail / 2;
@@ -570,316 +628,65 @@ CanvasPresenterView.prototype.handleScroll = function(event) {
 	}
 };
 
-CanvasPresenterView.prototype.handleSelect = function(type, element) {
-	if (this.selected.element) {
-		this.selected.element.deselect();
-	}
-
-	if (!type || !element) {
-		if (this.selected.element)
-			this.selected.element.getLayer().draw();
-		this.selected = {};
-		return;
-	}
-
-	this.selected = {};
-
-	if (!element.isVisible())
-		return;
-
-	this.selected = {
-		type : type,
-		element : element
-	};
-
-	this.selected.element.select();
-
-	switch (type) {
-	case "polygon":
-		this.selected.element.getLayer().draw();
-		break;
-
-	case "polygon_anchor":
-		break;
-
-	default:
-		this.selected = {};
-	}
-
-};
-
-CanvasPresenterView.prototype.handleSelectedCopy = function() {
-
-	// COPY
-
-	if (this.selected.element) {
-		if (this.selected.type != "polygon")
-			return;
-		this.selectedCopy = this.selected;
-	}
-
-	// /COPY
-
-	// PASTE
-
-	if (!this.selected.element) {
-		if (this.selectedCopy.type != "polygon" || !this.selectedCopy.element)
-			return;
-
-		var polygons = this.selectedCopy.element.getParent();
-		if (polygons) {
-			var polygon = this.selectedCopy.element.copy(this);
-			polygons.add(polygon);
-			if (this.selectedCopy.element.getLayer()._id == polygons.getLayer()._id)
-				polygon.move(20, 20);
-			polygon.getLayer().draw();
-		}
-	}
-
-	// /PASTE
-
-};
-
-CanvasPresenterView.prototype.handleSelectedDelete = function() {
-	if (!this.selected.element)
-		return false;
-
-	var selected = this.selected;
-	var parent = selected.element.getParent();
-
-	// Deselect
-	this.getEventHandler().handle(new SelectEvent());
-
-	// Delete selected
-	selected.element.erase();
-
-	// Draw layer
-	parent.getLayer().draw();
-
-	// Deleted event
-	if (selected.type == "polygon" && selected.element.object.type == "element" && selected.element.object.element)
-		this.getEventHandler().handle(new DeletedEvent("element", selected.element.object.element.id));
-
-	// Add history
-	this.getEventHandler().handle(new AddHistoryEvent({
-		type : "selected_delete",
-		element : selected,
-		parent : parent
-	}));
-};
-
-CanvasPresenterView.prototype.handleTypeSelect = function(types) {
-	if (types)
-		this.types = jQuery.isArray(types) ? types : [ types ];
-	// if (this.floorSelected)
-	// this.getEventHandler().handle(new FloorSelectEvent(this.floorSelected));
-};
-
-// ... ... HISTORY
-
-CanvasPresenterView.prototype.handleHistoryAdd = function(history) {
-	this.history.push(history);
-};
-
-CanvasPresenterView.prototype.handleHistoryUndo = function() {
-	if (this.history.length == 0)
-		return;
-
-	var historyObject = this.history.pop();
-
-	switch (historyObject.type) {
-	case "selected_delete":
-		historyObject.element.element.undo();
-		break;
-	case "selected_drag":
-		historyObject.element.undoMove();
-		break;
-	}
-
-	this.getEventHandler().handle(new UndidHistoryEvent(historyObject));
-};
-
-// ... ... /HISTORY
-
 // ... /HANDLE
 
 // ... DRAW
 
 CanvasPresenterView.prototype.draw = function(root) {
-	PresenterView.prototype.draw.call(this, root);
+	if (root.length == 0)
+		throw new Error("CanvasPresenterView.draw: Root is empty (" + root.selector + ")");
+	AbstractPresenterView.prototype.draw.call(this, root);
 	var context = this;
 
-	// Set variables from local storage
-	var scale = this.getController().getLocalStorageVariable("scale");
-	if (scale)
-		this.stageScale = 1.0;// parseFloat(scale);
-	var stagePosition = this.getController().getLocalStorageVariable("stagePosition");
-	if (stagePosition) {
-		stagePosition = stagePosition.split(",");
-		this.stagePosition = {
-			x : 0, // parseFloat(stagePosition[0]),
-			y : 0
-		// parseFloat(stagePosition[1])
-		};
-	}
+	// STAGE
 
 	// Initiate Kinetic Stage
 	var canvas = this.getCanvasContentElement();
 	this.stage = new Kinetic.Stage({
-		"container" : canvas.attr("id"),
-		"width" : canvas.parent().width(),
-		"height" : canvas.parent().height(),
+		container : canvas.attr("id"),
+		width : canvas.parent().width(),
+		height : canvas.parent().height(),
 		clearBeforeDraw : true,
-		scale : this.stageScale
+		x : 0,
+		y : 0,
+		draggable : true
 	});
-	this.stage.setX(this.stagePosition.x);
-	this.stage.setY(this.stagePosition.y);
+
 	this.stage.resize = function() {
+		this.setSize(0, 0);
 		this.setSize(canvas.parent().width(), canvas.parent().height());
 		this.draw();
 	};
 
-	this.stage.on("click", function(event) {
-		if (event.which == 3)
-			context.getEventHandler().handle(new SelectEvent(null));
-	});
+	// Settings
+	var stageSettings = this.getStageSettings();
+	if (stageSettings.position)
+		this.stage.setPosition(stageSettings.position);
+	if (stageSettings.scale)
+		this.stage.setScale(stageSettings.scale);
+	if (stageSettings.offset)
+		this.stage.setOffset(stageSettings.offset);
+
+	this.bound.height = this.stage.getHeight();
+	this.bound.width = this.stage.getWidth();
+
+	// /STAGE
+
+	// ON
 
 	this.stage.on("dragend", function(event) {
-		context.setStagePosition(this.getPosition());
-	});
-};
-
-CanvasPresenterView.prototype.drawFloor = function(floor, width, height) {
-	width = width || 0;
-	height = height || 0;
-
-	// Initiate layer
-	var layer = new Kinetic.Layer({
-		name : "floor_layer",
-		id : floor.id
+		context.setStageSettings();
 	});
 
-	// Initiate group
-	var group = new Kinetic.Group({
-		name : "floor_group",
-		id : floor.id,
-		visible : false
-	});
+	// this.stage.on("click", function(event) {
+	// //var relPoint = KineticjsUtil.getPointRelative(this,
+	// this.getPointerPosition());
+	// //context.doPanStageTo(relPoint);
+	// });
 
-	// Create fill
-	var fill = new Kinetic.Rect({
-		name : "floor_fill",
-		x : 0,
-		y : 0,
-		width : width,
-		height : height,
-		stroke : "#CCC",
-		strokeWidth : 2
-	});
-	group.add(fill);
-	fill.setZIndex(5);
+	// /ON
 
-	// Create polygon group
-	var polygons = new Kinetic.Group({
-		name : "floor_polygons"
-	});
-	group.add(polygons);
-	polygons.setZIndex(10);
-	this.setPolygons(CanvasPresenterView.TYPE_FLOORS, floor.id, polygons);
-
-	// Create Floor polygon
-	if (floor.coordinates) {
-		var coordinates = floor.coordinates.split("$");
-		for (i in coordinates) {
-			var polygon = this.createPolygon({});
-			polygon.fromData(coordinates[i]);
-			polygons.add(polygon);
-		}
-	}
-
-	// Set Floor layer
-	this.setLayer(CanvasPresenterView.TYPE_FLOORS, floor.id, layer);
-
-	// Set floor group
-	this.setGroup(CanvasPresenterView.TYPE_FLOORS, floor.id, group);
-
-	// Add group to layer
-	layer.add(group);
-
-	// Add layer to stage
-	this.stage.add(layer);
-
-	// Draw Floor Element
-	this.drawFloorElement(floor, width, height);
-
-};
-
-CanvasPresenterView.prototype.drawFloorElement = function(floor, width, height) {
-
-	// Initiate layer
-	var layer = new Kinetic.Layer({
-		name : "element_layer",
-		id : floor.id
-	});
-
-	this.setLayer(CanvasPresenterView.TYPE_ELEMENTS, floor.id, layer);
-	this.stage.add(layer);
-
-	// Initiate group
-	var group = new Kinetic.Group({
-		name : "element_group",
-		id : floor.id,
-		visible : false
-	});
-
-	this.setGroup(CanvasPresenterView.TYPE_ELEMENTS, floor.id, group);
-	layer.add(group);
-
-	// Create fill
-	var fill = new Kinetic.Rect({
-		name : "floor_fill",
-		x : 0,
-		y : 0,
-		width : width,
-		height : height,
-		stroke : "#CCC",
-		strokeWidth : 2
-	});
-	group.add(fill);
-	fill.setZIndex(5);
-
-	// Initiate polygons
-	var polygons = new Kinetic.Group({
-		name : "element_polygons",
-		id : floor.id
-	});
-
-	this.setPolygons(CanvasPresenterView.TYPE_ELEMENTS, floor.id, polygons);
-	group.add(polygons);
-	polygons.setZIndex(10);
-
-};
-
-CanvasPresenterView.prototype.drawElement = function(element) {
-	var polygons = this.getPolygons(CanvasPresenterView.TYPE_ELEMENTS, element.floorId);
-
-	// TODO Add these elements to an unnamed floor?
-	if (!polygons)
-		return;
-
-	// Create polygon
-	if (element.coordinates) {
-		var coordinates = jQuery.isArray(element.coordinates) ? element.coordinates : element.coordinates.split("$");
-		for (i in coordinates) {
-			var polygon = this.createPolygon({});
-			polygon.object = {
-				type : "element",
-				element : element
-			};
-			polygons.add(polygon);
-			polygon.fromData(coordinates[i]);
-		}
-	}
+	this.stage.draw();
 
 };
 

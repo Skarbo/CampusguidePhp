@@ -8,6 +8,7 @@ class DbResource extends ClassCore
 
     private static $BUILDING, $ELEMENTBUILDING, $TYPEELEMENTBUILDING, $GROUPTYPEELEMENTBUILDING, $FLOORBUILDING, $SECTIONBUILDING, $FACILITY, $QUEUE, $LOG;
     private static $ENTRYSCHEDULE, $OCCURENCEENTRYSCHEDULE, $FACULTYSCHEDULE, $GROUPSCHEDULE, $PROGRAMSCHEDULE, $ROOMSCHEDULE, $WEBSITESCHEDULE;
+    private static $EDGENAVIGATIONBUILDING, $NODENAVIGATIONBUILDING;
 
     // /VARIABLES
 
@@ -136,6 +137,24 @@ class DbResource extends ClassCore
     {
         self::$LOG = self::$LOG ? self::$LOG : new LogDbResource();
         return self::$LOG;
+    }
+
+    /**
+     * @return EdgeNavigationBuildingDbResource
+     */
+    public static function edgeNavigationBuilding()
+    {
+        self::$EDGENAVIGATIONBUILDING = self::$EDGENAVIGATIONBUILDING ? self::$EDGENAVIGATIONBUILDING : new EdgeNavigationBuildingDbResource();
+        return self::$EDGENAVIGATIONBUILDING;
+    }
+
+    /**
+     * @return NodeNavigationBuildingDbResource
+     */
+    public static function nodeNavigationBuilding()
+    {
+        self::$NODENAVIGATIONBUILDING = self::$NODENAVIGATIONBUILDING ? self::$NODENAVIGATIONBUILDING : new NodeNavigationBuildingDbResource();
+        return self::$NODENAVIGATIONBUILDING;
     }
 
     // /FUNCTIONS

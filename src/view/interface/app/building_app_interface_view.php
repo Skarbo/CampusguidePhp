@@ -13,6 +13,11 @@ interface BuildingAppInterfaceView extends InterfaceView
      */
     public function getBuilding();
 
+    /**
+     * @return ElementBuildingListModel
+     */
+    public function getElements();
+
 }
 
 ?>

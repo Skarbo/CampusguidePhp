@@ -28,7 +28,7 @@ class OverviewBuildingsCmsPageMainView extends AbstractPageMainView
     public function __construct( MainView $view )
     {
         parent::__construct( $view );
-        $this->setBuildingPresenter( new BuildingBuildingsCmsPresenterView( $view ) );
+        $this->setBuildingPresenter( new TableBuildingBuildingsCmsPresenterView( $view ) );
     }
 
     // /CONSTRUCTOR
@@ -41,7 +41,7 @@ class OverviewBuildingsCmsPageMainView extends AbstractPageMainView
 
 
     /**
-     * @return BuildingBuildingsCmsPresenterView
+     * @return TableBuildingBuildingsCmsPresenterView
      */
     public function getBuildingPresenter()
     {
@@ -49,9 +49,9 @@ class OverviewBuildingsCmsPageMainView extends AbstractPageMainView
     }
 
     /**
-     * @param BuildingBuildingsCmsPresenterView $buildingPresenter
+     * @param TableBuildingBuildingsCmsPresenterView $buildingPresenter
      */
-    public function setBuildingPresenter( BuildingBuildingsCmsPresenterView $buildingPresenter )
+    public function setBuildingPresenter( TableBuildingBuildingsCmsPresenterView $buildingPresenter )
     {
         $this->buildingPresenter = $buildingPresenter;
     }
@@ -147,7 +147,7 @@ class OverviewBuildingsCmsPageMainView extends AbstractPageMainView
 
         // Edit button
         $edit_button = Xhtml::a( "Edit" )->attr( "data-url",
-                Resource::url()->cms()->building()->getEditBuildingPage( "%s",
+                Resource::url()->cms()->buildings()->getEditBuildingPage( "%s",
                         $this->getView()->getController()->getMode() ) )->id( "edit_building" )->title( "Edit" )->attr(
                 "data-disabled", "true" )->addClass( Resource::css()->gui()->getComponent() );
 
@@ -181,7 +181,7 @@ class OverviewBuildingsCmsPageMainView extends AbstractPageMainView
 
         // Draw header to table
         $header = Xhtml::thead()->id( self::$ID_BUILDINGS_TABLE_HEADER );
-        BuildingBuildingsCmsPresenterView::drawHeader( $header );
+        TableBuildingBuildingsCmsPresenterView::drawHeader( $header );
         $table->addContent( $header );
 
         // Draw body to table
@@ -214,6 +214,8 @@ class OverviewBuildingsCmsPageMainView extends AbstractPageMainView
             $this->getBuildingPresenter()->setBuilding( $building );
             $this->getBuildingPresenter()->setFacility(
                     $this->getView()->getController()->getFacilities()->getId( $building->getFacilityId() ) );
+            $this->getBuildingPresenter()->setFloors(
+                    $this->getView()->getController()->getBuildingFloors()->getForeignList( $building->getId() ) );
 
             // Draw Facility to root
             $this->getBuildingPresenter()->draw( $root );

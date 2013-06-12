@@ -253,8 +253,8 @@ class FacilityFacilitiesCmsPresenterView extends PresenterView
         $table = Xhtml::div()->class_( Resource::css()->getTable(),
                 Resource::css()->cms()->facility()->getFacilityBuildingsBuildingTable() )->style(
                 sprintf( "background-image: url(%s)",
-                        Resource::url()->cms()->building()->getBuildingOverviewImage( $building->getId(), 150,
-                                75, $this->getMode() ) ) );
+                        //Resource::url()->cms()->building()->getBuildingOverviewImage( $building->getId(), 150, 75, $this->getMode() ) ) );
+                        Resource::url()->cms()->buildings()->getBuildingMapImage( $building->getId(), 150, 75, $this->getMode() ) ) );
 
         // Create cell
         $cell = Xhtml::div()->title( $building->getName() );
@@ -262,7 +262,7 @@ class FacilityFacilitiesCmsPresenterView extends PresenterView
         // Create div
         $div = Xhtml::div(
                 Xhtml::a( $building->getName() )->href(
-                        Resource::url()->cms()->building()->getViewBuildingPage( $building->getId(),
+                        Resource::url()->cms()->buildings()->getViewBuildingPage( $building->getId(),
                                 $this->getView()->getController()->getMode() ) ) )->class_(
                 Resource::css()->cms()->facility()->getFacilityBuildingsBuildingContent() )->title(
                 $building->getName() );

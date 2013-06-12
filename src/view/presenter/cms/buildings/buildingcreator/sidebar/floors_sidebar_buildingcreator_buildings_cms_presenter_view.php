@@ -45,6 +45,7 @@ class FloorsSidebarBuildingcreatorBuildingsCmsPresenterView extends SidebarBuild
      */
     protected function drawHeader( AbstractXhtml $root )
     {
+        $root->addContent( Xhtml::div( Xhtml::img( Resource::image()->building()->floor()->getFloors( "#666666" ), "Floors" ) ) );
         $root->addContent( Xhtml::h( 1, "Floors" ) );
         $root->addContent( Xhtml::span( $this->getBuildingFloors()->size() ) );
     }
@@ -55,7 +56,7 @@ class FloorsSidebarBuildingcreatorBuildingsCmsPresenterView extends SidebarBuild
 
         // Floor form
         $floorForm = Xhtml::form()->method( FormXhtml::$METHOD_POST )->action(
-                Resource::url()->cms()->building()->getBuildingcreatorEditFloorsPage( $this->getBuilding()->getId(),
+                Resource::url()->cms()->buildings()->buildingcreator()->getEditAction( $this->getBuilding()->getId(),
                         $this->getView()->getMode() ) )->autocomplete( false )->enctype(
                 FormXhtml::$ENCTYPE_MULTIPART_FORM_DATA )->id( "floors_form" );
 
@@ -120,9 +121,9 @@ class FloorsSidebarBuildingcreatorBuildingsCmsPresenterView extends SidebarBuild
         $floorMain = Xhtml::td()->class_( "main", Resource::css()->getRight() )->title( "Main" );
 
         // Floor name
-        $floorName->addContent(
+        $floorName->addContent( Xhtml::div(
                 Xhtml::input( $isNew ? "" : $floor->getName(), sprintf( "floor_name[%s]", $isNew ? "new" : $floor->getId() ) )->placeholder( "Name" )->title(
-                        "Name" )->class_( "edit", Resource::css()->getHide() ) );
+                        "Name" )->class_(  ) )->class_("input_wrapper", "edit", Resource::css()->getHide()) );
 
         // Floor map
         $floorMap->content(

@@ -8,6 +8,7 @@ CmsMainView.prototype = new MainView();
 function CmsMainView(wrapperId) {
 	MainView.apply(this, arguments);
 	this.wrapperId = wrapperId;
+	this.isMaximized = false;
 }
 
 // /CONSTRUCTOR
@@ -35,6 +36,13 @@ CmsMainView.prototype.getWrapperElement = function() {
 	return $(Core.sprintf("#%s", this.getWrapperId()));
 };
 
+/**
+ * @retuern {Object}
+ */
+CmsMainView.prototype.getPageWrapperElement = function() {
+	return this.getWrapperElement().find("#page_wrapper");
+};
+
 // ... /GET
 
 // ... DO
@@ -43,6 +51,9 @@ CmsMainView.prototype.doBindEventHandler = function() {
 	MainView.prototype.doBindEventHandler.call(this);
 	var context = this;
 
+	// EVENTS
+
+	// Overlay event
 	this.getController().getEventHandler().registerListener(OverlayEvent.TYPE,
 	/**
 	 * @param {OverlayEvent}
@@ -52,6 +63,7 @@ CmsMainView.prototype.doBindEventHandler = function() {
 		context.handleOverlay(event);
 	});
 
+	// Overlay close event
 	this.getController().getEventHandler().registerListener(OverlayCloseEvent.TYPE,
 	/**
 	 * @param {OverlayCloseEvent}
@@ -61,6 +73,7 @@ CmsMainView.prototype.doBindEventHandler = function() {
 		context.handleOverlayClose(event.getOverlayId());
 	});
 
+	// Queue event
 	this.getController().getEventHandler().registerListener(QueueEvent.TYPE,
 	/**
 	 * @param {QueueEvent}
@@ -69,6 +82,18 @@ CmsMainView.prototype.doBindEventHandler = function() {
 	function(event) {
 		context.handleQueue(event.getQueueType(), event.getQueue());
 	});
+
+	// Maximize event
+	this.getController().getEventHandler().registerListener(MaximizeEvent.TYPE,
+	/**
+	 * @param {MaximizeEvent}
+	 *            event
+	 */
+	function(event) {
+		context.handleMaximize();
+	});
+
+	// /EVENTS
 
 };
 
@@ -202,6 +227,18 @@ CmsMainView.prototype.handleQueue = function(queueType, queue) {
 
 };
 
+CmsMainView.prototype.handleMaximize = function() {
+	this.getPageWrapperElement().toggleClass("maximized");
+	this.isMaximized = this.getPageWrapperElement().hasClass("maximized");
+
+	if (this.isMaximized)
+		this.getController().setLocalStorageVariable("maximized", "true");
+	else
+		this.getController().removeLocalStorageVariable("maximized");
+
+	this.getEventHandler().handle(new MaximizedEvent(this.isMaximized));
+};
+
 // ... /HANDLE
 
 // ... DRAW
@@ -229,6 +266,38 @@ CmsMainView.prototype.draw = function(controller) {
 
 	// /DEFAULT TEXT
 
+	/*
+	 * // CONTROL MENU
+	 * 
+	 * var controllerMenuWrapper = $("#controller_menu_wrapper");
+	 * 
+	 * var menu = $(controllerMenuWrapper.children()[0]); var subMenu =
+	 * $(controllerMenuWrapper.children()[1]);
+	 * 
+	 * if (menu && menu.length > 0) { var itemHighlight =
+	 * menu.find(".item.highligthed"); var itemHighlightPos =
+	 * Math.round((itemHighlight.position().left + (itemHighlight.width() / 2)) -
+	 * controllerMenuWrapper.position().left);
+	 * 
+	 * if (subMenu && subMenu.length > 0 && subMenu.has(".hassub")) { var
+	 * subMenuPos = Math.min(Math.max(0, Math.round(itemHighlightPos -
+	 * (subMenu.width() / 2))), controllerMenuWrapper.width() -
+	 * subMenu.width()); subMenu.css("margin-left", subMenuPos + "px"); } } //
+	 * /CONTROL MENU
+	 */
+
+	// OVERLAY
+	this.toastOverlay.draw(this.getToastOverlayElement());
+
+	// this.toastOverlay.doShow();
+
+	// /OVERLAY
+	
+	// Max
+	if (this.getController().getLocalStorageVariable("maximized", false))
+	{
+		this.handleMaximize();
+	}
 
 };
 

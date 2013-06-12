@@ -60,7 +60,7 @@ MapAppMainView.prototype.getMapBounds = function() {
 	if (!mapBounds)
 		return null;
 	var mapBoundsArray = mapBounds.split("|");
-	return [ parseFloat(mapBoundsArray[0]), parseFloat(mapBoundsArray[1]), parseInt( mapBoundsArray[2] ) ];
+	return [ parseFloat(mapBoundsArray[0]), parseFloat(mapBoundsArray[1]), parseInt(mapBoundsArray[2]) ];
 };
 
 // ... /GET
@@ -253,7 +253,7 @@ MapAppMainView.prototype.doBindEventHandler = function() {
 		// BUILDING OVERLAY
 
 		if (hashObject.building) {
-			context.getController().getBuildingDao().get(hashObject.building, function(building) {
+			context.getController().getDaoContainer().getBuildingDao().get(hashObject.building, function(building) {
 
 				// Overlay options
 				var overlayOptions = {
@@ -431,8 +431,8 @@ MapAppMainView.prototype.handleMapInit = function() {
 
 		var mapBounds = this.getMapBounds();
 		if (!mapBounds)
-			mapBounds = [60.39126, 5.32205, 15];
-console.log("Map bounds", mapBounds);		
+			mapBounds = [ 60.39126, 5.32205, 15 ];
+		console.log("Map bounds", mapBounds);
 		var latlng = new google.maps.LatLng(mapBounds[0], mapBounds[1]);
 		var options = {
 			zoom : mapBounds[2],
@@ -450,6 +450,7 @@ console.log("Map bounds", mapBounds);
 		};
 
 		// Set map
+		google.maps.visualRefresh = true;
 		this.map = new google.maps.Map(document.getElementById("map_canvas"), options);
 
 		// POSITION MARKER
@@ -571,6 +572,30 @@ MapAppMainView.prototype.handleMapBuildings = function(buildings) {
 					"building" : this.buildingId
 				});
 			});
+
+			// Overlays
+			var overlays = building.overlay || [];
+			for ( var i in overlays) {
+				if (overlays[i] != "") {
+					var paths = google.maps.geometry.encoding.decodePath(overlays[i]);
+
+					var polygon = new google.maps.Polygon({
+						paths : paths,
+						fillColor : "#134F5C",
+						fillOpacity : 0.6,
+						strokeWeight : 0,
+						buildingId : buildingId
+					});
+					polygon.setMap(this.map);
+					
+					polygon.addListener("click", function(event) {
+						console.log("Click polygon", context.buildingId);
+						context.getController().updateHash({
+							"building" : this.buildingId
+						});
+					});
+				}
+			}
 			/*
 			 * // Building coordinates var positions =
 			 * buildings[buildingId].position; var coordinates =

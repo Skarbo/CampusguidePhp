@@ -125,7 +125,6 @@ CanvasUtil.areaCoordinates = function(coordinates) {
 	var j = nPts - 1;
 	var p1;
 	var p2;
-
 	for ( var i = 0; i < nPts; j = i++) {
 		p1 = pts[i];
 		p2 = pts[j];
@@ -134,7 +133,7 @@ CanvasUtil.areaCoordinates = function(coordinates) {
 	}
 	area /= 2;
 
-	return area;
+	return area || 0;
 };
 
 /**
@@ -161,5 +160,5 @@ CanvasUtil.centerCoordinates = function(coordinates) {
 
 	f = CanvasUtil.areaCoordinates(coordinates) * 6;
 
-	return [ x / f, y / f ];
+	return [ (x / f) || 0, (y / f) || 0 ];
 };

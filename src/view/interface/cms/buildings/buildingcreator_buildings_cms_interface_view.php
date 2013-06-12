@@ -13,6 +13,11 @@ interface BuildingcreatorBuildingsCmsInterfaceView extends BuildingsCmsInterface
      */
     public function getBuildingElements();
 
+    /**
+     * @return FacilityModel
+     */
+    public function getFacility();
+
 }
 
 ?>

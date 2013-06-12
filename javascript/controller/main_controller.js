@@ -3,12 +3,8 @@ MainController.prototype = new AbstractMainController();
 
 function MainController(eventHandler, mode, query) {
 	AbstractMainController.apply(this, arguments);
-	this.facilityDao = new FacilityStandardDao(mode);
-	this.buildingDao = new BuildingStandardDao(mode);
-	this.elementBuildingDao = new ElementBuildingStandardDao(mode);
-	this.floorBuildingDao = new FloorBuildingStandardDao(mode);
 	this.daoContainer = new DaoContainer(mode);
-	this.searchHandler = new SearchHandler(eventHandler, mode, this.facilityDao, this.buildingDao, this.elementBuildingDao);
+	this.searchHandler = new SearchHandler(eventHandler, mode, this.daoContainer);
 }
 
 // /CONSTRUCTOR
@@ -26,34 +22,6 @@ function MainController(eventHandler, mode, query) {
  */
 MainController.prototype.getView = function() {
 	return AbstractMainController.prototype.getView.call(this);
-};
-
-/**
- * @return {FacilityStandardDao}
- */
-MainController.prototype.getFacilityDao = function() {
-	return this.facilityDao;
-};
-
-/**
- * @return {BuildingStandardDao}
- */
-MainController.prototype.getBuildingDao = function() {
-	return this.buildingDao;
-};
-
-/**
- * @return {ElementBuildingStandardDao}
- */
-MainController.prototype.getElementBuildingDao = function() {
-	return this.elementBuildingDao;
-};
-
-/**
- * @return {FloorBuildingStandardDao}
- */
-MainController.prototype.getFloorBuildingDao = function() {
-	return this.floorBuildingDao;
 };
 
 /**

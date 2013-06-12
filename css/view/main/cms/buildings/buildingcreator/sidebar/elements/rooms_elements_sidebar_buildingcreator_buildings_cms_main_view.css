@@ -1,0 +1,149 @@
+/**
+ * Rooms elements sidebar
+ */
+
+/* Type */
+#buildingcreator_planner_sidebar_elements_rooms .elements_rooms .type {
+    text-align: right;
+}
+
+#buildingcreator_planner_sidebar_elements_rooms .elements_rooms .type select {
+    width: 3em;
+}
+
+#buildingcreator_planner_sidebar_elements_rooms .elements_rooms .type img {
+    height: 1.2em;
+    width: 1.2em;
+}
+
+/* ... ... Contents */
+#buildingcreator_planner_sidebar_elements_rooms .elements_rooms .element .type .dropdown .dropdown_contents img {
+    height: 3em;
+}
+
+#buildingcreator_planner_sidebar_elements_rooms .elements_rooms .element .type .dropdown .dropdown_contents {
+    background-color: white;
+    border: 1px solid black;
+    z-index: 1000;
+}
+
+#buildingcreator_planner_sidebar_elements_rooms .elements_rooms .element:NOT(.edit)
+.type .dropdown .dropdown_contents {
+    display: none;
+}
+
+#buildingcreator_planner_sidebar_elements_rooms .elements_rooms .element.edit .type .dropdown .dropdown_contents {
+    display: block;
+}
+
+#buildingcreator_planner_sidebar_elements_rooms .elements_rooms .element .type .dropdown .dropdown_contents .dropdown_content {
+    display: inline;
+}
+/* ... /Contents */
+
+/* /Type */
+
+/* Type selector */
+
+#buildingcreator_planner_sidebar_elements_rooms #element_type_selecter {
+    display: none;
+    position: absolute;
+    z-index: 9999;
+}
+
+#buildingcreator_planner_sidebar_elements_rooms #element_type_selecter .triangle {
+    margin-left: -5px;
+    margin-top: 40px;
+    position: absolute;
+}
+
+#buildingcreator_planner_sidebar_elements_rooms #element_type_selecter .element_type_selecter_content {
+    display: table;
+    border: 1px solid #CDCDCD;
+    border-radius: 0.2em 0.2em 0.2em 0.2em;
+    font-size: 1em;
+    width: 100%;
+    background-color: white;
+    /* box_shadow:0px 5px 10px rgba(50, 50, 50, 0.75): */
+}
+
+#buildingcreator_planner_sidebar_elements_rooms #element_type_selecter .element_type_selecter_content > * {
+    display: table-row;
+}
+
+#buildingcreator_planner_sidebar_elements_rooms #element_type_selecter .element_type_selecter_content > * > * {
+    display: table-cell;
+    padding: 0.2em;
+    vertical-align: middle;
+    border-top: 1px solid #DEDEDE;
+}
+
+#buildingcreator_planner_sidebar_elements_rooms #element_type_selecter .element_type_selecter_content > * > *:last-child {
+    width: 1px;
+}
+
+#buildingcreator_planner_sidebar_elements_rooms #element_type_selecter .element_type_selecter_content img {
+    width: 1em;
+    height: 1em;
+}
+
+#buildingcreator_planner_sidebar_elements_rooms #element_type_selecter .element_type_selecter_content .type_group_header_wrapper {
+    padding: 0;
+    margin: 0;
+    font-size: 1.2em;
+}
+
+#buildingcreator_planner_sidebar_elements_rooms #element_type_selecter .element_type_selecter_content .type_group_header_wrapper h3 {
+    font-size: 1em;
+}
+
+#buildingcreator_planner_sidebar_elements_rooms #element_type_selecter .element_type_selecter_content .type_wrapper {
+    cursor: pointer;
+}
+
+#buildingcreator_planner_sidebar_elements_rooms #element_type_selecter .element_type_selecter_content .type_wrapper:hover {
+    background-color: #EFEFEF;
+}
+
+#buildingcreator_planner_sidebar_elements_rooms #element_type_selecter .element_type_selecter_content .type_wrapper.selected {
+    background-color: #C9DAF8 !important;
+}
+
+/* /Type selector */
+
+/* Info panel content */
+
+/* ... Room type */
+
+#buildingcreator_planner_sidebar_wrapper #infopanel .info_panel_content_wrapper .info_panel_content_content_wrapper .room_type_wrapper {
+    font-size: 0.9em;
+}
+
+#buildingcreator_planner_sidebar_wrapper #infopanel .info_panel_content_wrapper .info_panel_content_content_wrapper .room_type_wrapper .room_type_content {
+    border: 1px solid #CCCCCC;
+    border-radius: 0.2em 0.2em 0.2em 0.2em;
+    display: inline-block;
+    margin: 0.2em;
+    padding: 0.4em;
+    cursor: pointer;
+}
+
+#buildingcreator_planner_sidebar_wrapper #infopanel .info_panel_content_wrapper .info_panel_content_content_wrapper .room_type_wrapper .room_type_content.selected {
+    background-color: #C9DAF8;
+}
+
+#buildingcreator_planner_sidebar_wrapper #infopanel .info_panel_content_wrapper .info_panel_content_content_wrapper .room_type_wrapper .room_type_content:NOT(.selected)
+:hover {
+    background-color: #EFEFEF;
+}
+
+#buildingcreator_planner_sidebar_wrapper #infopanel .info_panel_content_wrapper .info_panel_content_content_wrapper .room_type_wrapper .room_type_content img {
+    height: 1em;
+    margin-right: 0.2em;
+    vertical-align: middle;
+    width: 1em;
+}
+
+/* ... /Room type */
+
+/* /Info panel content */

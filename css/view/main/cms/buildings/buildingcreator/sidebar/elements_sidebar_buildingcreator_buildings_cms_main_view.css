@@ -1,0 +1,329 @@
+/**
+ * Elements sidebar
+ */
+.sidebar[data-sidebar="elements_rooms"] > .sidebar_header_wrapper {
+    border-bottom: 1px solid rgba(50, 50, 50, 0.2);
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] {
+}
+
+/* Type group header */
+
+#sidebars .sidebar[data-sidebar-group="elements"] .type_group_header_wrapper {
+    display: table;
+    font-size: 1em;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] .type_group_header_wrapper > * {
+    display: table-cell;
+    vertical-align: middle;
+    width: 1px;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] .type_group_header_wrapper img {
+    height: 1.0em;
+    width: 1.0em;
+    margin-right: 0.2em;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] .type_group_header_wrapper h2 {
+    font-size: 1em;
+    margin: 0;
+    padding: 0.5em 0;
+    width: 99%;
+}
+
+/* /Type group header */
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table {
+    border: 1px solid #cdcdcd;
+    border-radius: 0.2em;
+    font-size: 0.8em;
+    width: 100%;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table td {
+    padding: 0 0.2em;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table td[colspan="4"] {
+    padding: 0.5em;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table .element.selected > * {
+    background-color: #C9DAF8;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table .element.deleted {
+    display: none;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table .element .show {
+    cursor: pointer;
+    /* no_select */
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table tr:first-child td {
+    border-top: 0;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table tr td {
+    border-top: 1px solid #cdcdcd;
+    cursor: pointer;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table .id {
+    width: 1px;
+    font-size: 0.7em;
+    color: #888888;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table .element img {
+    width: 0.9em;
+    height: 0.9em;
+}
+
+/* ... Name */
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table .element .name {
+    padding: 0.5em 0.2em;
+    width: 99%;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table .element .name i {
+    color: #666666;
+}
+
+/*#sidebars .sidebar[data-sidebar-group="elements"] .elements_table .name.edit input {
+ padding: 0 0.2em;
+ width: 5em;
+ }*/
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table .element .name .input_wrapper {
+    padding: 0.2em 0.2em;
+    background-color: transparent;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table .element.edit .name .input_wrapper {
+    background-color: #FFFFFF;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table .element .name .input_wrapper input {
+    border: 0;
+    padding: 0;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table .element .name .input_wrapper input[readonly] {
+    cursor: pointer;
+}
+
+/* ... /Name */
+
+/* ... Focus/Infopanel */
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table .element .focus, #sidebars .sidebar[data-sidebar-group="elements"] .elements_table .element .infopanel {
+    
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table .element .focus div, #sidebars .sidebar[data-sidebar-group="elements"] .elements_table .element .infopanel div {
+    cursor: pointer;
+    background-color: #EFEFEF;
+    border: 1px solid #CCCCCC;
+    padding: 0.4em 0.6em;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table .element .focus div, #sidebars .sidebar[data-sidebar-group="elements"] .elements_table .element .infopanel div {
+    opacity: 0.7;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table .element .focus:HOVER div, #sidebars .sidebar[data-sidebar-group="elements"] .elements_table .element .infopanel:HOVER div {
+    opacity: 1;
+}
+
+/* ... /Focus/Infopanel */
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table .delete.edit {
+    width: 1px;
+    text-align: right;
+    padding: 0 0.4em;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table .delete.edit .guiComp {
+    color: #AAA;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table .delete.edit .guiComp:FOCUS, #sidebars .sidebar[data-sidebar-group="elements"] .elements_table .delete.edit .guiComp:HOVER {
+    color: darkRed;
+}
+
+/* ... Type */
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table .type {
+    text-align: right;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table .type select {
+    width: 3em;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table .type img {
+    height: 1.2em;
+    width: 1.2em;
+}
+
+/* ... ... Contents */
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table .element .type .dropdown .dropdown_contents img {
+    height: 3em;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table .element .type .dropdown .dropdown_contents {
+    background-color: white;
+    border: 1px solid black;
+    z-index: 1000;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table .element:NOT(.edit)
+.type .dropdown .dropdown_contents {
+    display: none;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table .element.edit .type .dropdown .dropdown_contents {
+    display: block;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] .elements_table .element .type .dropdown .dropdown_contents .dropdown_content {
+    display: inline;
+}
+/* ... ... /Contents */
+
+/* ... /Type */
+
+/* Type selector */
+
+#sidebars .sidebar[data-sidebar-group="elements"] #element_type_selecter {
+    display: none;
+    position: absolute;
+    z-index: 9999;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] #element_type_selecter .triangle {
+    margin-left: -5px;
+    margin-top: 40px;
+    position: absolute;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] #element_type_selecter .element_type_selecter_content {
+    display: table;
+    border: 1px solid #CDCDCD;
+    border-radius: 0.2em 0.2em 0.2em 0.2em;
+    font-size: 1em;
+    width: 100%;
+    background-color: white;
+    /* box_shadow:0px 5px 10px rgba(50, 50, 50, 0.75): */
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] #element_type_selecter .element_type_selecter_content > * {
+    display: table-row;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] #element_type_selecter .element_type_selecter_content > * > * {
+    display: table-cell;
+    padding: 0.2em;
+    vertical-align: middle;
+    border-top: 1px solid #DEDEDE;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] #element_type_selecter .element_type_selecter_content > * > *:last-child {
+    width: 1px;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] #element_type_selecter .element_type_selecter_content img {
+    width: 1em;
+    height: 1em;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] #element_type_selecter .element_type_selecter_content .type_group_header_wrapper {
+    padding: 0;
+    margin: 0;
+    font-size: 1.2em;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] #element_type_selecter .element_type_selecter_content .type_group_header_wrapper h3 {
+    font-size: 1em;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] #element_type_selecter .element_type_selecter_content .type_wrapper {
+    cursor: pointer;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] #element_type_selecter .element_type_selecter_content .type_wrapper:hover {
+    background-color: #EFEFEF;
+}
+
+#sidebars .sidebar[data-sidebar-group="elements"] #element_type_selecter .element_type_selecter_content .type_wrapper.selected {
+    background-color: #C9DAF8 !important;
+}
+
+/* /Type selector */
+
+/* Info panel content */
+
+#buildingcreator_planner_sidebar_wrapper #infopanel .info_panel_content_wrapper .info_panel_content_content_wrapper {
+
+}
+
+/* ... Element name */
+
+#buildingcreator_planner_sidebar_wrapper #infopanel .info_panel_content_wrapper .info_panel_content_content_wrapper .element_name_wrapper {
+
+}
+
+#buildingcreator_planner_sidebar_wrapper #infopanel .info_panel_content_wrapper .info_panel_content_content_wrapper .element_name_wrapper table {
+    width: 100%;
+}
+
+#buildingcreator_planner_sidebar_wrapper #infopanel .info_panel_content_wrapper .info_panel_content_content_wrapper .element_name_wrapper table td {
+    padding: 0.2em 0;
+}
+
+#buildingcreator_planner_sidebar_wrapper #infopanel .info_panel_content_wrapper .info_panel_content_content_wrapper .element_name_wrapper table td:last-child {
+    width: 1px;
+}
+
+#buildingcreator_planner_sidebar_wrapper #infopanel .info_panel_content_wrapper .info_panel_content_content_wrapper .element_name_wrapper table tr.element_name_input_wrapper.template {
+    display: none;
+}
+
+#buildingcreator_planner_sidebar_wrapper #infopanel .info_panel_content_wrapper .info_panel_content_content_wrapper .element_name_wrapper .element_name_remove {
+    margin-left: 0.5em;
+    font-size: 0.9em;
+    background-color: #EFEFEF;
+    border: 1px solid #CCCCCC;
+    cursor: pointer;
+    padding: 0.4em 0.6em;
+    display: block;
+}
+
+#buildingcreator_planner_sidebar_wrapper #infopanel .info_panel_content_wrapper .info_panel_content_content_wrapper .element_name_wrapper .element_name_remove img {
+    height: 1em;
+    width: 1em;
+    opacity: 0.7;
+    vertical-align: middle;
+}
+
+#buildingcreator_planner_sidebar_wrapper #infopanel .info_panel_content_wrapper .info_panel_content_content_wrapper .element_name_wrapper .element_name_remove:HOVER img {
+    opacity: 1;
+}
+
+#buildingcreator_planner_sidebar_wrapper #infopanel .info_panel_content_wrapper .info_panel_content_content_wrapper .element_name_wrapper .input_wrapper {
+    background-color: white;
+    border: 1px solid #CCC;
+}
+
+#buildingcreator_planner_sidebar_wrapper #infopanel .info_panel_content_wrapper .info_panel_content_content_wrapper .element_name_wrapper .element_name_add {
+    font-size: 0.8em;
+}
+
+/* ... /Element name */
+
+/* /Info panel content */

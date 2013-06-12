@@ -8,10 +8,18 @@ class TypesTimeeditScheduleWebsiteAlgorithmParser extends TimeeditWebsiteAlgorit
     private static $SELECTOR_VERSION = "span#copyright";
     //*[@id="contenttd"]/form/table[2]/tbody/tr[1]/td[1]/table/tbody/tr[1]/td[3]/table/tbody/tr/td[1]/select
 
+
     private static $TIMEEDIT_VERSION = "1.4.8";
     private static $REGEX_SEARCH_RESULT = '/.+: (\d+)-(\d+) \w+ (\d+)/s';
     private static $REGEX_VERSION = '/([\d.]+)/s';
     private static $REGEX_ILLEGAL_NAME = '/^[_-].*/';
+
+    private static $REGEX_TYPE = '/data-type="\d+"/sm';
+    private static $REGEX_SEARCHOBJECT = '/<div.*?data-id="([\d.]+)".*?data-idonly="(\d+)".*?data-type="(\d+)".*?data-name="(.*?)".*?class=".*?searchObject.*?>"/sm';
+    private static $REGEX_SEARCHOBJECT_ID = 0;
+    private static $REGEX_SEARCHOBJECT_IDONLY = 1;
+    private static $REGEX_SEARCHOBJECT_TYPE = 2;
+    private static $REGEX_SEARCHOBJECT_NAME = 3;
 
     private $type;
 
@@ -19,6 +27,9 @@ class TypesTimeeditScheduleWebsiteAlgorithmParser extends TimeeditWebsiteAlgorit
     {
         $this->type = $type;
     }
+
+    // ... HTML DOM
+
 
     /**
      * @see WebsiteAlgorithmParser::parseHtml()
@@ -265,11 +276,88 @@ class TypesTimeeditScheduleWebsiteAlgorithmParser extends TimeeditWebsiteAlgorit
         return null;
     }
 
+    // /HTML DOM
+
+
     private static function isValidType( TypeScheduleModel $type )
     {
         return !preg_match( self::$REGEX_ILLEGAL_NAME, $type->getName() ) && !preg_match( self::$REGEX_ILLEGAL_NAME,
                 $type->getNameShort() );
     }
+
+    // HTML
+
+
+    /**
+     * @see WebsiteAlgorithmParser::parseHtmlRaw()
+     */
+    public function parseHtmlRaw( $result )
+    {
+
+        $result = new TypesTimeeditScheduleAlgorithmResultParser();
+
+        $typeList = self::generateTypeList( $this->type );
+
+        // CORRECT TYPE
+
+
+        $typeCode = Core::arrayAt( self::$TYPES, $this->type );
+        if ( !$typeCode )
+            throw new Exception( sprintf( "Timeedit type code for type \"%s\" does not exist", $this->type ) );
+
+        $type = null;
+        if ( preg_match( self::$REGEX_TYPE, $result, $match ) )
+        {
+            $type = intval( $match[ 0 ] );
+        }
+
+        if ( $type || $type != $typeCode )
+        {
+            throw new ParserException(
+                    sprintf( "Choosen type \"%s\" does not match with given type \"%s\" (%s)", $type,
+                            Core::arrayAt( self::$TYPES, $this->type ), $this->type ),
+                    self::PARSER_EXCEPTION_INCORRECTPATH );
+        }
+
+        // /CORRECT TYPE
+
+
+        // SEARCH OBJECTS
+
+
+        preg_match_all( self::$REGEX_SEARCHOBJECT, $result, $match, PREG_PATTERN_ORDER );
+
+        for ( $i = 0; $i < count( $match[ 0 ] ); $i++ )
+        {
+            $code = Core::arrayAt( $match[ 0 ][ $i ], self::$REGEX_SEARCHOBJECT_ID );
+            $nameFull = Core::arrayAt( $match[ 0 ][ $i ], self::$REGEX_SEARCHOBJECT_NAME );
+            $type = intval( Core::arrayAt( $match[ 0 ][ $i ], self::$REGEX_SEARCHOBJECT_TYPE ) );
+
+            $name = $nameFull;
+            $nameShort = "";
+            $names = str_word_count( $nameFull, 1 );
+            if ( count( $names ) >= 2 )
+            {
+                $nameShort = $names[ 0 ];
+                $name = implode( " ", array_slice( $input, 1 ) );
+            }
+
+            $typeModel = self::generateTypeModel( $this->type, $code, $name, $nameShort );
+            if ( self::isValidType( $typeModel ) && $typeCode == $type )
+                $typeList->add( $typeModel );
+        }
+
+        // /SEARCH OBJECTS
+
+
+        $result->setTypes( $typeList );
+
+        return $result;
+
+    }
+
+    // /HTML
+
 
 }
 

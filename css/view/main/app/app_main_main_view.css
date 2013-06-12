@@ -85,6 +85,10 @@ body:not (.landscape) #app_wrapper #page_wrapper > * {
     display: table;
 }
 
+#app_wrapper #page_wrapper .overlay_wrapper[data-background=false] {
+    background: none;
+}
+
 #app_wrapper #page_wrapper .overlay_wrapper > * {
     display: table-cell;
     vertical-align: middle;
@@ -105,6 +109,40 @@ body:not (.landscape) #app_wrapper #page_wrapper > * {
 #app_wrapper #page_wrapper .overlay .body {
 
 }
+
+/* ... ... Toast */
+#app_wrapper #overlay_toast.overlay_wrapper {
+    z-index: 2000;
+}
+
+#app_wrapper #overlay_toast.overlay_wrapper .title {
+    display: none;
+}
+
+#app_wrapper #overlay_toast.overlay_wrapper .buttons {
+    display: none;
+}
+
+#app_wrapper #overlay_toast.overlay_wrapper > * {
+    text-align: center;
+}
+
+#app_wrapper #overlay_toast.overlay_wrapper .overlay {
+    border-radius: 0;
+    border-color: #3f3f3f;
+    background-color: #282828;
+    color: #D9D9D9;
+    display: inline-block;
+    min-width: auto;
+    margin-bottom: 2em;
+}
+
+#app_wrapper #overlay_toast.overlay_wrapper .overlay .overlay_content .toast_message {
+    padding: 0.5em;
+    text-align: left;
+}
+
+/* ... ... /Toast */
 
 /* ... ... Menu */
 #app_wrapper #page_wrapper .overlay .menu {
@@ -402,6 +440,7 @@ input {
     border-style: solid;
     border-width: 0 2px 2px;
     border-radius: 0 0 0.2em 0.2em;
+    overflow-y: auto;
 }
 
 #app_wrapper #search_overlay #search_wrapper #search_result_wrapper #search_result #search_result_table {
@@ -451,3 +490,29 @@ input {
 }
 
 /* /Search */
+
+/* Scroolbar */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-button {
+    width: 8px;
+    height:5px;
+}
+::-webkit-scrollbar-track {
+    background:
+    border: skinny plain lightgray;
+    box-shadow: 0px 0px 3px #dfdfdf inset;
+    border-radius:10px;
+}
+::-webkit-scrollbar-thumb {
+    background:
+    border: skinny plain gray;
+    border-radius:10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background:
+}
+
+/* /Scroolbar */

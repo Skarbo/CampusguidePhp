@@ -9,7 +9,7 @@ class JavascriptResource extends AbstractJavascriptResource
     private $javascriptFile = "javascript.js.php?mode=%s";
     private $javascriptAppFile = "javascript_app.js.php?mode=%s";
     private $javascriptCanvasFile = "javascript_canvas.js.php?mode=%s";
-    private $googleMapsApiUrl = "http://maps.googleapis.com/maps/api/js?key=%s&sensor=%s&callback=%s";
+    private $googleMapsApiUrl = "http://maps.googleapis.com/maps/api/js?key=%s&sensor=%s&callback=%s&libraries=%s";
     private $googleMapsApiFile = "google.maps.api.js";
 
     // /VARIABLES
@@ -39,9 +39,9 @@ class JavascriptResource extends AbstractJavascriptResource
         return sprintf( $this->javascriptFile, $mode );
     }
 
-    public function getGoogleMapsApiUrl( $apiKey, $callback, $sensor = "false" )
+    public function getGoogleMapsApiUrl( $apiKey, $callback, $libraries = "", $sensor = "false" )
     {
-        return sprintf( $this->googleMapsApiUrl, $apiKey, $sensor, $callback );
+        return sprintf( $this->googleMapsApiUrl, $apiKey, $sensor, $callback, $libraries );
     }
 
     public function getGoogleMapsApiFile()

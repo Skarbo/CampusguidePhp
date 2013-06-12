@@ -8,7 +8,6 @@ interface BuildingsCmsInterfaceView extends InterfaceView
      */
     public function getBuilding();
 
-
 }
 
 ?>

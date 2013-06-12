@@ -13,6 +13,12 @@ class TypesTimeeditScheduleUrlWebsiteHandler extends TimeeditScheduleUrlWebsiteH
     private static $URL_ADVANCEDSEARCH = "%s/4DACTION/%s/%s/%s-0?wv_type=%s&wv_first=%s&wv_next=Next+10";
     private static $PAGE_ADVANCEDSEARCH = "WebShowSearch";
 
+    /**
+     * @example http://no.timeedit.net/web/hib/db1/aistudent/objects?max=100&fr=t&partajax=t&im=f&sid=3&l=en_EN&types=4&start=0&part=t&media=html
+     * @var string [base url][max][type][start]
+     */
+    private static $URL_TYPES_SEARCH = "%s/objects?max=%s&fr=t&partajax=t&im=f&sid=3&l=en_EN&types=%s&start=%s&part=t&media=html";
+
     // /VARIABLES
 
 
@@ -34,19 +40,33 @@ class TypesTimeeditScheduleUrlWebsiteHandler extends TimeeditScheduleUrlWebsiteH
         if ( !$typeCode )
             throw new Exception( sprintf( "Timeedit type code for type \"%s\" does not exist", $type ) );
 
-        $matches = array ();
-        if ( !preg_match_all( self::$REGEX_URL_SEARCH, $url, $matches ) )
-            throw new Exception( sprintf( "Timeedit url \"%s\" is not correct", $url ) );
+            // New TimeEdit website
+        if ( $this->isNewTimeeditVersion( $url ) )
+        {
+            $max = 100;
+            $start = ($page - 1) * $max;
+            $urlSearch = sprintf( self::$URL_TYPES_SEARCH, $url, $max, $type, $start );
+        }
+        // Old TimeEdit website
+        {
 
-        $baseUrl = $matches[ 1 ][ 0 ];
-        $institute = $matches[ 2 ][ 0 ];
-        $language = $matches[ 3 ][ 0 ];
+            $matches = array ();
+            if ( !preg_match_all( self::$REGEX_URL_SEARCH, $url, $matches ) )
+                throw new Exception( sprintf( "Timeedit url \"%s\" is not correct", $url ) );
 
-        $searchPage = $page - 2;
-        $urlSearch = sprintf( self::$URL_ADVANCEDSEARCH, $baseUrl, self::$PAGE_ADVANCEDSEARCH, $institute, $language,
-                $typeCode, $searchPage );
+            $baseUrl = $matches[ 1 ][ 0 ];
+            $institute = $matches[ 2 ][ 0 ];
+            $language = $matches[ 3 ][ 0 ];
 
-        return $urlSearch;
+            $searchPage = $page - 2;
+            $urlSearch = sprintf( self::$URL_ADVANCEDSEARCH, $baseUrl, self::$PAGE_ADVANCEDSEARCH, $institute,
+                    $language, $typeCode, $searchPage );
+
+            return $urlSearch;
+
+        }
+
+        return null;
     }
 
     // /FUNCTIONS

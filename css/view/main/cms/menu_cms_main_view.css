@@ -71,7 +71,7 @@
 
 #cms_wrapper #controller_header_wrapper #controller_menu_wrapper .menu .item a {
 	white-space: nowrap;
-	padding: 0 1.5em;
+	padding: 0.2em 1.5em;
 	color: rgb(67, 67, 67);
 	text-decoration: none;
 	display: block;
@@ -83,3 +83,32 @@
 #cms_wrapper #controller_header_wrapper #controller_menu_wrapper .menu .item.highligthed a {
 	color: rgb(127, 96, 0);
 }
+
+/* ... Sub */
+
+#cms_wrapper #controller_header_wrapper #controller_menu_wrapper .menu.sub {
+    border-top: 1px solid #F4F4F4;
+}
+
+#cms_wrapper #controller_header_wrapper #controller_menu_wrapper .menu.sub.hassub {
+    border-top: 1px solid #AAA;
+}
+
+#cms_wrapper #controller_header_wrapper #controller_menu_wrapper .menu.sub .spacer {
+    font-size: 1em;
+    padding: 0.2em 1.5em;
+    display: block;
+}
+
+#cms_wrapper #controller_header_wrapper #controller_menu_wrapper .menu.sub .item a {
+    color: rgb(102, 102, 102);
+    font-size: 1em;
+    font-variant: normal;
+}
+
+
+#cms_wrapper #controller_header_wrapper #controller_menu_wrapper .menu.sub .item.highligthed a {
+    color: rgb(62, 76, 96);
+}
+
+/* ... /Sub */

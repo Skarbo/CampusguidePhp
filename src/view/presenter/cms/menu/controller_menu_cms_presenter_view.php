@@ -1,6 +1,6 @@
 <?php
 
-class ControllerMenuCmsPresenterView extends AbstractPresenterView
+class ControllerMenuCmsPresenterView extends PresenterView
 {
 
     // VARIABLES
@@ -12,6 +12,10 @@ class ControllerMenuCmsPresenterView extends AbstractPresenterView
      * @var array
      */
     private $items = array ();
+    /**
+     * @var array
+     */
+    private $subitems = array ();
 
     // /VARIABLES
 
@@ -44,11 +48,13 @@ class ControllerMenuCmsPresenterView extends AbstractPresenterView
 
 
     /**
-     * @param ItemMenuCmsPresenterView $item
+     * @return ItemMenuCmsPresenterView
      */
     public function addItem( $title, $link, $highlighted = false )
     {
-        $this->items[] = new ItemControllerMenuCmsPresenterView( $title, $link, $highlighted );
+        $item = new ItemControllerMenuCmsPresenterView( $title, $link, $highlighted );
+        $this->items[] = $item;
+        return $item;
     }
 
     // ... /ADD
@@ -69,15 +75,41 @@ class ControllerMenuCmsPresenterView extends AbstractPresenterView
         // Create menu
         $menu = Xhtml::div()->class_( Resource::css()->cms()->menu()->getMenu() );
 
+//         $menuItemHighlighted = null;
+
         // Foreach items
         foreach ( $this->items as $item )
         {
             // Draw item
             $this->drawItem( $item, $menu );
+
+//             if ( ItemControllerMenuCmsPresenterView::get_( $item )->isHighlighted() )
+//                 $menuItemHighlighted = $item;
         }
+
+//         // Menu sub menu
+//         $menuSub = Xhtml::div()->class_( Resource::css()->cms()->menu()->getMenuSub() );
+//         if ( $menuItemHighlighted )
+//         {
+//             $menuItemHighlighted = ItemControllerMenuCmsPresenterView::get_( $menuItemHighlighted );
+
+//             // Foreach sub items
+//             foreach ( $menuItemHighlighted->getSubItems() as $item )
+//             {
+//                 $this->drawItem( $item, $menuSub );
+
+//                 $menuSub->addClass( "hassub" );
+//             }
+
+//         }
+
+//         $menuSub->addContent(Xhtml::div(Xhtml::$NBSP)->class_("spacer"));
 
         // Add menu to menu wrapper
         $menuWrapper->addContent( $menu );
+
+//         // Add sub menu to menu wrapper
+//         $menuWrapper->addContent( $menuSub );
 
         // Add menu wrapper to root
         $root->addContent( $menuWrapper );
@@ -134,6 +166,10 @@ class ItemControllerMenuCmsPresenterView extends ClassCore
      * @var boolean
      */
     private $highlighted;
+    /**
+     * @var array
+     */
+    private $subItems = array ();
 
     // /VARIABLES
 
@@ -153,6 +189,19 @@ class ItemControllerMenuCmsPresenterView extends ClassCore
 
     // FUNCTIONS
 
+
+    public function addSub( $title, $link, $highlighted = false )
+    {
+        $this->subItems[] = new ItemControllerMenuCmsPresenterView( $title, $link, $highlighted );
+    }
+
+    /**
+     * @return array
+     */
+    public function getSubItems()
+    {
+        return $this->subItems;
+    }
 
     /**
      * @return string
@@ -203,8 +252,8 @@ class ItemControllerMenuCmsPresenterView extends ClassCore
     }
 
     /**
-     * @param ItemMenuCmsPresenterView $get
-     * @return ItemMenuCmsPresenterView
+     * @param ItemControllerMenuCmsPresenterView $get
+     * @return ItemControllerMenuCmsPresenterView
      */
     public static function get_( $get )
     {

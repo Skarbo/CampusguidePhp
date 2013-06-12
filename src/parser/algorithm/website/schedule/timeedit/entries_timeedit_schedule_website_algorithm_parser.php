@@ -29,13 +29,16 @@ class EntriesTimeeditScheduleWebsiteAlgorithmParser extends TimeeditWebsiteAlgor
     // FUNCTIONS
 
 
+    // ... HTML DOM
+
+
     /**
      * @see WebsiteAlgorithmParser::parseHtml()
      */
     public function parseHtml( simple_html_dom $html )
     {
         // Too many weeks
-        if ($this->isTooManyWeeks($html))
+        if ( $this->isTooManyWeeks( $html ) )
             throw new ParserException( "Too many weeks", self::PARSER_EXCEPTION_TOOMANYWEEKS );
 
         $entryNodes = $html->find( self::$SELECTOR_ENTRIES );
@@ -226,6 +229,19 @@ class EntriesTimeeditScheduleWebsiteAlgorithmParser extends TimeeditWebsiteAlgor
     {
         $node = $dom->find( self::$SELECTOR_TOOMANYWEEKS );
         return $node != null;
+    }
+
+    // /HTML DOM
+
+
+    /**
+     * @see WebsiteAlgorithmParser::parseHtmlRaw()
+     */
+    public function parseHtmlRaw( $result )
+    {
+
+
+
     }
 
     // /FUNCTIONS

@@ -1,0 +1,14 @@
+.building_buildings_presenter_wrapper
+{
+    background-color: #EDEDED;
+}
+
+.building_buildings_presenter_wrapper > * {
+    display: inline-block;
+    margin: 0.5em;
+    vertical-align: top;
+}
+
+.building_buildings_presenter_wrapper > .table {
+    display: inline-table;
+}

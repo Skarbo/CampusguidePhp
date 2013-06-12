@@ -1,6 +1,6 @@
 <?php
 
-class BuildingcreatorBuildingsCmsPageMainView extends AbstractPageMainView implements BuildingcreatorBuildingsCmsInterfaceView
+class BuildingcreatorBuildingsCmsPageMainView extends PageCmsPageMainView implements BuildingcreatorBuildingsCmsInterfaceView
 {
 
     // VARIABLES
@@ -12,6 +12,8 @@ class BuildingcreatorBuildingsCmsPageMainView extends AbstractPageMainView imple
     private static $ID_BUILDINGCREATOR_MENU_RIGHT_WRAPPER = "buildingcreator_menu_right_wrapper";
     private static $ID_CREATOR_WRAPPER = "buildingcreator_planner_wrapper";
     private static $ID_CREATOR_SIDEBAR_WRAPPER = "buildingcreator_planner_sidebar_wrapper";
+    private static $ID_CREATOR_SIDEBAR_SIDEBARS = "sidebars";
+    private static $ID_CREATOR_SIDEBAR_INFOPANEL = "infopanel";
     private static $ID_CREATOR_CONTENT_WRAPPER = "buildingcreator_planner_content_wrapper";
     private static $ID_CREATOR_CONTENT_TOOLBAR_WRAPPER = "buildingcreator_planner_content_toolbar_wrapper";
 
@@ -21,13 +23,25 @@ class BuildingcreatorBuildingsCmsPageMainView extends AbstractPageMainView imple
     private static $ID_CREATOR_CONTENT_CANVAS_LOADER_STATUS_WRAPPER = "buildingcreator_planner_content_canvas_loader_status_wrapper";
 
     /**
-     * @var ElementsSidebarBuildingcreatorBuildingsCmsPresenterView
+     * @var RoomsElementsSidebarBuildingcreatorBuildingsCmsPresenterView
      */
-    private $elementsSidebarPresenter;
+    private $roomsElementsSidebarPresenter;
     /**
-     * @var RoomsSidebarBuildingcreatorBuildingsCmsPresenterView
+     * @var DevicesElementsSidebarBuildingcreatorBuildingsCmsPresenterView
+     */
+    private $devicesElementsSidebarPresenter;
+    /**
+     * @var FloorsSidebarBuildingcreatorBuildingsCmsPresenterView
      */
     private $floorsSidebarPresenter;
+    /**
+     * @var MenuBuildingcreatorBuildingsCmsPresenterView
+     */
+    private $menuPresenter;
+    /**
+     * @var ToolbarBuildingcreatorBuildingsCmsPresenterView
+     */
+    private $toolbarPresenter;
 
     // /VARIABLES
 
@@ -39,8 +53,12 @@ class BuildingcreatorBuildingsCmsPageMainView extends AbstractPageMainView imple
     {
         parent::__construct( $view );
 
-        $this->elementsSidebarPresenter = new ElementsSidebarBuildingcreatorBuildingsCmsPresenterView( $this );
+        $this->roomsElementsSidebarPresenter = new RoomsElementsSidebarBuildingcreatorBuildingsCmsPresenterView( $this );
+        $this->devicesElementsSidebarPresenter = new DevicesElementsSidebarBuildingcreatorBuildingsCmsPresenterView(
+                $this );
         $this->floorsSidebarPresenter = new FloorsSidebarBuildingcreatorBuildingsCmsPresenterView( $this );
+        $this->menuPresenter = new MenuBuildingcreatorBuildingsCmsPresenterView( $this );
+        $this->toolbarPresenter = new ToolbarBuildingcreatorBuildingsCmsPresenterView( $this );
     }
 
     // /CONSTRUCTOR
@@ -51,6 +69,15 @@ class BuildingcreatorBuildingsCmsPageMainView extends AbstractPageMainView imple
 
     // ... GET
 
+
+    /**
+     * @see AbstractPageMainView::getController()
+     * @return BuildingsCmsMainController
+     */
+    public function getController()
+    {
+        return parent::getController();
+    }
 
     /**
      * @see AbstractPageMainView::getView()
@@ -66,7 +93,7 @@ class BuildingcreatorBuildingsCmsPageMainView extends AbstractPageMainView imple
      */
     public function getBuilding()
     {
-        return $this->getView()->getBuilding();
+        return $this->getController()->getBuilding();
     }
 
     /**
@@ -74,7 +101,7 @@ class BuildingcreatorBuildingsCmsPageMainView extends AbstractPageMainView imple
      */
     public function getBuildingFloors()
     {
-        return $this->getView()->getBuildingFloors();
+        return $this->getController()->getBuildingFloors();
     }
 
     /**
@@ -82,7 +109,23 @@ class BuildingcreatorBuildingsCmsPageMainView extends AbstractPageMainView imple
      */
     public function getBuildingElements()
     {
-        return $this->getView()->getBuildingElements();
+        return $this->getController()->getBuildingElements();
+    }
+
+    /**
+     * @see BuildingcreatorBuildingsCmsInterfaceView::getFacility()
+     */
+    public function getFacility()
+    {
+        return $this->getController()->getFacility();
+    }
+
+    /**
+     * @see PageCmsPageMainView::getWrapperId()
+     */
+    protected function getWrapperId()
+    {
+        return self::$ID_BUILDINGCREATOR_WRAPPER;
     }
 
     // ... /GET
@@ -92,133 +135,95 @@ class BuildingcreatorBuildingsCmsPageMainView extends AbstractPageMainView imple
 
 
     /**
-     * @see AbstractPageMainView::draw()
+     * @see PageCmsPageMainView::drawHeader()
      */
-    public function draw( AbstractXhtml $root )
+    protected function drawHeader( AbstractXhtml $root )
     {
 
-        if ( $this->getView()->getController()->getErrors() )
-        {
-            return;
-        }
-
-        // Create page wrapper
-        $pageWrapper = Xhtml::div()->id( self::$ID_BUILDINGCREATOR_WRAPPER );
-
-        // Add header to wrapper
-        $table = Xhtml::div( Xhtml::div( Xhtml::h( 2, "Building Creator" ) ) )->addClass(
-                Resource::css()->getTable() );
+        $table = Xhtml::div( Xhtml::div( Xhtml::h( 2, "Building Creator" ) ) )->addClass( Resource::css()->getTable() );
+        //         $table->addContent(
+        //                 Xhtml::div(
+        //                         Xhtml::div(
+        //                                 Xhtml::div( "Maxmimize" )->class_( Resource::css()->gui()->getComponent() )->attr(
+        //                                         "data-type", "toggle" )->id( "maximize" ) )->class_(
+        //                                 Resource::css()->gui()->getGui(), "theme2" ) )->class_( Resource::css()->getRight() )->style(
+        //                         "font-size: 0.7em;" ) );
         $table->addContent(
                 Xhtml::div(
                         Xhtml::div(
-                                Xhtml::div( "Maxmimize" )->class_( Resource::css()->gui()->getComponent() )->attr(
-                                        "data-type", "toggle" )->id( "maximize" ) )->class_(
-                                Resource::css()->gui()->getGui(), "theme2" ) )->class_( Resource::css()->getRight() )->style(
-                        "font-size: 0.7em;" ) );
-        $pageWrapper->addContent( $table );
+                                Xhtml::input()->type( InputXhtml::$TYPE_CHECKBOX )->autocomplete( false )->id(
+                                        "page_maximize" ) )->addContent(
+                                Xhtml::label( "Maximize" )->for_( "page_maximize" ) ) )->class_(
+                        Resource::css()->getRight() ) );
+        $root->addContent( $table );
+
+    }
+
+    /**
+     * @see PageCmsPageMainView::drawBody()
+     */
+    protected function drawBody( AbstractXhtml $root )
+    {
 
         // Draw menu to wrapper
-        $this->drawMenu( $pageWrapper );
+        //         $this->drawMenu( $root );
+        $this->menuPresenter->draw( $root );
 
         // Draw planner to wrapper
-        $this->drawPlanner( $pageWrapper );
-
-        // Add page wrapper to root
-        $root->addContent( $pageWrapper );
+        $this->drawPlanner( $root );
 
     }
 
-    // ... ... MENU
+    //     /**
+    //      * @see AbstractPageMainView::draw()
+    //      */
+    //     public function draw( AbstractXhtml $root )
+    //     {
 
 
-    /**
-     * @param AbstractXhtml $root
-     */
-    private function drawMenu( AbstractXhtml $root )
-    {
+    //         if ( $this->getView()->getController()->getErrors() )
+    //         {
+    //             return;
+    //         }
 
-        // Create wrapper
-        $wrapper = Xhtml::div()->id( self::$ID_BUILDINGCREATOR_MENU_WRAPPER );
 
-        // Create table
-        $table = Xhtml::div()->class_( Resource::css()->getTable() );
+    //         // Create page wrapper
+    //         $pageWrapper = Xhtml::div()->id( self::$ID_BUILDINGCREATOR_WRAPPER );
 
-        // Draw sub menu on table
-        $left = Xhtml::div();
-        $this->drawMenuLeft( $left );
-        $table->addContent( $left );
 
-        // Create right menu
-        $right = Xhtml::div()->class_( Resource::css()->getRight() );
-        $this->drawMenuRight( $right );
-        $table->addContent( $right );
+    //         // Add header to wrapper
+    //         $table = Xhtml::div( Xhtml::div( Xhtml::h( 2, "Building Creator" ) ) )->addClass(
+    //                 Resource::css()->getTable() );
+    //         $table->addContent(
+    //                 Xhtml::div(
+    //                         Xhtml::div(
+    //                                 Xhtml::div( "Maxmimize" )->class_( Resource::css()->gui()->getComponent() )->attr(
+    //                                         "data-type", "toggle" )->id( "maximize" ) )->class_(
+    //                                 Resource::css()->gui()->getGui(), "theme2" ) )->class_( Resource::css()->getRight() )->style(
+    //                         "font-size: 0.7em;" ) );
+    //         $pageWrapper->addContent( $table );
 
-        // Add table to wrapper
-        $wrapper->addContent( $table );
 
-        // Add wrapper to root
-        $root->addContent( $wrapper );
+    //         // Building Buildings Presenter
+    //         $buildingBuildingsPresenter = new BuildingBuildingsCmsPresenterView( $this );
+    //         $buildingBuildingsPresenter->setFacility( $this->getFacility() );
+    //         $buildingBuildingsPresenter->setBuilding( $this->getBuilding() );
+    //         $buildingBuildingsPresenter->draw( $pageWrapper );
 
-    }
 
-    /**
-     * @param AbstractXhtml $root
-     */
-    private function drawMenuLeft( AbstractXhtml $root )
-    {
+    //         // Draw menu to wrapper
+    //         $this->drawMenu( $pageWrapper );
 
-        // Create wrapper
-        $wrapper = Xhtml::div()->id( self::$ID_BUILDINGCREATOR_MENU_LEFT_WRAPPER );
 
-        // Create GUI
-        $gui = Xhtml::div()->class_( Resource::css()->gui()->getGui(), "theme2" );
+    //         // Draw planner to wrapper
+    //         $this->drawPlanner( $pageWrapper );
 
-        $gui->addContent(
-                Xhtml::div( "Floors" )->addClass( Resource::css()->gui()->getComponent() )->attr( "data-menu",
-                        "floors" ) );
-        $gui->addContent(
-                Xhtml::div( "Elements" )->addClass( Resource::css()->gui()->getComponent() )->attr( "data-menu",
-                        "elements" ) );
-        $gui->addContent(
-                Xhtml::div( "Navigation" )->addClass( Resource::css()->gui()->getComponent() )->attr( "data-menu",
-                        "navigation" ) );
 
-        // Add gui to wrapper
-        $wrapper->addContent( $gui );
+    //         // Add page wrapper to root
+    //         $root->addContent( $pageWrapper );
 
-        // Add wrapper to root
-        $root->addContent( $wrapper );
 
-    }
-
-    /**
-     * @param AbstractXhtml $root
-     */
-    private function drawMenuRight( AbstractXhtml $root )
-    {
-
-        // Create wrapper
-        $wrapper = Xhtml::div()->id( self::$ID_BUILDINGCREATOR_MENU_RIGHT_WRAPPER );
-
-        // Create table
-        $gui = Xhtml::div()->class_( Resource::css()->gui()->getGui(), "theme2" );
-
-        $gui->addContent(
-                Xhtml::a( "Cancel" )->addClass( Resource::css()->gui()->getComponent() )->attr( "data-disabled",
-                        "true" ) );
-        $gui->addContent(
-                Xhtml::a( "Save" )->addClass( Resource::css()->gui()->getComponent() )->id( "save" )->attr(
-                        "data-disabled", "true" ) );
-
-        // Add GUI to wrapper
-        $wrapper->addContent( $gui );
-
-        // Add wrapper to root
-        $root->addContent( $wrapper );
-
-    }
-
-    // ... ... /MENU
+    //     }
 
 
     // ... ... CREATOR
@@ -263,11 +268,44 @@ class BuildingcreatorBuildingsCmsPageMainView extends AbstractPageMainView imple
         // Create wrapper
         $wrapper = Xhtml::div()->id( self::$ID_CREATOR_SIDEBAR_WRAPPER );
 
-        // Rooms
-        $this->floorsSidebarPresenter->draw( $wrapper );
+        $sidebarWrapper = Xhtml::div()->id( self::$ID_CREATOR_SIDEBAR_SIDEBARS );
+        $sidebarInfoPanelWrapper = Xhtml::div()->id( self::$ID_CREATOR_SIDEBAR_INFOPANEL );
 
-        // Elements
-        $this->elementsSidebarPresenter->draw( $wrapper );
+        // INFO PANEL HEADER
+
+
+        $sidebarInfoPanelheaderWrapper = Xhtml::div()->id( "infopanel_header_wrapper" );
+        $sidebarInfoPanelheaderTable = Xhtml::div()->class_( Resource::css()->getTable() );
+        $sidebarInfoPanelheaderTable->addContent( Xhtml::div( "Header" )->class_( "infopanel_header_name" ) );
+        $sidebarInfoPanelButtons = Xhtml::div()->class_( Resource::css()->getRight(), "infopanel_header_buttons" );
+        $sidebarInfoPanelButtons->addContent( Xhtml::button( "Cancel" )->id( "infopanel_header_buttons_cancel" ) );
+        $sidebarInfoPanelButtons->addContent(
+                Xhtml::button( "Save" )->id( "infopanel_header_buttons_save" )->class_( "invert" ) );
+        $sidebarInfoPanelButtons->addContent(
+                Xhtml::button( "Save & goto next" )->id( "infopanel_header_buttons_save_next" ) );
+        $sidebarInfoPanelheaderTable->addContent( $sidebarInfoPanelButtons );
+        $sidebarInfoPanelheaderWrapper->addContent( $sidebarInfoPanelheaderTable );
+        $sidebarInfoPanelWrapper->addContent( $sidebarInfoPanelheaderWrapper );
+
+        // /INFO PANEL HEADER
+
+
+        // Floors
+        $this->floorsSidebarPresenter->draw( $sidebarWrapper );
+        $this->floorsSidebarPresenter->addInfoPanelContent( "element_name", "element", "Name",
+                ElementsSidebarBuildingcreatorBuildingsCmsPresenterView::drawInfoPanelName() );
+        $this->floorsSidebarPresenter->drawInfoPanelContent( $sidebarInfoPanelWrapper );
+
+        // Rooms Elements
+        $this->roomsElementsSidebarPresenter->draw( $sidebarWrapper );
+        $this->roomsElementsSidebarPresenter->drawInfoPanelContent( $sidebarInfoPanelWrapper );
+
+        // Devices Elements
+        $this->devicesElementsSidebarPresenter->draw( $sidebarWrapper );
+        $this->devicesElementsSidebarPresenter->drawInfoPanelContent( $sidebarInfoPanelWrapper );
+
+        $wrapper->addContent( $sidebarInfoPanelWrapper );
+        $wrapper->addContent( $sidebarWrapper );
 
         // Add wrapper to root
         $root->addContent( $wrapper );
@@ -284,7 +322,7 @@ class BuildingcreatorBuildingsCmsPageMainView extends AbstractPageMainView imple
         $wrapper = Xhtml::div()->id( self::$ID_CREATOR_CONTENT_WRAPPER );
 
         // Draw planner toolbar
-        $this->drawPlannerToolbar( $wrapper );
+        $this->toolbarPresenter->draw( $wrapper );
 
         // Create canvas wrapper
         $canvasWrapper = Xhtml::div()->id( self::$ID_CREATOR_CONTENT_CANVAS_WRAPPER );
@@ -299,6 +337,7 @@ class BuildingcreatorBuildingsCmsPageMainView extends AbstractPageMainView imple
                                 Xhtml::div( Xhtml::div( "Loading building" )->class_( "loading_building" ) )->addContent(
                                         Xhtml::div( "Loading floors" )->class_( "loading_floors" ) )->addContent(
                                         Xhtml::div( "Loading elements" )->class_( "loading_elements" ) )->addContent(
+                                        Xhtml::div( "Loading navigation" )->class_( "loading_navigation" ) )->addContent(
                                         Xhtml::div( "Saving..." )->class_( "saving" ) )->id(
                                         self::$ID_CREATOR_CONTENT_CANVAS_LOADER_STATUS_WRAPPER ) )->addContent(
                                 Xhtml::img( Resource::image()->icon()->getSpinnerBar(), "Loading" ) )->class_(
@@ -307,105 +346,6 @@ class BuildingcreatorBuildingsCmsPageMainView extends AbstractPageMainView imple
 
         // Add canvas wrapper to wrapper
         $wrapper->addContent( $canvasWrapper );
-
-        // Add wrapper to root
-        $root->addContent( $wrapper );
-
-    }
-
-    /**
-     * @param AbstractXhtml $root
-     */
-    private function drawPlannerToolbar( AbstractXhtml $root )
-    {
-
-        // Create wrapper
-        $wrapper = Xhtml::div()->id( self::$ID_CREATOR_CONTENT_TOOLBAR_WRAPPER );
-
-        // Create table
-        $table = Xhtml::div()->addClass( Resource::css()->getTable() );
-
-        // ... Left
-        $left = Xhtml::div();
-
-        // Create gui
-        $gui = Xhtml::div()->addClass( Resource::css()->gui()->getGui(), "theme2" );
-        $gui->addContent(
-                Xhtml::a( "-" )->id( "scale_dec" )->attr( "data-disabled", "true" )->addClass(
-                        Resource::css()->gui()->getComponent() ) );
-        $gui->addContent(
-                Xhtml::a( "+" )->id( "scale_inc" )->attr( "data-disabled", "true" )->addClass(
-                        Resource::css()->gui()->getComponent() ) );
-        $gui->addContent(
-                Xhtml::a( Xhtml::div()->attr( "data-icon", "layer_max" ) )->id( "layer_fit" )->addClass(
-                        Resource::css()->gui()->getComponent() )->attr( "data-disabled", "true" )->title( "Fit to stage" ) );
-
-        $left->addContent( $gui );
-
-        // Create gui
-        $gui = Xhtml::div()->addClass( Resource::css()->gui()->getGui(), "theme2" );
-        $gui->addContent(
-                Xhtml::a( Xhtml::div()->attr( "data-icon", "map" ) )->id( "toggle_map" )->attr( "data-type", "toggle" )->attr(
-                        "data-disabled", "true" )->addClass( Resource::css()->gui()->getComponent(), "checked" )->title(
-                        "Toggle map" ) );
-
-        $left->addContent( $gui );
-
-        // Create gui
-        $gui = Xhtml::div()->addClass( Resource::css()->gui()->getGui(), "theme2" );
-        $gui->addContent(
-                Xhtml::a( Xhtml::div()->attr( "data-icon", "polygon" ) )->addClass(
-                        Resource::css()->gui()->getComponent() )->title( "Polygon" )->id( "polygon" ) );
-        $gui->addContent(
-                Xhtml::a( Xhtml::div()->attr( "data-icon", "polygon_straight" ) )->attr( "data-type", "radio" )->attr(
-                        "data-name", "line_type" )->attr( "data-line", "straight" )->attr( "data-disabled", "true" )->addClass(
-                        "line_type", Resource::css()->gui()->getComponent() )->title( "Straight" ) );
-        $gui->addContent(
-                Xhtml::a( Xhtml::div()->attr( "data-icon", "polygon_quad" ) )->attr( "data-type", "radio" )->attr(
-                        "data-name", "line_type" )->attr( "data-line", "quad" )->attr( "data-disabled", "true" )->addClass(
-                        "line_type", Resource::css()->gui()->getComponent() )->title( "Quadratic" ) );
-        $gui->addContent(
-                Xhtml::a( Xhtml::div()->attr( "data-icon", "polygon_bezier" ) )->attr( "data-type", "radio" )->attr(
-                        "data-name", "line_type" )->attr( "data-line", "bezier" )->attr( "data-disabled", "true" )->addClass(
-                        "line_type", Resource::css()->gui()->getComponent() )->title( "Bezier" ) );
-
-        $left->addContent( $gui );
-
-        $table->addContent( $left );
-
-        // ... Center
-        $center = Xhtml::div()->addClass( Resource::css()->getCenter() );
-
-        $table->addContent( $center );
-
-        // ... Right
-        $right = Xhtml::div()->addClass( Resource::css()->getRight() );
-
-        // Create gui
-        $gui = Xhtml::div()->addClass( Resource::css()->gui()->getGui(), "theme2" );
-        $gui->addContent(
-                Xhtml::a( Xhtml::div()->attr( "data-icon", "copy" ) )->addClass(
-                        Resource::css()->gui()->getComponent() )->id( "copy" )->title( "Copy/paste" )->attr(
-                        "data-disabled", "true" ) );
-        $gui->addContent(
-                Xhtml::a( Xhtml::div()->attr( "data-icon", "trashbin" ) )->addClass(
-                        Resource::css()->gui()->getComponent() )->id( "delete" )->title( "Delete" )->attr(
-                        "data-disabled", "true" ) );
-
-        $right->addContent( $gui );
-
-        // Create gui
-        $gui = Xhtml::div()->addClass( Resource::css()->gui()->getGui(), "theme2" );
-        $gui->addContent(
-                Xhtml::a( "Undo" )->id( "undo" )->attr( "data-disabled", "true" )->addClass(
-                        Resource::css()->gui()->getComponent() ) );
-
-        $right->addContent( $gui );
-
-        $table->addContent( $right );
-
-        // Add table to wrapper
-        $wrapper->addContent( $table );
 
         // Add wrapper to root
         $root->addContent( $wrapper );

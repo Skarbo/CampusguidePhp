@@ -237,7 +237,7 @@ abstract class CmsMainController extends MainController
         $this->addJavascriptFile( Resource::javascript()->getJavascriptFile( $this->getMode() ) );
 
         // ... Queue
-        if ( $this->getQueue() && $this->getQueue()->getType() == QueueModel::TYPE_IMAGE_BUILDING )
+        if ( false ) ///&& $this->getQueue() && $this->getQueue()->getType() == QueueModel::TYPE_IMAGE_BUILDING )
         {
             $this->addJavascriptFile( Resource::javascript()->getKineticApiFile() );
             $this->addJavascriptFile( Resource::javascript()->getJavascriptCanvasFile( $this->getMode() ) );
@@ -261,7 +261,7 @@ EOD;
                                 "ids" => self::getIds() ) ) );
 
         // ... Queue
-        if ( $this->getQueue() )
+        if ( false ) //$this->getQueue() )
         {
             $codeBody = <<<EOD
 $codeBody

@@ -1,8 +1,8 @@
 // CONSTRUCTOR
-SelectsliderCmsPresenterView.prototype = new PresenterView();
+SelectsliderCmsPresenterView.prototype = new AbstractPresenterView();
 
 function SelectsliderCmsPresenterView(view) {
-	PresenterView.apply(this, arguments);
+	AbstractPresenterView.apply(this, arguments);
 	this.template = null;
 	this.id = null;
 };
@@ -36,7 +36,7 @@ SelectsliderCmsPresenterView.prototype.getContentsElement = function() {
 // ... DO
 
 SelectsliderCmsPresenterView.prototype.doBindEventHandler = function() {
-	PresenterView.prototype.doBindEventHandler.call(this);
+	AbstractPresenterView.prototype.doBindEventHandler.call(this);
 	
 	this.doRebind();
 
@@ -107,7 +107,7 @@ SelectsliderCmsPresenterView.prototype.doRebind = function() {
 
 SelectsliderCmsPresenterView.prototype.draw = function(root) {
 	this.id = root.attr("id");
-	PresenterView.prototype.draw.call(this, root);
+	AbstractPresenterView.prototype.draw.call(this, root);
 	this.template = $(this.getRoot().find(".selectslider_template").children()[0]);
 	this.doSlider();
 };

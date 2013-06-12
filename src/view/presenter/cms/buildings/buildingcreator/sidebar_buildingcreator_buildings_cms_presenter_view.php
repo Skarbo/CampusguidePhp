@@ -1,10 +1,12 @@
 <?php
 
-abstract class SidebarBuildingcreatorBuildingsCmsPresenterView extends AbstractPresenterView implements BuildingcreatorBuildingsCmsInterfaceView
+abstract class SidebarBuildingcreatorBuildingsCmsPresenterView extends PresenterView implements BuildingcreatorBuildingsCmsInterfaceView
 {
 
     // VARIABLES
 
+
+    private $infoPanelContent = array ();
 
     // /VARIABLES
 
@@ -43,7 +45,7 @@ abstract class SidebarBuildingcreatorBuildingsCmsPresenterView extends AbstractP
      */
     public function getBuilding()
     {
-        return $this->getView()->getBuilding();
+        return $this->getController()->getBuilding();
     }
 
     /**
@@ -51,7 +53,7 @@ abstract class SidebarBuildingcreatorBuildingsCmsPresenterView extends AbstractP
      */
     public function getBuildingFloors()
     {
-        return $this->getView()->getBuildingFloors();
+        return $this->getController()->getBuildingFloors();
     }
 
     /**
@@ -59,7 +61,15 @@ abstract class SidebarBuildingcreatorBuildingsCmsPresenterView extends AbstractP
      */
     public function getBuildingElements()
     {
-        return $this->getView()->getBuildingElements();
+        return $this->getController()->getBuildingElements();
+    }
+
+    /**
+     * @see BuildingcreatorBuildingsCmsInterfaceView::getFacility()
+     */
+    public function getFacility()
+    {
+        return $this->getController()->getFacility();
     }
 
     /**
@@ -80,16 +90,18 @@ abstract class SidebarBuildingcreatorBuildingsCmsPresenterView extends AbstractP
      */
     public function draw( AbstractXhtml $root )
     {
+
         // Sidebar
         $sidebar = Xhtml::div()->class_( "sidebar" )->attr( "data-sidebar", $this->getSidebarType() )->attr(
-                "data-sidebar-group", is_array($this->getSidebarGroups()) ? implode(" ", $this->getSidebarGroups()) : $this->getSidebarGroups() );
+                "data-sidebar-group",
+                is_array( $this->getSidebarGroups() ) ? implode( " ", $this->getSidebarGroups() ) : $this->getSidebarGroups() );
 
         // Draw header
         $header = Xhtml::div()->class_( Resource::css()->getTable(), "sidebar_header_wrapper", "collapse" );
         $this->drawHeader( $header );
 
         // Draw content
-        $content = Xhtml::div()->class_( "content" );
+        $content = Xhtml::div()->class_( "sidebar_content" );
         $this->drawContent( $content );
 
         $sidebar->addContent( $header );
@@ -107,6 +119,56 @@ abstract class SidebarBuildingcreatorBuildingsCmsPresenterView extends AbstractP
      * @param AbstractXhtml $root
      */
     protected abstract function drawContent( AbstractXhtml $root );
+
+    /**
+     * @param AbstractXhtml $root
+     */
+    public function drawInfoPanelContent( AbstractXhtml $root )
+    {
+        foreach ( $this->infoPanelContent as $infoPanelContent )
+        {
+            $root->addContent( $infoPanelContent );
+        }
+    }
+
+    /**
+     * @param String $infoPanelId
+     * @param String $infoPanelGroup
+     * @param String $headerField
+     * @param AbstractXhtml $infoPanelContent
+     */
+    public function addInfoPanelContent( $infoPanelId, $infoPanelGroup, $headerField, AbstractXhtml $infoPanelContent )
+    {
+
+        $wrapper = Xhtml::div()->class_( "info_panel_content_wrapper" );
+        $wrapper->attr( "data-infopanel-group", $infoPanelGroup );
+        $wrapper->attr( "data-infopanel", $infoPanelId );
+
+        // HEADER
+
+
+        $headerWrapper = Xhtml::div()->class_( "info_panel_content_header_wrapper", Resource::css()->getTable() );
+        $headerWrapper->addContent( Xhtml::div( $headerField )->class_( "info_panel_content_header_field" ) );
+        $headerWrapper->addContent( Xhtml::div( "Value" )->class_( "info_panel_content_header_value", Resource::css()->getRight() ) );
+        $headerWrapper->addContent( Xhtml::div( Xhtml::img( Resource::image()->getEmptyImage() ) )->class_( "info_panel_content_header_arrow" ) );
+        $wrapper->addContent( $headerWrapper );
+
+        // /HEADER
+
+
+        // CONTENT
+
+
+        $contentWrapper = Xhtml::div()->class_( "info_panel_content_content_wrapper" );
+        $contentWrapper->addContent( $infoPanelContent );
+        $wrapper->addContent( $contentWrapper );
+
+        // /CONTENT
+
+
+        $this->infoPanelContent[] = $wrapper;
+
+    }
 
     // /FUNCTIONS
 

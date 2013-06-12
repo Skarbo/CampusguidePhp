@@ -1,126 +1,136 @@
 @font-face {
-	font-family: 'CampusGuide';
-	src: url('../font/campusguide.ttf') format('truetype');
-	font-weight: normal;
-	font-style: normal;
-}
-
-*[data-icon][data-text]:AFTER {
-	margin-left: 0.5em;
+    font-family: 'CampusGuide';
+    src: url('../font/campusguide.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
 
 *[data-icon]:AFTER {
-	font-family: CampusGuide;
+    font-family: CampusGuide;
+}
+
+*[data-icon][data-text]:AFTER {
+    margin-left: 0.5em;
 }
 
 *[data-icon=search]:AFTER {
-	content: "S";
+    content: "S";
 }
 
 *[data-icon=location]:AFTER {
-	content: "L";
+    content: "L";
 }
 
 *[data-icon=location_pin]:AFTER {
-	content: "P";
+    content: "P";
 }
 
 *[data-icon=layers]:AFTER {
-	content: "l";
+    content: "l";
 }
 
 *[data-icon=more]:AFTER {
-	content: "M";
+    content: "M";
 }
 
 *[data-icon=direction]:AFTER {
-	content: "D";
+    content: "D";
 }
 
 *[data-icon=home]:AFTER {
-	content: "H";
+    content: "H";
 }
 
 *[data-icon=cross]:AFTER {
-	content: "X";
+    content: "X";
 }
 
 *[data-icon=up]:AFTER {
-	content: "^";
+    content: "^";
 }
 
 *[data-icon=down]:AFTER {
-	content: "_";
+    content: "_";
 }
 
 *[data-icon=rightdown]:AFTER {
-	content: ".";
+    content: ".";
 }
 
 *[data-icon=left]:AFTER {
-	content: "<";
+    content: "<";
+}
+
+*[data-icon=right]:AFTER {
+    content: ">";
 }
 
 *[data-icon=star]:AFTER {
-	content: "*";
+    content: "*";
 }
 
 *[data-icon=map]:AFTER {
-	content: "m";
+    content: "m";
 }
 
 *[data-icon=trashbin]:AFTER {
-	content: "T";
+    content: "T";
 }
 
 *[data-icon=copy]:AFTER {
-	content: "C";
+    content: "C";
 }
 
 *[data-icon=check]:AFTER {
-	content: "c";
+    content: "c";
 }
 
 *[data-icon=polygon]:AFTER {
-	content: "0";
+    content: "0";
 }
 
 *[data-icon=polygon_straight]:AFTER {
-	content: "1";
+    content: "1";
 }
 
 *[data-icon=polygon_quad]:AFTER {
-	content: "2";
+    content: "2";
 }
 
 *[data-icon=polygon_bezier]:AFTER {
-	content: "3";
+    content: "3";
 }
 
 *[data-icon=layer_max]:AFTER {
-	content: "4";
+    content: "4";
 }
 
 *[data-icon=maximize]:AFTER {
-	content: "5";
+    content: "5";
 }
 
 /* Arrow */
 .arrow {
-	vertical-align: top;
-	width: 0pt;
-	height: 0pt;
-	display: block;
+    vertical-align: top;
+    width: 0pt;
+    height: 0pt;
+    display: block;
 }
 
 .arrow[data-arrow=up] {
-	border-left: 5px solid transparent;
-	border-right: 5px solid transparent;
-	border-bottom: 5px solid rgb(102, 102, 102);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid rgb(102, 102, 102);
 }
 
 .arrow[data-arrow=down] {
-	border-left: 5px solid transparent;
-	border-right: 5px solid transparent;
-	border-top: 5px solid rgb(102, 102, 102);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid rgb(102, 102, 102);
+}
+
+.arrow[data-arrow=left] {
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;   
+    border-right:5px solid rgb(102, 102, 102); 
 }

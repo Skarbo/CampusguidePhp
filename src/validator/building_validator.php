@@ -105,23 +105,12 @@ class BuildingValidator extends Validator
     {
         if ( $this->getModel()->getPosition() )
         {
-            $positionFiltered = array_filter( $this->getModel()->getPosition(), function( $var ) {
-                return is_array( $var ) ? array_sum( $var ) : $var;
-            } );
-            foreach ( $positionFiltered as $positionField )
+            foreach ( $this->getModel()->getPosition() as $position )
             {
-                foreach ( $positionField as $position )
+                if ( !preg_match( self::$REGEX_GPS, $position ) )
                 {
-                        if ( !preg_match( self::$REGEX_GPS, "" . $position ) )
-                    {
-                        throw new Exception( "Position is not legally formatted" );
-                    }
+                    throw new Exception( "Position is not legally formatted" );
                 }
-            }
-            if ( count( $positionFiltered ) != 0 && count( $positionFiltered ) != count(
-                    $this->getModel()->getPosition() ) )
-            {
-                throw new Exception( "Either all positions must be given or none at all" );
             }
         }
     }

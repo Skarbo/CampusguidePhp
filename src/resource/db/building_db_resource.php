@@ -15,6 +15,7 @@ class BuildingDbResource
     private $fieldPosition = "building_position";
     private $fieldAddress = "building_address";
     private $fieldLocation = "building_location";
+    private $fieldOverlay = "building_overlay";
     private $fieldUpdated = "building_updated";
     private $fieldRegistered = "building_registered";
 
@@ -88,6 +89,11 @@ class BuildingDbResource
     public function getFieldLocation()
     {
         return $this->fieldLocation;
+    }
+
+    public function getFieldOverlay()
+    {
+        return $this->fieldOverlay;
     }
 
 }

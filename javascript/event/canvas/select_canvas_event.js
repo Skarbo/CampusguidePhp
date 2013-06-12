@@ -1,22 +1,20 @@
 /**
- * SelectEvent event
- */
-SelectEvent.prototype = new Event();
+ * SelectCanvasEvent event
+ */ SelectCanvasEvent.prototype = new Event();
 
 /**
- * SelectEvent Event
+ * SelectCanvasEvent Event
  * 
  * @param {Number}
  *            lineFloor
  */
-function SelectEvent(selectType, element) {
+function SelectCanvasEvent(selectType, element) {
 	this.selectType = selectType;
 	this.element = element;
 }
 
 // VARIABLES
-
-SelectEvent.TYPE = "SelectEvent";
+ SelectCanvasEvent.TYPE = "SelectCanvasEvent";
 
 // /VARIABLES
 
@@ -24,20 +22,17 @@ SelectEvent.TYPE = "SelectEvent";
 
 /**
  * @return {Object} element
- */
-SelectEvent.prototype.getElement = function() {
+ */ SelectCanvasEvent.prototype.getElement = function() {
 	return this.element;
 };
 
 /**
  * @return {String} type
- */
-SelectEvent.prototype.getSelectType = function() {
+ */ SelectCanvasEvent.prototype.getSelectType = function() {
 	return this.selectType;
 };
-
-SelectEvent.prototype.getType = function() {
-	return SelectEvent.TYPE;
+ SelectCanvasEvent.prototype.getType = function() {
+	return SelectCanvasEvent.TYPE;
 };
 
 // /FUNCTIONS

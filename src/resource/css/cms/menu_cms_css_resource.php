@@ -7,6 +7,7 @@ class MenuCmsCssResource extends ClassCore
 
 
     private $menu = "menu";
+    private $menuSub = "menu sub";
 
     private $align = "align";
     private $alignLeft = "left";
@@ -60,11 +61,19 @@ class MenuCmsCssResource extends ClassCore
     {
         return $this->alignRight;
     }
-	public function getAlign()
+
+    public function getAlign()
     {
         return $this->align;
     }
 
+    /**
+     * @return the $menuSub
+     */
+    public function getMenuSub()
+    {
+        return $this->menuSub;
+    }
 
 }
 

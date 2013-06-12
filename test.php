@@ -26,22 +26,22 @@ class AllTests extends TestSuite
 
         parent::TestSuite( "All tests" );
 
-            //         $this->add( new FacilityDaoTest() );
-            //         $this->add( new BuildingDaoTest() );
-            //         $this->add( new ElementBuildingDaoTest() );
-            //         $this->add( new SectionBuildingDaoTest() );
-            //         $this->add( new FloorBuildingDaoTest() );
+        //         $this->add( new FacilityDaoTest() );
+        //         $this->add( new BuildingDaoTest() );
+        //         $this->add( new ElementBuildingDaoTest() );
+        //         $this->add( new SectionBuildingDaoTest() );
+        //         $this->add( new FloorBuildingDaoTest() );
 
 
         //         $this->add( new FloorBuildingHandlerTest() );
 
 
-//         $this->add( new FacilitiesRestControllerTest() );
-//         $this->add( new BuildingsRestControllerTest() );
-//         $this->add( new FloorsBuildingRestControllerTest() );
-//         $this->add( new ElementsBuildingRestControllerTest() );
-//         $this->add( new SectionsBuildingRestControllerTest() );
-//         $this->add( new SearchRestControllerTest() );
+        //         $this->add( new FacilitiesRestControllerTest() );
+        //         $this->add( new BuildingsRestControllerTest() );
+        //         $this->add( new FloorsBuildingRestControllerTest() );
+        //         $this->add( new ElementsBuildingRestControllerTest() );
+        //         $this->add( new SectionsBuildingRestControllerTest() );
+        //         $this->add( new SearchRestControllerTest() );
 
 
         //$this->add( new DbbackupHandlerTest() );
@@ -49,14 +49,18 @@ class AllTests extends TestSuite
 
 
         //$this->add(new BuildingCommandControllerTest());
-//         $this->add( new QueueCommandControllerTest() );
+        //         $this->add( new QueueCommandControllerTest() );
+
 
         //                 $this->add( new TypesTimeeditScheduleWebsiteParserTest() );
         //$this->add( new TypesScheduleWebsiteHandlerTest() );
         //$this->add( new EntriesTimeeditScheduleWebsiteParserTest() );
-        $this->add( new EntriesScheduleWebsiteHandlerTest() );
+        //         $this->add( new EntriesScheduleWebsiteHandlerTest() );
         //         $this->add(new RoomScheduleDaoTest());
 
+
+        //         $this->add(new NavigationBuildingHandlerTest());
+        $this->add( new NavigateHandlerTest() );
 
     }
 

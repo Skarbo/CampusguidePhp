@@ -34,7 +34,8 @@ class BuildingDbDao extends StandardDbDao implements BuildingDao
                 Core::arrayAt( $modelArray, Resource::db()->building()->getFieldFacilityId() ),
                 Core::arrayAt( $modelArray, Resource::db()->building()->getFieldAddress() ),
                 Core::arrayAt( $modelArray, Resource::db()->building()->getFieldPosition() ),
-                Core::arrayAt( $modelArray, Resource::db()->building()->getFieldLocation() ) );
+                Core::arrayAt( $modelArray, Resource::db()->building()->getFieldLocation() ),
+                Core::arrayAt( $modelArray, Resource::db()->building()->getFieldOverlay() ) );
 
         $building->setId( intval( Core::arrayAt( $modelArray, Resource::db()->building()->getFieldId() ) ) );
         $building->setUpdated(
@@ -43,7 +44,18 @@ class BuildingDbDao extends StandardDbDao implements BuildingDao
                 Core::parseTimestamp( Core::arrayAt( $modelArray, Resource::db()->building()->getFieldRegistered() ) ) );
 
         $building->setFloors(
-                intval( Core::arrayAt( $modelArray, Resource::db()->building()->getFieldAliasFloors(), 0 ) ) );
+                array_map(
+                        function ( $var )
+                        {
+                            return array_map(
+                                    function ( $var )
+                                    {
+                                        return intval( $var );
+                                    }, explode( ",", $var ) );
+                        },
+                        array_filter(
+                                explode( "|",
+                                        Core::arrayAt( $modelArray, Resource::db()->building()->getFieldAliasFloors() ) ) ) ) );
 
         // Return Building
         return $building;
@@ -102,6 +114,8 @@ class BuildingDbDao extends StandardDbDao implements BuildingDao
                 is_array( $model->getAddress() ) ? implode( "|", $model->getAddress() ) : $model->getAddress() );
         $fields[ Resource::db()->building()->getFieldPosition() ] = ":position";
         $binds[ "position" ] = BuildingUtil::generatePositionToString( $model->getPosition() );
+        $fields[ Resource::db()->building()->getFieldOverlay() ] = ":overlay";
+        $binds[ "overlay" ] = json_encode( $model->getOverlay() );
 
         if ( !$isInsert )
         {
@@ -130,9 +144,16 @@ class BuildingDbDao extends StandardDbDao implements BuildingDao
         // Create select Building Floors query
         $selectBuildingFloorsQuery = new SelectSqlbuilderDbCore();
         $selectBuildingFloorsQuery->setExpression(
-                SB::count(
-                        SB::pun( Resource::db()->floorBuilding()->getTable(),
-                                Resource::db()->floorBuilding()->getFieldId() ) ) );
+                SB::groupConcat(
+                        Core::cc( " ",
+                                SB::concat( ",",
+                                        SB::pun( Resource::db()->floorBuilding()->getTable(),
+                                                Resource::db()->floorBuilding()->getFieldId() ),
+                                        SB::pun( Resource::db()->floorBuilding()->getTable(),
+                                                Resource::db()->floorBuilding()->getFieldOrder() ),
+                                        SB::pun( Resource::db()->floorBuilding()->getTable(),
+                                                Resource::db()->floorBuilding()->getFieldMain() ) ), SB::$SEPARATOR,
+                                SB::quote( "|" ) ) ) );
         $selectBuildingFloorsQuery->setFrom( Resource::db()->floorBuilding()->getTable() );
         $selectBuildingFloorsQuery->setWhere(
                 SB::equ(
@@ -148,7 +169,8 @@ class BuildingDbDao extends StandardDbDao implements BuildingDao
 
         // ... Build
         $selectQuery->getQuery()->addExpression(
-                SB::ifnull( $selectBuildingFloorsQuery->build(), Resource::db()->building()->getFieldAliasFloors(), 0 ) );
+                SB::as_( SB::par( $selectBuildingFloorsQuery->build() ),
+                        Resource::db()->building()->getFieldAliasFloors() ) );
 
         return $selectQuery;
 

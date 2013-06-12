@@ -1,0 +1,19 @@
+<?xml version="1.0" standalone="yes"?>
+
+<svg version="1.1" viewBox="0.0 0.0 100.0 100.0" fill="none" stroke="none" stroke-linecap="square" stroke-miterlimit="10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <clipPath id="p.0">
+        <path d="m0 0l100.0 0l0 100.0l-100.0 0l0 -100.0z" clip-rule="nonzero"></path>
+    </clipPath>
+    <g clip-path="url(#p.0)">
+        <path fill="#000000" fill-opacity="0.0" d="m0 0l100.0 0l0 100.0l-100.0 0z" fill-rule="nonzero"></path>
+        <path fill="#000000" d="m37.419262 41.44839l-17.937008 -17.937008l-8.717122 8.717121l0 -21.448818l21.448818 0l-8.717121 8.717121l17.937008 17.937008z" fill-rule="nonzero"></path>
+        <path stroke="#000000" stroke-width="2.0" stroke-linejoin="round" stroke-linecap="butt" d="m37.419262 41.44839l-17.937008 -17.937008l-8.717122 8.717121l0 -21.448818l21.448818 0l-8.717121 8.717121l17.937008 17.937008z" fill-rule="nonzero"></path>
+        <path fill="#000000" d="m62.60895 58.594376l17.937008 17.937012l8.717125 -8.717125l0 21.448822l-21.448822 0l8.717125 -8.717125l-17.937012 -17.937008z" fill-rule="nonzero"></path>
+        <path stroke="#000000" stroke-width="2.0" stroke-linejoin="round" stroke-linecap="butt" d="m62.60895 58.594376l17.937008 17.937012l8.717125 -8.717125l0 21.448822l-21.448822 0l8.717125 -8.717125l-17.937012 -17.937008z" fill-rule="nonzero"></path>
+        <path fill="#000000" d="m58.55161 37.39105l17.937008 -17.937008l-8.717125 -8.717122l21.448822 0l0 21.448818l-8.717125 -8.717123l-17.937004 17.93701z" fill-rule="nonzero"></path>
+        <path stroke="#000000" stroke-width="2.0" stroke-linejoin="round" stroke-linecap="butt" d="m58.55161 37.39105l17.937008 -17.937008l-8.717125 -8.717122l21.448822 0l0 21.448818l-8.717125 -8.717123l-17.937004 17.93701z" fill-rule="nonzero"></path>
+        <path fill="#000000" d="m41.405624 62.580738l-17.93701 17.937008l8.717123 8.717125l-21.448818 0l0 -21.448822l8.717122 8.717125l17.937008 -17.937012z" fill-rule="nonzero"></path>
+        <path stroke="#000000" stroke-width="2.0" stroke-linejoin="round" stroke-linecap="butt" d="m41.405624 62.580738l-17.93701 17.937008l8.717123 8.717125l-21.448818 0l0 -21.448822l8.717122 8.717125l17.937008 -17.937012z" fill-rule="nonzero"></path>
+    </g>
+</svg>
+

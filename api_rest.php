@@ -37,9 +37,15 @@ $mapping[ ElementsBuildingRestController::$CONTROLLER_NAME ][ CampusguideApi::MA
 $mapping[ ElementsBuildingRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = ElementsBuildingRestView::class_();
 $mapping[ SectionsBuildingRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = SectionsBuildingRestController::class_();
 $mapping[ SectionsBuildingRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = SectionsBuildingRestView::class_();
+$mapping[ NavigationBuildingRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = NavigationBuildingRestController::class_();
+$mapping[ NavigationBuildingRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = NavigationBuildingRestView::class_();
 
 $mapping[ SearchRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = SearchRestController::class_();
 $mapping[ SearchRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = SearchRestView::class_();
+$mapping[ NavigateRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = NavigateRestController::class_();
+$mapping[ NavigateRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = NavigateRestView::class_();
+$mapping[ BuildingcreatorRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_CONTROLLER ] = BuildingcreatorRestController::class_();
+$mapping[ BuildingcreatorRestController::$CONTROLLER_NAME ][ CampusguideApi::MAP_VIEW ] = BuildingcreatorRestView::class_();
 
 $mapping[ "" ] = $mapping[ FacilitiesRestController::$CONTROLLER_NAME ];
 

@@ -25,11 +25,20 @@ class BuildingBuildingsCmsPageMainView extends AbstractPageMainView
 
     /**
      * @see AbstractPageMainView::getView()
-     * @return FacilitiesCmsMainView
+     * @return BuildingsCmsMainView
      */
     public function getView()
     {
         return parent::getView();
+    }
+
+    /**
+     * @see AbstractPageMainView::getController()
+     * @return BuildingsCmsMainController
+     */
+    public function getController()
+    {
+        return parent::getController();
     }
 
     // ... /GET
@@ -45,14 +54,26 @@ class BuildingBuildingsCmsPageMainView extends AbstractPageMainView
     {
 
         $adminFacilityPage = new AdminBuildingBuildingsCmsPageMainView( $this->getView() );
+        $deleteBuildingPage = new DeleteBuildingBuildingsCmsPageMainView( $this->getView() );
+        $viewBuildingPage = new ViewBuildingBuildingsCmsPageMainView( $this->getView() );
 
         // Create page wrapper
         $pageWrapper = Xhtml::div()->id( self::$ID_BUILDING_WRAPPER );
 
         // Action new/edit
-        if ( $this->getView()->getController()->isActionNew() || $this->getView()->getController()->isActionEdit() )
+        if ( $this->getController()->isActionNew() || $this->getController()->isActionEdit() )
         {
             $adminFacilityPage->draw( $pageWrapper );
+        }
+        // Action delete
+        else if ( $this->getController()->isActionDelete() )
+        {
+            $deleteBuildingPage->draw( $pageWrapper );
+        }
+        // Action View
+        else
+        {
+            $viewBuildingPage->draw( $pageWrapper );
         }
 
         // Add page wrapper to root

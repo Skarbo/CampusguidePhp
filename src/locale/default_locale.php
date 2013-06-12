@@ -52,6 +52,15 @@ class DefaultLocale extends AbstractDefaultLocale
     // /FUNCTIONS
 
 
+    /**
+     * @see Locale::instance()
+     * @return DefaultLocale
+     */
+    public static function instance()
+    {
+        return parent::instance();
+    }
+
 }
 
 ?>

@@ -26,7 +26,7 @@ class BuildingFactoryModel extends ClassCore
      * @param mixed $location Array( lat, lon )|String( "lat,lon" )
      * @return BuildingModel
      */
-    public static function createBuilding( $name, $facilityId, $address = array(), $position = array(), $location = array() )
+    public static function createBuilding( $name, $facilityId, $address = array(), $position = array(), $location = array(), $overlay = array() )
     {
 
         // Initiate model
@@ -37,6 +37,7 @@ class BuildingFactoryModel extends ClassCore
         $building->setAddress( Core::utf8Encode( is_array( $address ) ? $address : explode( "|", $address ) ) );
         $building->setPosition( BuildingUtil::generatePositionToArray( $position ) );
         $building->setLocation( BuildingUtil::generateLocationToArray( $location ) );
+        $building->setOverlay( is_array( $overlay ) ? $overlay : json_decode( $overlay, true ) );
 
         // Return model
         return $building;

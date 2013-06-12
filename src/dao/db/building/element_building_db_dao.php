@@ -29,6 +29,7 @@ class ElementBuildingDbDao extends StandardDbDao implements ElementBuildingDao
                 Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldFloorId() ),
                 Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldName() ),
                 Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldCoordinates() ),
+                Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldData() ),
                 Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldSectionId() ),
                 Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldType() ),
                 Core::arrayAt( $modelArray, Resource::db()->elementBuilding()->getFieldTypeGroup() ),
@@ -96,6 +97,12 @@ class ElementBuildingDbDao extends StandardDbDao implements ElementBuildingDao
         {
             $fields[ Resource::db()->elementBuilding()->getFieldCoordinates() ] = ":coordinates";
             $binds[ "coordinates" ] = Resource::generateCoordinatesToString( $model->getCoordinates() );
+        }
+
+        if ( !is_null( $model->getData() ) )
+        {
+            $fields[ Resource::db()->elementBuilding()->getFieldData() ] = ":data";
+            $binds[ "data" ] = json_encode( $model->getData() );
         }
 
         $fields[ Resource::db()->elementBuilding()->getFieldSectionId() ] = $model->getSectionId() ? ":sectionId" : SB::$NULL;
@@ -177,6 +184,21 @@ class ElementBuildingDbDao extends StandardDbDao implements ElementBuildingDao
         // Return result
         return $result->isExecute();
 
+    }
+
+    /**
+     * @see StandardDbDao::getSelectQuery()
+     */
+    protected function getSelectQuery()
+    {
+        $selectQuery = parent::getSelectQuery();
+
+        $selectQuery->getQuery()->setOrderBy(
+                array ( array ( Resource::db()->elementBuilding()->getFieldName(), SB::$ASC ),
+                        array ( Resource::db()->elementBuilding()->getFieldType(), SB::$ASC ),
+                        array ( Resource::db()->elementBuilding()->getFieldRegistered(), SB::$ASC ) ) );
+
+        return $selectQuery;
     }
 
     /**

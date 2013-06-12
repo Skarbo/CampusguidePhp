@@ -10,6 +10,14 @@ class OverlayAppPresenterView extends AbstractPresenterView
     private $body;
     private $id;
     private $fitParent;
+    /**
+     * @var boolean
+     */
+    private $background = true;
+    /**
+     * @var boolean
+     */
+    private $bottom = false;
 
     // /VARIABLES
 
@@ -56,7 +64,6 @@ class OverlayAppPresenterView extends AbstractPresenterView
         $this->id = $id;
     }
 
-
     public function getFitParent()
     {
         return $this->fitParent;
@@ -65,6 +72,38 @@ class OverlayAppPresenterView extends AbstractPresenterView
     public function setFitParent( $fitParent )
     {
         $this->fitParent = $fitParent;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isBackground()
+    {
+        return $this->background;
+    }
+
+    /**
+     * @param boolean $background
+     */
+    public function setBackground( $background )
+    {
+        $this->background = $background;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isBottom()
+    {
+        return $this->bottom;
+    }
+
+    /**
+     * @param boolean $bottom
+     */
+    public function setBottom( $bottom )
+    {
+        $this->bottom = $bottom;
     }
 
     // ... /GETTERS/SETTERS
@@ -77,14 +116,20 @@ class OverlayAppPresenterView extends AbstractPresenterView
     {
 
         // Create overlay wrapper
-        $wrapper = Xhtml::div()->class_( Resource::css()->getHide(), Resource::css()->app()->getOverlayWrapper() )->id( $this->getId() );
+        $wrapper = Xhtml::div()->class_( Resource::css()->getHide(),
+                Resource::css()->app()->getOverlayWrapper() )->id( $this->getId() );
 
         if ( $this->getFitParent() )
         {
-            $wrapper->attr("data-fitparent", $this->getFitParent());
+            $wrapper->attr( "data-fitparent", $this->getFitParent() );
         }
 
-        // Create overlay
+        if ( !$this->isBackground() )
+            $wrapper->attr( "data-background", "false" );
+        if ( $this->isBottom() )
+            $wrapper->attr( "data-bottom", "true" );
+
+            // Create overlay
         $overlay = Xhtml::div()->class_( Resource::css()->app()->getOverlay() );
 
         // Add title to overlay
@@ -104,7 +149,6 @@ class OverlayAppPresenterView extends AbstractPresenterView
     }
 
     // /FUNCTIONS
-
 
 
 }

@@ -9,6 +9,14 @@ class OverlayCmsPresenterView extends AbstractPresenterView
     private $title;
     private $body;
     private $id;
+    /**
+     * @var boolean
+     */
+    private $background = true;
+    /**
+     * @var boolean
+     */
+    private $bottom = false;
 
     // /VARIABLES
 
@@ -55,6 +63,38 @@ class OverlayCmsPresenterView extends AbstractPresenterView
         $this->id = $id;
     }
 
+    /**
+     * @return boolean
+     */
+    public function isBackground()
+    {
+        return $this->background;
+    }
+
+    /**
+     * @param boolean $background
+     */
+    public function setBackground( $background )
+    {
+        $this->background = $background;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isBottom()
+    {
+        return $this->bottom;
+    }
+
+    /**
+     * @param boolean $bottom
+     */
+    public function setBottom( $bottom )
+    {
+        $this->bottom = $bottom;
+    }
+
     // ... /GETTERS/SETTERS
 
 
@@ -68,7 +108,12 @@ class OverlayCmsPresenterView extends AbstractPresenterView
         $overlayWrapper = Xhtml::div()->class_( Resource::css()->cms()->getOverlayWrapper(),
                 Resource::css()->cms()->getHide() )->id( $this->getId() );
 
-        // Create overlay
+        if ( !$this->isBackground() )
+            $overlayWrapper->attr( "data-background", "false" );
+        if ( $this->isBottom() )
+            $overlayWrapper->attr( "data-bottom", "true" );
+
+            // Create overlay
         $overlay = Xhtml::div()->class_( Resource::css()->cms()->getOverlay() );
 
         // Add title to overlay
@@ -83,14 +128,16 @@ class OverlayCmsPresenterView extends AbstractPresenterView
         $buttons = Xhtml::div()->class_( Resource::css()->gui()->getGui(), "theme2" );
         $buttons->addContent(
                 Xhtml::div( "Cancel" )->class_( Resource::css()->gui()->getComponent(),
-                        Resource::css()->cms()->getOverlayButtonsCancel() )->attr( "data-type",
-                        "button_icon" )->attr( "data-icon", "cross" ) );
+                        Resource::css()->cms()->getOverlayButtonsCancel() )->attr( "data-type", "button_icon" )->attr(
+                        "data-icon", "cross" ) );
         $buttons->addContent(
                 Xhtml::div( "OK" )->class_( Resource::css()->gui()->getComponent(),
-                        Resource::css()->cms()->getOverlayButtonsOk() )->attr( "data-type",
-                        "button_icon" )->attr( "data-icon", "check" ) );
+                        Resource::css()->cms()->getOverlayButtonsOk() )->attr( "data-type", "button_icon" )->attr(
+                        "data-icon", "check" ) );
 
-        $overlay->addContent( Xhtml::div( $buttons )->class_( Resource::css()->getRight(), Resource::css()->cms()->getOverlayButtons() ) );
+        $overlay->addContent(
+                Xhtml::div( $buttons )->class_( Resource::css()->getRight(),
+                        Resource::css()->cms()->getOverlayButtons() ) );
 
         // Add overlay to wrapper
         $overlayWrapper->addContent( Xhtml::div( $overlay ) );

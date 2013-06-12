@@ -5,6 +5,7 @@ class BuildingImageResource extends ClassCore
 
     // VARIABLES
 
+    private static $ELEMENT, $FLOOR;
 
     public static $BUILDING_MAP_SIZE_DEFAULT = array ( 200, 100 );
 
@@ -26,6 +27,8 @@ class BuildingImageResource extends ClassCore
      * @var string [coordinate,coordinate][width][height]
      */
     private static $BUILDING_MAP_URL = "http://maps.googleapis.com/maps/api/staticmap?center=%s&zoom=16&size=%sx%s&sensor=false";
+    private static $BUILDING_MAP_OVERLAY_URL = "http://maps.googleapis.com/maps/api/staticmap?sensor=false&size=%sx%s&%s";
+    private static $BUILDING_MAP_OVERLAY_PATH = "path=fillcolor:0x134F5C99|color:0xFFFFFF00|enc:%s";
     // /VARIABLES
 
 
@@ -36,6 +39,24 @@ class BuildingImageResource extends ClassCore
 
 
     // FUNCTIONS
+
+    /**
+     * @return ElementBuildingImageResource
+     */
+    public function element()
+    {
+        self::$ELEMENT = self::$ELEMENT ? self::$ELEMENT : new ElementBuildingImageResource();
+        return self::$ELEMENT;
+    }
+
+    /**
+     * @return FloorBuildingImageResource
+     */
+    public function floor()
+    {
+        self::$FLOOR = self::$FLOOR ? self::$FLOOR : new FloorBuildingImageResource();
+        return self::$FLOOR;
+    }
 
 
     public static function getFolder( $mode = null )
@@ -63,8 +84,7 @@ class BuildingImageResource extends ClassCore
 
     public function getBuildingOverview( $buildingId, $mode, $width = self::BUILDING_OVERVIEW_WIDTH_DEFAULT, $height = self::BUILDING_OVERVIEW_HEIGHT_DEFAULT )
     {
-        return self::getBuildingImage( $buildingId, $mode, BuildingCmsImageController::$TYPE_OVERVIEW,
-                $width, $height );
+        return self::getBuildingImage( $buildingId, $mode, BuildingCmsImageController::$TYPE_OVERVIEW, $width, $height );
     }
 
     public function getBuildingOverviewDefault( $width = self::BUILDING_OVERVIEW_WIDTH_DEFAULT, $height = self::BUILDING_OVERVIEW_HEIGHT_DEFAULT )
@@ -80,8 +100,7 @@ class BuildingImageResource extends ClassCore
 
     public function getBuildingMap( $buildingId, $mode, $width = self::BUILDING_MAP_WIDTH_DEFAULT, $height = self::BUILDING_MAP_HEIGHT_DEFAULT )
     {
-        return self::getBuildingImage( $buildingId, $mode, BuildingCmsImageController::$TYPE_MAP, $width,
-                $height );
+        return self::getBuildingImage( $buildingId, $mode, BuildingCmsImageController::$TYPE_MAP, $width, $height );
     }
 
     public function getBuildingMapDefault( $width = self::BUILDING_MAP_WIDTH_DEFAULT, $height = self::BUILDING_MAP_HEIGHT_DEFAULT )
@@ -89,9 +108,20 @@ class BuildingImageResource extends ClassCore
         return self::getBuildingDefault( BuildingCmsImageController::$TYPE_MAP, $width, $height );
     }
 
-    public function getBuildingMapUrl( array $coordinates, $width = self::FACILITY_MAP_WIDTH, $height = self::FACILITY_MAP_HEIGHT )
+    public function getBuildingMapUrl( array $coordinates, $width = self::BUILDING_MAP_WIDTH_DEFAULT, $height = self::BUILDING_MAP_HEIGHT_DEFAULT )
     {
         return sprintf( self::$BUILDING_MAP_URL, implode( ",", $coordinates ), $width, $height );
+    }
+
+    public function getBuildingMapOverlayUrl( array $overlays, $width = self::BUILDING_MAP_WIDTH_DEFAULT, $height = self::BUILDING_MAP_HEIGHT_DEFAULT )
+    {
+        return sprintf( self::$BUILDING_MAP_OVERLAY_URL, $width, $height,
+                implode( "&",
+                        array_map(
+                                function ( $var )
+                                {
+                                    return sprintf( self::$BUILDING_MAP_OVERLAY_PATH, $var );
+                                }, $overlays ) ) );
     }
 
     // ... /MAP

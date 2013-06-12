@@ -1,6 +1,6 @@
 <?php
 
-class BuildingsCmsMainView extends CmsMainView implements BuildingsCmsInterfaceView, BuildingcreatorBuildingsCmsInterfaceView
+class BuildingsCmsMainView extends CmsMainView implements BuildingsCmsInterfaceView
 {
 
     // VARIABLES
@@ -20,10 +20,6 @@ class BuildingsCmsMainView extends CmsMainView implements BuildingsCmsInterfaceV
      * @var BuildingcreatorBuildingsCmsPageMainView
      */
     private $buildingcreatorPage;
-    /**
-     * @var FloorplannerBuildingsCmsPageMainView
-     */
-    private $floorplannerPage;
 
     // /VARIABLES
 
@@ -88,22 +84,6 @@ class BuildingsCmsMainView extends CmsMainView implements BuildingsCmsInterfaceV
         $this->buildingcreatorPage = $buildingcreatorPage;
     }
 
-    /**
-     * @return FloorplannerBuildingsCmsPageMainView
-     */
-    public function getFloorplannerPage()
-    {
-        return $this->floorplannerPage;
-    }
-
-    /**
-     * @param FloorplannerBuildingsCmsPageMainView $floorplannerPage
-     */
-    public function setFloorplannerPage( FloorplannerBuildingsCmsPageMainView $floorplannerPage )
-    {
-        $this->floorplannerPage = $floorplannerPage;
-    }
-
     // ... /GETTERS/SETTERS
 
 
@@ -163,24 +143,40 @@ class BuildingsCmsMainView extends CmsMainView implements BuildingsCmsInterfaceV
     protected function doPageMenu()
     {
 
-        // Overview
-        $this->getPageMenuPresenter()->addItem( "Overview",
-                Resource::url()->cms()->building()->getOverviewPage( $this->getMode() ),
-                $this->getController()->isPageOverview() );
+        if ( $this->getBuilding() )
+        {
 
-        // Building Creator
-        $this->getPageMenuPresenter()->addItem( "Building Creator",
-                Resource::url()->cms()->building()->getBuildingcreatorPage( "", $this->getMode() ),
-                $this->getController()->isPageBuildingcreator() );
+            // Overview
+            $this->getPageMenuPresenter()->addItem( "Building",
+                    Resource::url()->cms()->buildings()->building()->getViewAction( $this->getBuilding()->getId(),
+                            $this->getMode() ),
+                    $this->getController()->isPageBuilding() && $this->getController()->isActionView() );
 
-        // Floor Planner
-        $this->getPageMenuPresenter()->addItem( "Floor Planner",
-                Resource::url()->cms()->building()->getFloorplannerPage( $this->getMode() ),
-                $this->getController()->isPageFloorplanner() );
+            // Building Creator
+            $this->getPageMenuPresenter()->addItem( "Building Creator",
+                    Resource::url()->cms()->buildings()->buildingcreator()->getViewAction(
+                            $this->getBuilding()->getId(), $this->getMode() ),
+                    $this->getController()->isPageBuildingcreator() );
+
+            // Edit Building
+            $this->getPageMenuPresenter()->addItem( "Edit",
+                    Resource::url()->cms()->buildings()->getEditBuildingPage( $this->getBuilding()->getId(),
+                            $this->getMode() ), $this->isActionEdit(), ItemPageMenuCmsPresenterView::ALIGN_RIGHT );
+
+        }
+        else
+        {
+
+            // Overview
+            $this->getPageMenuPresenter()->addItem( "Overview",
+                    Resource::url()->cms()->buildings()->getOverviewPage( $this->getMode() ),
+                    $this->getController()->isPageOverview() );
+
+        }
 
         // New Building
         $this->getPageMenuPresenter()->addItem( "New",
-                Resource::url()->cms()->building()->getNewBuildingPage( $this->getMode() ),
+                Resource::url()->cms()->buildings()->getNewBuildingPage( $this->getMode() ),
                 $this->getController()->isPageBuilding() && $this->getController()->isActionNew(),
                 ItemPageMenuCmsPresenterView::ALIGN_RIGHT );
 
@@ -198,11 +194,35 @@ class BuildingsCmsMainView extends CmsMainView implements BuildingsCmsInterfaceV
         $this->setOverviewPage( new OverviewBuildingsCmsPageMainView( $this ) );
         $this->setBuildingPage( new BuildingBuildingsCmsPageMainView( $this ) );
         $this->setBuildingcreatorPage( new BuildingcreatorBuildingsCmsPageMainView( $this ) );
-        $this->setFloorplannerPage( new FloorplannerBuildingsCmsPageMainView( $this ) );
+
+        // Navigation
+        if ( $this->getBuilding() )
+        {
+            $this->addNavigation( "Buildings",
+                    Resource::url()->cms()->buildings()->getOverviewPage( $this->getMode() ) );
+        }
     }
 
     // ... DRAW
 
+
+    /**
+     * @see CmsMainView::drawPageHeader()
+     */
+    protected function drawPageHeader( AbstractXhtml $root )
+    {
+
+        if ( $this->getBuilding() )
+        {
+            $root->addContent(
+                    Xhtml::h( 1, sprintf( "Building: %s", Xhtml::span( $this->getBuilding()->getName() ) ) ) );
+        }
+        else
+        {
+            $root->addContent( Xhtml::h( 1, "Buildings" ) );
+        }
+
+    }
 
     /**
      * @param AbstractXhtml $root
@@ -210,13 +230,8 @@ class BuildingsCmsMainView extends CmsMainView implements BuildingsCmsInterfaceV
     protected function drawPage( AbstractXhtml $root )
     {
 
-        // Overview page
-        if ( $this->getController()->isPageOverview() )
-        {
-            $this->getOverviewPage()->draw( $root );
-        }
         // Building page
-        else if ( $this->getController()->isPageBuilding() )
+        if ( $this->getController()->isPageBuilding() )
         {
             $this->getBuildingPage()->draw( $root );
         }
@@ -225,22 +240,11 @@ class BuildingsCmsMainView extends CmsMainView implements BuildingsCmsInterfaceV
         {
             $this->getBuildingcreatorPage()->draw( $root );
         }
-        // Floorplanner page
-        else if ( $this->getController()->isPageFloorplanner() )
+        // Overview page
+        else
         {
-            $this->getFloorplannerPage()->draw( $root );
+            $this->getOverviewPage()->draw( $root );
         }
-
-    }
-
-    /**
-     * @see CmsMainView::drawPageHeader()
-     */
-    protected function drawPageHeader( AbstractXhtml $root )
-    {
-
-        // Add header to root
-        $root->addContent( Xhtml::h( 1, "Buildings" ) );
 
     }
 

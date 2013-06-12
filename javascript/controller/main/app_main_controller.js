@@ -3,6 +3,7 @@ AppMainController.prototype = new MainController();
 
 function AppMainController(eventHandler, mode, query) {
 	MainController.apply(this, arguments);
+	this.navigateHandler = new NavigateHandler(eventHandler, mode);
 }
 
 // /CONSTRUCTOR
@@ -22,6 +23,13 @@ AppMainController.prototype.getView = function() {
 	return MainController.prototype.getView.call(this);
 };
 
+/**
+ * @return {NavigateHandler}
+ */
+AppMainController.prototype.getNavigateHandler = function() {
+	return this.navigateHandler;
+};
+
 // ... /GET
 
 // ... DO
@@ -29,7 +37,7 @@ AppMainController.prototype.getView = function() {
 AppMainController.prototype.doBindEventHandler = function() {
 	MainController.prototype.doBindEventHandler.call(this);
 	var context = this;
-	
+
 	// EVENTS
 
 	// Search event

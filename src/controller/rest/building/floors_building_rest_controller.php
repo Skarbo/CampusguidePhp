@@ -10,6 +10,8 @@ class FloorsBuildingRestController extends StandardRestController
 
     public static $POST_OBJECTS = "objects";
 
+    const COMMAND_MAIN = "main";
+
     /**
      * @var FloorBuildingHandler
      */
@@ -26,7 +28,8 @@ class FloorsBuildingRestController extends StandardRestController
         parent::__construct( $api, $view );
 
         $this->setFloorBuildingHandler(
-                new FloorBuildingHandler( $this->getDaoContainer()->getFloorBuildingDao(), new FloorBuildingValidator( $this->getLocale() ) ) );
+                new FloorBuildingHandler( $this->getDaoContainer()->getFloorBuildingDao(),
+                        new FloorBuildingValidator( $this->getLocale() ) ) );
     }
 
     // /CONSTRUCTOR
@@ -143,6 +146,11 @@ class FloorsBuildingRestController extends StandardRestController
         return self::isEditCommand() && Core::arrayAt( self::getPost(), self::$POST_OBJECTS, false );
     }
 
+    private static function isGetMainCommand()
+    {
+        return self::isGet() && self::getURI( self::URI_COMMAND ) == self::COMMAND_MAIN && count( self::getIds() ) > 0;
+    }
+
     // ... /IS
 
 
@@ -214,8 +222,33 @@ class FloorsBuildingRestController extends StandardRestController
     //     }
 
 
+    private function doMainCommand()
+    {
+        $buildingIds = self::getIds();
+
+        if ( count( $buildingIds ) > 0 )
+        {
+            $this->setModelList( $this->getDaoContainer()->getFloorBuildingDao()->getMainFloors( $buildingIds ) );
+        }
+
+        $this->setStatusCode( self::STATUS_OK );
+    }
+
     // ... /DO
 
+
+    public function request()
+    {
+
+        if ( self::isGetMainCommand() )
+        {
+            $this->doMainCommand();
+        }
+        else
+        {
+            parent::request();
+        }
+    }
 
     // /FUNCTIONS
 

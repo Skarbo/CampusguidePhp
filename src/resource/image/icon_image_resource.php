@@ -9,11 +9,15 @@ class IconImageResource extends ClassCore
     private $spinnerBar = "image/icon/spinner_bar.gif";
     private $spinnerCircle = "image/icon/spinner_circle.gif";
 
-    private $roomAuditoriumSvg = "room_auditorium";
-    private $roomCafeteriaSvg = "room_cafeteria";
-    private $roomClassSvg = "room_class";
-    private $roomElevatorSvg = "room_elevator";
-    private $roomStairsSvg = "room_stairs";
+    private $minusSvg = "minus";
+    private $plusSvg = "plus";
+    private $maximizeSvg = "maximize";
+    private $upDoubleSvg = "up_double";
+    private $downDoubleSvg = "down_double";
+    private $settingsSvg = "settings";
+    private $optionsSvg = "options";
+    private $searchSvg = "search";
+    private $crossSvg = "cross";
 
     private static $SVG = "svg.php?svg=%s%s";
 
@@ -42,56 +46,60 @@ class IconImageResource extends ClassCore
         return $this->spinnerCircle;
     }
 
-    private static function getSvg( $svg, $color = null )
+    public static function getSvg( $svg, $stroke = null, $fill = null )
     {
-        return sprintf( self::$SVG, $svg, $color ? sprintf( "&color=%s", urlencode( $color ) ) : "" );
+        return sprintf( self::$SVG, $svg,
+                sprintf( "%s%s", $fill ? sprintf( "&fill=%s", urlencode( $fill ) ) : "",
+                        $stroke ? sprintf( "&stroke=%s", urlencode( $stroke ) ) : "" ) );
+    }
+
+    public function getMinusSvg( $stroke = null, $fill = null )
+    {
+        return self::getSvg( $this->minusSvg, $stroke, $fill );
+    }
+
+    public function getPlusSvg( $stroke = null, $fill = null )
+    {
+        return self::getSvg( $this->plusSvg, $stroke, $fill );
+    }
+
+    public function getMaximizeSvg( $stroke = null, $fill = null )
+    {
+        return self::getSvg( $this->maximizeSvg, $stroke, $fill );
+    }
+
+    public function getDownDoubleSvg( $stroke = null, $fill = null )
+    {
+        return self::getSvg( $this->downDoubleSvg, $stroke, $fill );
+    }
+
+    public function getUpDoubleSvg( $stroke = null, $fill = null )
+    {
+        return self::getSvg( $this->upDoubleSvg, $stroke, $fill );
+    }
+
+    public function getSettingsSvg( $stroke = null, $fill = null )
+    {
+        return self::getSvg( $this->settingsSvg, $stroke, $fill );
+    }
+
+    public function getOptionsSvg( $stroke = null, $fill = null )
+    {
+        return self::getSvg( $this->optionsSvg, $stroke, $fill );
+    }
+
+    public function getSearchSvg( $stroke = null, $fill = null )
+    {
+        return self::getSvg( $this->searchSvg, $stroke, $fill );
+    }
+
+    public function getCrossSvg( $stroke = null, $fill = null )
+    {
+        return self::getSvg( $this->crossSvg, $stroke, $fill );
     }
 
     // ... ROOM
 
-
-    public function getRoomSvg( $room, $color = null )
-    {
-        switch ( $room )
-        {
-            case ElementBuildingModel::TYPE_ROOM_AUDITORIUM :
-                return $this->getRoomAuditoriumSvg( $color );
-            case ElementBuildingModel::TYPE_ROOM_CAFETERIA :
-                return $this->getRoomCafeteriaSvg( $color );
-            case ElementBuildingModel::TYPE_ROOM_CLASS :
-                return $this->getRoomClassSvg( $color );
-            case ElementBuildingModel::TYPE_ROOM_ELEVATOR :
-                return $this->getRoomElevatorSvg( $color );
-            case ElementBuildingModel::TYPE_ROOM_STAIRS :
-                return $this->getRoomStairsSvg( $color );
-        }
-        return Resource::image()->getEmptyImage();
-    }
-
-    public function getRoomAuditoriumSvg( $color = null )
-    {
-        return self::getSvg( $this->roomAuditoriumSvg, $color );
-    }
-
-    public function getRoomCafeteriaSvg( $color = null )
-    {
-        return self::getSvg( $this->roomCafeteriaSvg, $color );
-    }
-
-    public function getRoomClassSvg( $color = null )
-    {
-        return self::getSvg( $this->roomClassSvg, $color );
-    }
-
-    public function getRoomElevatorSvg( $color = null )
-    {
-        return self::getSvg( $this->roomElevatorSvg, $color );
-    }
-
-    public function getRoomStairsSvg( $color = null )
-    {
-        return self::getSvg( $this->roomStairsSvg, $color );
-    }
 
     // ... /ROOM
 

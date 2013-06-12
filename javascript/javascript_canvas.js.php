@@ -5,7 +5,7 @@ $JAVASCRIPT_FILES = array();
 
 // Javascript files
 $restrict = array( "ignore" => array( "folders" => array ('^app$', '^api$' ), "files" => array( '\.php$' )),
-        "include" => array( "files" => array( 'canvas', 'buildingcreator' ) ) );
+        "include" => array( "files" => array( 'canvas', 'buildingcreator', 'floorplanner' ) ) );
 $JAVASCRIPT_FILES = array_merge( $JAVASCRIPT_FILES, Core::getDirectory( ".", $restrict ) );
 
 // Javascript generate

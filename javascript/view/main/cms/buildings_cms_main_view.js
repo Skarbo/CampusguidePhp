@@ -11,13 +11,10 @@ function BuildingsCmsMainView(wrapperId) {
 	this.geocoder = null;
 	this.marker = null;
 	this.markerResult = null;
-	this.floorplannerPage = null;
+	this.buildingPage = new BuildingBuildingsCmsPageMainView(this);
 	this.buildingcreatorPage = null;
-	this.buildingPage = new BuildingCmsPageMainView(this);
-	if (typeof FloorplannerBuildingCmsPageMainView !== "undefined")
-		this.floorplannerPage = new FloorplannerBuildingCmsPageMainView(this);
-	if (typeof BuildingcreatorBuildingCmsPageMainView !== "undefined")
-		this.buildingcreatorPage = new BuildingcreatorBuildingCmsPageMainView(this);
+	if (typeof BuildingcreatorBuildingsCmsPageMainView !== "undefined")
+		this.buildingcreatorPage = new BuildingcreatorBuildingsCmsPageMainView(this);
 };
 
 // /CONSTRUCTOR
@@ -35,27 +32,6 @@ function BuildingsCmsMainView(wrapperId) {
  */
 BuildingsCmsMainView.prototype.getController = function() {
 	return CmsMainView.prototype.getController.call(this);
-};
-
-/**
- * @returns {FloorplannerBuildingCmsPageMainView}
- */
-BuildingsCmsMainView.prototype.getFloorplannerPage = function() {
-	return this.floorplannerPage;
-};
-
-/**
- * @returns {BuildingcreatorBuildingCmsPageMainView}
- */
-BuildingsCmsMainView.prototype.getBuildingcreatorPage = function() {
-	return this.buildingcreatorPage;
-};
-
-/**
- * @returns {BuildingCmsPageMainView}
- */
-BuildingsCmsMainView.prototype.getBuildingPage = function() {
-	return this.buildingPage;
 };
 
 // ... /GET
@@ -84,18 +60,15 @@ BuildingsCmsMainView.prototype.draw = function(controller) {
 	CmsMainView.prototype.draw.call(this, controller);
 
 	$(".gui").gui();
-
-	// Do Floorplanner
-	if (this.getController().getQuery().page == "floorplanner" && this.getController().getQuery().id) {
-		this.getFloorplannerPage().draw(this.getWrapperElement().find("#floorplanner_page_wrapper"));
+	
+	// Do Building
+	if (this.getController().getQuery().page == "building") {
+		this.buildingPage.draw(this.getWrapperElement().find("#building_page_wrapper"));
 	}
 	// Do Buildingcreator
-	else if (this.getController().getQuery().page == "buildingcreator" && this.getController().getQuery().id) {
-		this.getBuildingcreatorPage().draw(this.getWrapperElement().find("#buildingcreator_page_wrapper"));
-	}
-	// Do building
-	else if (this.getController().getQuery().page == "building") {
-		this.getBuildingPage().draw(this.getWrapperElement().find("#building_page_wrapper"));
+	else if (this.buildingcreatorPage && this.getController().getQuery().page == "buildingcreator")
+	{
+		this.buildingcreatorPage.draw(this.getWrapperElement().find("#buildingcreator_page_wrapper"));
 	}
 };
 

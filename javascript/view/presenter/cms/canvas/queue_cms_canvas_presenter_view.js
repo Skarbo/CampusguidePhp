@@ -86,7 +86,7 @@ QueueCmsCanvasPresenterView.prototype.handleRetrieved = function(type, retrieved
 
 		var selectFloor = selectMainFloor(this.getView().getFloors());
 		
-		this.doFloorSelect(selectFloor, [QueueCmsCanvasPresenterView.TYPE_FLOORS]);
+		this.doFloorSelect(selectFloor, CanvasPresenterView.TYPE_FLOORS);
 
 		// Fit to scale
 		this.doFitToScale();

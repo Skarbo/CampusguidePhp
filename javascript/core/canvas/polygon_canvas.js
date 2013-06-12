@@ -7,269 +7,129 @@ $(function() {
 
 	// Kinetic must exist
 	if (typeof Kinetic === "undefined")
-		return;
+		return console.warn("Kinetic is not loaded");
 
-	PolygonAnchorHandle = Kinetic.Circle.extend({
-		init : function(config, polygon) {
-			config = config || {};
-			polygon = polygon || null;
-			this._super($.extend({
-				name : "anchor_handle",
-				x : 0,
-				y : 0,
-				radius : 8,
-				stroke : "#AAA",
+	/**
+	 * Polygon Anchor
+	 * 
+	 * @param {Polygon}
+	 *            polygon
+	 */
+	PolygonAnchor = function(config, polygon) {
+		if (typeof polygon != "object")
+			return console.error("PolygonAnchor: Parent Polygon is not an object");
+
+		config = config || {};
+
+		Kinetic.Circle.call(this, $.extend(true, {
+			name : "polygon_anchor",
+			x : 0,
+			y : 0,
+			radius : 8,
+			stroke : "#666",
+			strokeWidth : 2,
+			draggable : true,
+			visible : false,
+			selected : {
 				strokeWidth : 2,
-				draggable : false,
-				visible : false
-			}, config));
-			this.polygon = polygon;
-			this.positionPrev = {};
+			}
+		}, polygon.setup["anchor"], config));
 
-			this.setDraggable(this.polygon.mode == Polygon.MODE_EDIT);
-			if (this.polygon.mode == Polygon.MODE_EDIT)
-				this.show();
+		this.polygon = polygon;
+		this.next = null;
+		this.prev = null;
+		this.isSelected = false;
+		this.positionPrev = [];
 
-			this.on("dragstart", function(event) {
-				this.positionPrev = this.getPosition();
-				this.moveToTop();
-			});
-			this.on("dragend", function(event) {
-				if (this.polygon.mode == Polygon.MODE_EDIT) {
-					event.cancelBubble = true;
-					this.polygon.context.getEventHandler().handle(new AddHistoryEvent({
-						type : "selected_drag",
-						element : this
-					}));
-					this.moveToTop();
+		// ... ON
+
+		this.on("dragstart", function(event) {
+			this.positionPrev.push(this.getPosition());
+		});
+		this.on("dragend", function(event) {
+			event.cancelBubble = true;
+			this.moveToTop();
+			if (this.polygon.setup.mode == Polygon.MODE_EDIT) {
+				if (!this.polygon.isCreating) {
+					this.getStage().fire("change", {
+						node : this,
+						type : "moved"
+					});
 				}
-			});
-			this.on("mouseover", function() {
-				if (this.polygon.mode == Polygon.MODE_EDIT) {
-					$("body").css("cursor", "pointer");
-					this.setStrokeWidth(4);
-					this.getLayer().draw();
+				this.polygon.changed = true;
+				this.polygon.updateControlLine(null);
+				this.polygon.getLayer().draw();
+			}
+		});
+		this.on("dragmove", function(event) {
+			if (this.polygon.setup.mode == Polygon.MODE_EDIT) {
+				if (this.prev) {
+					if (!event.shiftKey && Math.abs(this.attrs.x - this.prev.attrs.x) < 5)
+						this.attrs.x = this.prev.attrs.x;
+					if (!event.shiftKey && Math.abs(this.attrs.y - this.prev.attrs.y) < 5)
+						this.attrs.y = this.prev.attrs.y;
 				}
-			});
-			this.on("mouseout", function() {
-				if (this.polygon.mode == Polygon.MODE_EDIT) {
-					$("body").css("cursor", "default");
-					this.setStrokeWidth(2);
-					this.getLayer().draw();
+				if (this.next) {
+					if (!event.shiftKey && Math.abs(this.attrs.x - this.next.attrs.x) < 5)
+						this.attrs.x = this.next.attrs.x;
+					if (!event.shiftKey && Math.abs(this.attrs.y - this.next.attrs.y) < 5)
+						this.attrs.y = this.next.attrs.y;
 				}
-			});
-		},
+				this.polygon.updateControlLine(this);
+			}
+		});
+
+		this.on("mouseover", function() {
+			if (this.polygon.setup.mode == Polygon.MODE_EDIT) {
+				$(this.polygon.getStage().content).css("cursor", "pointer");
+			}
+		});
+		this.on("mouseout", function() {
+			if (this.polygon.setup.mode == Polygon.MODE_EDIT) {
+				$(this.polygon.getStage().content).css("cursor", "default");
+			}
+		});
+
+		this.on("click", function(event) {
+			// event.cancelBubble = true;
+			if (this.polygon.setup.mode == Polygon.MODE_EDIT) {
+				if (!this.polygon.isCreating) {
+					if (event.which == 1) {
+						this.getStage().fire("select", {
+							'type' : 'polygon_anchor',
+							'node' : this
+						});
+					} else if (event.which == 3 && this.isSelected) {
+						this.getStage().fire("delete", {
+							'type' : 'polygon_anchor',
+							'node' : this
+						});
+						this.polygon.removeAnchor(this);
+						this.polygon.updateShape();
+						this.polygon.getLayer().draw();
+					}
+				}
+			}
+		});
+		this.on("dblclick", function(event) {
+			event.cancelBubble = true;
+			if (this.polygon.setup.mode == Polygon.MODE_EDIT) {
+				if (event.which == 1 && !this.polygon.isCreating && this.isSelected) {
+					this.polygon.createPolygon(null, this);
+				}
+			}
+		});
+
+		// ... /ON
+
+	};
+	PolygonAnchor.prototype = {
 		undoMove : function() {
-			if (this.positionPrev) {
-				this.setPosition(this.positionPrev);
-				this.getLayer().draw();
+			var posPrev = this.positionPrev.pop();
+			if (posPrev) {
+				this.setPosition(posPrev);
+				this.polygon.updateShape();
 			}
-		}
-	});
-
-	PolygonAnchorControl = Kinetic.Group.extend({
-		init : function(config, anchor) {
-			config = config || {};
-			this._super($.extend({
-				name : "anchor_control",
-				visible : false
-			}, config));
-			this.anchor = anchor;
-
-			this.handleFirst = new PolygonAnchorHandle({}, this.anchor.polygon);
-			this.handleSecond = new PolygonAnchorHandle({}, this.anchor.polygon);
-			this.line = new Kinetic.Line({
-				name : "control_line",
-				dashArray : [ 10, 10, 0, 10 ],
-				strokeWidth : 3,
-				stroke : "black",
-				lineCap : "round",
-				opacity : 0.3,
-				points : [ this.anchor.attrs.x, this.anchor.attrs.y ],
-				listening : false
-			});
-			this.line.control = this;
-
-			this.line.setDrawFunc(function(context) {
-				context.beginPath();
-
-				if (this.control.anchor.prev && this.control.anchor.type != Polygon.LINE_TYPE_LINE) {
-					context.moveTo(this.control.anchor.prev.attrs.x, this.control.anchor.prev.attrs.y);
-
-					switch (this.control.anchor.type) {
-					case Polygon.LINE_TYPE_QUAD:
-						context.lineTo(this.control.handleFirst.attrs.x, this.control.handleFirst.attrs.y);
-						break;
-
-					case Polygon.LINE_TYPE_BEZIER:
-						context.lineTo(this.control.handleFirst.attrs.x, this.control.handleFirst.attrs.y);
-						context.lineTo(this.control.handleSecond.attrs.x, this.control.handleSecond.attrs.y);
-						break;
-					}
-
-					context.lineTo(this.control.anchor.attrs.x, this.control.anchor.attrs.y);
-				}
-
-				context.lineCap = "round";
-				this.stroke(context);
-			});
-
-			this.isPositioned = false;
-
-			this.add(this.handleFirst);
-			this.add(this.handleSecond);
-			this.add(this.line);
-		},
-		select : function() {
-			if (!this.anchor.prev)
-				return this.hide();
-
-			if (!this.isPositioned)
-				this.positionControl();
-
-			switch (this.anchor.type) {
-			case Polygon.LINE_TYPE_QUAD:
-				this.show();
-				this.handleFirst.show();
-				this.handleSecond.hide();
-				this.line.show();
-				this.moveToTop();
-				break;
-
-			case Polygon.LINE_TYPE_BEZIER:
-				this.show();
-				this.handleFirst.show();
-				this.handleSecond.show();
-				this.line.show();
-				this.moveToTop();
-				break;
-
-			default:
-				this.hide();
-				break;
-			}
-		},
-		deselect : function() {
-			this.hide();
-		},
-		positionControl : function() {
-			if (!this.anchor.prev)
-				return;
-
-			var coor = {
-				x : (this.anchor.attrs.x + this.anchor.prev.attrs.x) / 2,
-				y : (this.anchor.attrs.y + this.anchor.prev.attrs.y) / 2
-			};
-			this.handleFirst.setX((this.anchor.prev.attrs.x + coor.x) / 2);
-			this.handleFirst.setY((this.anchor.prev.attrs.y + coor.y) / 2);
-			this.handleSecond.setX((this.anchor.attrs.x + coor.x) / 2);
-			this.handleSecond.setY((this.anchor.attrs.y + coor.y) / 2);
-
-			this.line.setPoints([ this.anchor.attrs.x, this.anchor.attrs.y, this.handleFirst.attrs.x, this.handleFirst.attrs.y, this.handleSecond.attrs.x,
-					this.handleSecond.attrs.y, this.anchor.prev.attrs.x, this.anchor.prev.attrs.y ]);
-
-			this.isPositioned = true;
-		},
-		removeControl : function() {
-			this.getParent().remove(this);
-		},
-		toData : function() {
-			var data = [];
-
-			switch (this.anchor.type) {
-			case Polygon.LINE_TYPE_QUAD:
-				data.push(Core.roundNumber(this.anchor.control.handleFirst.attrs.x + this.anchor.polygon.attrs.x));
-				data.push(Core.roundNumber(this.anchor.control.handleFirst.attrs.y + this.anchor.polygon.attrs.y));
-				break;
-			case Polygon.LINE_TYPE_BEZIER:
-				data.push(Core.roundNumber(this.anchor.control.handleFirst.attrs.x + this.anchor.polygon.attrs.x));
-				data.push(Core.roundNumber(this.anchor.control.handleFirst.attrs.y + this.anchor.polygon.attrs.y));
-				data.push(Core.roundNumber(this.anchor.control.handleSecond.attrs.x + this.anchor.polygon.attrs.x));
-				data.push(Core.roundNumber(this.anchor.control.handleSecond.attrs.y + this.anchor.polygon.attrs.y));
-				break;
-			}
-
-			return data.join("%");
-		},
-		fromData : function(data) {
-			data = data || "";
-			var dataArray = jQuery.isArray(data) ? data : data.split("%");
-
-			this.positionControl();
-
-			switch (this.anchor.type) {
-			case Polygon.LINE_TYPE_QUAD:
-				this.handleFirst.setX(parseFloat(dataArray[0]));
-				this.handleFirst.setY(parseFloat(dataArray[1]));
-				break;
-
-			case Polygon.LINE_TYPE_BEZIER:
-				this.handleFirst.setX(parseFloat(dataArray[0]));
-				this.handleFirst.setY(parseFloat(dataArray[1]));
-				this.handleSecond.setX(parseFloat(dataArray[2]));
-				this.handleSecond.setY(parseFloat(dataArray[3]));
-				break;
-
-			default:
-				this.type = Polygon.LINE_TYPE_STRAIGHT;
-				break;
-			}
-		}
-	});
-
-	PolygonAnchor = PolygonAnchorHandle.extend({
-		init : function(config, polygon) {
-			config = config || {};
-			polygon = polygon || null;
-			this._super($.extend({
-				name : "anchor",
-				stroke : "#666"
-			}, config), polygon);
-
-			this.type = Polygon.LINE_TYPE_STRAIGHT;
-			this.next = null;
-			this.prev = null;
-			this.control = null;
-			this.isSelected = false;
-
-			this.on("dragmove", function(event) {
-				if (this.polygon.mode == Polygon.MODE_EDIT) {
-					if (this.prev) {
-						if (Math.abs(this.attrs.x - this.prev.attrs.x) < 5)
-							this.attrs.x = this.prev.attrs.x;
-						if (Math.abs(this.attrs.y - this.prev.attrs.y) < 5)
-							this.attrs.y = this.prev.attrs.y;
-					}
-					if (this.next) {
-						if (Math.abs(this.attrs.x - this.next.attrs.x) < 5)
-							this.attrs.x = this.next.attrs.x;
-						if (Math.abs(this.attrs.y - this.next.attrs.y) < 5)
-							this.attrs.y = this.next.attrs.y;
-					}
-				}
-			});
-			this.on("click", function(event) {
-				if (this.polygon.mode == Polygon.MODE_EDIT) {
-					event.cancelBubble = true;
-					if (!this.polygon.isCreating) {
-						if (event.which == 1)
-							this.polygon.context.getEventHandler().handle(new SelectEvent("polygon_anchor", this));
-						else if (event.which == 3 && this.isSelected) {
-							this.polygon.context.getEventHandler().handle(new SelectEvent());
-							this.polygon.removeAnchor(this);
-						}
-					}
-				}
-			});
-			this.on("dblclick", function(event) {
-				if (this.polygon.mode == Polygon.MODE_EDIT) {
-					event.cancelBubble = true;
-					if (!this.polygon.isCreating) {
-						if (event.which == 1)
-							this.polygon.createPolygon(null, this);
-					}
-				}
-			});
 		},
 		removeAnchor : function() {
 			if (this.next && this.prev) {
@@ -280,237 +140,336 @@ $(function() {
 			} else if (this.next) {
 				this.next.prev = null;
 			}
-			if (this.control)
-				this.control.removeControl();
-			this.getParent().remove(this);
+			this.destroy();
 		},
-		select : function(secondary) {
-			this.setStroke("#FF0000");
-			this.control.select();
+		select : function() {
+			this.setAttrs(this.attrs['selected']);
 			this.isSelected = true;
 		},
 		deselect : function() {
-			this.setStroke("#666");
-			this.control.deselect();
+			this.setAttrs(this.polygon.setup["anchor"]);
 			this.isSelected = false;
 		},
 		erase : function() {
 			this.polygon.removeAnchor(this);
 		},
 		undo : function() {
+			console.log("PolygonAnchor.undo", this);
 			this.polygon.addAnchorAfter(this, this.prev);
-			this.getLayer().draw();
 		},
 		toData : function() {
 			var data = [];
 
-			data.push(Core.roundNumber(this.attrs.x + this.polygon.attrs.x));
-			data.push(Core.roundNumber(this.attrs.y + this.polygon.attrs.y));
+			var position = this.getPosition();
+			data.push(Core.roundNumber(position.x, 2));
+			data.push(Core.roundNumber(position.y, 2));
 
-			switch (this.type) {
-			case Polygon.LINE_TYPE_QUAD:
-				data.push("Q");
-				break;
-			case Polygon.LINE_TYPE_BEZIER:
-				data.push("B");
-				break;
-
-			default:
-				data.push("L");
-				break;
-			}
-
-			data.push(this.control.toData());
-
-			return data.join(",");
+			return data;
 		},
 		fromData : function(data) {
-			data = data || "";
-			var dataArray = jQuery.isArray(data) ? data : data.split(",");
+			if (!jQuery.isArray(data))
+				return console.error("PolygonAnchor.fromData: Data is not array", data);
 
-			this.setX(parseFloat(dataArray[0]));
-			this.setY(parseFloat(dataArray[1]));
-
-			switch (dataArray[2]) {
-			case "Q":
-				this.type = Polygon.LINE_TYPE_QUAD;
-				break;
-
-			case "B":
-				this.type = Polygon.LINE_TYPE_BEZIER;
-				break;
-
-			default:
-				this.type = Polygon.LINE_TYPE_STRAIGHT;
-				break;
+			if (data.length >= 2) {
+				this.setX(parseFloat(data[0]));
+				this.setY(parseFloat(data[1]));
 			}
-
-			this.control.fromData(dataArray.length >= 3 ? dataArray[3] : "");
 		},
 		getCoordinates : function() {
-			var coordinates = [];
-
-			coordinates.push([ this.attrs.x, this.attrs.y ]);
-
-			switch (this.type) {
-			case Polygon.LINE_TYPE_QUAD:
-				coordinates.push([ this.control.handleFirst.attrs.x, this.control.handleFirst.attrs.y ]);
-				break;
-
-			case Polygon.LINE_TYPE_BEZIER:
-				coordinates.push([ this.control.handleFirst.attrs.x, this.control.handleFirst.attrs.y ]);
-				coordinates.push([ this.control.handleSecond.attrs.x, this.control.handleSecond.attrs.y ]);
-				break;
-			}
-			return coordinates;
-		}
-	});
-
-	PolygonShape = Kinetic.Shape.extend({
-		init : function(config, polygon) {
-			config = config || {};
-			this._super($.extend({
-				name : "shape",
-				stroke : "red",
-				strokeWidth : 4,
-				lineJoin : "round",
-				fill : "#999",
-				opacity : 0.7
-			}, config));
-
-			this.polygon = polygon;
-
-			this.setDrawFunc(function(context) {
-				var shape = this;
-				context.beginPath();
-
-				if (this.polygon.anchorFirst) {
-					context.moveTo(this.polygon.anchorFirst.attrs.x, this.polygon.anchorFirst.attrs.y);
-
-					this.polygon.eachAnchor(function(anchor) {
-						shape.drawLineFunc(context, anchor);
-					});
-
-					this.drawLineFunc(context, this.polygon.anchorFirst);
-				}
-
-				// context.closePath();
-				context.lineCap = "round";
-				this.fill(context);
-				this.stroke(context);
-			});
-			this.drawLineFunc = function(context, anchor) {
-				switch (anchor.type) {
-				case Polygon.LINE_TYPE_QUAD:
-					context.quadraticCurveTo(anchor.control.handleFirst.attrs.x, anchor.control.handleFirst.attrs.y, anchor.attrs.x, anchor.attrs.y);
-					break;
-
-				case Polygon.LINE_TYPE_BEZIER:
-					context.bezierCurveTo(anchor.control.handleFirst.attrs.x, anchor.control.handleFirst.attrs.y, anchor.control.handleSecond.attrs.x,
-							anchor.control.handleSecond.attrs.y, anchor.attrs.x, anchor.attrs.y);
-					break;
-
-				default:
-					context.lineTo(anchor.attrs.x, anchor.attrs.y);
-					break;
-				}
-			};
-
-			this.on("click", function(event) {
-				if (this.polygon.mode == Polygon.MODE_EDIT) {
-					event.cancelBubble = true;
-					if (!this.polygon.isCreating) {
-						if (event.which == 1)
-							this.polygon.context.getEventHandler().handle(new SelectEvent("polygon", this.polygon));
-						else if (event.which == 3 && this.isSelected)
-							this.polygon.context.getEventHandler().handle(new DeleteEvent());
-					}
-				}
-			});
-			this.on("dblclick", function(event) {
-				if (this.polygon.mode == Polygon.MODE_EDIT) {
-					event.cancelBubble = true;
-					if (!this.polygon.isCreating) {
-						if (event.which == 1)
-							this.polygon.createPolygon(null, this);
-					}
-				}
-			});
-		}
-	});
-
-	Polygon = Kinetic.Group.extend({
-		init : function(config, context) {
-			config = config || {};
-			this._super($.extend({
-				name : "polygon"
-			}, config));
-			this.context = context;
-
-			this.isSelected = false;
-			this.shape = new PolygonShape({}, this);
-
-			this.anchors = new Kinetic.Group({
-				name : "anchors"
-			});
-			this.controls = new Kinetic.Group({
-				name : "controls"
-			});
-			this.text = new Kinetic.Text({
-				name : "name",
-				visible : false,
-				text : "",
-				textFill : '#000',
-				fontSize : 20,
-				listening : false
-			});
-			this.text.polygon = this;
-
-			this.anchorFirst = null;
-			this.anchorLast = null;
-			this.anchorDraw = null;
-			this.isCreating = false;
-			this.deleted = false;
-			this.object = {
-				type : null,
-				element : null
-			};
-			this.mode = Polygon.MODE_SHOW;
-
-			this.add(this.shape);
-			this.add(this.anchors);
-			this.add(this.controls);
-			this.add(this.text);
-
-			this.on("click", function(event) {
-				event.cancelBubble = true;
-			});
-			this.on("mouseover", function() {
-				if (this.mode == Polygon.MODE_EDIT) {
-					this.setDraggable(this.context.polygonsIsDraggable);
-					if (this.context.polygonsIsDraggable && $("body").css("cursor") != "pointer")
-						$("body").css("cursor", "pointer");
-				}
-			});
-			this.on("mouseout", function() {
-				if (this.mode == Polygon.MODE_EDIT) {
-					this.setDraggable(false);
-					if ($("body").css("cursor") != "default")
-						$("body").css("cursor", "default");
-				}
-			});
-			this.on("dragstart", function() {
-				this.positionPrev = this.getPosition();
-			});
-			this.on("dragend", function() {
-				if (this.mode == Polygon.MODE_EDIT) {
-					this.context.getEventHandler().handle(new AddHistoryEvent({
-						type : "selected_drag",
-						element : this
-					}));
-				}
-			});
+			var position = this.getPosition();
+			return [ Core.roundNumber(position.x, 2), Core.roundNumber(position.y, 2) ];
 		},
+		updateSetup : function() {
+			this.setAttrs(this.polygon.setup["anchor"]);
+			// this.setDraggable(this.polygon.setup.mode == Polygon.MODE_EDIT);
+		}
+	};
+	Kinetic.Util.extend(PolygonAnchor, Kinetic.Circle);
+
+	/** /Polygon Anchor */
+
+	/**
+	 * Polygon shape
+	 * 
+	 * @param {Polygon}
+	 *            polygon
+	 */
+	PolygonShape = function(config, polygon) {
+		config = config || {};
+		Kinetic.Polygon.call(this, $.extend(true, {
+			name : "polygon_shape",
+			stroke : "red",
+			strokeWidth : 2,
+			lineJoin : "round",
+			fill : "#999",
+			points : [ 0, 0, 0, 0 ]
+		}, polygon.setup['shape'], config));
+
+		this.polygon = polygon;
+		this.selected = false;
+
+		// ... ON
+
+		this.on("click touchend", function(event) {
+			this.handleClick(event);
+		});
+
+		this.on("mouseover", function() {
+			if (this.polygon.setup.mode == Polygon.MODE_EDIT) {
+				$(this.polygon.getStage().content).css("cursor", "pointer");
+			}
+		});
+		this.on("mouseout", function() {
+			if (this.polygon.setup.mode == Polygon.MODE_EDIT) {
+				$(this.polygon.getStage().content).css("cursor", "default");
+			}
+		});
+
+		// ... /ON
+
+	};
+	PolygonShape.prototype = {
+		updateSetup : function() {
+			this.setAttrs(this.polygon.setup["shape"]);
+		},
+		select : function() {
+			this.setAttrs(this.polygon.setup['shape']['selected']);
+		},
+		deselect : function() {
+			this.setAttrs(this.polygon.setup['shape']);
+		},
+		handleClick : function(event) {
+			if (this.polygon.setup.mode == Polygon.MODE_EDIT) {
+				if (!this.polygon.isCreating) {
+					event.cancelBubble = true;
+					this.getStage().fire("select", {
+						'type' : "polygon",
+						'node' : this.polygon
+					});
+				}
+			}
+		}
+	};
+	Kinetic.Util.extend(PolygonShape, Kinetic.Polygon);
+
+	/**
+	 * Polygon label
+	 */
+	PolygonLabel = function(config, polygon) {
+		if (typeof polygon != "object")
+			return console.error("PolygonLabel: Parent Polygon is not an object");
+
+		config = config || {};
+		Kinetic.Label.call(this, $.extend(true, {
+			name : "polygon_label",
+			// text : {
+			// text : 'Label',
+			// fontSize : 8,
+			// padding : 2,
+			// fill : 'white',
+			// fontFamily : "Verdana,Arial,Helvetica,sans-serif"
+			// },
+//			rect : {
+//				fill : 'black',
+//				opacity : 0.5,
+//			},
+			draggable : false,
+			visible : false,
+			cornerRadius : 10
+		}, polygon.setup['label'], config));
+
+		this.add(new Kinetic.Tag({
+			fill : 'black',
+			opacity : 0.5,
+		}));
+		
+		this.add(new Kinetic.Text({
+			text : 'Label',
+			fontSize : 8,
+			padding : 2,
+			fill : 'white',
+			fontFamily : "Verdana,Arial,Helvetica,sans-serif"
+		}));
+
+		this.polygon = polygon;
+		this.isPlaced = false;
+		this.icon = null;
+		this.noText = false;
+
+		this.setDraggable(this.polygon.setup.mode == Polygon.MODE_EDIT);
+
+		// ... ON
+
+		this.on("dragend", function(event) {
+			event.cancelBubble = true;
+			this.moveToTop();
+			this.isPlaced = true;
+			this.polygon.changed = true;
+
+			if (this.polygon.setup.mode == Polygon.MODE_EDIT) {
+				this.getStage().fire("change", {
+					node : this,
+					type : "moved"
+				});
+			}
+		});
+		this.on("mouseover", function() {
+			if (this.polygon.setup.mode == Polygon.MODE_EDIT) {
+				$(this.polygon.getStage().content).css("cursor", "pointer");
+			}
+		});
+		this.on("mouseout", function() {
+			if (this.polygon.setup.mode == Polygon.MODE_EDIT) {
+				$(this.polygon.getStage().content).css("cursor", "default");
+			}
+		});
+
+		// ... /ON
+
+	};
+	PolygonLabel.prototype = {
+		updateSetup : function() {
+			this.setAttrs(this.polygon.setup["label"]);
+			this.setDraggable(this.polygon.setup.mode == Polygon.MODE_EDIT);
+		},
+		setLabelText : function() {
+			this.getText().setText("Polygon");
+			this.getText().setFontStyle("italic");
+		},
+		setIcon : function(icon) {
+			if (icon) {
+				if (this.icon)
+					this.icon.destroy();
+				this.icon = icon;
+				this.add(icon);
+			}
+			if (this.icon) {
+				this.icon.setPosition((this.getWidth() / 2) - (icon.getWidth() / 2), (icon.getHeight() * -1) - 5);
+			}
+		},
+		drawText : function(notPlaced) {
+			notPlaced = notPlaced || false;
+			if (!this.polygon.setup['label'].visible)
+				return;
+
+			if (this.polygon.anchors.children.length < 2) {
+				this.hide();
+				return;
+			}
+
+			if (this.noText && this.polygon.setup.mode != Polygon.MODE_EDIT) {
+				this.setOffset(0, this.getTag().getHeight());
+				this.getText().hide();
+				this.getTag().hide();
+			}
+
+			this.setLabelText();
+
+			// Label is placed
+			if (this.isPlaced && !notPlaced) {
+				this.show();
+				return;
+			}
+
+			var coordinates = this.polygon.getCoordinates();
+			var polygonCenter = CanvasUtil.centerCoordinates(coordinates);
+			var bounds = CanvasUtil.getMaxBounds(coordinates);
+
+			this.setWidth(bounds[2] - bounds[0]);
+			this.setHeight(bounds[3] - bounds[1]);
+
+			this.setX(polygonCenter[0] - (this.getText().getTextWidth() / 2));
+			this.setY(polygonCenter[1]);
+
+			this.show();
+		},
+		toData : function() {
+			if (!this.getVisible())
+				return null;
+
+			var coordinate = this.getPosition();
+			return [ Core.roundNumber(coordinate.x, 2), Core.roundNumber(coordinate.y, 2) ];
+		},
+		fromData : function(data) {
+			if (jQuery.isArray(data)) {
+				this.isPlaced = true;
+				var x = parseFloat(data[0]);
+				var y = parseFloat(data[1]);
+				this.setPosition(x, y);
+			}
+			this.drawText();
+		}
+	};
+	Kinetic.Util.extend(PolygonLabel, Kinetic.Label);
+
+	/** /PolygonLabel */
+
+	/**
+	 * Polygon
+	 */
+	Polygon = function(config, setup) {
+		config = config || {};
+
+		setup = $.extend(true, {}, {
+			'shape' : {},
+			'anchor' : {},
+			'label' : {},
+			'controlline' : {},
+			'mode' : Polygon.MODE_SHOW,
+		}, setup);
+
+		Kinetic.Group.call(this, $.extend(true, {
+			name : "polygon"
+		}, config));
+
+		this.type = "polygon";
+		this.setup = setup;
+		this.anchorFirst = null;
+		this.anchorLast = null;
+		this.anchorDraw = null;
+		this.isSelected = false;
+		this.isCreating = false;
+		this.deleted = false;
+		this.changed = false;
+		this.object = {
+			type : null,
+			node : null
+		};
+
+		// ... NODES
+
+		this.shape = this.createShape();
+
+		this.anchors = new Kinetic.Group({
+			name : "anchors"
+		});
+
+		this.controlLine = new Kinetic.Line({
+			name : "polygon_controlline",
+			points : [ 0, 0, 0, 0 ],
+			stroke : "grey",
+			strokeWidth : 2,
+			lineJoin : "round",
+			visible : false,
+			dashArray : [ 10, 10, 0, 10 ]
+		});
+		this.controlLine.setAttrs(setup["controlline"]);
+
+		this.label = this.createLabel({});
+
+		this.add(this.shape);
+		this.add(this.anchors);
+		this.add(this.label);
+		this.add(this.controlLine);
+
+		// ... /NODES
+
+		// ... ON
+
+		// ... /ON
+
+	};
+	Polygon.prototype = {
 		addAnchor : function(anchor) {
 			if (!anchor)
 				return;
@@ -526,9 +485,7 @@ $(function() {
 			}
 			this.anchors.add(anchor);
 			anchor.polygon = this;
-
-			anchor.control = new PolygonAnchorControl({}, anchor);
-			this.controls.add(anchor.control);
+			this.updateShape();
 		},
 		addAnchorAfter : function(anchor, anchorAfter) {
 			if (!anchor)
@@ -546,9 +503,7 @@ $(function() {
 
 			this.anchors.add(anchor);
 			anchor.polygon = this;
-
-			anchor.control = new PolygonAnchorControl({}, anchor);
-			this.controls.add(anchor.control);
+			this.updateShape();
 		},
 		removeAnchor : function(anchor) {
 			if (this.anchors.isAncestorOf(anchor)) {
@@ -559,7 +514,10 @@ $(function() {
 				anchor.removeAnchor();
 
 				if (this.anchors.getChildren().length <= 1)
-					this.deletePolygon();
+					this.erase();
+
+				this.updateShape();
+				this.getLayer().draw();
 			}
 		},
 		eachAnchor : function(callback) {
@@ -574,14 +532,12 @@ $(function() {
 		},
 		createPolygon : function(event, anchorResume) {
 			var namespace = "mousemove.draw_polygon mouseup.draw_polygon";
-			var positionUser = this.getStage().getUserPosition();
-			var position = positionUser ? {
-				x : ((positionUser.x - this.getStage().attrs.x) / this.getStage().attrs.scale.x) - this.attrs.x,
-				y : ((positionUser.y - this.getStage().attrs.y) / this.getStage().attrs.scale.y) - this.attrs.y
-			} : {
+			var positionRelative = KineticjsUtil.getPointerRelativePosition(this.getStage());
+			var position = positionRelative ? positionRelative : {
 				x : 0,
 				y : 0
 			};
+			this.changed = true;
 
 			// New anchor
 			if (!event) {
@@ -589,10 +545,7 @@ $(function() {
 				this.isCreating = true;
 
 				// Create anchor
-				this.anchorDraw = new PolygonAnchor({
-					x : position.x,
-					y : position.y
-				}, this);
+				this.anchorDraw = new PolygonAnchor(position, this);
 				if (anchorResume) {
 					this.addAnchorAfter(this.anchorDraw, anchorResume);
 				} else {
@@ -605,91 +558,125 @@ $(function() {
 				this.getLayer().on(namespace, function(event) {
 					context.createPolygon(event, anchorResume);
 				});
-			} else if (positionUser) {
+			} else if (positionRelative) {
 				event.cancelBubble = true;
 
 				// Move anchor
 				if (event.type == "mousemove" && this.anchorDraw) {
 					this.anchorDraw.show();
-					this.anchorDraw.setX(position.x);
-					this.anchorDraw.setY(position.y);
+					if (!this.anchorDraw.isDragging()) {
+						this.anchorDraw.setPosition(position);
+						this.anchorDraw.startDrag();
+					}
+					// this.anchorDraw.show();
+					// this.anchorDraw.setPosition(position);
 
-					this.getLayer().draw();
+					// this.getLayer().draw();
 				}
 				// Place anchor
 				else if (event.type == "mouseup") {
 					if (this.getStage().isDragging())
 						return;
+					console.log("Polygonc reate mouseup", event);
+					this.anchorDraw.stopDrag();
 
 					// Cancel placing
 					if (event.which == 3) {
+						// event.preventDefault();
+						// //this.removeAnchor(this.anchorDraw);
+						// this.getLayer().off(namespace);
+						// this.anchorDraw = null;
+						// //delete this.anchorDraw;
+						// this.isCreating = false;
+						// anchorResume = null;
+						// this.getLayer().draw();
+						// console.log("Cancel placing");
+						// return;
 						event.preventDefault();
 						this.removeAnchor(this.anchorDraw);
 						this.getLayer().off(namespace);
 						this.anchorDraw = null;
-						delete this.anchorDraw;
 						this.isCreating = false;
-						anchorResume = null;
+						anchorSibling = null;
+						this.getStage().fire("change", {
+							node : this,
+							type : "created"
+						});
+						this.bind();
+						this.updateControlLine(null);
 						this.getLayer().draw();
 						return;
 					}
 
 					// Create anchor
+					// anchorResume = this.anchorDraw;
+					// this.anchorDraw = new PolygonAnchor({
+					// x: position.x,
+					// y: position.y
+					// }, this);
+					// if (anchorResume) {
+					// this.addAnchorAfter(this.anchorDraw, anchorResume);
+					// } else {
+					// this.addAnchor(this.anchorDraw);
+					// }
+
 					anchorResume = this.anchorDraw;
-					this.anchorDraw = new PolygonAnchor({
-						x : position.x,
-						y : position.y
-					}, this);
+					this.anchorDraw = new PolygonAnchor(position, this);
 					if (anchorResume) {
 						this.addAnchorAfter(this.anchorDraw, anchorResume);
 					} else {
 						this.addAnchor(this.anchorDraw);
 					}
+					this.anchorDraw.startDrag();
 				}
 			}
 		},
 		toData : function() {
-			var data = [];
-			this.eachAnchor(function(anchor) {
-				data.push(anchor.toData());
-			});
-			return data.join("|");
+			var data = {
+				coordinates : this.getCoordinates(),
+				center : this.label.toData(),
+				changed : this.changed,
+				deleted : this.deleted
+			};
+			return data;
 		},
 		fromData : function(data) {
-			data = data || "";
-			var dataAnchor = jQuery.isArray(data) ? data : data.split("|");
-			var anchor;
-			for (i in dataAnchor) {
+			if (typeof data != "object")
+				return console.error("Polygon.fromData: Data is not object", object);
+			var anchor = null;
+			for (i in data.coordinates) {
 				anchor = new PolygonAnchor({}, this);
 				this.addAnchor(anchor);
-				anchor.fromData(dataAnchor[i]);
+				anchor.fromData(data.coordinates[i]);
 			}
-			this.drawText();
+
+			this.label.fromData(data.center);
+			this.label.drawText();
+
+			this.createLabelIcon();
+
+			this.updateShape();
 		},
 		getCoordinates : function() {
 			var coordinates = [];
 			this.eachAnchor(function(anchor) {
-				coordinates = coordinates.concat(anchor.getCoordinates());
+				coordinates.push(anchor.getCoordinates());
 			});
 			return coordinates;
 		},
-		copy : function(context) {
+		copy : function() {
 			var data = this.toData();
-			var polygon = new Polygon({}, context);
+			var polygon = new Polygon({}, this.setup);
 			polygon.fromData(data);
 			return polygon;
 		},
-		select : function(secondary) {
-			this.shape.setShadow({
-				color : 'black',
-				blur : 10,
-				offset : [ 10, 10 ],
-				alpha : 0.3
-			});
+		select : function() {
+			this.moveToTop();
+			this.shape.select();
 			this.isSelected = true;
 		},
 		deselect : function() {
-			this.shape.setShadow(null);
+			this.shape.deselect();
 			this.isSelected = false;
 		},
 		erase : function() {
@@ -707,46 +694,94 @@ $(function() {
 				this.getLayer().draw();
 			}
 		},
-		drawText : function() {
-			if (this.object.type != "element" || !this.object.element)
-				return;
+		bind : function() {
+			if (!this.getStage())
+				return console.error("Polygon.bind: Stage is null");
+			var context = this;
 
-			if (this.anchors.length < 2)
-				return;
+			// Change
+			this.getStage().on("change", function(event) {
+				if (!context.isVisible() || !event.node.polygon || event.node.polygon._id != context._id)
+					return;
 
-			var coordinates = [];
-			this.eachAnchor(function(anchor) {
-				coordinates.push([ anchor.attrs.x, anchor.attrs.y ]);
+				if (event.node.attrs.name != "polygon_label") {
+					context.label.drawText();
+					context.getLayer().draw();
+				}
+
 			});
-			// Find angle of first vector
-			// var outerBounds = CanvasUtil.getOuterBounds(coordinates);
 
-			// var angle = Math.atan2(this.anchorFirst.next.getY() -
-			// this.anchorFirst.getY(), this.anchorFirst.next.getX() -
-			// this.anchorFirst.getX());
-			// var angle = Math.atan2(outerBounds[2][1] - outerBounds[1][1],
-			// outerBounds[2][0] - outerBounds[1][0]);
+			// Setup
+			this.getLayer().on("setup", function(event) {
+				if (event.type == "polygon") {
+					context.updateSetup(event.setup);
+				}
+			});
 
-			// Get element center
-			var elementCenter = CanvasUtil.centerCoordinates(coordinates);
+			// Draw text
+			this.label.drawText();
 
-			var bounds = CanvasUtil.getMaxBounds(coordinates);
+		},
+		updateSetup : function(setup) {
+			this.setup = $.extend(true, {}, this.setup, setup);
 
-			this.text.setWidth(bounds[2] - bounds[0]);
-			this.text.setHeight(bounds[3] - bounds[1]);
+			// Shape
+			this.shape.updateSetup();
 
-			this.text.setText(this.object.element.name);
-			// this.text.setRotation(angle);
-			// this.text.setX(elementLegendText.getX() -
-			// (elementLegendText.getTextWidth() / 2));
-			this.text.setX(elementCenter[0] - (this.text.getTextWidth() / 2));
-			this.text.setY(elementCenter[1]);
-			this.text.show(true);
+			// Anchor
+			this.anchors.getChildren().each(function(shape) {
+				shape.updateSetup();
+			});
+			// for ( var i in this.anchors.getChildren()) {
+			// this.anchors.getChildren()[i].updateSetup();
+			// }
+
+			// Label
+			this.label.updateSetup();
+
+			this.getLayer().draw();
+		},
+		createLabel : function(config) {
+			return new PolygonLabel(config, this);
+		},
+		createLabelIcon : function() {
+
+		},
+		createShape : function(config) {
+			return new PolygonShape(config, this);
+		},
+		intersects : function(point) {
+			return this.shape.intersects(point);
+		},
+		/**
+		 * @param {PolygonAnchor}
+		 *            anchor
+		 */
+		updateControlLine : function(anchor) {
+			if (anchor) {
+				if (anchor.prev) {
+					var points = [];
+					points.push(anchor.prev.getPosition());
+					points.push(anchor.getPosition());
+					if (anchor.next)
+						points.push(anchor.next.getPosition());
+
+					this.controlLine.setPoints(points);
+					this.controlLine.show();
+				}
+			} else {
+				this.controlLine.hide();
+				this.updateShape();
+			}
+		},
+		updateShape : function() {
+			var coordinates = this.getCoordinates();
+			if (coordinates.length > 0)
+				this.shape.setPoints(coordinates);
 		}
-	});
-	Polygon.LINE_TYPE_STRAIGHT = "straight";
-	Polygon.LINE_TYPE_QUAD = "quad";
-	Polygon.LINE_TYPE_BEZIER = "bezier";
+	};
+	Kinetic.Util.extend(Polygon, Kinetic.Group);
+
 	Polygon.MODE_SHOW = "show";
 	Polygon.MODE_EDIT = "edit";
 

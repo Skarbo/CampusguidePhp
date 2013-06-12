@@ -17,12 +17,17 @@ function __autoload( $class_name )
 
 $QUERY_SVG = "svg";
 $QUERY_COLOR = "color";
+$QUERY_FILL = "fill";
+$QUERY_STROKE = "stroke";
+$QUERY_WIDTH = "width";
 $QUERY_HEIGHT = "height";
 $QUERY_WIDTH = "width";
 
 $REGEX_FILE = '/[^a-zA-Z0-9\_]/i';
-$REGEX_SVG_COLOR = '/(fill|stroke):(.*?)(;|")/';
-$REGEX_SVG_COLOR_REPLACE = '${1}:%s${3}';
+$REGEX_SVG_COLOR = '/(fill|stroke)(="|:)(#000000)/';
+$REGEX_SVG_FILL = '/(fill)(="|:)(#000000)/';
+$REGEX_SVG_STROKE = '/(stroke)(="|:)(#000000)/';
+$REGEX_SVG_COLOR_REPLACE = '${1}${2}%s';
 $REGEX_SVG_WIDTH = '/<svg(.*?)width="(\d+)"(.*?)>/s';
 $REGEX_SVG_HEIGHT = '/<svg(.*?)height="(\d+)"(.*?)>/s';
 $REGEX_SVG_WIDTH_REPLACE = "<svg\n\${1}width=\"%s\"\${3}\n>";
@@ -33,6 +38,8 @@ $handle = @opendir( $svgFolder );
 
 $svgFile = preg_replace( $REGEX_FILE, "", Core::arrayAt( $_GET, $QUERY_SVG, "" ) );
 $svgColor = Core::arrayAt( $_GET, $QUERY_COLOR );
+$svgFill = Core::arrayAt( $_GET, $QUERY_FILL );
+$svgStroke = Core::arrayAt( $_GET, $QUERY_STROKE );
 $svgHeight = intval( Core::arrayAt( $_GET, $QUERY_HEIGHT ) );
 $svgWidth = intval( Core::arrayAt( $_GET, $QUERY_WIDTH ) );
 
@@ -64,6 +71,10 @@ if ( $handle )
 
             if ( $svgColor )
                 $contents = preg_replace( $REGEX_SVG_COLOR, sprintf( $REGEX_SVG_COLOR_REPLACE, $svgColor ), $contents );
+            if ( $svgFill )
+                $contents = preg_replace( $REGEX_SVG_FILL, sprintf( $REGEX_SVG_COLOR_REPLACE, $svgFill ), $contents );
+            if ( $svgStroke )
+                $contents = preg_replace( $REGEX_SVG_STROKE, sprintf( $REGEX_SVG_COLOR_REPLACE, $svgStroke ), $contents );
             if ( $svgHeight )
                 $contents = preg_replace( $REGEX_SVG_HEIGHT, sprintf( $REGEX_SVG_HEIGHT_REPLACE, $svgHeight ),
                         $contents );

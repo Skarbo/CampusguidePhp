@@ -3,8 +3,6 @@ FacilitiesCmsMainController.prototype = new CmsMainController();
 
 function FacilitiesCmsMainController(eventHandler, mode, query) {
 	CmsMainController.apply(this, arguments);
-	this.facilityDao = new FacilityStandardDao(mode);
-	this.buildingDao = new BuildingStandardDao(mode);
 };
 
 // /CONSTRUCTOR
@@ -22,20 +20,6 @@ function FacilitiesCmsMainController(eventHandler, mode, query) {
  */
 FacilitiesCmsMainController.prototype.getView = function() {
 	return CmsMainController.prototype.getView.call(this);
-};
-
-/**
- * @return {FacilityStandardDao}
- */
-FacilitiesCmsMainController.prototype.getFacilityDao = function() {
-	return this.facilityDao;
-};
-
-/**
- * @return {BuildingStandardDao}
- */
-FacilitiesCmsMainController.prototype.getBuildingDao = function() {
-	return this.buildingDao;
 };
 
 // ... /GET
@@ -65,7 +49,7 @@ FacilitiesCmsMainController.prototype.render = function(view) {
 
 	if (this.getQuery().page == "facility" && this.getQuery().action == "view") {
 		var faciltyId = this.getQuery().id;
-		this.getBuildingDao().getForeign(faciltyId, function(list){
+		this.getDaoContainer().getBuildingDao().getForeign(faciltyId, function(list){
 			context.getEventHandler().handle(new BuildingsRetrievedEvent(list));
 		}, true);
 	}

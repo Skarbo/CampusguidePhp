@@ -32,6 +32,11 @@ class DaoContainer extends ClassCore
      */
     protected $floorBuildingDao;
     /**
+     * @var NodeNavigationBuildingDao
+     */
+    protected $nodeNavigationBuildingDao;
+
+    /**
      * @var QueueDao
      */
     protected $queueDao;
@@ -76,6 +81,8 @@ class DaoContainer extends ClassCore
         $this->setSectionBuildingDao( new SectionBuildingDbDao( $dbApi ) );
         $this->setElementBuildingDao( new ElementBuildingDbDao( $dbApi ) );
         $this->setFloorBuildingDao( new FloorBuildingDbDao( $dbApi ) );
+        $this->setNodeNavigationBuildingDao( new NodeNavigationBuildingDbDao( $dbApi ) );
+
         $this->setQueueDao( new QueueDbDao( $dbApi ) );
 
         $this->setEntryScheduleDao( new EntryScheduleDbDao( $dbApi ) );
@@ -186,6 +193,22 @@ class DaoContainer extends ClassCore
     public function setFloorBuildingDao( FloorBuildingDao $floorBuildingDao )
     {
         $this->floorBuildingDao = $floorBuildingDao;
+    }
+
+    /**
+     * @return NodeNavigationBuildingDbDao
+     */
+    public function getNodeNavigationBuildingDao()
+    {
+        return $this->nodeNavigationBuildingDao;
+    }
+
+    /**
+     * @param NodeNavigationBuildingDbDao $nodeNavigationBuildingDao
+     */
+    public function setNodeNavigationBuildingDao( NodeNavigationBuildingDbDao $nodeNavigationBuildingDao )
+    {
+        $this->nodeNavigationBuildingDao = $nodeNavigationBuildingDao;
     }
 
     /**

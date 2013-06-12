@@ -325,7 +325,7 @@ class FacilitiesCmsMainController extends CmsMainController
             $this->doFacilityAdminAction();
 
             // Add Facility
-            $facilityId = $this->getFacilityDao()->add( $this->getFacilityAdmin(), null );
+            $facilityId = $this->getDaoContainer()->getFacilityDao()->add( $this->getFacilityAdmin(), null );
 
             // Redirect
             AbstractController::redirect(
@@ -389,7 +389,7 @@ class FacilitiesCmsMainController extends CmsMainController
         }
 
         // Set Facilities
-        $this->setFacilities( $this->getFacilityDao()->getList( self::getIds() ) );
+        $this->setFacilities( $this->getDaoContainer()->getFacilityDao()->getList( self::getIds() ) );
 
         // Is POST
         if ( self::isPost() )
@@ -400,7 +400,7 @@ class FacilitiesCmsMainController extends CmsMainController
             {
                 $facility = $this->getFacilities()->current();
 
-                $this->getFacilityDao()->remove( $facility->getId() );
+                $this->getDaoContainer()->getFacilityDao()->remove( $facility->getId() );
             }
 
             // Redirect

@@ -95,7 +95,7 @@ class ElementBuildingAppMainView extends AppMainView implements ElementBuildingA
     protected function drawMenu( AbstractXhtml $rootTop, AbstractXhtml $rootBottom )
     {
         $this->getActionbarPresenter()->setIcon(
-                Xhtml::img( Resource::image()->icon()->getRoomAuditoriumSvg( "white" ) )->style( "height: 1em;" ) );
+                Xhtml::img( Resource::image()->building()->element()->getRoomAuditorium( "white" ) )->style( "height: 1em;" ) );
         $this->getActionbarPresenter()->setBackReferer(
                 Resource::url()->app()->building()->getBuilding( $this->getBuilding()->getId(),
                         $this->getMode() ) );

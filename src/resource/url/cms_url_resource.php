@@ -50,11 +50,11 @@ class CmsUrlResource extends ClassCore
     }
 
     /**
-     * @return BuildingCmsUrlResource
+     * @return BuildingsCmsUrlResource
      */
-    public function building()
+    public function buildings()
     {
-        self::$BUILDING = self::$BUILDING ? self::$BUILDING : new BuildingCmsUrlResource();
+        self::$BUILDING = self::$BUILDING ? self::$BUILDING : new BuildingsCmsUrlResource();
         return self::$BUILDING;
     }
 

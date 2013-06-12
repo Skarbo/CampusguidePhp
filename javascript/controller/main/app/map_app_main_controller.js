@@ -52,13 +52,13 @@ MapAppMainController.prototype.doBindEventHandler = function() {
 MapAppMainController.prototype.handleMapLoaded = function() {
 	var context = this;
 
-	this.getFacilityDao().getAll(function(facilities) {
+	this.getDaoContainer().getFacilityDao().getAll(function(facilities) {
 		var facilityIds = [];
 		for (facilityId in facilities) {
 			facilityIds.push(facilityId);
 		}
 		context.getEventHandler().handle(new FacilitiesRetrievedEvent(facilities));
-		context.getBuildingDao().getForeign(facilityIds, function(buildings) {
+		context.getDaoContainer().getBuildingDao().getForeign(facilityIds, function(buildings) {
 			context.getEventHandler().handle(new BuildingsRetrievedEvent(buildings));
 		});
 	});

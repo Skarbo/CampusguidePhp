@@ -1,0 +1,27 @@
+#cms_wrapper .widget.overlaybackground_table
+{
+    background-color: #EDEDED;
+}
+
+#cms_wrapper .widget.overlaybackground_table > *
+{
+    vertical-align: bottom;
+}
+
+#cms_wrapper .widget.overlaybackground_table .overlaybackground_wrapper
+{
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.7);
+    border-radius: 0.2em 0.2em 0.2em 0.2em;
+    color: white;
+    font-size: 0.7em;
+    font-weight: bold;
+    overflow: hidden;
+    padding: 0.2em 0;
+    white-space: nowrap;
+}
+
+#cms_wrapper .widget.overlaybackground_table .overlaybackground_wrapper a
+{
+    color: white;
+    padding: 0.2em;
+}

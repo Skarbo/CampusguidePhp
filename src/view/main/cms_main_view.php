@@ -7,9 +7,11 @@ abstract class CmsMainView extends AbstractMainView
 
 
     public static $ID_CMS_WRAPPER = "cms_wrapper";
+    public static $ID_CMS_NAVIGATION_WRAPPER = "cms_navigation_wrapper";
     public static $ID_CMS_MAIN_WRAPPER = "main_cms_wrapper";
     public static $ID_HEADER_WRAPPER = "header_wrapper";
     public static $ID_OVERLAY = "overlay";
+    public static $ID_OVERLAY_TOAST = "overlay_toast";
 
     /**
      * @var PageMenuCmsPresenterView
@@ -29,9 +31,22 @@ abstract class CmsMainView extends AbstractMainView
      */
     private $overlayPresenter;
     /**
+     * @var OverlayCmsPresenterView
+     */
+    private $toastOverlayPresenter;
+    /**
      * @var QueueCmsPresenterView
      */
     private $queuePresenter;
+
+    /**
+     * @var ControllerMenuCmsPresenterView
+     */
+    private $menuItemBuildings;
+    /**
+     * @var array Array( NavigationCmsItem )
+     */
+    private $navigation = array ();
 
     // /VARIABLES
 
@@ -110,6 +125,22 @@ abstract class CmsMainView extends AbstractMainView
     public function setOverlayPresenter( OverlayCmsPresenterView $overlayPresenter )
     {
         $this->overlayPresenter = $overlayPresenter;
+    }
+
+    /**
+     * @return OverlayCmsPresenterView
+     */
+    public function getToastOverlayPresenter()
+    {
+        return $this->toastOverlayPresenter;
+    }
+
+    /**
+     * @param OverlayCmsPresenterView $toastOverlayPresenter
+     */
+    public function setToastOverlayPresenter( OverlayCmsPresenterView $toastOverlayPresenter )
+    {
+        $this->toastOverlayPresenter = $toastOverlayPresenter;
     }
 
     /**
@@ -194,6 +225,17 @@ abstract class CmsMainView extends AbstractMainView
     // ... /IS
 
 
+    // ... ADD
+
+
+    protected function addNavigation( $title, $url )
+    {
+        $this->navigation[] = NavigationCmsItem::init( $title, $url );
+    }
+
+    // ... /ADD
+
+
     /**
      * @see AbstractView::before()
      */
@@ -203,6 +245,7 @@ abstract class CmsMainView extends AbstractMainView
         $this->setControllerMenuPresenter( new ControllerMenuCmsPresenterView( $this ) );
         $this->setErrorPresenter( new ErrorCmsPresenterView( $this ) );
         $this->setOverlayPresenter( new OverlayCmsPresenterView( $this ) );
+        $this->setToastOverlayPresenter( new OverlayCmsPresenterView( $this ) );
 
         // ... Queue
         if ( $this->getController()->getQueue() )
@@ -210,11 +253,11 @@ abstract class CmsMainView extends AbstractMainView
             $this->setQueuePresenter( new QueueCmsPresenterView( $this, $this->getController()->getQueue() ) );
         }
 
-        // Do page menu
-        $this->doPageMenu();
-
         // Do controller menu
         $this->doControllerMenu();
+
+        // Do page menu
+        $this->doPageMenu();
     }
 
     // ... DO
@@ -243,7 +286,7 @@ abstract class CmsMainView extends AbstractMainView
 
         // Buildings
         $this->getControllerMenuPresenter()->addItem( "Buildings",
-                Resource::url()->cms()->building()->getController( $this->getMode() ),
+                Resource::url()->cms()->buildings()->getController( $this->getMode() ),
                 $this->getController()->getControllerName() == BuildingsCmsMainController::$CONTROLLER_NAME );
 
         // Admin
@@ -278,6 +321,17 @@ abstract class CmsMainView extends AbstractMainView
         // Create wrapper
         $mainWrapper = Xhtml::div()->id( $this->getWrapperId() );
 
+        // Draw navigation
+        $navigationWrapper = Xhtml::div()->id( self::$ID_CMS_NAVIGATION_WRAPPER );
+        foreach ( $this->navigation as $navigation )
+        {
+            $navigation = NavigationCmsItem::get_( $navigation );
+            $navigationWrapper->addContent( Xhtml::a( $navigation->title, $navigation->url ) );
+            $navigationWrapper->addContent( Xhtml::$RAQUO );
+        }
+        $navigationWrapper->addContent( Xhtml::div( Xhtml::$NBSP )->class_( "spacer" ) );
+        $mainWrapper->addContent( $navigationWrapper );
+
         // Draw header
         $mainWrapperHeader = Xhtml::div()->id( self::$ID_HEADER_WRAPPER );
         $this->drawPageHeader( $mainWrapperHeader );
@@ -308,6 +362,22 @@ abstract class CmsMainView extends AbstractMainView
         $this->getOverlayPresenter()->setTitle( "Title" );
         $this->getOverlayPresenter()->setBody( "Body" );
         $this->getOverlayPresenter()->draw( $wrapper );
+
+        // Draw toast overlay
+        $this->getToastOverlayPresenter()->setId( self::$ID_OVERLAY_TOAST );
+        $this->getToastOverlayPresenter()->setTitle( "Toast title" );
+        $this->getToastOverlayPresenter()->setBody( "Toast body" );
+        $this->getToastOverlayPresenter()->setBackground( false );
+        $this->getToastOverlayPresenter()->setBottom( true );
+        $this->getToastOverlayPresenter()->draw( $wrapper );
+
+        //$overlay->setBackground( false );
+        //$overlay->setBottom( true );
+        //$overlay->setIndex( 1500 );
+        //$overlay->setFitWidth( true );
+        //$overlay->setId( "toast" );
+        //$overlay->addContent( Xhtml::div()->class_( "toast_message" ) );
+
 
         // ... /OVERLAY
 
@@ -403,6 +473,33 @@ abstract class CmsMainView extends AbstractMainView
 
     // /FUNCTIONS
 
+
+}
+
+class NavigationCmsItem extends ClassCore
+{
+
+    public $title;
+    public $url;
+
+    public static function init( $title, $url )
+    {
+        $navigationCmsItem = new NavigationCmsItem();
+
+        $navigationCmsItem->title = $title;
+        $navigationCmsItem->url = $url;
+
+        return $navigationCmsItem;
+    }
+
+    /**
+     * @param NavigationCmsItem $get
+     * @return NavigationCmsItem
+     */
+    public static function get_( $get )
+    {
+        return $get;
+    }
 
 }
 

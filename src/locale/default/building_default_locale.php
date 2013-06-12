@@ -6,10 +6,15 @@ class BuildingDefaultLocale extends Locale
     // VARIABLES
 
 
-    protected $building = "Building";
-    protected $buildings = "Buildings";
-    protected $floor = "Floor";
-    protected $floors = "Floors";
+    private static $ELEMENT;
+
+    public $building = "Building";
+    public $buildings = "Buildings";
+    public $floor = "Floor";
+    public $floors = "Floors";
+
+    protected $deletingBuilding = "Deleting %d %s";
+    protected $deletingBuildingSure = "Are you sure you want to delete %d %s?";
 
     // /VARIABLES
 
@@ -23,27 +28,34 @@ class BuildingDefaultLocale extends Locale
     // FUNCTIONS
 
 
+    /**
+     * @return ElementBuildingDefaultLocale
+     */
+    public function element()
+    {
+        self::$ELEMENT = self::$ELEMENT ? self::$ELEMENT : new ElementBuildingDefaultLocale();
+        return self::$ELEMENT;
+    }
+
     // /FUNCTIONS
 
 
-    public function getBuilding()
+    public function getFloors( $count )
     {
-        return $this->building;
+        return sprintf( "%d %s", $count, Locale::instance()->quantity( $count, $this->floor, $this->floors ) );
     }
 
-    public function getBuildings()
+    public function getDeletingBuilding( $buildingsSize )
     {
-        return $this->buildings;
+        return ucwords(
+                sprintf( $this->deletingBuilding, $buildingsSize,
+                        Locale::instance()->quantity( $buildingsSize, $this->building, $this->buildings ) ) );
     }
 
-    public function getFloor()
+    public function getDeletingBuildingSure( $buildingsSize )
     {
-        return $this->floor;
-    }
-
-    public function getFloors()
-    {
-        return $this->floors;
+        return sprintf( $this->deletingBuildingSure, $buildingsSize,
+                Locale::instance()->quantity( $buildingsSize, $this->building, $this->buildings ) );
     }
 
 }

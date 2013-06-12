@@ -34,8 +34,8 @@ class QueueAdminCmsPageMainView extends PageCmsPageMainView implements QueueAdmi
                 Resource::url()->cms()->facility()->getViewFacilityPage( "%s", $this->getMode() ),
                 Resource::url()->cms()->facility()->getFacilityImage( "%s", 200, 100, $this->getMode() ) );
         $this->buildingSliderPresenter = new SelectsliderCmsPresenterView( $view, "select_building",
-                Resource::url()->cms()->building()->getViewBuildingPage( "%s", $this->getMode() ),
-                Resource::url()->cms()->building()->getBuildingOverviewImage( "%s", 200, 100, $this->getMode() ) );
+                Resource::url()->cms()->buildings()->getViewBuildingPage( "%s", $this->getMode() ),
+                Resource::url()->cms()->buildings()->getBuildingOverviewImage( "%s", 200, 100, $this->getMode() ) );
     }
 
     // /CONSTRUCTOR

@@ -15,6 +15,7 @@ class ElementBuildingDbResource
     private $fieldFloorId = "floor_id";
     private $fieldName = "element_name";
     private $fieldCoordinates = "element_coordinates";
+    private $fieldData = "element_data";
     private $fieldDeleted = "element_deleted";
     private $fieldUpdated = "element_updated";
     private $fieldRegistered = "element_registered";
@@ -87,6 +88,14 @@ class ElementBuildingDbResource
     public function getFieldTypeGroup()
     {
         return $this->fieldTypeGroup;
+    }
+
+    /**
+     * @return the $fieldData
+     */
+    public function getFieldData()
+    {
+        return $this->fieldData;
     }
 
 }
